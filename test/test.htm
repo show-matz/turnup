@@ -1,0 +1,298 @@
+<html>
+<header>
+	<link rel=stylesheet href="./test.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>turnup readme</title>
+</header>
+<body>
+<!-- config:term-link-in-header -->			
+<!-- config:header-numbering 2 4 -->			
+<!-- css is from http://jasonm23.github.io/markdown-css-themes/markdown.css -->
+<h1><a name='00WaYgs6sy7'></a>README - turnup</h1>
+<p>　この文書は、<strong>turnup</strong>（仮名）のためのマニュアル文書です。</p>
+<!--
+  multi
+  line
+  comment
+  test
+ -->
+<h2><a name='3Hhcp94tueB'></a>1. Table of contents</h2>
+<ul>
+<li><a href='#3Hhcp94tueB'>1. Table of contents</a></li>
+<li><a href='#dfBhQhXFuAf'>2. turnup とは</a></li>
+<li><a href='#fl85VX2ZZgf'>3. 用語</a></li>
+<li><a href='#lHOzvAtNkez'>4. 使い方</a></li>
+<li><a href='#6c7fuNVen8Q'>5. 記法</a></li>
+<ul>
+<li><a href='#8w2TpH9N8mf'>5.1. 見出し</a></li>
+<li><a href='#bigAVFHB4V2'>5.2. 箇条書きリスト</a></li>
+<li><a href='#g6ShYI41GDs'>5.3. 番号付きリスト</a></li>
+<li><a href='#h1tEzgBM5pT'>5.4. preブロック</a></li>
+<li><a href='#iSO2TEVEGpH'>5.5. テーブル</a></li>
+<li><a href='#4n3lxYDUT0F'>5.6. 引用</a></li>
+<li><a href='#eJX346arix9'>5.7. 定義リスト</a></li>
+<li><a href='#gbRPELCobOc'>5.8. 強調</a></li>
+<li><a href='#eSWpAeijdti'>5.9. 取消し線</a></li>
+<li><a href='#16WSNZTDrSg'>5.10. マーカー</a></li>
+<li><a href='#fEQY6fCyzn6'>5.11. 上付きと下付き</a></li>
+<li><a href='#bSYejIfSqoO'>5.12. リンク</a></li>
+<li><a href='#2kO0dY0k2Ft'>5.13. コード</a></li>
+<li><a href='#fQEJEnGceop'>5.14. 水平線</a></li>
+<li><a href='#1DN9R32VPmV'>5.15. 画像の挿入</a></li>
+</ul>
+<li><a href='#fndY0n2YuKG'>6. 拡張機能</a></li>
+<ul>
+<li><a href='#kqWPcKEw070'>6.1. 文書タイトルとスタイルシートの指定</a></li>
+<li><a href='#3tp71i4aeX5'>6.2. 生の HTML の出力</a></li>
+<li><a href='#7PU4bw4xAi5'>6.3. 脚注</a></li>
+<li><a href='#c3xXk4nH9oX'>6.4. 目次の生成</a></li>
+<li><a href='#8DVv96eWYu2'>6.5. 定義リストへの自動リンク</a></li>
+</ul>
+<li><a href='#6WBrTv4XYuW'>7. テストのコーナー（あと Markdown が自動リンクされるかどうか）</a></li>
+</ul>
+<p>　</p>
+<h2><a name='dfBhQhXFuAf'></a>2. turnup とは</h2>
+<p>　turnup は、<a class='term' href='#0KfqQD5EbEw'>Markdown</a> 書法で作成したテキストファイルから <a class='term' href='#4ghVmsBLrOx'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
+<h2><a name='fl85VX2ZZgf'></a>3. 用語</h2>
+<dl>
+  <dt><a name='1NEVpbU4Vzv'></a>GFM</dt>
+  <dd>GitHub Flavored <a class='term' href='#0KfqQD5EbEw'>Markdown</a> というものの略語だそうです。turnup は可能な範囲でサポートするように心掛けています。</dd>
+</dl>
+<dl>
+  <dt><a name='0KfqQD5EbEw'></a>Markdown</dt>
+  <dd>マークダウンと読みます。<a class='term' href='#4ghVmsBLrOx'>HTML</a> の Mark up をしないで済むという意図なんでしょうけど、命名にセンスが‥‥‥ね。</dd>
+</dl>
+<dl>
+  <dt><a name='4ghVmsBLrOx'></a>HTML</dt>
+  <dd>Hyper text markup language の略語です。</dd>
+</dl>
+<h2><a name='lHOzvAtNkez'></a>4. 使い方</h2>
+<p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#4ghVmsBLrOx'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
+<!-- start raw html -->
+<pre>
+  turnup.exe  input.md  >  output.htm
+</pre>
+<!-- end raw html -->
+<p>　入出力ファイルのエンコーディングは utf-8 で固定となっています。それ以外のエンコーディングへの対応は現状では予定されていません。</p>
+<h2><a name='6c7fuNVen8Q'></a>5. 記法</h2>
+<p>　turnup の入力書式は、基本的には一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> 書法と同じですが、いくつかの拡張機能を備えています。<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup></p>
+<h3><a name='8w2TpH9N8mf'></a>5.1. 見出し</h3>
+<p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は見出し行になります。後続する文字列が見出しのタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
+<!-- start raw html -->
+<pre>
+ # header1
+ ## header2
+ ### header3
+ #### header4
+ ##### header5
+ ###### header6
+</pre>
+<!-- end raw html -->
+<h3><a name='bigAVFHB4V2'></a>5.2. 箇条書きリスト</h3>
+<p>　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペースを後続させると、箇条書きリストになります。ネストさせたい場合は、行頭にタブ文字を使用してください。</p>
+<ul>
+<li>List A</li>
+<li>List B</li>
+<ul>
+<li>List B - 1</li>
+<li>List B - 2</li>
+<ul>
+<li>List B - 2 - 1</li>
+<li>List B - 2 - 2</li>
+</ul>
+</ul>
+<li>List C</li>
+<li>List D</li>
+</ul>
+<p>　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。</p>
+<ul>
+<li>Task 1</li>
+<ul>
+<li style='list-style-type:none;'><input type='checkbox' onclick='return false;'>completed task</li>
+<li style='list-style-type:none;'><input type='checkbox' onclick='return false;' checked>not completed task</li>
+</ul>
+<li>Task 2</li>
+<ul>
+<li style='list-style-type:none;'><input type='checkbox' onclick='return false;'>completed task</li>
+<ul>
+<li>point 1</li>
+<li>point 2</li>
+</ul>
+</ul>
+</ul>
+<h3><a name='g6ShYI41GDs'></a>5.3. 番号付きリスト</h3>
+<p>　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、行頭にタブ文字を使用してください。</p>
+<ol>
+<li>List A</li>
+<li>List B</li>
+<ol>
+<li>List B - 1</li>
+<li>List B - 2</li>
+<ol>
+<li>List B - 2 - 1</li>
+<li>List B - 2 - 2</li>
+</ol>
+</ol>
+<li>List C</li>
+<li>List D</li>
+</ol>
+<h3><a name='h1tEzgBM5pT'></a>5.4. preブロック</h3>
+<p>　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは &lt;pre&gt; ブロックとなります。<sup><a name='footnote_ref3' href='#footnote3'>3</a></sup></p>
+<pre>
+int main( void ) {
+    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+    return 0;
+}
+</pre>
+<pre>
+int main( void ) {
+    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+    return 0;
+}
+</pre>
+<h3><a name='iSO2TEVEGpH'></a>5.5. テーブル</h3>
+<p>　※まだ記述されていません。</p>
+<table>
+<tr><th align='left'>header A</th><th align='left'>header B</th><th align='left'>header C</th></tr>
+<tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
+<tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
+<tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
+</table>
+<h3><a name='4n3lxYDUT0F'></a>5.6. 引用</h3>
+<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
+<blockquote>
+lv.1 - 1<br>
+lv.1 - 2<br>
+<blockquote>
+lv.2 - 1<br>
+lv.2 - 2<br>
+<blockquote>
+lv.3<br>
+</blockquote>
+</blockquote>
+lv.1<br>
+<blockquote>
+<blockquote>
+<blockquote>
+lv.4<br>
+</blockquote>
+</blockquote>
+lv.2<br>
+</blockquote>
+</blockquote>
+<h3><a name='eJX346arix9'></a>5.7. 定義リスト</h3>
+<p>　以下のような記述により、定義リストを作成できます。turnup では、これによって定義された用語は<a href='#8DVv96eWYu2'>自動リンク</a>の対象となります。</p>
+<!-- start raw html -->
+<pre>
+  *[用語]: 用語の定義をここに記述します。
+  複数行に渡る定義も記述できます。空行で終わります。
+
+</pre>
+<!-- end raw html -->
+<h3><a name='gbRPELCobOc'></a>5.8. 強調</h3>
+<h3><a name='eSWpAeijdti'></a>5.9. 取消し線</h3>
+<h3><a name='16WSNZTDrSg'></a>5.10. マーカー</h3>
+<p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、<mark>例えばこんなふう</mark>になります。</p>
+<!-- start raw html -->
+<pre>
+  ==例えばこんなふう==になります。
+</pre>
+<!-- end raw html -->
+<h3><a name='fEQY6fCyzn6'></a>5.11. 上付きと下付き</h3>
+<h3><a name='bSYejIfSqoO'></a>5.12. リンク</h3>
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
+<!-- start raw html -->
+<pre>
+  [テキスト](URL)
+</pre>
+<!-- end raw html -->
+<h3><a name='2kO0dY0k2Ft'></a>5.13. コード</h3>
+<p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
+<!-- start raw html -->
+<pre>
+  `code`
+</pre>
+<!-- end raw html -->
+<h3><a name='fQEJEnGceop'></a>5.14. 水平線</h3>
+<p>　行頭からハイフン、等号、アンダースコア、アスタリスクを３個以上を記述すると水平線として出力されます。文字種は混在させないでください。</p>
+<h3><a name='1DN9R32VPmV'></a>5.15. 画像の挿入</h3>
+<p>　画像を表示させるには、以下のように記述します。独立した行として記述することもできますし、文章中にインラインで挿入させることもできます。</p>
+<!-- start raw html -->
+<pre>
+  ![代替テキスト](画像URL)
+</pre>
+<!-- end raw html -->
+<h2><a name='fndY0n2YuKG'></a>6. 拡張機能</h2>
+<p>　turnup には、いくつかの拡張機能があります。一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
+<h3><a name='kqWPcKEw070'></a>6.1. 文書タイトルとスタイルシートの指定</h3>
+<p>　データファイルの冒頭に以下のようなコメントを記述することで、出力される <a class='term' href='#4ghVmsBLrOx'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
+<!-- start raw html -->
+<pre>
+  &lt;!-- title:Document title --&gt;
+  &lt;!-- style:./default.css --&gt;
+</pre>
+<!-- end raw html -->
+<h3><a name='3tp71i4aeX5'></a>6.2. 生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> の出力</h3>
+<p>　以下のように記述することで、生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> をそのまま出力することができます。</p>
+<!-- start raw html -->
+<pre>
+  &lt;raw_html&gt;
+      :
+      :
+  &lt;/raw_html&gt;
+</pre>
+<!-- end raw html -->
+<h3><a name='7PU4bw4xAi5'></a>6.3. 脚注</h3>
+<p>　※まだ記述されていません。</p>
+<!-- start raw html -->
+<pre>
+  {{fn:}}
+</pre>
+<!-- end raw html -->
+<!-- start raw html -->
+<pre>
+  &lt;!-- embed:footnotes --&gt;
+</pre>
+<!-- end raw html -->
+<h3><a name='c3xXk4nH9oX'></a>6.4. 目次の生成</h3>
+<p>　見出し情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
+<!-- start raw html -->
+<pre>
+  &lt;!-- embed:toc --&gt;
+</pre>
+<!-- end raw html -->
+<p>　目次の作成対象となる見出しレベルを絞ることもできます。以下のように記述すると、h2 から h4 までが対象となります。</p>
+<!-- start raw html -->
+<pre>
+  &lt;!-- embed:toc 2 4 --&gt;
+</pre>
+<!-- end raw html -->
+<h3><a name='8DVv96eWYu2'></a>6.5. 定義リストへの自動リンク</h3>
+<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3. 用語</a>」というセクションでいくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。</p>
+<p>　なお、この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p>　　</p>
+<h2><a name='6WBrTv4XYuW'></a>7. テストのコーナー（あと <a class='term' href='#0KfqQD5EbEw'>Markdown</a> が自動リンクされるかどうか）</h2>
+<p>　文字エスケープのテストです。例えば、&lt; とか &gt; とか &amp; とか &lt; とか &gt; とか &amp; は正しく出力されていますか？</p>
+<p>　code のテストです。例えば、<code>uint32_t val = 666;</code> は正しく出力されていますか？　続いて、単独のバッククォート ` を書いてみます。出力されました？</p>
+<p>　取消線のテストです。例えば<strike>この部分は取消されて</strike>いますか？　続いて、単独のチルダ ~ や終端しない２連続のチルダ ~~ を書いてみます。出力されました？</p>
+<p>　では、コードを含む取消しはできるでしょうか。<strike>この <code>template &lt;typename C&gt; class Foo</code> は取消されて</strike>いますか？</p>
+<p>　忘れてはならないのは、md ファイル上で複数行で記述されているパラグラフ内で、行を跨ったかたちでコードや取消線の指定はできないということです。</p>
+<p>　次へいきましょう。<em>アスタリスク１つで括ると em タグによる強調</em>になります。<em>アンダースコア１つでも同じ</em>です。これを<strong>２つにすると strong による強調</strong>になります。<strong>アンダースコアでも同じ</strong>です。さらに<em><strong>３つにすると em と strong を両方使い</strong></em>ます。<em><strong>アンダースコアでも同じ</strong></em>です。</p>
+<p>　<strike><strong>強調したものを取消し</strong></strike>たり、<strong><strike>取消したものを強調し</strike></strong>たり。</p>
+<p>　続いてリンクです。これは <a href='https://www.google.co.jp/'>googleへのリンク</a>です。ラベルを省略すると ⇒ <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a></p>
+<p>　見出しへのページ内リンク。<a href='#3Hhcp94tueB'>これは目次へ</a>。あるいは、<a href='#6c7fuNVen8Q'>5. 記法</a>。</p>
+<p>　マーカーのテスト。<mark>この部分です</mark>。いかがでしょう。</p>
+<p>　sup と sub。H<sub>2</sub>O とか、2<sup>10</sup> = 1024 とか。</p>
+<p>　用語展開のテストです。<a class='term' href='#0KfqQD5EbEw'>Markdown</a> は展開されて欲しいし、TM とか、<a class='term' href='#4ghVmsBLrOx'>HTML</a> とか、markdown は？</p>
+<p>　以下は画像 <img src='./test.png' /> 埋め込みのテストです。</p>
+<p><img src='./test.png' alt='alttext' /></p>
+<p><img src='./test.png' /></p>
+<hr>
+<p><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
+<p><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored</code> なんたらとか色々あるみたいで、細かいことを言い出すと混乱しそうですが。</p>
+<p><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
+<p><a name='footnote4' href='#footnote_ref4'>4</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
+<p><a name='footnote5' href='#footnote_ref5'>5</a> : GFN だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+</body>
+</html>
