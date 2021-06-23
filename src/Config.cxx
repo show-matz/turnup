@@ -13,6 +13,8 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	Config::Config() : bTermLinkInHeader( false ),
+					   bEmbedStyleSheet( false ),
+					   bWriteComment( false ),
 					   bNumberingHeader( false ),
 					   minNumberingLv( 1 ),
 					   maxNumberingLv( 6 ) {

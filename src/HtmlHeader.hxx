@@ -11,6 +11,8 @@
 
 namespace turnup {
 
+	class Config;
+
 	//--------------------------------------------------------------------------
 	//
 	// class HtmlHeader
@@ -25,13 +27,11 @@ namespace turnup {
 	public:
 		void SetTitle( const char* pTitle );
 		void SetStyleSheet( const char* pStyleSheet );
-		std::ostream& WriteTo( std::ostream& os ) const;
+		std::ostream& WriteTo( std::ostream& os, const Config& cfg ) const;
 	private:
 		const char* m_pTitle;
 		const char* m_pStyleSheet;
 	};
-
-	std::ostream& operator<<( std::ostream& os, const HtmlHeader& header );
 
 } // namespace turnup
 

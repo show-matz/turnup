@@ -142,6 +142,10 @@ namespace turnup {
 				auto& cfg = docInfo.Get<Config>();
 				if( item.IsEqual( "term-link-in-header" ) ) {
 					cfg.bTermLinkInHeader = true;
+				} else if( item.IsEqual( "embed-stylesheet" ) ) {
+					cfg.bEmbedStyleSheet = true;
+				} else if( item.IsEqual( "write-comment" ) ) {
+					cfg.bWriteComment = true;
 				} else if( item.BeginWith( "header-numbering" ) ) {
 					item = item.Chomp( 16, 0 ).Trim();
 					uint32_t lvls[] = { 1, 6 };

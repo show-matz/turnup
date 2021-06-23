@@ -1,6 +1,8 @@
 <!-- title:turnup readme -->    
 <!-- style:./test.css -->			
 <!-- config:term-link-in-header -->			
+<!-- config:embed-stylesheet -->			
+<!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
 <!-- css is from http://jasonm23.github.io/markdown-css-themes/markdown.css -->
 
@@ -198,7 +200,7 @@ int main( void ) {
 ### リンク
 
 　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。
-{{fn:GFN だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。}}
+{{fn:GFM だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。}}
 
 <raw_html>
 <pre>
@@ -311,6 +313,31 @@ h4 までが対象となります。
 
 　　
 
+## 設定
+
+### 見出しにおける用語の自動リンク
+```
+<!-- config:term-link-in-header -->			
+```
+
+### 見出しの自動ナンバリング
+
+```
+<!-- config:header-numbering 2 4 -->			
+```
+
+### スタイルシートの埋め込み
+```
+<!-- config:embed-stylesheet -->			
+```
+
+### コメントの出力
+```
+<!-- config:write-comment -->			
+```
+
+　　
+
 ## テストのコーナー（あと Markdown が自動リンクされるかどうか）
 
 　文字エスケープのテストです。例えば、< とか > とか & とか < とか > とか & は正しく
@@ -354,3 +381,4 @@ h4 までが対象となります。
 --------------------------------------------------------------------------------
 
 <!-- embed:footnotes -->
+

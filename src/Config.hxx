@@ -21,6 +21,8 @@ namespace turnup {
 		~Config();
 	public:
 		bool	bTermLinkInHeader;
+		bool	bEmbedStyleSheet;
+		bool	bWriteComment;
 		bool	bNumberingHeader;
 		uint8_t	minNumberingLv;
 		uint8_t	maxNumberingLv;

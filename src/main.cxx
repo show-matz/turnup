@@ -40,9 +40,9 @@ int main( int argc, char* argv[] ) {
 
 	DocumentInfo	docInfo;
 	pInData->PreScan( docInfo );
-	std::cout << "<html>" << std::endl
-			  << docInfo.Get<HtmlHeader>() << std::endl
-			  << "<body>" << std::endl;
+	std::cout << "<html>" << std::endl;
+	docInfo.Get<HtmlHeader>().WriteTo( std::cout, docInfo.Get<Config>() );
+	std::cout << "<body>" << std::endl;
 	
 	Operators operators;
 
