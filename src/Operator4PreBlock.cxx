@@ -13,10 +13,16 @@
 
 namespace turnup {
 
+	typedef void CodeWriteFunc( std::ostream& os,
+								const TextSpan* pTop, const TextSpan* pEnd );
+
 	static bool IsStartOfPreBlock( const TextSpan& line,
 								   TextSpan& endTag, TextSpan& type );
 	static const TextSpan* FindEndOfBlock( const TextSpan* pTop,
 										   const TextSpan* pEnd, const TextSpan& type );
+	static void DefaultCodeWriter( std::ostream& os,
+								   const TextSpan* pTop, const TextSpan* pEnd );
+	static CodeWriteFunc* FindCodeWriter( const TextSpan& type );
 
 
 	const TextSpan* Operator4PreBlock( const TextSpan* pTop,
@@ -26,15 +32,9 @@ namespace turnup {
 		TextSpan type;
 		if( IsStartOfPreBlock( *pTop, endTag, type ) == false )
 			return nullptr;
-
-		(void)type;	// NOT yet using...
-		
 		const TextSpan* pBlockEnd = FindEndOfBlock( ++pTop, pEnd, endTag );
-		std::cout << "<pre>" << std::endl;
-		for( ; pTop < pBlockEnd; ++pTop ) {
-			pTop->WriteSimple( std::cout ) << std::endl;
-		}
-		std::cout << "</pre>" << std::endl;
+		auto pWriter = FindCodeWriter( type );
+		pWriter( std::cout, pTop, pBlockEnd );
 		return pBlockEnd + 1;
 	}
 
@@ -59,6 +59,20 @@ namespace turnup {
 				return pTop;
 		}
 		return pEnd;
+	}
+
+	static void DefaultCodeWriter( std::ostream& os,
+								   const TextSpan* pTop, const TextSpan* pEnd ) {
+		os << "<pre>" << std::endl;
+		for( ; pTop < pEnd; ++pTop ) {
+			pTop->WriteSimple( os ) << std::endl;
+		}
+		os << "</pre>" << std::endl;
+	}
+
+	static CodeWriteFunc* FindCodeWriter( const TextSpan& type ) {
+		(void)type;
+		return DefaultCodeWriter;
 	}
 
 } // namespace turnup
