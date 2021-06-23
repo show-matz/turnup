@@ -47,7 +47,10 @@ namespace turnup {
 			if( cfg.bEmbedStyleSheet == false )
 				std::cout << "	<link rel=stylesheet href=\"" << m_pStyleSheet << "\">" << std::endl;
 			else {
-				bool ret = EmbedStyleSheet( os, m_pStyleSheet );
+				if( !EmbedStyleSheet( os, m_pStyleSheet ) ) {
+					std::cerr << "ERROR : stylesheet file '"
+							  << m_pStyleSheet << "' is not found." << std::endl;
+				}
 			}
 		}
 		std::cout << "</header>" << std::endl;
