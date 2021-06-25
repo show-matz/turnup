@@ -19,7 +19,7 @@ body{
 	line-height:1.5em;
 	padding:1em;
 	margin:auto;
-	max-width:42em;
+	max-width:45em;
 	background:#fefefe;
 }
 
@@ -52,12 +52,12 @@ h1,h2,h3,h4,h5,h6{
 	line-height:1em;
 }
 h4,h5,h6{ font-weight: bold; }
-h1{ font-size:2.5em; }
-h2{ font-size:2em; }
-h3{ font-size:1.5em; }
-h4{ font-size:1.2em; }
-h5{ font-size:1em; }
-h6{ font-size:0.9em; }
+h1{ margin-top:1.5em; font-size:2.5em; }
+h2{ margin-top:1.5em; font-size:2em; }
+h3{ margin-top:1.5em; font-size:1.5em; }
+h4{ margin-top:1.5em; font-size:1.2em; }
+h5{ margin-top:1.5em; font-size:1em; }
+h6{ margin-top:1.5em; font-size:0.9em; }
 
 blockquote{
 	color:#666666;
@@ -203,17 +203,14 @@ body{font-size:16px;}
 </dl>
 <h2><a name='lHOzvAtNkez'></a>4. 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#4ghVmsBLrOx'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
-<!-- start raw html -->
 <pre>
-  turnup.exe  input.md  >  output.htm
+  turnup  input.md  &gt;  output.htm
 </pre>
-<!-- end raw html -->
 <p>　入出力ファイルのエンコーディングは utf-8 で固定となっています。それ以外のエンコーディングへの対応は現状では予定されていません。</p>
 <h2><a name='6c7fuNVen8Q'></a>5. 記法</h2>
-<p>　turnup の入力書式は、基本的には一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> 書法と同じですが、いくつかの拡張機能を備えています。<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup></p>
+<p>　turnup の入力書式は、基本的には一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> 書法と同じですが、いくつかの拡張機能<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup>を備えています。</p>
 <h3><a name='8w2TpH9N8mf'></a>5.1. 見出し</h3>
 <p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は見出し行になります。後続する文字列が見出しのタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
-<!-- start raw html -->
 <pre>
  # header1
  ## header2
@@ -222,9 +219,19 @@ body{font-size:16px;}
  ##### header5
  ###### header6
 </pre>
-<!-- end raw html -->
+<p>　<a href='#fndY0n2YuKG'>拡張機能</a>により、<a href='#3wlbn0fvvfU'>見出しに番号を自動付与</a>したり、<a href='#c3xXk4nH9oX'>見出しから目次を生成</a>したりできます。</p>
 <h3><a name='bigAVFHB4V2'></a>5.2. 箇条書きリスト</h3>
 <p>　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペースを後続させると、箇条書きリストになります。ネストさせたい場合は、行頭にタブ文字を使用してください。</p>
+<pre>
+- List A
++ List B
+	* List B - 1
+	- List B - 2
+		+ List B - 2 - 1
+		* List B - 2 - 2
+- List C
+</pre>
+<p>　上記は、以下のように出力されます。</p>
 <ul>
 <li>List A</li>
 <li>List B</li>
@@ -237,26 +244,38 @@ body{font-size:16px;}
 </ul>
 </ul>
 <li>List C</li>
-<li>List D</li>
 </ul>
 <p>　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。</p>
+<pre>
+- Task list
+	- [X] completed task
+		* point 1
+		* point 2
+	- [ ] not completed task
+</pre>
+<p>　上記は、以下のように出力されます。</p>
 <ul>
-<li>Task 1</li>
-<ul>
-<li style='list-style-type:none;'><input type='checkbox' onclick='return false;'>completed task</li>
-<li style='list-style-type:none;'><input type='checkbox' onclick='return false;' checked>not completed task</li>
-</ul>
-<li>Task 2</li>
+<li>Task list</li>
 <ul>
 <li style='list-style-type:none;'><input type='checkbox' onclick='return false;'>completed task</li>
 <ul>
 <li>point 1</li>
 <li>point 2</li>
 </ul>
+<li style='list-style-type:none;'><input type='checkbox' onclick='return false;' checked>not completed task</li>
 </ul>
 </ul>
 <h3><a name='g6ShYI41GDs'></a>5.3. 番号付きリスト</h3>
 <p>　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、行頭にタブ文字を使用してください。</p>
+<pre>
+1. List A
+1. List B
+	1. List B - 1
+	1. List B - 2
+		1. List B - 2 - 1
+1. List C
+</pre>
+<p>　上記は、以下のように出力されます。</p>
 <ol>
 <li>List A</li>
 <li>List B</li>
@@ -265,20 +284,21 @@ body{font-size:16px;}
 <li>List B - 2</li>
 <ol>
 <li>List B - 2 - 1</li>
-<li>List B - 2 - 2</li>
 </ol>
 </ol>
 <li>List C</li>
-<li>List D</li>
 </ol>
 <h3><a name='h1tEzgBM5pT'></a>5.4. preブロック</h3>
 <p>　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは &lt;pre&gt; ブロックとなります。<sup><a name='footnote_ref3' href='#footnote3'>3</a></sup></p>
 <pre>
+~~~
 int main( void ) {
     std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
     return 0;
 }
+~~~
 </pre>
+<p>　上記は、以下のように出力されます。</p>
 <pre>
 int main( void ) {
     std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
@@ -286,7 +306,15 @@ int main( void ) {
 }
 </pre>
 <h3><a name='iSO2TEVEGpH'></a>5.5. テーブル</h3>
-<p>　※まだ記述されていません。</p>
+<p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
+<pre>
+	| header A | header B | header C |	
+	|:---------|:--------:|---------:|	
+	|     0    |     1    |    2     |	
+	|     3    |     4    |    5     |	
+	|     6    |     7    |    8     |	
+</pre>
+<p>　上記は、以下のように出力されます。</p>
 <table>
 <tr><th align='left'>header A</th><th align='left'>header B</th><th align='left'>header C</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
@@ -294,7 +322,18 @@ int main( void ) {
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
 <h3><a name='4n3lxYDUT0F'></a>5.6. 引用</h3>
-<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
+<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
+<pre>
+&gt; lv.1 - 1
+&gt; lv.1 - 2
+&gt;&gt; lv.2 - 1
+&gt;&gt; lv.2 - 2
+&gt;&gt;&gt; lv.3
+&gt; lv.1
+&gt;&gt;&gt;&gt; lv.4
+&gt;&gt; lv.2
+</pre>
+<p>　上記は、以下のように出力されます。</p>
 <blockquote>
 lv.1 - 1<br>
 lv.1 - 2<br>
@@ -317,30 +356,38 @@ lv.2<br>
 </blockquote>
 <h3><a name='eJX346arix9'></a>5.7. 定義リスト</h3>
 <p>　以下のような記述により、定義リストを作成できます。turnup では、これによって定義された用語は<a href='#8DVv96eWYu2'>自動リンク</a>の対象となります。</p>
-<!-- start raw html -->
 <pre>
   *[用語]: 用語の定義をここに記述します。
   複数行に渡る定義も記述できます。空行で終わります。
 
 </pre>
+<p>　上記は、以下のように出力されます。</p>
+<!-- start raw html -->
+<dl>
+  <dt>用語</dt>
+  <dd>用語の定義をここに記述します。複数行に渡る定義も記述できます。空行で終わります。</dd>
+</dl>
 <!-- end raw html -->
 <h3><a name='gbRPELCobOc'></a>5.8. 強調</h3>
+<p>　1 〜 3 個の連続するアスタリスクまたはアンダースコアで括ることにより、文字列を強調することができます。どのように表示されるのかは、スタイルシート次第です。</p>
+<ul>
+<li>１つだと、em タグによる強調になります。<code>*これ*</code>が、<em>これ</em> になります。</li>
+<li>２つだと、strong タグによる強調になります。<code>**これ**</code>が、<strong>これ</strong> になります。</li>
+<li>３つだと、em と strong の併用になります。<code>***これ***</code>が、<em><strong>これ</strong></em> になります。</li>
+</ul>
 <h3><a name='eSWpAeijdti'></a>5.9. 取消し線</h3>
+<p>　２つのチルダ ~~ で括ることで、文字列に取消線を引くことができます。<code>~~この部分は取消し~~</code>が、<strike>この部分は取消し</strike>になります。</p>
 <h3><a name='16WSNZTDrSg'></a>5.10. マーカー</h3>
-<p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、<mark>例えばこんなふう</mark>になります。</p>
-<!-- start raw html -->
-<pre>
-  ==例えばこんなふう==になります。
-</pre>
-<!-- end raw html -->
+<p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、<code>==例えばこんなふう==</code>が、<mark>例えばこんなふう</mark>になります。</p>
 <h3><a name='fEQY6fCyzn6'></a>5.11. 上付きと下付き</h3>
+<p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、<code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='bSYejIfSqoO'></a>5.12. リンク</h3>
-<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
-<!-- start raw html -->
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
-<!-- end raw html -->
+<p>　たとえば、<code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
+<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#3Hhcp94tueB'>目次</a>となります。テキスト部分を省略した場合のルールは上記と同じですが、<a href='#3wlbn0fvvfU'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#3Hhcp94tueB'>1. Table of contents</a>となります。</p>
 <h3><a name='2kO0dY0k2Ft'></a>5.13. コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
 <!-- start raw html -->
@@ -427,24 +474,20 @@ lv.2<br>
 <h2><a name='6WBrTv4XYuW'></a>8. テストのコーナー（あと <a class='term' href='#0KfqQD5EbEw'>Markdown</a> が自動リンクされるかどうか）</h2>
 <p>　文字エスケープのテストです。例えば、&lt; とか &gt; とか &amp; とか &lt; とか &gt; とか &amp; は正しく出力されていますか？</p>
 <p>　code のテストです。例えば、<code>uint32_t val = 666;</code> は正しく出力されていますか？　続いて、単独のバッククォート ` を書いてみます。出力されました？</p>
-<p>　取消線のテストです。例えば<strike>この部分は取消されて</strike>いますか？　続いて、単独のチルダ ~ や終端しない２連続のチルダ ~~ を書いてみます。出力されました？</p>
 <p>　では、コードを含む取消しはできるでしょうか。<strike>この <code>template &lt;typename C&gt; class Foo</code> は取消されて</strike>いますか？</p>
 <p>　忘れてはならないのは、md ファイル上で複数行で記述されているパラグラフ内で、行を跨ったかたちでコードや取消線の指定はできないということです。</p>
-<p>　次へいきましょう。<em>アスタリスク１つで括ると em タグによる強調</em>になります。<em>アンダースコア１つでも同じ</em>です。これを<strong>２つにすると strong による強調</strong>になります。<strong>アンダースコアでも同じ</strong>です。さらに<em><strong>３つにすると em と strong を両方使い</strong></em>ます。<em><strong>アンダースコアでも同じ</strong></em>です。</p>
-<p>　<strike><strong>強調したものを取消し</strong></strike>たり、<strong><strike>取消したものを強調し</strike></strong>たり。</p>
 <p>　続いてリンクです。これは <a href='https://www.google.co.jp/'>googleへのリンク</a>です。ラベルを省略すると ⇒ <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a></p>
 <p>　見出しへのページ内リンク。<a href='#3Hhcp94tueB'>これは目次へ</a>。あるいは、<a href='#6c7fuNVen8Q'>5. 記法</a>。</p>
-<p>　マーカーのテスト。<mark>この部分です</mark>。いかがでしょう。</p>
-<p>　sup と sub。H<sub>2</sub>O とか、2<sup>10</sup> = 1024 とか。</p>
 <p>　用語展開のテストです。<a class='term' href='#0KfqQD5EbEw'>Markdown</a> は展開されて欲しいし、TM とか、<a class='term' href='#4ghVmsBLrOx'>HTML</a> とか、markdown は？</p>
 <p>　以下は画像 <img src='./test.png' /> 埋め込みのテストです。</p>
 <p><img src='./test.png' alt='alttext' /></p>
 <p><img src='./test.png' /></p>
 <hr>
 <p><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
-<p><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored</code> なんたらとか色々あるみたいで、細かいことを言い出すと混乱しそうですが。</p>
+<p><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
 <p><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
-<p><a name='footnote4' href='#footnote_ref4'>4</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
-<p><a name='footnote5' href='#footnote_ref5'>5</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p><a name='footnote4' href='#footnote_ref4'>4</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
+<p><a name='footnote5' href='#footnote_ref5'>5</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
+<p><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
 </body>
 </html>
