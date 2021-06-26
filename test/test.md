@@ -1,7 +1,6 @@
 <!-- title:turnup readme -->    
 <!-- style:./test.css -->			
 <!-- config:term-link-in-header -->			
-<!-- config:embed-stylesheet -->			
 <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
 <!-- css is from http://jasonm23.github.io/markdown-css-themes/markdown.css -->
@@ -172,6 +171,18 @@ int main( void ) {
 }
 ~~~
 
+　以下のように、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする
+機能が予定されていますが、**これはまだ実装されていません**。
+
+```
+~~~c++
+int main( void ) {
+    std::cout << "hello world." << std::endl;
+    return 0;
+}
+~~~
+```
+
 ### テーブル
 
 　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、
@@ -292,11 +303,9 @@ int main( void ) {
 　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。
 この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。
 
-<raw_html>
-<pre>
+~~~
   `code`
-</pre>
-</raw_html>
+~~~
 
 ### 水平線
 
@@ -308,12 +317,15 @@ int main( void ) {
 　画像を表示させるには、以下のように記述します。独立した行として記述することもできますし、
 文章中にインラインで挿入させることもできます。
 
-<raw_html>
-<pre>
+~~~
   ![代替テキスト](画像URL)
-</pre>
-</raw_html>
+~~~
 
+　上記は、以下のように展開されます。なお、代替テキストは省略できます。
+
+~~~
+  <img src='画像URL' alt='代替テキスト' />
+~~~
 
 ## 拡張機能
 
@@ -325,41 +337,36 @@ int main( void ) {
 　データファイルの冒頭に以下のようなコメントを記述することで、出力される HTML ファイルのヘッダに
 設定するタイトルとスタイルシートを指定することができます。
 
-<raw_html>
-<pre>
-  &lt;!-- title:Document title --&gt;
-  &lt;!-- style:./default.css --&gt;
-</pre>
-</raw_html>
+~~~
+  <!-- title:Document title -->
+  <!-- style:./default.css -->
+~~~
+
+　このうち、スタイルシートの指定は設定の影響を受けます。詳細は
+[embed-stylesheet設定](#スタイルシートの埋め込み)を参照してください。
 
 ### 生の HTML の出力
 
 　以下のように記述することで、生の HTML をそのまま出力することができます。
 
-<raw_html>
-<pre>
-  &lt;raw_html&gt;
+~~~
+  <raw_html>
       :
       :
-  &lt;/raw_html&gt;
-</pre>
-</raw_html>
+  </raw_html>
+~~~
 
 ### 脚注
 
-　※まだ記述されていません。
+　文章中に脚注を設定し、一箇所にまとめて表示させることができます。
 
-<raw_html>
-<pre>
-  {{fn:}}
-</pre>
-</raw_html>
+~~~
+  {{fn:これが脚注の内容です。}}
+~~~
 
-<raw_html>
-<pre>
-  &lt;!-- embed:footnotes --&gt;
-</pre>
-</raw_html>
+~~~
+  <!-- embed:footnotes -->
+~~~
 
 ### 目次の生成
 
@@ -409,6 +416,24 @@ h4 までが対象となります。
 ```
 <!-- config:embed-stylesheet -->			
 ```
+
+　通常はスタイルシートの参照が出力されるだけですが、がされていると、以下のように
+出力 HTML の内部にスタイルシートの内容を埋め込みます。
+
+~~~
+<html>
+<header>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title>document title</title>
+  <style>
+  <!--
+    :
+    :
+  -->
+  </style>
+</header>
+~~~
 
 ### コメントの出力
 ```

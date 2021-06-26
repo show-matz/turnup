@@ -132,7 +132,6 @@ body{font-size:16px;}
 </header>
 <body>
 <!-- config:term-link-in-header -->			
-<!-- config:embed-stylesheet -->			
 <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
 <!-- css is from http://jasonm23.github.io/markdown-css-themes/markdown.css -->
@@ -305,6 +304,15 @@ int main( void ) {
     return 0;
 }
 </pre>
+<p>　以下のように、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする機能が予定されていますが、<strong>これはまだ実装されていません</strong>。</p>
+<pre>
+~~~c++
+int main( void ) {
+    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+    return 0;
+}
+~~~
+</pre>
 <h3><a name='iSO2TEVEGpH'></a>5.5. テーブル</h3>
 <p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
 <pre>
@@ -390,52 +398,45 @@ lv.2<br>
 <p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#3Hhcp94tueB'>目次</a>となります。テキスト部分を省略した場合のルールは上記と同じですが、<a href='#3wlbn0fvvfU'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#3Hhcp94tueB'>1. Table of contents</a>となります。</p>
 <h3><a name='2kO0dY0k2Ft'></a>5.13. コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
-<!-- start raw html -->
 <pre>
   `code`
 </pre>
-<!-- end raw html -->
 <h3><a name='fQEJEnGceop'></a>5.14. 水平線</h3>
 <p>　行頭からハイフン、等号、アンダースコア、アスタリスクを３個以上を記述すると水平線として出力されます。文字種は混在させないでください。</p>
 <h3><a name='1DN9R32VPmV'></a>5.15. 画像の挿入</h3>
 <p>　画像を表示させるには、以下のように記述します。独立した行として記述することもできますし、文章中にインラインで挿入させることもできます。</p>
-<!-- start raw html -->
 <pre>
   ![代替テキスト](画像URL)
 </pre>
-<!-- end raw html -->
+<p>　上記は、以下のように展開されます。なお、代替テキストは省略できます。</p>
+<pre>
+  &lt;img src='画像URL' alt='代替テキスト' /&gt;
+</pre>
 <h2><a name='fndY0n2YuKG'></a>6. 拡張機能</h2>
 <p>　turnup には、いくつかの拡張機能があります。一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kqWPcKEw070'></a>6.1. 文書タイトルとスタイルシートの指定</h3>
 <p>　データファイルの冒頭に以下のようなコメントを記述することで、出力される <a class='term' href='#4ghVmsBLrOx'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
-<!-- start raw html -->
 <pre>
   &lt;!-- title:Document title --&gt;
   &lt;!-- style:./default.css --&gt;
 </pre>
-<!-- end raw html -->
+<p>　このうち、スタイルシートの指定は設定の影響を受けます。詳細は<a href='#jXscbg8GSop'>embed-stylesheet設定</a>を参照してください。</p>
 <h3><a name='3tp71i4aeX5'></a>6.2. 生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> をそのまま出力することができます。</p>
-<!-- start raw html -->
 <pre>
   &lt;raw_html&gt;
       :
       :
   &lt;/raw_html&gt;
 </pre>
-<!-- end raw html -->
 <h3><a name='7PU4bw4xAi5'></a>6.3. 脚注</h3>
-<p>　※まだ記述されていません。</p>
-<!-- start raw html -->
+<p>　文章中に脚注を設定し、一箇所にまとめて表示させることができます。</p>
 <pre>
-  {{fn:}}
+  {{fn:これが脚注の内容です。}}
 </pre>
-<!-- end raw html -->
-<!-- start raw html -->
 <pre>
   &lt;!-- embed:footnotes --&gt;
 </pre>
-<!-- end raw html -->
 <h3><a name='c3xXk4nH9oX'></a>6.4. 目次の生成</h3>
 <p>　見出し情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
 <!-- start raw html -->
@@ -465,6 +466,21 @@ lv.2<br>
 <h3><a name='jXscbg8GSop'></a>7.3. スタイルシートの埋め込み</h3>
 <pre>
 &lt;!-- config:embed-stylesheet --&gt;			
+</pre>
+<p>　通常はスタイルシートの参照が出力されるだけですが、がされていると、以下のように出力 <a class='term' href='#4ghVmsBLrOx'>HTML</a> の内部にスタイルシートの内容を埋め込みます。</p>
+<pre>
+&lt;html&gt;
+&lt;header&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+	&lt;meta http-equiv="Content-Style-Type" content="text/css"&gt;
+	&lt;title&gt;document title&lt;/title&gt;
+  &lt;style&gt;
+  &lt;!--
+    :
+    :
+  --&gt;
+  &lt;/style&gt;
+&lt;/header&gt;
 </pre>
 <h3><a name='4WLnQlG0n9E'></a>7.4. コメントの出力</h3>
 <pre>
