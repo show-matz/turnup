@@ -100,7 +100,7 @@ namespace turnup {
 	}
 	bool Alignments::Load( const TextSpan& line ) {
 		auto chk1 = []( char c ) {
-			return c == '-' || c == '|' || c == ':';
+			return c == '-' || c == '|' || c == ':' || c == ' ';
 		};
 		if( std::all_of( line.Top(), line.End(), chk1 ) == false )
 			return false;
