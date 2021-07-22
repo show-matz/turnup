@@ -46,6 +46,7 @@ namespace turnup {
 		~File() = delete;
 	public:
 		static bool IsExist( const char* pFileName );
+		static bool Remove( const char* pFileName );
 		static WholeFile* LoadWhole( const char* pFileName );
 		static void ReleaseWholeFile( WholeFile* pWholeFile );
 	};

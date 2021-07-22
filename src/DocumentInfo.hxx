@@ -13,6 +13,7 @@ namespace turnup {
 	class ToC;
 	class Glossary;
 	class Footnotes;
+	class Filters;
 
 	//--------------------------------------------------------------------------
 	//

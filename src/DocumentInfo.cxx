@@ -10,6 +10,7 @@
 #include "ToC.hxx"
 #include "Glossary.hxx"
 #include "Footnotes.hxx"
+#include "Filters.hxx"
 
 namespace turnup {
 
@@ -25,6 +26,7 @@ namespace turnup {
 		ToC			m_toc;
 		Glossary	m_glossary;
 		Footnotes	m_footnotes;
+		Filters		m_filters;
 	};
 
 	//--------------------------------------------------------------------------
@@ -44,11 +46,13 @@ namespace turnup {
 	template <> ToC&        DocumentInfo::Get<ToC>()        { return m_pImpl->m_toc;       }
 	template <> Glossary&   DocumentInfo::Get<Glossary>()   { return m_pImpl->m_glossary;  }
 	template <> Footnotes&  DocumentInfo::Get<Footnotes>()  { return m_pImpl->m_footnotes; }
+	template <> Filters&    DocumentInfo::Get<Filters>()    { return m_pImpl->m_filters;   }
 
 	template <> const HtmlHeader& DocumentInfo::Get<HtmlHeader>() const { return m_pImpl->m_htmHeader; }
 	template <> const Config&     DocumentInfo::Get<Config>() const     { return m_pImpl->m_config;    }
 	template <> const ToC&        DocumentInfo::Get<ToC>() const        { return m_pImpl->m_toc;       }
 	template <> const Glossary&   DocumentInfo::Get<Glossary>() const   { return m_pImpl->m_glossary;  }
 	template <> const Footnotes&  DocumentInfo::Get<Footnotes>() const  { return m_pImpl->m_footnotes; }
+	template <> const Filters&    DocumentInfo::Get<Filters>() const    { return m_pImpl->m_filters;   }
 
 } // namespace turnup

@@ -1,31 +1,30 @@
 //------------------------------------------------------------------------------
 //
-// Footnotes.hxx
+// Filters.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef FOOTNOTES_HXX__
-#define FOOTNOTES_HXX__
+#ifndef FILTERS_HXX__
+#define FILTERS_HXX__
 
-#include <stdint.h>
 #include <iosfwd>
 
 namespace turnup {
 
-	class DocumentInfo;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
-	// class Footnotes
+	// class Filters
 	//
 	//--------------------------------------------------------------------------
-	class Footnotes {
+	class Filters {
 	public:
-		Footnotes();
-		~Footnotes();
+		Filters();
+		~Filters();
 	public:
-		uint32_t Register( const char* pNote, const char* pNoteEnd );
-	public:
-		void WriteFootnotes( std::ostream& os, DocumentInfo& docInfo );
+		void RegistFilter( const TextSpan& label, const TextSpan& command );
+		bool ExecuteFilter( std::ostream& os, const TextSpan& type,
+							const TextSpan* pTop, const TextSpan* pEnd );
 	private:
 		class Impl;
 		Impl* m_pImpl;
@@ -33,4 +32,4 @@ namespace turnup {
 
 } // namespace turnup
 
-#endif // FOOTNOTES_HXX__
+#endif // FILTERS_HXX__

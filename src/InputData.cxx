@@ -10,6 +10,7 @@
 #include "Config.hxx"
 #include "ToC.hxx"
 #include "Glossary.hxx"
+#include "Filters.hxx"
 #include "File.hxx"
 #include "Operator4TermDefine.hxx"
 
@@ -104,6 +105,7 @@ namespace turnup {
 		auto& header   = docInfo.Get<HtmlHeader>();
 		auto& toc      = docInfo.Get<ToC>();
 		auto& glossary = docInfo.Get<Glossary>();
+		auto& filters  = docInfo.Get<Filters>();
 
 		auto itr1 = m_lines.begin();
 		auto itr2 = m_lines.end();
@@ -128,6 +130,7 @@ namespace turnup {
 			//コメントの場合
 			TextSpan tmp = line.TrimTail();
 			TextSpan item;
+			TextSpan command;
 			if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {
 				const_cast<char*>( item.End() )[0] = 0;
 				header.SetTitle( item.Top() );
@@ -136,6 +139,10 @@ namespace turnup {
 			if( tmp.IsMatch( "<!-- style:", item, " -->" ) ) {
 				const_cast<char*>( item.End() )[0] = 0;
 				header.SetStyleSheet( item.Top() );
+				line.Clear();
+			}
+			if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
+				filters.RegistFilter( item.Trim(), command.Trim() );
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {

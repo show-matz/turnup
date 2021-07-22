@@ -39,6 +39,7 @@ namespace turnup {
 		bool IsMatch( const char* pHead, TextSpan& item, const char* pTail );
 		bool IsMatch( const char* pHead, TextSpan& item1,
 					  const char* pDelim, TextSpan& item2, const char* pTail );
+		bool IsEqual( const TextSpan& other ) const;
 		bool IsEqual( const char* p ) const;
 		bool BeginWith( const char* p ) const;
 		bool EndWith( const char* p ) const;

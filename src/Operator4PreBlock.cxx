@@ -6,6 +6,8 @@
 #include "Operator4PreBlock.hxx"
 
 #include "TextSpan.hxx"
+#include "DocumentInfo.hxx"
+#include "Filters.hxx"
 
 #include <stdint.h>
 #include <string.h>
@@ -13,16 +15,10 @@
 
 namespace turnup {
 
-	typedef void CodeWriteFunc( std::ostream& os,
-								const TextSpan* pTop, const TextSpan* pEnd );
-
 	static bool IsStartOfPreBlock( const TextSpan& line,
 								   TextSpan& endTag, TextSpan& type );
 	static const TextSpan* FindEndOfBlock( const TextSpan* pTop,
 										   const TextSpan* pEnd, const TextSpan& type );
-	static void DefaultCodeWriter( std::ostream& os,
-								   const TextSpan* pTop, const TextSpan* pEnd );
-	static CodeWriteFunc* FindCodeWriter( const TextSpan& type );
 
 
 	const TextSpan* Operator4PreBlock( const TextSpan* pTop,
@@ -33,8 +29,11 @@ namespace turnup {
 		if( IsStartOfPreBlock( *pTop, endTag, type ) == false )
 			return nullptr;
 		const TextSpan* pBlockEnd = FindEndOfBlock( ++pTop, pEnd, endTag );
-		auto pWriter = FindCodeWriter( type );
-		pWriter( std::cout, pTop, pBlockEnd );
+		auto& filters = docInfo.Get<Filters>();
+		bool ret = filters.ExecuteFilter( std::cout, type, pTop, pBlockEnd );
+		if( !ret ) {
+			//ToDo : invalid 'type' : error message...?
+		}
 		return pBlockEnd + 1;
 	}
 
@@ -42,7 +41,7 @@ namespace turnup {
 	static bool IsStartOfPreBlock( const TextSpan& line,
 								   TextSpan& endTag, TextSpan& type ) {
 		auto p1 = line.Top();
-		auto p2 = line.Top();
+		auto p2 = line.End();
 		if( !!::strncmp( p1, "```", 3 ) && !!::strncmp( p1, "~~~", 3 ) )
 			return false;
 		endTag = TextSpan{ p1, p1 + 3 };
@@ -59,20 +58,6 @@ namespace turnup {
 				return pTop;
 		}
 		return pEnd;
-	}
-
-	static void DefaultCodeWriter( std::ostream& os,
-								   const TextSpan* pTop, const TextSpan* pEnd ) {
-		os << "<pre>" << std::endl;
-		for( ; pTop < pEnd; ++pTop ) {
-			pTop->WriteSimple( os ) << std::endl;
-		}
-		os << "</pre>" << std::endl;
-	}
-
-	static CodeWriteFunc* FindCodeWriter( const TextSpan& type ) {
-		(void)type;
-		return DefaultCodeWriter;
 	}
 
 } // namespace turnup

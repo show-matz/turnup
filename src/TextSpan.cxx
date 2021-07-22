@@ -160,6 +160,12 @@ namespace turnup {
 		return true;
 	}
 
+	bool TextSpan::IsEqual( const TextSpan& other ) const {
+		if( this->ByteLength() != other.ByteLength() )
+			return false;
+		return std::equal( this->Top(), this->End(), other.Top() );
+	}
+
 	bool TextSpan::IsEqual( const char* p ) const {
 		auto p1 = m_pTop;
 		auto p2 = m_pEnd;

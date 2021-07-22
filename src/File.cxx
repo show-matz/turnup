@@ -77,6 +77,11 @@ namespace turnup {
 		return !::stat( pFileName, &st );
 	}
 
+	bool File::Remove( const char* pFileName ) {
+		//ToDo : ここ、C標準ライブラリの範囲内で実現する必要がある。
+		return !::remove( pFileName );
+	}
+
 	WholeFile* File::LoadWhole( const char* pFileName ) {
 		
 		WholeFileImpl* pWhole = nullptr;
