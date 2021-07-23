@@ -126,7 +126,7 @@ namespace turnup {
 	}
 
 	bool TextSpan::IsMatch( const char* pHead,
-							TextSpan& item, const char* pTail ) {
+							TextSpan& item, const char* pTail ) const {
 		auto p1 = m_pTop;
 		auto p2 = m_pEnd;
 		for( ; p1 < p2 && !!*pHead; ++p1, ++pHead ) {
@@ -147,7 +147,7 @@ namespace turnup {
 	}
 
 	bool TextSpan::IsMatch( const char* pHead, TextSpan& item1,
-							const char* pDelim, TextSpan& item2, const char* pTail ) {
+							const char* pDelim, TextSpan& item2, const char* pTail ) const {
 		TextSpan tmp;
 		if( this->IsMatch( pHead, tmp, pTail ) == false )
 			return false;

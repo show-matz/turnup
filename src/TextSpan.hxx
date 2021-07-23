@@ -36,9 +36,9 @@ namespace turnup {
 		TextSpan Trim() const;
 		TextSpan TrimHead() const;
 		TextSpan TrimTail() const;
-		bool IsMatch( const char* pHead, TextSpan& item, const char* pTail );
+		bool IsMatch( const char* pHead, TextSpan& item, const char* pTail ) const;
 		bool IsMatch( const char* pHead, TextSpan& item1,
-					  const char* pDelim, TextSpan& item2, const char* pTail );
+					  const char* pDelim, TextSpan& item2, const char* pTail ) const;
 		bool IsEqual( const TextSpan& other ) const;
 		bool IsEqual( const char* p ) const;
 		bool BeginWith( const char* p ) const;
