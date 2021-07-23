@@ -1,5 +1,5 @@
 <!-- title:turnup readme -->    
-<!-- style:./test.css -->			
+<!-- style:./default.css -->			
 <!-- config:term-link-in-header -->			
 <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
