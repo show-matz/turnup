@@ -23,7 +23,7 @@ namespace turnup {
 		if( !level || 6 < level || (*pTop)[level] != ' ' )
 			return nullptr;
 		TextSpan tmp = TextSpan{ pTop->Top() + level, pTop->End() }.Trim();
-		const char* pTag = toc.GetAnchorTag( tmp.Top(), tmp.End() );
+		const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER, tmp.Top(), tmp.End() );
 		std::cout << "<h" << level << ">";
 		if( pTag )
 			std::cout << "<a name='" << pTag << "'></a>";
@@ -33,7 +33,8 @@ namespace turnup {
 		auto& cfg = docInfo.Get<Config>();
 		if( cfg.bNumberingHeader ) {
 			char chapter[32];
-			toc.GetChapterNumber( chapter, cfg, tmp.Top(), tmp.End() );
+			toc.GetEntryNumber( chapter, ToC::EntryT::HEADER,
+										 cfg, tmp.Top(), tmp.End() );
 			std::cout << chapter;
 		}
 		tmp.WriteTo( std::cout, docInfo,

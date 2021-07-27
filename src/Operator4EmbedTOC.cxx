@@ -51,5 +51,27 @@ namespace turnup {
 		return pTop + 1;
 	}
 
-} // namespace turnup
+	const TextSpan* Operator4EmbedTableList( const TextSpan* pTop,
+											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
+		(void)pEnd;
+		// 対象外の行であれば無視
+		if( pTop->IsEqual( "<!-- embed:table-list -->" ) == false )
+			return nullptr;
+		auto& toc = docInfo.Get<ToC>();
+		toc.WriteTableList( std::cout, docInfo.Get<Config>() );
+		return pTop + 1;
+	}
+
+	const TextSpan* Operator4EmbedFigureList( const TextSpan* pTop,
+											  const TextSpan* pEnd, DocumentInfo& docInfo ) {
+		(void)pEnd;
+		// 対象外の行であれば無視
+		if( pTop->IsEqual( "<!-- embed:figure-list -->" ) == false )
+			return nullptr;
+		auto& toc = docInfo.Get<ToC>();
+		toc.WriteFigureList( std::cout, docInfo.Get<Config>() );
+		return pTop + 1;
+	}
+
+} // Namespace turnup
 

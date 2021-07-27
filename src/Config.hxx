@@ -26,6 +26,7 @@ namespace turnup {
 		bool	bNumberingHeader;
 		uint8_t	minNumberingLv;
 		uint8_t	maxNumberingLv;
+		uint8_t	entityNumberingDepth;
 	};
 
 } // namespace turnup

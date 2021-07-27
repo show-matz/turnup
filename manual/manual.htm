@@ -39,18 +39,21 @@
 <li><a href='#fndY0n2YuKG'>6. 拡張機能</a></li>
 <ul>
 <li><a href='#kqWPcKEw070'>6.1. 文書タイトルとスタイルシートの指定</a></li>
-<li><a href='#3tp71i4aeX5'>6.2. 生の HTML の出力</a></li>
-<li><a href='#7PU4bw4xAi5'>6.3. 脚注</a></li>
-<li><a href='#c3xXk4nH9oX'>6.4. 目次の生成</a></li>
-<li><a href='#8DVv96eWYu2'>6.5. 定義リストへの自動リンク</a></li>
-<li><a href='#2JSPqxbBwrA'>6.6. 外部フィルタの登録</a></li>
+<li><a href='#2UrqBZiCjSp'>6.2. 図と表のタイトル</a></li>
+<li><a href='#3tp71i4aeX5'>6.3. 生の HTML の出力</a></li>
+<li><a href='#7PU4bw4xAi5'>6.4. 脚注</a></li>
+<li><a href='#c3xXk4nH9oX'>6.5. 目次の生成</a></li>
+<li><a href='#g2lU1btb08v'>6.6. 図表一覧の生成</a></li>
+<li><a href='#8DVv96eWYu2'>6.7. 定義リストへの自動リンク</a></li>
+<li><a href='#2JSPqxbBwrA'>6.8. 外部フィルタの登録</a></li>
 </ul>
 <li><a href='#glQDQUruamY'>7. 設定</a></li>
 <ul>
 <li><a href='#2J9QXGdMTue'>7.1. 見出しにおける用語の自動リンク</a></li>
 <li><a href='#3wlbn0fvvfU'>7.2. 見出しの自動ナンバリング</a></li>
-<li><a href='#jXscbg8GSop'>7.3. スタイルシートの埋め込み</a></li>
-<li><a href='#4WLnQlG0n9E'>7.4. コメントの出力</a></li>
+<li><a href='#kfUSlZMAzlh'>7.3. 図表のナンバリング単位</a></li>
+<li><a href='#jXscbg8GSop'>7.4. スタイルシートの埋め込み</a></li>
+<li><a href='#4WLnQlG0n9E'>7.5. コメントの出力</a></li>
 </ul>
 <li><a href='#6Z7lXEj1LuM'>8. 細かい話</a></li>
 </ul>
@@ -183,7 +186,7 @@ int main( void ) {
 }
 ~~~
 </pre>
-<p>　しかし、turnup はこのフィルタ機能を<strong>まだ実装していません</strong><sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.6. 外部フィルタの登録</a>を参照してください。</p>
+<p>　しかし、turnup はこのフィルタ機能を<strong>まだ実装していません</strong><sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.8. 外部フィルタの登録</a>を参照してください。</p>
 <h3><a name='iSO2TEVEGpH'></a>5.5. テーブル</h3>
 <p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
 <pre>
@@ -306,7 +309,23 @@ lv.2<br>
   &lt;!-- style:./default.css --&gt;
 </pre>
 <p>　このうち、スタイルシートの指定は設定の影響を受けます。詳細は<a href='#jXscbg8GSop'>embed-stylesheet設定</a>を参照してください。</p>
-<h3><a name='3tp71i4aeX5'></a>6.2. 生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> の出力</h3>
+<h3><a name='2UrqBZiCjSp'></a>6.2. 図と表のタイトル</h3>
+<p>　図と表には、専用のタイトルをつけることができます。図（大抵は画像を表示させるという意味ですが）の場合、以下のように行頭に <code>Figure.</code> を、それに続いてタイトルを書きます。</p>
+<pre>
+![](some-figure.png)
+Figure. title of figure
+</pre>
+<p>　表の場合は行頭に <code>Table.</code> を、それに続いてタイトルを書きます。</p>
+<pre>
+Table. title of table
+| header1 | header2 |
+| :------ | :-----: |
+|    0    |    1    |
+|    2    |    3    |
+</pre>
+<p>　この方法でタイトルをつけておけば、同じく拡張機能の<a href='#g2lU1btb08v'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
+<p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#kfUSlZMAzlh'>7.3. 図表のナンバリング単位</a>」を参照してください。</p>
+<h3><a name='3tp71i4aeX5'></a>6.3. 生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> をそのまま出力することができます。</p>
 <pre>
   &lt;raw_html&gt;
@@ -314,7 +333,7 @@ lv.2<br>
       :
   &lt;/raw_html&gt;
 </pre>
-<h3><a name='7PU4bw4xAi5'></a>6.3. 脚注</h3>
+<h3><a name='7PU4bw4xAi5'></a>6.4. 脚注</h3>
 <p>　文章中に脚注を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
 <pre>
   {{fn:これが脚注の内容です。}}
@@ -324,7 +343,7 @@ lv.2<br>
   &lt;!-- embed:footnotes --&gt;
 </pre>
 <p>　このマニュアル文書でも、いくつかの脚注を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
-<h3><a name='c3xXk4nH9oX'></a>6.4. 目次の生成</h3>
+<h3><a name='c3xXk4nH9oX'></a>6.5. 目次の生成</h3>
 <p>　見出し情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
 <pre>
   &lt;!-- embed:toc --&gt;
@@ -334,10 +353,20 @@ lv.2<br>
   &lt;!-- embed:toc 2 4 --&gt;
 </pre>
 <p>　この例では、見出しレベル２〜４までが目次化の対象となります。</p>
-<h3><a name='8DVv96eWYu2'></a>6.5. 定義リストへの自動リンク</h3>
+<h3><a name='g2lU1btb08v'></a>6.6. 図表一覧の生成</h3>
+<p>　目次と同様、図と表の一覧を生成することができます。以下のように記述すると、その場所に図の一覧が作成されます。</p>
+<pre>
+  &lt;!-- embed:figure-list --&gt;
+</pre>
+<p>　表の一覧の場合は以下です。</p>
+<pre>
+  &lt;!-- embed:table-list --&gt;
+</pre>
+<p>　これによって生成される一覧でも、<a href='#2UrqBZiCjSp'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#kfUSlZMAzlh'>7.3. 図表のナンバリング単位</a>」を参照してください。</p>
+<h3><a name='8DVv96eWYu2'></a>6.7. 定義リストへの自動リンク</h3>
 <p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3. 用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#2J9QXGdMTue'>見出しにおける用語の自動リンク</a>があります。</p>
-<h3><a name='2JSPqxbBwrA'></a>6.6. 外部フィルタの登録</h3>
+<h3><a name='2JSPqxbBwrA'></a>6.8. 外部フィルタの登録</h3>
 <p>　<a href='#h1tEzgBM5pT'>preブロック</a> で指定するフィルタとして、外部プログラムを追加することができます。たとえば、diff というフィルタを指定した場合に highlight プログラムを通した結果を表示させたければ以下のように指定します。</p>
 <pre>
   &lt;!-- filter:diff = highlight diff %in %out --&gt;
@@ -367,11 +396,23 @@ lv.2<br>
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
-<h3><a name='jXscbg8GSop'></a>7.3. スタイルシートの埋め込み</h3>
+<h3><a name='kfUSlZMAzlh'></a>7.3. 図表のナンバリング単位</h3>
+<p>　<a href='#2UrqBZiCjSp'>図表タイトル</a>、および<a href='#g2lU1btb08v'>図表一覧生成</a>に適用される番号付けの規則を設定することができます。これには、以下のように記述します。この設定を省略した場合のデフォルト値は 0 です。</p>
+<pre>
+  &lt;!-- config:entity-numbering-depth 1 --&gt;
+</pre>
+<p>　0 が指定された場合、図と表それぞれについて、文書全体を通して 1 から始まる連番が付与されます。つまり、図であれば Figure.1 xxxxx、Figure.2 yyyyy といった要領です（表の場合は Table.1 zzzzz）となります。</p>
+<p>　1 以上を指定した場合、「<a href='#3wlbn0fvvfU'>7.2. 見出しの自動ナンバリング</a>」で指定した番号付け対象の見出しのうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
+<pre>
+  &lt;!-- config:header-numbering 2 4 --&gt;			
+  &lt;!-- config:entity-numbering-depth 2 --&gt;
+</pre>
+<p>まず、ナンバリングをする見出しはレベル 2,3,4 です。そして、図表については見出しレベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの見出しレベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
+<h3><a name='jXscbg8GSop'></a>7.4. スタイルシートの埋め込み</h3>
 <p>　<a href='#kqWPcKEw070'>スタイルシートの指定</a>は、デフォルトではスタイルシートの参照が出力されるだけですが、以下の設定が文書内に記述されていると、出力 <a class='term' href='#4ghVmsBLrOx'>HTML</a> の内部にスタイルシートの内容を埋め込むようになります。</p>
 <pre>
   &lt;!-- config:embed-stylesheet --&gt;			
@@ -392,7 +433,7 @@ lv.2<br>
 &lt;/header&gt;
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
-<h3><a name='4WLnQlG0n9E'></a>7.4. コメントの出力</h3>
+<h3><a name='4WLnQlG0n9E'></a>7.5. コメントの出力</h3>
 <p>　<a href='#l2rswZc4S4T'>コメント</a>は記述しても <a class='term' href='#4ghVmsBLrOx'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#4ghVmsBLrOx'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			

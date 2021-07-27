@@ -116,7 +116,19 @@ namespace turnup {
 			uint32_t lv = line.CountTopOf('#');
 			if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
 				const char* pTitle = line.Top() + lv + 1;
-				toc.Register( lv, pTitle );
+				toc.RegisterHeader( lv, pTitle );
+				continue;
+			}
+			TextSpan tmp;
+			//図表タイトルであれば ToC に登録する
+			if( line.IsMatch( "Table.", tmp, "" ) ) {
+				tmp = tmp.Trim();
+				toc.RegisterTable( tmp.Top() );
+				continue;
+			}
+			if( line.IsMatch( "Figure.", tmp, "" ) ) {
+				tmp = tmp.Trim();
+				toc.RegisterFigure( tmp.Top() );
 				continue;
 			}
 			//用語定義の処理
@@ -128,7 +140,7 @@ namespace turnup {
 				continue;
 			}
 			//コメントの場合
-			TextSpan tmp = line.TrimTail();
+			tmp = line.TrimTail();
 			TextSpan item;
 			TextSpan command;
 			if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {
@@ -153,6 +165,13 @@ namespace turnup {
 					cfg.bEmbedStyleSheet = true;
 				} else if( item.IsEqual( "write-comment" ) ) {
 					cfg.bWriteComment = true;
+				} else if( item.BeginWith( "entity-numbering-depth" ) ) {
+					item = item.Chomp( 22, 0 ).Trim();
+					uint32_t depth = 0;
+					if( item.Convert( depth ) == false ) {
+						//ToDo : error message...
+					}
+					cfg.entityNumberingDepth = depth;
 				} else if( item.BeginWith( "header-numbering" ) ) {
 					item = item.Chomp( 16, 0 ).Trim();
 					uint32_t lvls[] = { 1, 6 };

@@ -9,6 +9,7 @@
 #include "Operator4EmbedFootnotes.hxx"
 #include "Operator4EmbedTOC.hxx"
 #include "Operator4EmptyLine.hxx"
+#include "Operator4FigureAndTable.hxx"
 #include "Operator4Header.hxx"
 #include "Operator4HorizontalLine.hxx"
 #include "Operator4Image.hxx"
@@ -43,7 +44,10 @@ namespace turnup {
 		Operator4Quote,
 		Operator4Image,
 		Operator4TermDefine,
+		Operator4FigureAndTable,
 		Operator4EmbedTOC,
+		Operator4EmbedTableList,
+		Operator4EmbedFigureList,
 		Operator4EmbedFootnotes,
 		Operator4Comment,
 		Operator4HorizontalLine,

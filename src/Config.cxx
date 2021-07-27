@@ -17,7 +17,8 @@ namespace turnup {
 					   bWriteComment( false ),
 					   bNumberingHeader( false ),
 					   minNumberingLv( 1 ),
-					   maxNumberingLv( 6 ) {
+					   maxNumberingLv( 6 ),
+					   entityNumberingDepth( 0 ) {
 	}
 
 	Config::~Config() {

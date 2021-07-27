@@ -40,6 +40,9 @@ int main( int argc, char* argv[] ) {
 
 	DocumentInfo	docInfo;
 	pInData->PreScan( docInfo );
+
+	//ToDo : check config... config.entityNumberingDepth.
+
 	std::cout << "<html>" << std::endl;
 	docInfo.Get<HtmlHeader>().WriteTo( std::cout, docInfo.Get<Config>() );
 	std::cout << "<body>" << std::endl;

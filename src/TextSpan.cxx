@@ -48,6 +48,10 @@ namespace turnup {
 	static const char* OperateLink( std::ostream& os,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
+	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
+								  const char* pLbl1, const char* pLbl2,
+								  const char* pURL1, const char* pURL2,
+								  DocumentInfo& docInfo, bool bTermLink );
 	// `code` 形式を処理する
 	static const char* OperateCode( std::ostream& os,
 									const char* pTop, const char* pEnd,
@@ -394,8 +398,18 @@ namespace turnup {
 			WriteWithTermLink( os, pTop, (p2+1), docInfo, bTermLink );
 			return p2 + 1;
 		}
+		// ページ内アンカー指定の場合
+		if( pURL1[0] == '#' )
+			OperateInnerLink( os, ToC::EntryT::HEADER, pLbl1, pLbl2,
+							  pURL1 + 1, pURL2, docInfo, bTermLink );
+		else if( (pURL1[0] == 'T' || pURL1[0] == 'F') && pURL1[1] == '#' )
+			OperateInnerLink( os,
+							  pURL1[0] == 'T' ? ToC::EntryT::TABLE
+											  : ToC::EntryT::FIGURE,
+							  pLbl1, pLbl2,
+							  pURL1 + 2, pURL2, docInfo, bTermLink );
 		// ページ内アンカー指定でない場合
-		if( pURL1[0] != '#' ) {
+		else {
 			if( pLbl1 == pLbl2 ) {
 				pLbl1 = pURL1;
 				pLbl2 = pURL2;
@@ -405,31 +419,37 @@ namespace turnup {
 			os << "'>";
 			WriteWithTermLink( os, pLbl1, pLbl2, docInfo, bTermLink );
 			os << "</a>";
-		} else {
-			bool bEmptyLabel = false;
-			if( pLbl1 == pLbl2 ) {
-				pLbl1 = pURL1+1;
-				pLbl2 = pURL2;
-				bEmptyLabel = true;
-			}
-			auto& toc = docInfo.Get<ToC>();
-			const char* pAnchor = toc.GetAnchorTag( pURL1+1, pURL2 );
-			if( !pAnchor ) {
-				//ToDo : error message...
-				std::cerr << "ERROR : invalid link anchor." << std::endl;
-			} else {
-				os << "<a href='#" << pAnchor << "'>";
-				auto& cfg = docInfo.Get<Config>();
-				if( cfg.bNumberingHeader && bEmptyLabel ) {
-					char chapter[32];
-					toc.GetChapterNumber( chapter, cfg, pLbl1, pLbl2 );
-					os << chapter;
-				}
-				WriteWithTermLink( os, pLbl1, pLbl2, docInfo, bTermLink );
-				os << "</a>";
-			}
+
 		}
 		return p2 + 1;
+	}
+
+	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
+								  const char* pLbl1, const char* pLbl2,
+								  const char* pURL1, const char* pURL2,
+								  DocumentInfo& docInfo, bool bTermLink ) {
+		bool bEmptyLabel = false;
+		if( pLbl1 == pLbl2 ) {
+			pLbl1 = pURL1;
+			pLbl2 = pURL2;
+			bEmptyLabel = true;
+		}
+		auto& toc = docInfo.Get<ToC>();
+		const char* pAnchor = toc.GetAnchorTag( type, pURL1, pURL2 );
+		if( !pAnchor ) {
+			//ToDo : error message...
+			std::cerr << "ERROR : invalid link anchor." << std::endl;
+		} else {
+			os << "<a href='#" << pAnchor << "'>";
+			auto& cfg = docInfo.Get<Config>();
+			if( cfg.bNumberingHeader && bEmptyLabel ) {
+				char prefix[64];
+				toc.GetEntryNumber( prefix, type, cfg, pLbl1, pLbl2 );
+				os << prefix << ' ';
+			}
+			WriteWithTermLink( os, pLbl1, pLbl2, docInfo, bTermLink );
+			os << "</a>";
+		}
 	}
 
 	// `code` 形式を処理する
