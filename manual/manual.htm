@@ -284,6 +284,11 @@ lv.2<br>
 </pre>
 <p>　たとえば、<code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
 <p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#3Hhcp94tueB'>目次</a>となります。テキスト部分を省略した場合のルールは上記と同じですが、<a href='#3wlbn0fvvfU'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#3Hhcp94tueB'>1. Table of contents</a>となります。</p>
+<p>　図表タイトルへのリンクを作成することもできます（これは拡張機能ですが）。以下のように F#, T# に続けてタイトルを記述してください。</p>
+<pre>
+  [テキスト](F#図のタイトル)
+  [テキスト](T#表のタイトル)
+</pre>
 <h3><a name='2kO0dY0k2Ft'></a>5.14. コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
 <pre>
