@@ -119,7 +119,7 @@ namespace turnup {
 		::strcat( outFile, ".out" );
 		std::ofstream ofs{ inFile };
 		for( ; pTop < pEnd; ++pTop ) {
-			pTop->WriteSimple( ofs );
+			ofs.write( pTop->Top(), pTop->End() - pTop->Top() );
 			ofs << std::endl;
 		}
 		const char* pCmdTop = command.Top();
