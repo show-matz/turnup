@@ -186,7 +186,7 @@ int main( void ) {
 }
 ~~~
 </pre>
-<p>　しかし、turnup はこのフィルタ機能を<strong>まだ実装していません</strong><sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.8. 外部フィルタの登録</a>を参照してください。</p>
+<p>　しかし、turnup はこのフィルタ機能を<strong>まだ実装していません</strong><sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.8.  外部フィルタの登録</a>を参照してください。</p>
 <h3><a name='iSO2TEVEGpH'></a>5.5. テーブル</h3>
 <p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
 <pre>
@@ -283,7 +283,7 @@ lv.2<br>
   [テキスト](URL)
 </pre>
 <p>　たとえば、<code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
-<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#3Hhcp94tueB'>目次</a>となります。テキスト部分を省略した場合のルールは上記と同じですが、<a href='#3wlbn0fvvfU'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#3Hhcp94tueB'>1. Table of contents</a>となります。</p>
+<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#3Hhcp94tueB'>目次</a>となります。テキスト部分を省略した場合のルールは上記と同じですが、<a href='#3wlbn0fvvfU'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#3Hhcp94tueB'>1.  Table of contents</a>となります。</p>
 <p>　図表タイトルへのリンクを作成することもできます（これは拡張機能ですが）。以下のように F#, T# に続けてタイトルを記述してください。</p>
 <pre>
   [テキスト](F#図のタイトル)
@@ -329,7 +329,7 @@ Table. title of table
 |    2    |    3    |
 </pre>
 <p>　この方法でタイトルをつけておけば、同じく拡張機能の<a href='#g2lU1btb08v'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
-<p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#kfUSlZMAzlh'>7.3. 図表のナンバリング単位</a>」を参照してください。</p>
+<p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#kfUSlZMAzlh'>7.3.  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='3tp71i4aeX5'></a>6.3. 生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#4ghVmsBLrOx'>HTML</a> をそのまま出力することができます。</p>
 <pre>
@@ -367,9 +367,9 @@ Table. title of table
 <pre>
   &lt;!-- embed:table-list --&gt;
 </pre>
-<p>　これによって生成される一覧でも、<a href='#2UrqBZiCjSp'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#kfUSlZMAzlh'>7.3. 図表のナンバリング単位</a>」を参照してください。</p>
+<p>　これによって生成される一覧でも、<a href='#2UrqBZiCjSp'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#kfUSlZMAzlh'>7.3.  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='8DVv96eWYu2'></a>6.7. 定義リストへの自動リンク</h3>
-<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3. 用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
+<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3.  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#2J9QXGdMTue'>見出しにおける用語の自動リンク</a>があります。</p>
 <h3><a name='2JSPqxbBwrA'></a>6.8. 外部フィルタの登録</h3>
 <p>　<a href='#h1tEzgBM5pT'>preブロック</a> で指定するフィルタとして、外部プログラムを追加することができます。たとえば、diff というフィルタを指定した場合に highlight プログラムを通した結果を表示させたければ以下のように指定します。</p>
@@ -411,7 +411,7 @@ Table. title of table
   &lt;!-- config:entity-numbering-depth 1 --&gt;
 </pre>
 <p>　0 が指定された場合、図と表それぞれについて、文書全体を通して 1 から始まる連番が付与されます。つまり、図であれば Figure.1 xxxxx、Figure.2 yyyyy といった要領です（表の場合は Table.1 zzzzz）となります。</p>
-<p>　1 以上を指定した場合、「<a href='#3wlbn0fvvfU'>7.2. 見出しの自動ナンバリング</a>」で指定した番号付け対象の見出しのうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
+<p>　1 以上を指定した場合、「<a href='#3wlbn0fvvfU'>7.2.  見出しの自動ナンバリング</a>」で指定した番号付け対象の見出しのうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
   &lt;!-- config:entity-numbering-depth 2 --&gt;
@@ -453,15 +453,15 @@ Table. title of table
 </ul>
 <p>　　</p>
 <hr>
-<p><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
-<p><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
-<p><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
-<p><a name='footnote4' href='#footnote_ref4'>4</a> : diffくらいなら難易度も高くないので実装したいのですが、まだリソースが確保できてません</p>
-<p><a name='footnote5' href='#footnote_ref5'>5</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
-<p><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
-<p><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p><a name='footnote8' href='#footnote_ref8'>8</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p><a name='footnote9' href='#footnote_ref9'>9</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p><a name='footnote10' href='#footnote_ref10'>10</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
+<p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
+<p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
+<p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : diffくらいなら難易度も高くないので実装したいのですが、まだリソースが確保できてません</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
+<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
+<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>

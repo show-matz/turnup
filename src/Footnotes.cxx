@@ -71,7 +71,7 @@ namespace turnup {
 		for( uint32_t idx = 0; itr1 != itr2; ++itr1 ) {
 			++idx;
 			const TextSpan& line = *itr1;
-			os << "<p><a name='footnote" << idx << "' "
+			os << "<p class='footnote'><a name='footnote" << idx << "' "
 			   <<       "href='#footnote_ref" << idx << "'>"
 			   << idx << "</a> : ";
 			line.WriteTo( os, docInfo );
