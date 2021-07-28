@@ -52,6 +52,8 @@ namespace turnup {
 								  const char* pLbl1, const char* pLbl2,
 								  const char* pURL1, const char* pURL2,
 								  DocumentInfo& docInfo, bool bTermLink );
+	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
+												 const char* pLabelEnd );
 	// `code` 形式を処理する
 	static const char* OperateCode( std::ostream& os,
 									const char* pTop, const char* pEnd,
@@ -428,28 +430,63 @@ namespace turnup {
 								  const char* pLbl1, const char* pLbl2,
 								  const char* pURL1, const char* pURL2,
 								  DocumentInfo& docInfo, bool bTermLink ) {
-		bool bEmptyLabel = false;
-		if( pLbl1 == pLbl2 ) {
-			pLbl1 = pURL1;
-			pLbl2 = pURL2;
-			bEmptyLabel = true;
-		}
+		bool bEmptyLabel = (pLbl1 == pLbl2);
 		auto& toc = docInfo.Get<ToC>();
 		const char* pAnchor = toc.GetAnchorTag( type, pURL1, pURL2 );
 		if( !pAnchor ) {
-			//ToDo : error message...
-			std::cerr << "ERROR : invalid link anchor." << std::endl;
-		} else {
-			os << "<a href='#" << pAnchor << "'>";
-			auto& cfg = docInfo.Get<Config>();
-			if( cfg.bNumberingHeader && bEmptyLabel ) {
-				char prefix[64];
-				toc.GetEntryNumber( prefix, type, cfg, pLbl1, pLbl2 );
-				os << prefix << ' ';
-			}
-			WriteWithTermLink( os, pLbl1, pLbl2, docInfo, bTermLink );
-			os << "</a>";
+			std::cerr << "ERROR : invalid link anchor '";
+			std::cerr.write( pURL1, pURL2 - pURL1 );
+			std::cerr << "'." << std::endl;
+			os << "<font color='red'>!!!ERROR : invalid internal anchor '";
+			os.write( pURL1, pURL2 - pURL1 );
+			os << "'.</font>";
+			return;
 		}
+		os << "<a href='#" << pAnchor << "'>";
+		auto& cfg = docInfo.Get<Config>();
+		char prefix[64];
+		if( bEmptyLabel ) {
+			if( cfg.bNumberingHeader || type != ToC::EntryT::HEADER ) {
+				if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
+					os << prefix << ' ';
+			}
+			WriteWithTermLink( os, pURL1, pURL2, docInfo, bTermLink );
+		} else {
+			while( pLbl1 < pLbl2 ) {
+				const char* pPivot = FindLinkLabelPlaceHolder( pLbl1, pLbl2 );
+				if( pLbl1 < pPivot )
+					WriteWithTermLink( os, pLbl1, pPivot, docInfo, bTermLink );
+				pLbl1 = pPivot;
+				if( pLbl1 < pLbl2 ) {
+					switch( pLbl1[1] ) {
+					case '$':
+						WriteWithTermLink( os, pURL1, pURL2, docInfo, bTermLink );
+						break;
+					case '@':
+						if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
+							os << prefix;
+						break;
+					}
+					pLbl1 += 2;
+				}
+			}
+		}
+		os << "</a>";
+	}
+
+	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
+												 const char* pLabelEnd ) {
+		while( pLabelTop < pLabelEnd ) {
+			const char* p = std::find( pLabelTop, pLabelEnd, '$' );
+			if( p == pLabelEnd )
+				return pLabelEnd;
+			switch( p[1] ) {
+			case '$':	return p;
+			case '@':	return p;
+			default:	pLabelTop = p + 1;
+			}
+		}
+		return pLabelEnd;
 	}
 
 	// `code` 形式を処理する

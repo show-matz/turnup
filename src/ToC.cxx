@@ -36,7 +36,7 @@ namespace turnup {
 		const char* Format( uint32_t minLv,
 							uint32_t maxLv, char* pBuf ) const {
 			for( uint32_t lv = minLv; lv <= maxLv; ++lv ) {
-				int n = ::sprintf( pBuf, "%u.", this->numbers[lv-1] );
+				int n = ::sprintf( pBuf, ".%u" + !!(lv==minLv), this->numbers[lv-1] );
 				pBuf += n;
 			}
 			*pBuf++ = ' ';
