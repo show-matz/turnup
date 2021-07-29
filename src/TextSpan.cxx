@@ -516,14 +516,14 @@ namespace turnup {
 		auto pDelim = std::find( pTop, pEnd, ')' );
 		// 終端が見つからない場合は ! だけ出力して終了
 		if( pDelim == pEnd ) {
-			os << "[";
+			os << "!";
 			return pTop + 1;
 		}
 		TextSpan tmp{ pTop, pDelim+1 };
 		TextSpan alt;
 		TextSpan url;
 		if( tmp.IsMatch( "![", alt, "](", url, ")" ) == false ) {
-			os << "[";
+			os << "!";
 			return pTop + 1;
 		}
 		os << "<img src='";
