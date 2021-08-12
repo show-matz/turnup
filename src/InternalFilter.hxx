@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
 //
-// Filters.hxx
+// InternalFilter.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef FILTERS_HXX__
-#define FILTERS_HXX__
+#ifndef INTERNALFILTER_HXX__
+#define INTERNALFILTER_HXX__
 
 #include <iosfwd>
 
@@ -12,24 +12,19 @@ namespace turnup {
 
 	class TextSpan;
 
+	typedef bool InternalFilterFunc( std::ostream& os,
+									 const TextSpan* pTop, const TextSpan* pEnd );
+
 	//--------------------------------------------------------------------------
 	//
-	// class Filters
+	// class utility InternalFilter
 	//
 	//--------------------------------------------------------------------------
-	class Filters {
+	class InternalFilter {
 	public:
-		Filters();
-		~Filters();
-	public:
-		void RegistExternal( const TextSpan& label, const TextSpan& command );
-		bool ExecuteFilter( std::ostream& os, const TextSpan& type,
-							const TextSpan* pTop, const TextSpan* pEnd );
-	private:
-		class Impl;
-		Impl* m_pImpl;
+		static InternalFilterFunc* FindFilter( const TextSpan& type );
 	};
 
 } // namespace turnup
 
-#endif // FILTERS_HXX__
+#endif // INTERNALFILTER_HXX__

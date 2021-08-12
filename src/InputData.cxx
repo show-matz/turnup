@@ -154,7 +154,7 @@ namespace turnup {
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
-				filters.RegistFilter( item.Trim(), command.Trim() );
+				filters.RegistExternal( item.Trim(), command.Trim() );
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {

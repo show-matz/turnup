@@ -12,7 +12,7 @@ body{
 	line-height:1.5em;
 	padding:1em;
 	margin:auto;
-	max-width:45em;
+	max-width:50em;
 	background:#fefefe;
 }
 
@@ -66,6 +66,7 @@ blockquote{
 hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;
 	 border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
 pre, code, kbd, samp { color: #000; background:#eee;
+					   	line-height:1.2em;
 					   _font-family: monospace, monospace;
 					   font-family: 'Courier New', monospace; font-size: 0.98em; }
 pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
@@ -96,7 +97,16 @@ border-spacing: 0;
 th { text-align;  center; padding: 3px; border: 1px solid black; border-bottom: 2px solid black;  }
 td { vertical-align: top; padding: 3px; border: 1px solid black;}
 
+/* for filters */
+pre.diff { font-size:13px; }
+span.diff_head { color: #FF88FF; background: #550055; font-weight: bold; }
+span.diff_line { color: #CCCCFF; background: #000077; font-weight: bold; }
+span.diff_add  { color: #004400; background: #DCFBDC; }
+span.diff_del  { color: #550000; background: #FBDCDC; }
 
+span.comment { color: brown; }
+span.keyword { color: blue; }
+span.string  { color: purple; }
 
 
 

@@ -46,7 +46,8 @@
 <li><a href='#c3xXk4nH9oX'>6.6 目次の生成</a></li>
 <li><a href='#g2lU1btb08v'>6.7 図表一覧の生成</a></li>
 <li><a href='#8DVv96eWYu2'>6.8 定義リストへの自動リンク</a></li>
-<li><a href='#2JSPqxbBwrA'>6.9 外部フィルタの登録</a></li>
+<li><a href='#9z4cll3GlNe'>6.9 フィルタ機能</a></li>
+<li><a href='#2JSPqxbBwrA'>6.10 外部フィルタの登録</a></li>
 </ul>
 <li><a href='#glQDQUruamY'>7 設定</a></li>
 <ul>
@@ -178,18 +179,9 @@ int main( void ) {
     return 0;
 }
 </pre>
-<p>　以下のように、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これは turnup では<strong>フィルタ機能</strong>と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。</p>
-<pre>
-~~~c++
-int main( void ) {
-    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
-    return 0;
-}
-~~~
-</pre>
-<p>　しかし、turnup はこのフィルタ機能を<strong>まだ実装していません</strong><sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.9  外部フィルタの登録</a>を参照してください。</p>
+<p>　拡張機能として、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#9z4cll3GlNe'>6.9  フィルタ機能</a>を参照してください。</p>
 <h3><a name='iSO2TEVEGpH'></a>5.5 テーブル</h3>
-<p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
+<p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
 <pre>
 	| header A | header B | header C |	
 	| :------- | :------: | -------: |	
@@ -205,7 +197,7 @@ int main( void ) {
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
 <h3><a name='4n3lxYDUT0F'></a>5.6 引用</h3>
-<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
+<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
 <pre>
 &gt; lv.1 - 1
 &gt; lv.1 - 2
@@ -279,7 +271,7 @@ lv.2<br>
 <h3><a name='fEQY6fCyzn6'></a>5.12 上付きと下付き</h3>
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、<code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='bSYejIfSqoO'></a>5.13 リンク</h3>
-<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
@@ -378,25 +370,59 @@ Table. title of table
 </pre>
 <p>　これによって生成される一覧でも、<a href='#2UrqBZiCjSp'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#kfUSlZMAzlh'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='8DVv96eWYu2'></a>6.8 定義リストへの自動リンク</h3>
-<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
+<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#2J9QXGdMTue'>見出しにおける用語の自動リンク</a>があります。</p>
-<h3><a name='2JSPqxbBwrA'></a>6.9 外部フィルタの登録</h3>
-<p>　<a href='#h1tEzgBM5pT'>preブロック</a> で指定するフィルタとして、外部プログラムを追加することができます。たとえば、diff というフィルタを指定した場合に highlight プログラムを通した結果を表示させたければ以下のように指定します。</p>
+<h3><a name='9z4cll3GlNe'></a>6.9 フィルタ機能</h3>
+<p>　<a href='#h1tEzgBM5pT'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では<strong>フィルタ機能</strong>と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
 <pre>
-  &lt;!-- filter:diff = highlight diff %in %out --&gt;
+~~~diff
+diff --git a/main.cxx b/main.cxx
+index 16fc9f4..8387187 100644
+--- a/main.cxx
++++ b/main.cxx
+@@ -3,5 +3,5 @@ int main( void ) {
+ 
+-    printf( "hello world.\n" );
++    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+
+    return 0;
+~~~
 </pre>
-<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>diff</code> ）がフィルタ名、<code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>highlight diff %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnnup が都度決定します。</p>
-<p>　上記のように定義されていると、turnup はフィルタ名として diff が指定された preブロックを見つけた場合に、以下の要領で処理を行ないます。</p>
+<p>　これは以下のように表示されます。</p>
+<pre class='diff'>
+<span class='diff_head'>diff --git a/main.cxx b/main.cxx</span>
+<span class='diff_head'>index 16fc9f4..8387187 100644</span>
+<span class='diff_head'>--- a/main.cxx</span>
+<span class='diff_head'>+++ b/main.cxx</span>
+<span class='diff_line'>@@ -3,5 +3,5 @@ int main( void ) {</span>
+ 
+<span class='diff_del'>-    printf( "hello world.\n" );</span>
+<span class='diff_add'>+    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;</span>
+
+    return 0;
+</pre>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだ diff しか実装されていません</strong><sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>。</p>
 <ul>
-<li>preブロックの中身を一時ファイルに保存する</li>
-<li>フィルタプログラムの定義に従い、<code>highlight diff %in %out</code> を実行する</li>
+<li>diff</li>
+</ul>
+<p>　しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#2JSPqxbBwrA'>6.10  外部フィルタの登録</a>を参照してください。また内蔵のフィルタ機能については<a href='#6Z7lXEj1LuM'>細かい話</a>があります。</p>
+<h3><a name='2JSPqxbBwrA'></a>6.10 外部フィルタの登録</h3>
+<p>　<a href='#h1tEzgBM5pT'>preブロック</a> で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
+<pre>
+  &lt;!-- filter:foo = quux %in %out --&gt;
+</pre>
+<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、<code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnnup が都度決定します。</p>
+<p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された preブロックを見つけた場合に、以下の要領で処理を行ないます。</p>
+<ul>
+<li>pre ブロックの中身を一時ファイルに保存する</li>
+<li>フィルタプログラムの定義に従い、<code>quux %in %out</code> を実行する</li>
 <ul>
 <li>この時、preブロックの中身を保存した一時ファイル名で %in を置き換える</li>
 <li>同様に、%out を別の一時ファイル名で置き換える</li>
 </ul>
 <li>%out に指定した一時ファイルの内容を読み込み、preブロックのフィルタ結果として出力する</li>
 </ul>
-<p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます（turnup はまだフィルタを実装していないので無意味な注意事項ですが、仕様上はそうなるという話です）。</p>
+<p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
 <p>　　</p>
 <h2><a name='glQDQUruamY'></a>7 設定</h2>
 <h3><a name='2J9QXGdMTue'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -458,6 +484,9 @@ Table. title of table
 <li>文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。</li>
 </ul>
 <ul>
+<li>turnup が標準で提供する<a href='#9z4cll3GlNe'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#2JSPqxbBwrA'>外部フィルタの利用</a>を検討してください。</li>
+</ul>
+<ul>
 <li>他、何か思いついたら記載します。</li>
 </ul>
 <p>　　</p>
@@ -465,11 +494,11 @@ Table. title of table
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
 <p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
 <p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
-<p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : diffくらいなら難易度も高くないので実装したいのですが、まだリソースが確保できてません</p>
-<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
-<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
-<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
+<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : diff は難易度も高くないので実装したのですが、他はまだ計画中です</p>
 <p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>

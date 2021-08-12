@@ -67,6 +67,8 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Glossary.o					\
 		$(TARGETDIR)/Footnotes.o				\
 		$(TARGETDIR)/DocumentInfo.o				\
+		$(TARGETDIR)/InternalFilter.o			\
+		$(TARGETDIR)/InternalFilter4Diff.o		\
 		$(TARGETDIR)/Operators.o				\
 		$(TARGETDIR)/Operator4Comment.o			\
 		$(TARGETDIR)/Operator4EmbedFootnotes.o	\

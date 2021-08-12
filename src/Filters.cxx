@@ -6,6 +6,7 @@
 #include "Filters.hxx"
 
 #include "TextSpan.hxx"
+#include "InternalFilter.hxx"
 
 //-------------------
 #include "CRC64.hxx"
@@ -24,8 +25,8 @@ namespace turnup {
 
 	static void DefaultFilter( std::ostream& os,
 							   const TextSpan* pTop, const TextSpan* pEnd );
-	static bool ExternalFilter( std::ostream& os, const TextSpan& command,
-								const TextSpan* pTop, const TextSpan* pEnd );
+	static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
+							   const TextSpan* pTop, const TextSpan* pEnd );
 
 	//--------------------------------------------------------------------------
 	//
@@ -34,18 +35,19 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	class Filters::Impl {
 	private:
-		typedef std::pair<TextSpan,TextSpan>	Filter;
-		typedef std::vector<Filter>				FilterList;
+		typedef std::pair<TextSpan,TextSpan>	ExtFilter;
+		typedef std::vector<ExtFilter>			ExtFilterList;
 	public:
 		Impl();
 		~Impl();
 	public:
-		void RegistFilter( const TextSpan& label, const TextSpan& command );
+		void RegistExternal( const TextSpan& label, const TextSpan& command );
 		bool ExecuteFilter( std::ostream& os, const TextSpan& type,
 							const TextSpan* pTop, const TextSpan* pEnd );
 	private:
-		FilterList m_filterList;
+		ExtFilterList m_externals;
 	};
+
 
 	//--------------------------------------------------------------------------
 	//
@@ -57,8 +59,8 @@ namespace turnup {
 	Filters::~Filters() {
 		delete m_pImpl;
 	}
-	void Filters::RegistFilter( const TextSpan& label, const TextSpan& command ) {
-		return m_pImpl->RegistFilter( label, command );
+	void Filters::RegistExternal( const TextSpan& label, const TextSpan& command ) {
+		return m_pImpl->RegistExternal( label, command );
 	}
 	bool Filters::ExecuteFilter( std::ostream& os, const TextSpan& type,
 								 const TextSpan* pTop, const TextSpan* pEnd ) {
@@ -70,27 +72,38 @@ namespace turnup {
 	// implementation of class Filters::Impl
 	//
 	//--------------------------------------------------------------------------
-	Filters::Impl::Impl() : m_filterList( {} ) {
+	Filters::Impl::Impl() : m_externals( {} ) {
 	}
 	Filters::Impl::~Impl() {
-		m_filterList.clear();
+		m_externals.clear();
 	}
-	void Filters::Impl::RegistFilter( const TextSpan& label, const TextSpan& command ) {
-		m_filterList.emplace_back( label, command );
+	void Filters::Impl::RegistExternal( const TextSpan& label, const TextSpan& command ) {
+		m_externals.emplace_back( label, command );
 	}
 	bool Filters::Impl::ExecuteFilter( std::ostream& os, const TextSpan& type,
 									   const TextSpan* pTop, const TextSpan* pEnd ) {
+		// type 指定がなければデフォルトの <pre> 出力で終了
 		if( type.IsEmpty() ) {
 			DefaultFilter( os, pTop, pEnd );
 			return true;
 		}
-		auto itr = std::find_if( m_filterList.begin(), m_filterList.end(),
-								 [&type]( const Filter& filter ) -> bool {
-									 return filter.first.IsEqual( type );
-								 } );
-		if( itr != m_filterList.end() )
-			return ExternalFilter( os, itr->second, pTop, pEnd );
-
+		/* 外部フィルタを優先して検索 */ {
+			auto itr = std::find_if( m_externals.begin(), m_externals.end(),
+									 [&type]( const ExtFilter& filter ) -> bool {
+										 return filter.first.IsEqual( type );
+									 } );
+			// 該当する外部フィルタが見つかれば実行して終了
+			if( itr != m_externals.end() )
+				return ExecExtFilter( os, itr->second, pTop, pEnd );
+		}
+		/* 該当する外部フィルタがなければ次に内部フィルタを検索 */ {
+			auto pFilter = InternalFilter::FindFilter( type );
+			if( pFilter ) {
+				// 該当する内部フィルタが見つかれば実行して終了
+				return pFilter( os, pTop, pEnd );
+			}
+		}
+		// 指定された名前のフィルタが見つからない場合はデフォルトの <pre> 出力で false 復帰
 		DefaultFilter( os, pTop, pEnd );
 		return false;
 	}
@@ -109,8 +122,8 @@ namespace turnup {
 		os << "</pre>" << std::endl;
 	}
 
-	static bool ExternalFilter( std::ostream& os, const TextSpan& command,
-								const TextSpan* pTop, const TextSpan* pEnd ) {
+	static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
+							   const TextSpan* pTop, const TextSpan* pEnd ) {
 		char inFile[16];
 		char outFile[16];
 		CRC64::Calc( pTop->Top(), pEnd->Top(), inFile );
