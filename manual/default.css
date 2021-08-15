@@ -98,15 +98,19 @@ th { text-align;  center; padding: 3px; border: 1px solid black; border-bottom: 
 td { vertical-align: top; padding: 3px; border: 1px solid black;}
 
 /* for filters */
-pre.diff { font-size:13px; }
+pre.diff { font-size:14px; background: #F8F8F8; }
 span.diff_head { color: #FF88FF; background: #550055; font-weight: bold; }
 span.diff_line { color: #CCCCFF; background: #000077; font-weight: bold; }
 span.diff_add  { color: #004400; background: #DCFBDC; }
 span.diff_del  { color: #550000; background: #FBDCDC; }
 
-span.comment { color: brown; }
-span.keyword { color: blue; }
-span.string  { color: purple; }
+pre.code { font-size:14px; background: #F8F8F8; }
+span.comment  { color: brown; }
+span.keyword1 { color: blue; }
+span.keyword2 { color: green; }
+span.keyword3 { color: darkslategray; }
+span.literal  { color: purple; }
+
 
 
 

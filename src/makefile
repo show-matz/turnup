@@ -59,6 +59,7 @@ OBJS =
 OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/File.o						\
 		$(TARGETDIR)/Filters.o					\
+		$(TARGETDIR)/FilterBuffer.o				\
 		$(TARGETDIR)/TextSpan.o					\
 		$(TARGETDIR)/InputData.o				\
 		$(TARGETDIR)/HtmlHeader.o				\
@@ -69,6 +70,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/DocumentInfo.o				\
 		$(TARGETDIR)/InternalFilter.o			\
 		$(TARGETDIR)/InternalFilter4Diff.o		\
+		$(TARGETDIR)/InternalFilter4CandCxx.o	\
 		$(TARGETDIR)/Operators.o				\
 		$(TARGETDIR)/Operator4Comment.o			\
 		$(TARGETDIR)/Operator4EmbedFootnotes.o	\
