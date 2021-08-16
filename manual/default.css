@@ -38,6 +38,7 @@ p{
 p.footnote{  font-size: 80%; line-height: 1.1em; }
 p.fig_title{ text-align: center; font-weight: bold; line-height: 0.6em; padding-bottom: 10px }
 p.tbl_title{ text-align: center; font-weight: bold; line-height: 0.6em; padding-top:    10px }
+p.pagebreak{ page-break-after: always; }
 
 img{
 	max-width:100%;

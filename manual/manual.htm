@@ -48,6 +48,7 @@
 <li><a href='#8DVv96eWYu2'>6.8 定義リストへの自動リンク</a></li>
 <li><a href='#9z4cll3GlNe'>6.9 フィルタ機能</a></li>
 <li><a href='#2JSPqxbBwrA'>6.10 外部フィルタの登録</a></li>
+<li><a href='#1Jf1lCvlKTy'>6.11 改ページ指定</a></li>
 </ul>
 <li><a href='#glQDQUruamY'>7 設定</a></li>
 <ul>
@@ -425,6 +426,11 @@ index 16fc9f4..8387187 100644
 <li>%out に指定した一時ファイルの内容を読み込み、preブロックのフィルタ結果として出力する</li>
 </ul>
 <p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
+<h3><a name='1Jf1lCvlKTy'></a>6.11 改ページ指定</h3>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup></p>
+<pre>
+&lt;!-- embed:pagebreak --&gt;
+</pre>
 <p>　　</p>
 <h2><a name='glQDQUruamY'></a>7 設定</h2>
 <h3><a name='2J9QXGdMTue'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -438,7 +444,7 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -476,7 +482,7 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='4WLnQlG0n9E'></a>7.5 コメントの出力</h3>
-<p>　<a href='#l2rswZc4S4T'>コメント</a>は記述しても <a class='term' href='#4ghVmsBLrOx'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#4ghVmsBLrOx'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup></p>
+<p>　<a href='#l2rswZc4S4T'>コメント</a>は記述しても <a class='term' href='#4ghVmsBLrOx'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#4ghVmsBLrOx'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
@@ -501,7 +507,8 @@ index 16fc9f4..8387187 100644
 <p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
 <p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
 <p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#4ghVmsBLrOx'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>
