@@ -337,7 +337,8 @@ namespace turnup {
 			if( p1 == span.End() )
 				return false;
 			p2 = p1 + len;
-			if( !::strchr( IDCHAR, p1[-1] ) && !::strchr( IDCHAR, p2[0] ) )
+			if( (p1 == span.Top() || !::strchr( IDCHAR, p1[-1] )) &&
+				(p2 == span.End() || !::strchr( IDCHAR, p2[0]  )) )
 				break;
 			p1 += len;
 		}
