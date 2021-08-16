@@ -72,7 +72,10 @@ namespace turnup {
 				auto pDelim = std::find( p1 + 1, p2, '|' );
 				auto item   = TextSpan{ p1 + 1, pDelim }.Trim();
 				auto align  = s_aligns.Get( col );
-				std::cout << '<' << s_tags[!!row] << " align='" << s_labels[align] << "'>";
+				std::cout << '<' << s_tags[!!row];
+				if( 0 < row )
+					std::cout << " align='" << s_labels[align] << "'";
+				std::cout << '>';
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << s_tags[!!row] << '>';
 				p1 = pDelim;
