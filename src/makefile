@@ -138,7 +138,7 @@ depend:
 build-imp: $(TARGETDIR) $(TARGETDIR)/$(TARGET)$(TARGET_SUFFIX)
 
 $(TARGETDIR)/$(TARGET)$(TARGET_SUFFIX): $(TARGETDIR) $(OBJS) $(EXT_ARCS)
-	$(LINK.cc) -pthread $(OBJS) $(EXT_ARCS) $(EXT_LIBS) -lz -o $@
+	$(LINK.cc) -pthread $(OBJS) $(EXT_ARCS) $(EXT_LIBS) -o $@
 
 # ソースファイルを .o ファイルにコンパイル
 $(TARGETDIR)/%.o: %.cxx
