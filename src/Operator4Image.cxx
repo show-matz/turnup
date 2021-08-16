@@ -20,7 +20,7 @@ namespace turnup {
 		if( line.IsMatch( "![", alt, "](", url, ")" ) == false )
 			return nullptr;
 
-		std::cout << "<p><img src='";
+		std::cout << "<p align='center'><img src='";
 		std::cout.write( url.Top(), url.ByteLength() );
 		std::cout << "' ";
 		if( alt.IsEmpty() == false ) {

@@ -53,7 +53,7 @@ namespace turnup {
 		if( line[0] != '|' )
 			return nullptr;
 
-		std::cout << "<table>" << std::endl;
+		std::cout << "<table align='center'>" << std::endl;
 		for( uint32_t row = 0; pTop < pEnd; ++pTop, ++row ) {
 
 			line = pTop->Trim();
