@@ -6,6 +6,7 @@
 #include "Operators.hxx"
 
 #include "Operator4Comment.hxx"
+#include "Operator4Details.hxx"
 #include "Operator4EmbedFootnotes.hxx"
 #include "Operator4EmbedPageBreak.hxx"
 #include "Operator4EmbedTOC.hxx"
@@ -46,6 +47,7 @@ namespace turnup {
 		Operator4Image,
 		Operator4TermDefine,
 		Operator4FigureAndTable,
+		Operator4Details,
 		Operator4EmbedTOC,
 		Operator4EmbedTableList,
 		Operator4EmbedFigureList,

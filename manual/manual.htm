@@ -50,7 +50,8 @@
 <li><a href='#8DVv96eWYu2'>6.9 定義リストへの自動リンク</a></li>
 <li><a href='#9z4cll3GlNe'>6.10 フィルタ機能</a></li>
 <li><a href='#2JSPqxbBwrA'>6.11 外部フィルタの登録</a></li>
-<li><a href='#1Jf1lCvlKTy'>6.12 改ページ指定</a></li>
+<li><a href='#eyMeJ3KtHs6'>6.12 領域の折り畳み</a></li>
+<li><a href='#1Jf1lCvlKTy'>6.13 改ページ指定</a></li>
 </ul>
 <li><a href='#glQDQUruamY'>7 設定</a></li>
 <ul>
@@ -439,7 +440,28 @@ index 16fc9f4..8387187 100644
 <li>%out に指定した一時ファイルの内容を読み込み、preブロックのフィルタ結果として出力する</li>
 </ul>
 <p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
-<h3><a name='1Jf1lCvlKTy'></a>6.12 改ページ指定</h3>
+<h3><a name='eyMeJ3KtHs6'></a>6.12 領域の折り畳み</h3>
+<p>　以下のように 2 つのコメントで囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
+<pre>
+  &lt;!-- collapse:begin --&gt;
+  TITLE_LINE
+      :
+      : (contents)
+      :
+  &lt;!-- collapse:end --&gt;
+</pre>
+<p>　　</p>
+<p>　以下に例を示します。あと、<a href='#6Z7lXEj1LuM'>細かい話</a>にも注意事項が書いてありますので参照してください。</p>
+<details>
+<summary>この行はタイトルです。クリックするたびに折り畳み状態をトグルできます。</summary>
+<p>２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。</p>
+<ul>
+<li>contents1</li>
+<li>contents2</li>
+<li>contents3</li>
+</ul>
+</details>
+<h3><a name='1Jf1lCvlKTy'></a>6.13 改ページ指定</h3>
 <p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
@@ -508,6 +530,9 @@ index 16fc9f4..8387187 100644
 <li>turnup が標準で提供する<a href='#9z4cll3GlNe'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#2JSPqxbBwrA'>外部フィルタの利用</a>を検討してください。</li>
 </ul>
 <ul>
+<li><a href='#eyMeJ3KtHs6'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#7PU4bw4xAi5'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</li>
+</ul>
+<ul>
 <li>他、何か思いついたら記載します。</li>
 </ul>
 <p>　　</p>
@@ -555,9 +580,9 @@ index 16fc9f4..8387187 100644
 <li>ENHANCE : <a href='#eJX346arix9'>定義リスト</a>において用語の前後のスペースの扱いを緩和し、明確化</li>
 <li>ENHANCE : <a href='#4YOBqhV2F0K'>インラインスタイル指定</a>のサポートを追加</li>
 <li>ENHANCE : <a href='#iSO2TEVEGpH'>テーブル</a>で nowrap を指定させる拡張を追加</li>
+<li>ENHANCE : <a href='#eyMeJ3KtHs6'>領域の折り畳み</a>を可能にする拡張を追加</li>
 </ul>
 </ul>
-<p>　　</p>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
 <p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>

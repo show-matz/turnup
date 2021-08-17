@@ -73,6 +73,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/InternalFilter4CandCxx.o	\
 		$(TARGETDIR)/Operators.o				\
 		$(TARGETDIR)/Operator4Comment.o			\
+		$(TARGETDIR)/Operator4Details.o			\
 		$(TARGETDIR)/Operator4EmbedFootnotes.o	\
 		$(TARGETDIR)/Operator4EmbedPageBreak.o	\
 		$(TARGETDIR)/Operator4EmbedTOC.o		\
