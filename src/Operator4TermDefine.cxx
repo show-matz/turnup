@@ -8,6 +8,7 @@
 #include "TextSpan.hxx"
 #include "DocumentInfo.hxx"
 #include "Glossary.hxx"
+#include "Utilities.hxx"
 
 #include <iostream>
 #include <algorithm>
@@ -31,21 +32,25 @@ namespace turnup {
 
 	const TextSpan* Operator4TermDefine( const TextSpan* pTop,
 										 const TextSpan* pEnd, DocumentInfo& docInfo ) {
-		const char* pTermTop;
-		const char* pTermEnd;
-		if( IsTermDefine( *pTop, pTermTop, pTermEnd ) == false )
+		const char* p1;
+		const char* p2;
+		if( IsTermDefine( *pTop, p1, p2 ) == false )
 			return nullptr;
 
-		auto& glossary = docInfo.Get<Glossary>();
-		const char* pAnchor = glossary.GetAnchorTag( pTermTop, pTermEnd );
-		
-		std::cout << "<dl>" << std::endl;
-		std::cout << "  <dt><a name='" << pAnchor <<  "'></a>";
-		std::cout.write( pTermTop, pTermEnd - pTermTop );
-		std::cout << "</dt>" << std::endl;
+		{
+			const char* pTermTop = p1;
+			const char* pTermEnd = p2;
+			Utilities::Trim( pTermTop, pTermEnd );
+			auto& glossary = docInfo.Get<Glossary>();
+			const char* pAnchor = glossary.GetAnchorTag( pTermTop, pTermEnd );
+			std::cout << "<dl>" << std::endl;
+			std::cout << "  <dt><a name='" << pAnchor <<  "'></a>";
+			std::cout.write( pTermTop, pTermEnd - pTermTop );
+			std::cout << "</dt>" << std::endl;
+		}
 		std::cout << "  <dd>"; {
 			TextSpan line = *pTop;
-			line = line.Chomp( (pTermEnd+2) - pTop->Top(), 0 ).Trim();
+			line = line.Chomp( (p2+2) - pTop->Top(), 0 ).Trim();
 			line.WriteTo( std::cout, docInfo );
 			while( ++pTop < pEnd ) {
 				line = pTop->Trim();

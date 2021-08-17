@@ -13,6 +13,7 @@
 #include "Filters.hxx"
 #include "File.hxx"
 #include "Operator4TermDefine.hxx"
+#include "Utilities.hxx"
 
 #include <vector>
 #include <algorithm>
@@ -135,8 +136,10 @@ namespace turnup {
 			if( line.BeginWith( "*[" ) ) {
 				const char* pTermTop;
 				const char* pTermEnd;
-				if( IsTermDefine( line, pTermTop, pTermEnd ) )
+				if( IsTermDefine( line, pTermTop, pTermEnd ) ) {
+					Utilities::Trim( pTermTop, pTermEnd );
 					glossary.Register( pTermTop, pTermEnd );
+				}
 				continue;
 			}
 			//コメントの場合
