@@ -23,10 +23,10 @@ namespace turnup {
 		return std::min( t1, std::min( t2, t3 ) );
 	}
 	template <typename T>
-	inline T min10( T t0, T t1, T t2, T t3, T t4, T t5, T t6, T t7, T t8, T t9 ) {
-		return std::min( t0, min3( min3( t1, t2, t3 ),
-								   min3( t4, t5, t6 ),
-								   min3( t7, t8, t9 ) ) );
+	inline T min11( T t0, T t1, T t2, T t3, T t4, T t5, T t6, T t7, T t8, T t9, T t10 ) {
+		return min3( t0, t1, min3( min3( t2, t3, t4 ),
+								   min3( t5, t6, t7 ),
+								   min3( t8, t9, t10 ) ) );
 	}
 
 	static void WriteTextSpanImp( std::ostream& os,
@@ -44,6 +44,10 @@ namespace turnup {
 	static const char* OperateMark( std::ostream& os,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
+	// @{{styles}{xxxxxx}} 形式（styles）を処理する
+	static const char* OperateStyles( std::ostream& os,
+									  const char* pTop, const char* pEnd,
+									  DocumentInfo& docInfo, bool bTermLink );
 	// [label](URL) 形式のリンクを処理する
 	static const char* OperateLink( std::ostream& os,
 									const char* pTop, const char* pEnd,
@@ -275,19 +279,20 @@ namespace turnup {
 	static void WriteTextSpanImp( std::ostream& os,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink ) {
-		auto i0 = std::find( pTop, pEnd, '!' );
-		auto i1 = std::find( pTop, pEnd, '*' );
-		auto i2 = std::find( pTop, pEnd, '<' );
-		auto i3 = std::find( pTop, pEnd, '=' );
-		auto i4 = std::find( pTop, pEnd, '[' );
-		auto i5 = std::find( pTop, pEnd, '^' );
-		auto i6 = std::find( pTop, pEnd, '_' );
-		auto i7 = std::find( pTop, pEnd, '`' );
-		auto i8 = std::find( pTop, pEnd, '{' );
-		auto i9 = std::find( pTop, pEnd, '~' );
+		auto i00 = std::find( pTop, pEnd, '!' );
+		auto i01 = std::find( pTop, pEnd, '*' );
+		auto i02 = std::find( pTop, pEnd, '<' );
+		auto i03 = std::find( pTop, pEnd, '=' );
+		auto i04 = std::find( pTop, pEnd, '@' );
+		auto i05 = std::find( pTop, pEnd, '[' );
+		auto i06 = std::find( pTop, pEnd, '^' );
+		auto i07 = std::find( pTop, pEnd, '_' );
+		auto i08 = std::find( pTop, pEnd, '`' );
+		auto i09 = std::find( pTop, pEnd, '{' );
+		auto i10 = std::find( pTop, pEnd, '~' );
 
 		while( pTop < pEnd ) {
-			auto pStart = min10( i0, i1, i2, i3, i4, i5, i6, i7, i8, i9 );
+			auto pStart = min11( i00, i01, i02, i03, i04, i05, i06, i07, i08, i09, i10 );
 			if( pStart == pEnd ) {
 				WriteWithTermLink( os, pTop, pEnd, docInfo, bTermLink );
 				pTop = pEnd;
@@ -302,6 +307,7 @@ namespace turnup {
 			case '*':	pTop = OperateEmphasis( os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '<':	pTop = OperateTags(     os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '=':	pTop = OperateMark(     os, pTop, pEnd, docInfo, bTermLink );	break;
+			case '@':	pTop = OperateStyles(   os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '[':	pTop = OperateLink(     os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '^':	pTop = OperateSup(      os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '_':	pTop = OperateEmphasis( os, pTop, pEnd, docInfo, bTermLink );	break;
@@ -314,16 +320,17 @@ namespace turnup {
 						pTop = OperateStrike(   os, pTop, pEnd, docInfo, bTermLink );
 					break;
 			}
-			i0 = std::find( pTop, pEnd, '!' );
-			i1 = std::find( pTop, pEnd, '*' );
-			i2 = std::find( pTop, pEnd, '<' );
-			i3 = std::find( pTop, pEnd, '=' );
-			i4 = std::find( pTop, pEnd, '[' );
-			i5 = std::find( pTop, pEnd, '^' );
-			i6 = std::find( pTop, pEnd, '_' );
-			i7 = std::find( pTop, pEnd, '`' );
-			i8 = std::find( pTop, pEnd, '{' );
-			i9 = std::find( pTop, pEnd, '~' );
+			i00 = std::find( pTop, pEnd, '!' );
+			i01 = std::find( pTop, pEnd, '*' );
+			i02 = std::find( pTop, pEnd, '<' );
+			i03 = std::find( pTop, pEnd, '=' );
+			i04 = std::find( pTop, pEnd, '@' );
+			i05 = std::find( pTop, pEnd, '[' );
+			i06 = std::find( pTop, pEnd, '^' );
+			i07 = std::find( pTop, pEnd, '_' );
+			i08 = std::find( pTop, pEnd, '`' );
+			i09 = std::find( pTop, pEnd, '{' );
+			i10 = std::find( pTop, pEnd, '~' );
 		}
 	}
 
@@ -378,6 +385,33 @@ namespace turnup {
 		WriteTextSpanImp( os, pTop + 2, p, docInfo, bTermLink );	// mark タグ内部でさらに他を適用する
 		os << "</mark>";
 		return p + 2;
+	}
+
+	// @{{styles}{xxxxxx}} 形式（styles）を処理する
+	static const char* OperateStyles( std::ostream& os,
+									  const char* pTop, const char* pEnd,
+									  DocumentInfo& docInfo, bool bTermLink ) {
+		(void)docInfo;
+		(void)bTermLink;
+		// @{{ で始まっていなければ無視
+		if( !!::strncmp( pTop, "@{{", 3 ) ) {
+			os.write( pTop, '@' ); 
+			return pTop + 1;
+		}
+		const char* target = "}{";
+		const char* end1 = std::search( pTop + 3, pEnd, target, target + 2 );
+		target = "}}";
+		const char* end2 = std::search( pTop + 3, pEnd, target, target + 2 );
+		if( end1 == pEnd || end2 == pEnd || end2 < end1 ) {
+			os.write( pTop, '@' ); 
+			return pTop + 1;
+		}
+		os << "<span style='";
+		os.write( pTop + 3, end1 - (pTop + 3) );
+		os << "'>";
+		os.write( end1 + 2, end2 - (end1 + 2) );
+		os << "</span>";
+		return end2 + 2;
 	}
 
 	// [label](URL) 形式のリンクを処理する
