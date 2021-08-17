@@ -23,10 +23,10 @@ namespace turnup {
 		return std::min( t1, std::min( t2, t3 ) );
 	}
 	template <typename T>
-	inline T min9( T t1, T t2, T t3, T t4, T t5, T t6, T t7, T t8, T t9 ) {
-		return min3( min3( t1, t2, t3 ),
-					 min3( t4, t5, t6 ),
-					 min3( t7, t8, t9 ) );
+	inline T min10( T t0, T t1, T t2, T t3, T t4, T t5, T t6, T t7, T t8, T t9 ) {
+		return std::min( t0, min3( min3( t1, t2, t3 ),
+								   min3( t4, t5, t6 ),
+								   min3( t7, t8, t9 ) ) );
 	}
 
 	static void WriteTextSpanImp( std::ostream& os,
@@ -54,6 +54,10 @@ namespace turnup {
 								  DocumentInfo& docInfo, bool bTermLink );
 	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
 												 const char* pLabelEnd );
+	// <br> 形式の（一部の許可された）HTMLタグを処理する
+	static const char* OperateTags( std::ostream& os,
+									const char* pTop, const char* pEnd,
+									DocumentInfo& docInfo, bool bTermLink );
 	// `code` 形式を処理する
 	static const char* OperateCode( std::ostream& os,
 									const char* pTop, const char* pEnd,
@@ -271,8 +275,9 @@ namespace turnup {
 	static void WriteTextSpanImp( std::ostream& os,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink ) {
-		auto i1 = std::find( pTop, pEnd, '!' );
-		auto i2 = std::find( pTop, pEnd, '*' );
+		auto i0 = std::find( pTop, pEnd, '!' );
+		auto i1 = std::find( pTop, pEnd, '*' );
+		auto i2 = std::find( pTop, pEnd, '<' );
 		auto i3 = std::find( pTop, pEnd, '=' );
 		auto i4 = std::find( pTop, pEnd, '[' );
 		auto i5 = std::find( pTop, pEnd, '^' );
@@ -282,7 +287,7 @@ namespace turnup {
 		auto i9 = std::find( pTop, pEnd, '~' );
 
 		while( pTop < pEnd ) {
-			auto pStart = min9( i1, i2, i3, i4, i5, i6, i7, i8, i9 );
+			auto pStart = min10( i0, i1, i2, i3, i4, i5, i6, i7, i8, i9 );
 			if( pStart == pEnd ) {
 				WriteWithTermLink( os, pTop, pEnd, docInfo, bTermLink );
 				pTop = pEnd;
@@ -295,6 +300,7 @@ namespace turnup {
 			switch( *pTop ) {
 			case '!':	pTop = OperateImage(    os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '*':	pTop = OperateEmphasis( os, pTop, pEnd, docInfo, bTermLink );	break;
+			case '<':	pTop = OperateTags(     os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '=':	pTop = OperateMark(     os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '[':	pTop = OperateLink(     os, pTop, pEnd, docInfo, bTermLink );	break;
 			case '^':	pTop = OperateSup(      os, pTop, pEnd, docInfo, bTermLink );	break;
@@ -308,8 +314,9 @@ namespace turnup {
 						pTop = OperateStrike(   os, pTop, pEnd, docInfo, bTermLink );
 					break;
 			}
-			i1 = std::find( pTop, pEnd, '!' );
-			i2 = std::find( pTop, pEnd, '*' );
+			i0 = std::find( pTop, pEnd, '!' );
+			i1 = std::find( pTop, pEnd, '*' );
+			i2 = std::find( pTop, pEnd, '<' );
 			i3 = std::find( pTop, pEnd, '=' );
 			i4 = std::find( pTop, pEnd, '[' );
 			i5 = std::find( pTop, pEnd, '^' );
@@ -487,6 +494,24 @@ namespace turnup {
 			}
 		}
 		return pLabelEnd;
+	}
+
+	// <br> 形式の（一部の許可された）HTMLタグを処理する
+	static const char* OperateTags( std::ostream& os,
+									const char* pTop, const char* pEnd,
+									DocumentInfo& docInfo, bool bTermLink ) {
+		(void)pEnd;
+		(void)docInfo;
+		(void)bTermLink;
+		//MEMO : ひとまず <br> だけが対象なので、簡易的な実装にしておく
+
+		// <br> でなければ無視
+		if( !!::strncmp( pTop, "<br>", 4 ) ) {
+			os << "&lt;";
+			return pTop + 1;
+		}
+		os << "<br>";
+		return pTop + 4;
 	}
 
 	// `code` 形式を処理する
