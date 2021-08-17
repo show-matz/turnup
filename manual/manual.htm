@@ -200,8 +200,9 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
+<p>　拡張機能として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。:<mark></mark>: などとした場合、その列は nowrap 指定が追加され、「自動的な折り返し」を禁止することができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。</p>
 <h3><a name='4n3lxYDUT0F'></a>5.6 引用</h3>
-<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup></p>
+<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
 <pre>
 &gt; lv.1 - 1
 &gt; lv.1 - 2
@@ -276,7 +277,7 @@ lv.2<br>
 <h3><a name='fEQY6fCyzn6'></a>5.12 上付きと下付き</h3>
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、<code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='bSYejIfSqoO'></a>5.13 リンク</h3>
-<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
@@ -383,7 +384,7 @@ Table. title of table
 </pre>
 <p>　これによって生成される一覧でも、<a href='#2UrqBZiCjSp'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#kfUSlZMAzlh'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='8DVv96eWYu2'></a>6.9 定義リストへの自動リンク</h3>
-<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
+<p>　<a href='#eJX346arix9'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#fl85VX2ZZgf'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#0KfqQD5EbEw'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#2J9QXGdMTue'>見出しにおける用語の自動リンク</a>があります。</p>
 <h3><a name='9z4cll3GlNe'></a>6.10 フィルタ機能</h3>
 <p>　<a href='#h1tEzgBM5pT'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では<strong>フィルタ機能</strong>と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
@@ -414,7 +415,7 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
@@ -439,7 +440,7 @@ index 16fc9f4..8387187 100644
 </ul>
 <p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
 <h3><a name='1Jf1lCvlKTy'></a>6.12 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup></p>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -456,7 +457,7 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -494,7 +495,7 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='4WLnQlG0n9E'></a>7.5 コメントの出力</h3>
-<p>　<a href='#l2rswZc4S4T'>コメント</a>は記述しても <a class='term' href='#4ghVmsBLrOx'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#4ghVmsBLrOx'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup></p>
+<p>　<a href='#l2rswZc4S4T'>コメント</a>は記述しても <a class='term' href='#4ghVmsBLrOx'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#4ghVmsBLrOx'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
@@ -553,6 +554,7 @@ index 16fc9f4..8387187 100644
 <li>ENHANCE : <a href='#dRWRXrsTE69'>改行の挿入</a>をサポート</li>
 <li>ENHANCE : <a href='#eJX346arix9'>定義リスト</a>において用語の前後のスペースの扱いを緩和し、明確化</li>
 <li>ENHANCE : <a href='#4YOBqhV2F0K'>インラインスタイル指定</a>のサポートを追加</li>
+<li>ENHANCE : <a href='#iSO2TEVEGpH'>テーブル</a>で nowrap を指定させる拡張を追加</li>
 </ul>
 </ul>
 <p>　　</p>
@@ -561,12 +563,13 @@ index 16fc9f4..8387187 100644
 <p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
 <p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
 <p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : この２行目の記述は省略できます。その場合、すべての列がデフォルトの左寄せになります。</p>
-<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
-<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#4ghVmsBLrOx'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
+<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
+<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#1NEVpbU4Vzv'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#4ghVmsBLrOx'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>
