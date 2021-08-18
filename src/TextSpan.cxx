@@ -55,7 +55,7 @@ namespace turnup {
 	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
 								  const char* pLbl1, const char* pLbl2,
 								  const char* pURL1, const char* pURL2,
-								  DocumentInfo& docInfo, bool bTermLink );
+								  DocumentInfo& docInfo );
 	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
 												 const char* pLabelEnd );
 	// <br> 形式の（一部の許可された）HTMLタグを処理する
@@ -443,14 +443,13 @@ namespace turnup {
 		}
 		// ページ内アンカー指定の場合
 		if( pURL1[0] == '#' )
-			OperateInnerLink( os, ToC::EntryT::HEADER, pLbl1, pLbl2,
-							  pURL1 + 1, pURL2, docInfo, bTermLink );
+			OperateInnerLink( os, ToC::EntryT::HEADER,
+							  pLbl1, pLbl2, pURL1 + 1, pURL2, docInfo );
 		else if( (pURL1[0] == 'T' || pURL1[0] == 'F') && pURL1[1] == '#' )
 			OperateInnerLink( os,
 							  pURL1[0] == 'T' ? ToC::EntryT::TABLE
 											  : ToC::EntryT::FIGURE,
-							  pLbl1, pLbl2,
-							  pURL1 + 2, pURL2, docInfo, bTermLink );
+							  pLbl1, pLbl2, pURL1 + 2, pURL2, docInfo );
 		// ページ内アンカー指定でない場合
 		else {
 			if( pLbl1 == pLbl2 ) {
@@ -460,7 +459,7 @@ namespace turnup {
 			os << "<a href='";
 			os.write( pURL1, pURL2 - pURL1 );
 			os << "'>";
-			WriteWithTermLink( os, pLbl1, pLbl2, docInfo, bTermLink );
+			WriteWithEscape( os, pLbl1, pLbl2 );
 			os << "</a>";
 
 		}
@@ -470,7 +469,7 @@ namespace turnup {
 	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
 								  const char* pLbl1, const char* pLbl2,
 								  const char* pURL1, const char* pURL2,
-								  DocumentInfo& docInfo, bool bTermLink ) {
+								  DocumentInfo& docInfo ) {
 		bool bEmptyLabel = (pLbl1 == pLbl2);
 		auto& toc = docInfo.Get<ToC>();
 		const char* pAnchor = toc.GetAnchorTag( type, pURL1, pURL2 );
@@ -491,17 +490,17 @@ namespace turnup {
 				if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
 					os << prefix << ' ';
 			}
-			WriteWithTermLink( os, pURL1, pURL2, docInfo, bTermLink );
+			WriteWithEscape( os, pURL1, pURL2 );
 		} else {
 			while( pLbl1 < pLbl2 ) {
 				const char* pPivot = FindLinkLabelPlaceHolder( pLbl1, pLbl2 );
 				if( pLbl1 < pPivot )
-					WriteWithTermLink( os, pLbl1, pPivot, docInfo, bTermLink );
+					WriteWithEscape( os, pLbl1, pPivot );
 				pLbl1 = pPivot;
 				if( pLbl1 < pLbl2 ) {
 					switch( pLbl1[1] ) {
 					case '$':
-						WriteWithTermLink( os, pURL1, pURL2, docInfo, bTermLink );
+						WriteWithEscape( os, pURL1, pURL2 );
 						break;
 					case '@':
 						if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
