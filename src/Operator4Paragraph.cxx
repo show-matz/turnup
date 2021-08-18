@@ -18,6 +18,8 @@ namespace turnup {
 		for( ; pTop < pEnd; ++pTop ) {
 			if( pTop->IsEmpty() )
 				break;
+			if( pTop->TrimHead().BeginWith( "<!--" ) )
+				break;
 			pTop->WriteTo( std::cout, docInfo );
 		}
 		std::cout << "</p>" << std::endl;

@@ -36,6 +36,7 @@
 <li><a href='#fQEJEnGceop'>5.15 水平線</a></li>
 <li><a href='#1DN9R32VPmV'>5.16 画像の挿入</a></li>
 <li><a href='#dRWRXrsTE69'>5.17 改行の挿入</a></li>
+<li><a href='#lH5PaMY4V5R'>5.18 段落</a></li>
 </ul>
 <li><a href='#fndY0n2YuKG'>6 拡張機能</a></li>
 <ul>
@@ -302,6 +303,9 @@ lv.2<br>
 </pre>
 <h3><a name='dRWRXrsTE69'></a>5.17 改行の挿入</h3>
 <p>　文中で改行させるには、<a class='term' href='#4ghVmsBLrOx'>HTML</a> タグ <code>&lt;br&gt;</code> をそのまま書きます。</p>
+<h3><a name='lH5PaMY4V5R'></a>5.18 段落</h3>
+<p>　拡張機能を含め、他の書法と認識されない行はすべて段落の開始とみなされます。段落は空行または<a href='#l2rswZc4S4T'>コメント</a>行に至るまでのすべての行が連結され、単一の段落として出力されます。</p>
+<p>　 　 </p>
 <h2><a name='fndY0n2YuKG'></a>6 拡張機能</h2>
 <p>　turnup には、いくつかの拡張機能があります。一般的な <a class='term' href='#0KfqQD5EbEw'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kqWPcKEw070'></a>6.1 文書タイトルとスタイルシートの指定</h3>
@@ -585,6 +589,7 @@ index 16fc9f4..8387187 100644
 <li><strong>2021/08/18</strong></li>
 <ul>
 <li>BUGFIX : リンクラベル内部に定義用語があるとリンクがネストする問題の修正</li>
+<li>ENHANCE : 空行に加えてコメント行も段落の終了とみなすように変更</li>
 </ul>
 </ul>
 <hr>
