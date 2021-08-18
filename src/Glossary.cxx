@@ -48,7 +48,7 @@ namespace turnup {
 								  const char* pEnd ) : m_hash( 0 ),
 													   m_length( pEnd - pTop ),
 													   m_pTerm( pTop ) {
-		m_hash = CRC64::Calc( pTop, pEnd, m_anchorTag );
+		m_hash = CRC64::Calc( 'G', pTop, pEnd, m_anchorTag ); // 'G' means glossary.
 	}
 
 	GlossaryEntry::GlossaryEntry( const GlossaryEntry& entry ) : m_hash( entry.m_hash ),
@@ -136,7 +136,7 @@ namespace turnup {
 
 	const char* Glossary::Impl::GetAnchorTag( const char* pTerm,
 											  const char* pTermEnd ) const {
-		uint64_t hash = CRC64::Calc( pTerm, pTermEnd );
+		uint64_t hash = CRC64::Calc( 'G', pTerm, pTermEnd ); // 'G' means glossary.
 		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
 			if( m_entries[i].GetHash() == hash )
 				return m_entries[i].GetAnchorTag();

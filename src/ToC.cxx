@@ -1,4 +1,4 @@
-
+//------------------------------------------------------------------------------
 //
 // ToC.cxx
 //
@@ -47,6 +47,15 @@ namespace turnup {
 		uint8_t numbers[6];
 	};
 
+	inline char GetCrcType( ToC::EntryT entryType ) {
+		switch( entryType ) {
+		case ToC::EntryT::HEADER:	return 'H';
+		case ToC::EntryT::TABLE:	return 'T';
+		case ToC::EntryT::FIGURE:	return 'F';
+		}
+		return 'X';		// 'X' means 'something other else'.
+	}
+
 	//--------------------------------------------------------------------------
 	//
 	// class TocEntry
@@ -92,7 +101,8 @@ namespace turnup {
 															m_level( lv ),
 															m_pTitle( pTitle ),
 															m_chapterNum( chapterNum ) {
-		m_hash = CRC64::Calc( pTitle, nullptr, m_anchorTag );
+		m_hash = CRC64::Calc( GetCrcType( type ),
+							  pTitle, nullptr, m_anchorTag );
 	}
 
 	TocEntry::TocEntry( const TocEntry& entry ) : m_type( entry.m_type ),
@@ -290,7 +300,7 @@ namespace turnup {
 
 	const TocEntry* ToC::Impl::FindEntry( ToC::EntryT type,
 										  const char* pTitle, const char* pTitleEnd ) const {
-		uint64_t hash = CRC64::Calc( pTitle, pTitleEnd );
+		uint64_t hash = CRC64::Calc( GetCrcType( type ), pTitle, pTitleEnd );
 		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
 			const auto& entry = m_entries[i];
 			if( entry.GetType() == type && entry.GetHash() == hash )

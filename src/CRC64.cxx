@@ -19,7 +19,8 @@ namespace turnup {
 	// implementation of class utility CRC64
 	//
 	//--------------------------------------------------------------------------
-	uint64_t CRC64::Calc( const char* pTop, const char* pEnd, char* pTagBuf ) {
+	uint64_t CRC64::Calc( char type,
+						  const char* pTop, const char* pEnd, char* pTagBuf ) {
 
 		uint32_t length = ( pEnd ? pEnd - pTop : ::strlen( pTop ) );
 
@@ -32,6 +33,7 @@ namespace turnup {
 
 		const uint8_t* pBuf = reinterpret_cast<const uint8_t*>( pTop );
 		uint64_t crc = 0xFFFFFFFFFFFFFFFFULL;
+		crc = CRC64( crc, type );
 		for( uint64_t x = 0; x < length; ++x )
 			crc = CRC64( crc, pBuf[x] );
 		if( !!pTagBuf )
