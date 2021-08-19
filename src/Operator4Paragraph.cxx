@@ -6,6 +6,8 @@
 #include "Operator4Paragraph.hxx"
 
 #include "TextSpan.hxx"
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 
 #include <iostream>
 
@@ -14,7 +16,8 @@ namespace turnup {
 	const TextSpan* Operator4Paragraph( const TextSpan* pTop,
 										const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		//MEMO : 基本的にこのオペレータは last resort なので、空行でない限りはすべて処理する。
-		std::cout << "<p>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( std::cout, "p" );
 		for( ; pTop < pEnd; ++pTop ) {
 			if( pTop->IsEmpty() )
 				break;
