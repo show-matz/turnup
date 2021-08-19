@@ -88,8 +88,10 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4PreBlock.o		\
 		$(TARGETDIR)/Operator4Quote.o			\
 		$(TARGETDIR)/Operator4RawHTML.o			\
+		$(TARGETDIR)/Operator4StyleStack.o		\
 		$(TARGETDIR)/Operator4Table.o			\
 		$(TARGETDIR)/Operator4TermDefine.o		\
+		$(TARGETDIR)/StyleStack.o				\
 		$(TARGETDIR)/Utilities.o				\
 		$(TARGETDIR)/main.o						\
 

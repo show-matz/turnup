@@ -1,33 +1,30 @@
 //------------------------------------------------------------------------------
 //
-// DocumentInfo.hxx
+// StyleStack.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef DOCUMENTINFO_HXX__
-#define DOCUMENTINFO_HXX__
+#ifndef STYLESTACK_HXX__
+#define STYLESTACK_HXX__
+
+#include <iosfwd>
 
 namespace turnup {
 
-	class HtmlHeader;
-	class Config;
-	class ToC;
-	class Glossary;
-	class Footnotes;
-	class Filters;
-	class StyleStack;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
-	// class DocumentInfo
+	// class StyleStack
 	//
 	//--------------------------------------------------------------------------
-	class DocumentInfo {
+	class StyleStack {
 	public:
-		DocumentInfo();
-		~DocumentInfo();
+		StyleStack();
+		~StyleStack();
 	public:
-		template <typename T> T& Get();
-		template <typename T> const T& Get() const;
+		void PushStyle( const TextSpan& tagName, const TextSpan& style );
+		bool PopStyle( const TextSpan& tagName );
+		void WriteOpenTag( std::ostream& os, const char* pTagName ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;
@@ -35,4 +32,4 @@ namespace turnup {
 
 } // namespace turnup
 
-#endif // DOCUMENTINFO_HXX__
+#endif // STYLESTACK_HXX__
