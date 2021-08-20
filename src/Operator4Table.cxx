@@ -74,10 +74,11 @@ namespace turnup {
 				bool bNoWrap = false; 
 				auto align  = s_aligns.Get( col, bNoWrap );
 				std::cout << '<' << s_tags[!!row];
-				if( bNoWrap )
-					std::cout << " nowrap";
-				if( 0 < row )
+				if( 0 < row ) {
+					if( bNoWrap )
+						std::cout << " nowrap";
 					std::cout << " align='" << s_labels[align] << "'";
+				}
 				std::cout << '>';
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << s_tags[!!row] << '>';
