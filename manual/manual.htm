@@ -505,7 +505,7 @@ index 16fc9f4..8387187 100644
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
-<p>　<a href='#9rssNl2PzbD'>定義リストへの自動リンク</a>機能は、デフォルトでは見出し文字列には適用されません。これは見出し内にリンクを生成するとうるさくなることや、見出しに存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
+<p>　<a href='#9rssNl2PzbD'>定義リストへの自動リンク</a>機能は、デフォルトでは見出し文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは見出し内にリンクを生成するとうるさくなることや、見出しに存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
 <p>　この挙動を変えたい場合、以下の行を文書内に記載してください。見出し文字列内でも用語の自動リンクが行なわれるようになります。</p>
 <pre>
   &lt;!-- config:term-link-in-header --&gt;			
@@ -632,6 +632,11 @@ index 16fc9f4..8387187 100644
 <ul>
 <li>BUGFIX : 直前のテーブルの nowrap 指定が次のテーブルのヘッダに適用されてしまう問題の修正</li>
 </ul>
+<li><strong>2021/08/22</strong></li>
+<ul>
+<li>ENHANCE : 名前の衝突をチェックしてエラーを出力するように変更</li>
+<li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>における用語自動リンクに関するバグを修正</li>
+</ul>
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
@@ -646,6 +651,5 @@ index 16fc9f4..8387187 100644
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
 <p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
 <p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
-<p>p</p>
 </body>
 </html>
