@@ -29,9 +29,9 @@ namespace turnup {
 		ToC();
 		~ToC();
 	public:
-		void RegisterHeader( uint32_t level, const char* pTitle );
-		void RegisterTable( const char* pTitle );
-		void RegisterFigure( const char* pTitle );
+		bool RegisterHeader( uint32_t level, const char* pTitle );
+		bool RegisterTable( const char* pTitle );
+		bool RegisterFigure( const char* pTitle );
 		const char* GetAnchorTag( EntryT type,
 								  const char* pTitle,
 								  const char* pTitleEnd = nullptr ) const;

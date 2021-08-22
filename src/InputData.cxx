@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 namespace turnup {
 
@@ -117,19 +118,28 @@ namespace turnup {
 			uint32_t lv = line.CountTopOf('#');
 			if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
 				const char* pTitle = line.Top() + lv + 1;
-				toc.RegisterHeader( lv, pTitle );
+				if( toc.RegisterHeader( lv, pTitle ) == false )
+					std::cerr << "ERROR : header '" << pTitle << "' is duplicated." << std::endl;
 				continue;
 			}
 			TextSpan tmp;
 			//図表タイトルであれば ToC に登録する
 			if( line.IsMatch( "Table.", tmp, "" ) ) {
 				tmp = tmp.Trim();
-				toc.RegisterTable( tmp.Top() );
+				if( toc.RegisterTable( tmp.Top() ) == false ) {
+					std::cerr << "ERROR : table '";
+					std::cerr.write( tmp.Top(), tmp.ByteLength() );
+					std::cerr << "' is duplicated." << std::endl;
+				}
 				continue;
 			}
 			if( line.IsMatch( "Figure.", tmp, "" ) ) {
 				tmp = tmp.Trim();
-				toc.RegisterFigure( tmp.Top() );
+				if( toc.RegisterFigure( tmp.Top() ) == false ) {
+					std::cerr << "ERROR : figure '";
+					std::cerr.write( tmp.Top(), tmp.ByteLength() );
+					std::cerr << "' is duplicated." << std::endl;
+				}
 				continue;
 			}
 			//用語定義の処理

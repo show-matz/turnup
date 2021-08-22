@@ -146,7 +146,7 @@ namespace turnup {
 		Impl();
 		~Impl();
 	public:
-		void RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle );
+		bool RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle );
 		const char* GetAnchorTag( ToC::EntryT type,
 								  const char* pTitle, const char* pTitleEnd ) const;
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
@@ -175,14 +175,14 @@ namespace turnup {
 	ToC::~ToC() {
 		delete m_pImpl;
 	}
-	void ToC::RegisterHeader( uint32_t level, const char* pTitle ) {
-		m_pImpl->RegisterImpl( ToC::EntryT::HEADER, level, pTitle );
+	bool ToC::RegisterHeader( uint32_t level, const char* pTitle ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::HEADER, level, pTitle );
 	}
-	void ToC::RegisterTable( const char* pTitle ) {
-		m_pImpl->RegisterImpl( ToC::EntryT::TABLE, 0, pTitle );
+	bool ToC::RegisterTable( const char* pTitle ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::TABLE, 0, pTitle );
 	}
-	void ToC::RegisterFigure( const char* pTitle ) {
-		m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, pTitle );
+	bool ToC::RegisterFigure( const char* pTitle ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, pTitle );
 	}
 	const char* ToC::GetAnchorTag( EntryT type,
 								   const char* pTitle,
@@ -216,13 +216,15 @@ namespace turnup {
 		m_entries.clear();
 	}
 
-	void ToC::Impl::RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle ) {
-		//既存のエントリを走査し、新規エントリの章節番号を特定する
-		//ToDo : g8fV6nATAgJ : こんなことしないでも、最後のエントリが知りたいそれなのでは？ → あとで試そう
+	bool ToC::Impl::RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle ) {
+		//既存のエントリを走査し、タイトル名の重複をチェックしつつ新規エントリの章節番号を特定
+		bool bDuplicated = false;
 		ChapterNumber chapterNum{};
 		auto itr1 = m_entries.begin();
 		auto itr2 = m_entries.end();
 		for( ; itr1 != itr2; ++itr1 ) {
+			if( itr1->GetType() == type && !::strcmp( pTitle, itr1->GetTitle() ) )
+				bDuplicated = true; 
 			if( itr1->GetType() == ToC::EntryT::HEADER )
 				chapterNum.Increment( itr1->GetLevel() );
 		}
@@ -231,6 +233,7 @@ namespace turnup {
 		if( type == ToC::EntryT::HEADER )
 			chapterNum.Increment( level );
 		m_entries.emplace_back( type, level, pTitle, chapterNum );
+		return !bDuplicated;
 	}
 
 	const char* ToC::Impl::GetAnchorTag( ToC::EntryT type,
