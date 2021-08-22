@@ -36,6 +36,9 @@ namespace turnup {
 		virtual const TextSpan* End() const override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
 	private:
+		static char* FixLineEnd( char* pTop, char* pEnd );
+		static char* FixLineContinuous( char* pTop, char* pEnd );
+	private:
 		WholeFile*				m_pFileData;
 		std::vector<TextSpan>	m_lines;
 	};
@@ -70,12 +73,12 @@ namespace turnup {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		char* pTop = m_pFileData->GetBuffer<char>();
 		char* pEnd = pTop + m_pFileData->Count<char>();
+		pEnd = FixLineEnd( pTop, pEnd );
+		pEnd = FixLineContinuous( pTop, pEnd );
 		while( pTop < pEnd ) {
 			char* pEOL = std::find( pTop, pEnd, 0x0A );
 			char* pNext = pEOL + 1;
 			pEOL[0] = 0;
-			if( pEOL[-1] == 0x0D )
-				*--pEOL = 0;
 			m_lines.emplace_back( pTop, pEOL );
 			pTop = pNext;
 		}
@@ -208,6 +211,44 @@ namespace turnup {
 				}
 			}
 		}
+	}
+
+	char* InputDataImpl::FixLineEnd( char* pTop, char* pEnd ) {
+		char target[2] = { 0x0D, 0x0A };
+		//ひとつめの CrLf を検索
+		char* p = std::search( pTop, pEnd, target, target + 2 );
+		if( p == pEnd ) {
+			//みつからなければ何もしないでよし
+			return pEnd;
+		}
+		pTop = p + 1;
+		char* pDest = p;
+		while( pTop < pEnd ) {
+			p = std::search( pTop, pEnd, target, target + 2 );
+			pDest = std::copy( pTop, p, pDest );
+			pTop = p + 1;
+		}
+		*pDest = 0;
+		return pDest;
+	}
+
+	char* InputDataImpl::FixLineContinuous( char* pTop, char* pEnd ) {
+		char target[3] = { ' ', '\\', 0x0A };
+		//ひとつめの継続行を検索
+		char* p = std::search( pTop, pEnd, target, target + 3 );
+		if( p == pEnd ) {
+			//みつからなければ何もしないでよし
+			return pEnd;
+		}
+		pTop = p + 3;
+		char* pDest = p;
+		while( pTop < pEnd ) {
+			p = std::search( pTop, pEnd, target, target + 3 );
+			pDest = std::copy( pTop, p, pDest );
+			pTop = p + 3;
+		}
+		*pDest = 0;
+		return pDest;
 	}
 
 } // namespace turnup
