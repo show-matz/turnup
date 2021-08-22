@@ -11,6 +11,7 @@
 
 namespace turnup {
 
+	class DocumentInfo;
 	class Config;
 
 	//--------------------------------------------------------------------------
@@ -38,10 +39,11 @@ namespace turnup {
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
 							 const char* pTitle, const char* pTitleEnd = nullptr ) const;
 	public:
-		void WriteTOC( std::ostream& os, const Config& cfg,
+		void WriteTOC( std::ostream& os,
+					   const DocumentInfo& docInfo,
 					   uint32_t minLevel, uint32_t maxLevel ) const;
-		void WriteTableList( std::ostream& os, const Config& cfg ) const;
-		void WriteFigureList( std::ostream& os, const Config& cfg ) const;
+		void WriteTableList( std::ostream& os, const DocumentInfo& docInfo ) const;
+		void WriteFigureList( std::ostream& os, const DocumentInfo& docInfo ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;

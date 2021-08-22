@@ -6,6 +6,7 @@
 #include "TextSpan.hxx"
 
 #include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "Config.hxx"
 #include "ToC.hxx"
 #include "Footnotes.hxx"
@@ -344,7 +345,8 @@ namespace turnup {
 			os << "^";
 			return pTop + 1;
 		}
-		os << "<sup>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "sup" );
 		WriteTextSpanImp( os, pTop + 1, p, docInfo, bTermLink );	// sup タグ内部でさらに他を適用する
 		os << "</sup>";
 		return p + 1;
@@ -359,7 +361,8 @@ namespace turnup {
 			os << "~";
 			return pTop + 1;
 		}
-		os << "<sub>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "sub" );
 		WriteTextSpanImp( os, pTop + 1, p, docInfo, bTermLink );	// sub タグ内部でさらに他を適用する
 		os << "</sub>";
 		return p + 1;
@@ -381,7 +384,8 @@ namespace turnup {
 			os << "==";
 			return pTop + 2;
 		}
-		os << "<mark>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "mark" );
 		WriteTextSpanImp( os, pTop + 2, p, docInfo, bTermLink );	// mark タグ内部でさらに他を適用する
 		os << "</mark>";
 		return p + 2;
@@ -406,7 +410,7 @@ namespace turnup {
 			os.write( pTop, '@' ); 
 			return pTop + 1;
 		}
-		os << "<span style='";
+		os << "<span style='";	//MEMO : ignore StyleStack.
 		os.write( pTop + 3, end1 - (pTop + 3) );
 		os << "'>";
 		os.write( end1 + 2, end2 - (end1 + 2) );
@@ -477,7 +481,7 @@ namespace turnup {
 			std::cerr << "ERROR : invalid link anchor '";
 			std::cerr.write( pURL1, pURL2 - pURL1 );
 			std::cerr << "'." << std::endl;
-			os << "<font color='red'>!!!ERROR : invalid internal anchor '";
+			os << "<font color='red'>!!!ERROR : invalid internal anchor '";	//MEMO : ignore StyleStack.
 			os.write( pURL1, pURL2 - pURL1 );
 			os << "'.</font>";
 			return;
@@ -543,7 +547,8 @@ namespace turnup {
 			os << "&lt;";
 			return pTop + 1;
 		}
-		os << "<br>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "br" );
 		return pTop + 4;
 	}
 
@@ -558,7 +563,8 @@ namespace turnup {
 			os << "`";
 			return pTop + 1;
 		}
-		os << "<code>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "code" );
 		WriteWithEscape( os, pTop + 1, p );	// code タグ内部ではネストさせないし用語の自動リンクもしない
 		os << "</code>";
 		return p + 1;
@@ -568,7 +574,6 @@ namespace turnup {
 	static const char* OperateImage( std::ostream& os,
 									 const char* pTop, const char* pEnd,
 									 DocumentInfo& docInfo, bool bTermLink ) {
-		(void)docInfo;
 		(void)bTermLink;
 		// 終端の ) を検索
 		auto pDelim = std::find( pTop, pEnd, ')' );
@@ -584,7 +589,8 @@ namespace turnup {
 			os << "!";
 			return pTop + 1;
 		}
-		os << "<img src='";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "img", nullptr, " src='" );
 		os.write( url.Top(), url.ByteLength() );
 		os << "' ";
 		if( alt.IsEmpty() == false ) {
@@ -612,7 +618,8 @@ namespace turnup {
 			os << "~~";
 			return pTop + 2;
 		}
-		os << "<strike>";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "strike" );
 		WriteTextSpanImp( os, pTop + 2, p, docInfo, bTermLink );	// 取り消し線内部でさらに他を適用する
 		os << "</strike>";
 		return p + 2;
@@ -637,8 +644,9 @@ namespace turnup {
 			os.write( pTop, cnt );
 			return pTop + cnt;
 		}
-		if( cnt & 1 )	os << "<em>";
-		if( cnt & 2 )	os << "<strong>";
+		auto& styles = docInfo.Get<StyleStack>();
+		if( cnt & 1 )	styles.WriteOpenTag( os, "em" );
+		if( cnt & 2 )	styles.WriteOpenTag( os, "strong" );
 		WriteTextSpanImp( os, pTop + cnt, p, docInfo, bTermLink );	// 強調内部でさらに他を適用する
 		if( cnt & 2 )	os << "</strong>";
 		if( cnt & 1 )	os << "</em>";
@@ -663,8 +671,10 @@ namespace turnup {
 			return pTop + 5;
 		}
 		uint32_t idx = docInfo.Get<Footnotes>().Register( pTop + 5, p );
-		os << "<sup><a name='footnote_ref" << idx << "' "
-				   << "href='#footnote"    << idx << "'>"
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "sup" )
+		   << "<a name='footnote_ref" << idx << "' "
+		   << "href='#footnote" << idx << "'>"
 		   << idx
 		   << "</a></sup>";
 		return p + 2;

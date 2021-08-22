@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "ToC.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "Config.hxx"
 #include "CRC64.hxx"
 
@@ -152,10 +154,11 @@ namespace turnup {
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
 							 const char* pTitle, const char* pTitleEnd ) const;
 	public:
-		void WriteTOC( std::ostream& os, const Config& cfg,
+		void WriteTOC( std::ostream& os,
+					   const DocumentInfo& docInfo,
 					   uint32_t minLevel, uint32_t maxLevel ) const;
 		void WriteTableFigureList( std::ostream& os,
-								   const Config& cfg, ToC::EntryT type ) const;
+								   ToC::EntryT type, const DocumentInfo& docInfo ) const;
 	private:
 		const TocEntry* FindEntry( ToC::EntryT type,
 								   const char* pTitle, const char* pTitleEnd ) const;
@@ -193,15 +196,16 @@ namespace turnup {
 							  const char* pTitle, const char* pTitleEnd ) const {
 		return m_pImpl->GetEntryNumber( pBuf, type, cfg, pTitle, pTitleEnd );
 	}
-	void ToC::WriteTOC( std::ostream& os, const Config& cfg,
+	void ToC::WriteTOC( std::ostream& os,
+						const DocumentInfo& docInfo,
 						uint32_t minLevel, uint32_t maxLevel ) const {
-		m_pImpl->WriteTOC( os, cfg, minLevel, maxLevel );
+		m_pImpl->WriteTOC( os, docInfo, minLevel, maxLevel );
 	}
-	void ToC::WriteTableList( std::ostream& os, const Config& cfg ) const {
-		m_pImpl->WriteTableFigureList( os, cfg, ToC::EntryT::TABLE );
+	void ToC::WriteTableList( std::ostream& os, const DocumentInfo& docInfo ) const {
+		m_pImpl->WriteTableFigureList( os, ToC::EntryT::TABLE, docInfo );
 	}
-	void ToC::WriteFigureList( std::ostream& os, const Config& cfg ) const {
-		m_pImpl->WriteTableFigureList( os, cfg, ToC::EntryT::FIGURE );
+	void ToC::WriteFigureList( std::ostream& os, const DocumentInfo& docInfo ) const {
+		m_pImpl->WriteTableFigureList( os, ToC::EntryT::FIGURE, docInfo );
 	}
 
 	//--------------------------------------------------------------------------
@@ -256,10 +260,13 @@ namespace turnup {
 		return true;
 	}
 
-	void ToC::Impl::WriteTOC( std::ostream& os, const Config& cfg,
+	void ToC::Impl::WriteTOC( std::ostream& os,
+							  const DocumentInfo& docInfo,
 							  uint32_t minLevel, uint32_t maxLevel ) const {
+		auto& cfg    = docInfo.Get<Config>();
+		auto& styles = docInfo.Get<StyleStack>();
 		uint32_t curLevel = minLevel;
-		os << "<ul>" << std::endl;
+		styles.WriteOpenTag( os, "ul" ) << std::endl;
 
 		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
 			const TocEntry& entry = m_entries[i];
@@ -269,10 +276,11 @@ namespace turnup {
 			if( lv < minLevel || maxLevel < lv )
 				continue;
 			for( ; curLevel < lv; ++curLevel )
-				os << "<ul>" << std::endl;
+				styles.WriteOpenTag( os, "ul" ) << std::endl;
 			for( ; lv < curLevel; --curLevel )
 				os << "</ul>" << std::endl;
-			os << "<li><a href='#" << entry.GetAnchorTag() << "'>";
+			styles.WriteOpenTag( os, "li" )
+						<< "<a href='#" << entry.GetAnchorTag() << "'>";
 			if( cfg.bNumberingHeader ) {
 				char chapter[32];
 				entry.GetChapterPrefix( cfg, chapter );
@@ -286,14 +294,17 @@ namespace turnup {
 	}
 
 	void ToC::Impl::WriteTableFigureList( std::ostream& os,
-										  const Config& cfg, ToC::EntryT type ) const {
-		os << "<ul>" << std::endl;
+										  ToC::EntryT type, const DocumentInfo& docInfo ) const {
+		auto& cfg    = docInfo.Get<Config>();
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, "ul" ) << std::endl;
 
 		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
 			const TocEntry& entry = m_entries[i];
 			if( entry.GetType() != type )
 				continue;
-			os << "<li><a href='#" << entry.GetAnchorTag() << "'>";
+			styles.WriteOpenTag( os, "li" )
+							<< "<a href='#" << entry.GetAnchorTag() << "'>";
 			char prefix[64];
 			this->GetFigureAndTablePrefix( prefix, &entry, cfg );
 			os << prefix << ' '  << entry.GetTitle() << "</a></li>" << std::endl;

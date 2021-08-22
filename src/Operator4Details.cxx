@@ -7,6 +7,7 @@
 
 #include "TextSpan.hxx"
 #include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "Glossary.hxx"
 #include "Utilities.hxx"
 #include "Config.hxx"
@@ -23,9 +24,10 @@ namespace turnup {
 			return nullptr;
 
 		if( type.IsEqual( "begin" ) ) {
-			std::cout << "<details>" << std::endl;
-			std::cout << "<summary>";
+			auto& styles = docInfo.Get<StyleStack>();
 			auto& cfg = docInfo.Get<Config>();
+			styles.WriteOpenTag( std::cout, "details" ) << std::endl;
+			styles.WriteOpenTag( std::cout, "summary" );
 			pTop[1].WriteTo( std::cout, docInfo, cfg.bTermLinkInHeader );
 			std::cout << "</summary>" << std::endl;
 			return pTop + 2;

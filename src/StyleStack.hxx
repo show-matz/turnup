@@ -24,7 +24,10 @@ namespace turnup {
 	public:
 		void PushStyle( const TextSpan& tagName, const TextSpan& style );
 		bool PopStyle( const TextSpan& tagName );
-		void WriteOpenTag( std::ostream& os, const char* pTagName ) const;
+		std::ostream& WriteOpenTag( std::ostream& os,
+									const char* pTagName,
+									const char* pDefault = nullptr,
+									const char* pTail = nullptr ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;

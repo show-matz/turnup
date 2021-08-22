@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4Quote.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <stdint.h>
@@ -21,12 +23,14 @@ namespace turnup {
 		if( !curLevel )
 			return nullptr;
 
+		auto& styles = docInfo.Get<StyleStack>();
+
 		for( uint32_t lvl = 0; lvl < curLevel; ++lvl )
-			std::cout << "<blockquote>" << std::endl;
+			styles.WriteOpenTag( std::cout, "blockquote" ) << std::endl;
 
 		do {
 			line.WriteTo( std::cout, docInfo );
-			std::cout << "<br>" << std::endl;
+			styles.WriteOpenTag( std::cout, "br" ) << std::endl;
 			if( ++pTop == pEnd )
 				break;
 			line = *pTop;
@@ -34,7 +38,7 @@ namespace turnup {
 			if( !newLevel )
 				break;
 			for( ; curLevel < newLevel; ++curLevel )
-				std::cout << "<blockquote>" << std::endl;
+				styles.WriteOpenTag( std::cout, "blockquote" ) << std::endl;
 			for( ; newLevel < curLevel; --curLevel )
 				std::cout << "</blockquote>" << std::endl;
 		} while( true );

@@ -7,6 +7,7 @@
 
 #include "TextSpan.hxx"
 #include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "Config.hxx"
 #include "ToC.hxx"
 
@@ -19,12 +20,14 @@ namespace turnup {
 									 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		(void)pEnd;
 		auto& toc = docInfo.Get<ToC>();
+		auto& styles = docInfo.Get<StyleStack>();
 		uint32_t level = pTop->CountTopOf( '#' );
 		if( !level || 6 < level || (*pTop)[level] != ' ' )
 			return nullptr;
 		TextSpan tmp = TextSpan{ pTop->Top() + level, pTop->End() }.Trim();
 		const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER, tmp.Top(), tmp.End() );
-		std::cout << "<h" << level << ">";
+		char tag[3] = { 'h', (char)('0'+level), 0 };
+		styles.WriteOpenTag( std::cout, tag );
 		if( pTag )
 			std::cout << "<a name='" << pTag << "'></a>";
 		else {

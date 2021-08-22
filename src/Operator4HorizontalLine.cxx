@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4HorizontalLine.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 #include "Utilities.hxx"
 
@@ -16,7 +18,6 @@ namespace turnup {
 	const TextSpan* Operator4HorizontalLine( const TextSpan* pTop,
 											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		(void)pEnd;
-		(void)docInfo;
 
 		char cands[] = { '-', '=', '_', '*' };
 		for( uint32_t i = 0; i < count_of(cands); ++i ) {
@@ -25,7 +26,8 @@ namespace turnup {
 				continue;
 			if( cnt < pTop->ByteLength() )
 				continue;
-			std::cout << "<hr>" << std::endl;
+			auto& styles = docInfo.Get<StyleStack>();
+			styles.WriteOpenTag( std::cout, "hr" ) << std::endl;
 			return pTop + 1;
 		}
 		return nullptr;

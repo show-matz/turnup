@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4NumberedList.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <stdint.h>
@@ -16,16 +18,17 @@ namespace turnup {
 
 	const TextSpan* Operator4NumberedList( const TextSpan* pTop,
 										   const TextSpan* pEnd, DocumentInfo& docInfo ) {
+		auto& styles = docInfo.Get<StyleStack>();
 		TextSpan line = *pTop;
 		uint32_t curLevel = GetNumberedListLevel( line );
 		if( !curLevel )
 			return nullptr;
 
 		for( uint32_t lvl = 0; lvl < curLevel; ++lvl )
-			std::cout << "<ol>" << std::endl;
+			styles.WriteOpenTag( std::cout, "ol" ) << std::endl;
 
 		do {
-			std::cout << "<li>";
+			styles.WriteOpenTag( std::cout, "li" );
 			line.WriteTo( std::cout, docInfo );
 			std::cout << "</li>" << std::endl;
 			if( ++pTop == pEnd )
@@ -35,7 +38,7 @@ namespace turnup {
 			if( !newLevel )
 				break;
 			for( ; curLevel < newLevel; ++curLevel )
-				std::cout << "<ol>" << std::endl;
+				styles.WriteOpenTag( std::cout, "ol" ) << std::endl;
 			for( ; newLevel < curLevel; --curLevel )
 				std::cout << "</ol>" << std::endl;
 		} while( true );

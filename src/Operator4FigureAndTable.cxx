@@ -5,8 +5,9 @@
 //------------------------------------------------------------------------------
 #include "Operator4FigureAndTable.hxx"
 
-#include "TextSpan.hxx"
 #include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
+#include "TextSpan.hxx"
 #include "Config.hxx"
 #include "ToC.hxx"
 
@@ -19,7 +20,7 @@ namespace turnup {
 											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		(void)pEnd;
 
-		const char* const classes[] = { "", "tbl_title", "fig_title" };
+		const char* const classes[] = { "", " class='tbl_title'", " class='fig_title'" };
 
 		ToC::EntryT	type;
 		TextSpan	title;
@@ -32,10 +33,11 @@ namespace turnup {
 
 		title = title.Trim();
 
-		auto& toc = docInfo.Get<ToC>();
+		auto& toc    = docInfo.Get<ToC>();
+		auto& styles = docInfo.Get<StyleStack>();
 		const char* pTag = toc.GetAnchorTag( type, title.Top(), title.End() );
 
-		std::cout << "<p class='" << classes[static_cast<uint32_t>( type )] << "'>";
+		styles.WriteOpenTag( std::cout, "p", classes[(uint32_t)type] );
 		if( pTag )
 			std::cout << "<a name='" << pTag << "'></a>";
 		else {

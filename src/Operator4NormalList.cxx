@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4NormalList.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <stdint.h>
@@ -17,22 +19,23 @@ namespace turnup {
 
 	const TextSpan* Operator4NormalList( const TextSpan* pTop,
 										 const TextSpan* pEnd, DocumentInfo& docInfo ) {
+		auto& styles = docInfo.Get<StyleStack>();
 		TextSpan line = *pTop;
 		uint32_t curLevel = GetNormalListLevel( line );
 		if( !curLevel )
 			return nullptr;
 
 		for( uint32_t lvl = 0; lvl < curLevel; ++lvl )
-			std::cout << "<ul>" << std::endl;
+			styles.WriteOpenTag( std::cout, "ul" ) << std::endl;
 
 		do {
 			bool checked = false;
 			if( IsCheckListItem( line, checked ) == false ) {
-				std::cout << "<li>";
+				styles.WriteOpenTag( std::cout, "li" );
 				line.WriteTo( std::cout, docInfo );
 				std::cout << "</li>" << std::endl;
 			} else {
-				std::cout << "<li style='list-style-type:none;'>"
+				std::cout << "<li style='list-style-type:none;'>"	//MEMO : ignore StyleStack.
 						  << "<input type='checkbox' onclick='return false;'"
 						  << (checked ? " checked" : "") << ">";
 				line.WriteTo( std::cout, docInfo );
@@ -45,7 +48,7 @@ namespace turnup {
 			if( !newLevel )
 				break;
 			for( ; curLevel < newLevel; ++curLevel )
-				std::cout << "<ul>" << std::endl;
+				styles.WriteOpenTag( std::cout, "ul" ) << std::endl;
 			for( ; newLevel < curLevel; --curLevel )
 				std::cout << "</ul>" << std::endl;
 		} while( true );

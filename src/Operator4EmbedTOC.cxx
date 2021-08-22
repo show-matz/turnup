@@ -45,8 +45,7 @@ namespace turnup {
 		}
 		if( !isError ) {
 			auto& toc = docInfo.Get<ToC>();
-			toc.WriteTOC( std::cout,
-						  docInfo.Get<Config>(), lvls[0], lvls[1] );
+			toc.WriteTOC( std::cout, docInfo, lvls[0], lvls[1] );
 		}
 		return pTop + 1;
 	}
@@ -58,7 +57,7 @@ namespace turnup {
 		if( pTop->IsEqual( "<!-- embed:table-list -->" ) == false )
 			return nullptr;
 		auto& toc = docInfo.Get<ToC>();
-		toc.WriteTableList( std::cout, docInfo.Get<Config>() );
+		toc.WriteTableList( std::cout, docInfo );
 		return pTop + 1;
 	}
 
@@ -69,7 +68,7 @@ namespace turnup {
 		if( pTop->IsEqual( "<!-- embed:figure-list -->" ) == false )
 			return nullptr;
 		auto& toc = docInfo.Get<ToC>();
-		toc.WriteFigureList( std::cout, docInfo.Get<Config>() );
+		toc.WriteFigureList( std::cout, docInfo );
 		return pTop + 1;
 	}
 

@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Filters.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 #include "InternalFilter.hxx"
 
@@ -23,7 +25,8 @@
 
 namespace turnup {
 
-	static void DefaultFilter( std::ostream& os,
+	static void DefaultFilter( std::ostream& os, 
+							   const DocumentInfo& docInfo,
 							   const TextSpan* pTop, const TextSpan* pEnd );
 	static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
 							   const TextSpan* pTop, const TextSpan* pEnd );
@@ -42,7 +45,9 @@ namespace turnup {
 		~Impl();
 	public:
 		void RegistExternal( const TextSpan& label, const TextSpan& command );
-		bool ExecuteFilter( std::ostream& os, const TextSpan& type,
+		bool ExecuteFilter( std::ostream& os, 
+							const TextSpan& type,
+							const DocumentInfo& docInfo,
 							const TextSpan* pTop, const TextSpan* pEnd );
 	private:
 		ExtFilterList m_externals;
@@ -62,9 +67,11 @@ namespace turnup {
 	void Filters::RegistExternal( const TextSpan& label, const TextSpan& command ) {
 		return m_pImpl->RegistExternal( label, command );
 	}
-	bool Filters::ExecuteFilter( std::ostream& os, const TextSpan& type,
+	bool Filters::ExecuteFilter( std::ostream& os,
+								 const TextSpan& type,
+								 const DocumentInfo& docInfo,
 								 const TextSpan* pTop, const TextSpan* pEnd ) {
-		return m_pImpl->ExecuteFilter( os, type, pTop, pEnd );
+		return m_pImpl->ExecuteFilter( os, type, docInfo, pTop, pEnd );
 	}
 
 	//--------------------------------------------------------------------------
@@ -80,11 +87,13 @@ namespace turnup {
 	void Filters::Impl::RegistExternal( const TextSpan& label, const TextSpan& command ) {
 		m_externals.emplace_back( label, command );
 	}
-	bool Filters::Impl::ExecuteFilter( std::ostream& os, const TextSpan& type,
+	bool Filters::Impl::ExecuteFilter( std::ostream& os,
+									   const TextSpan& type,
+									   const DocumentInfo& docInfo,
 									   const TextSpan* pTop, const TextSpan* pEnd ) {
 		// type 指定がなければデフォルトの <pre> 出力で終了
 		if( type.IsEmpty() ) {
-			DefaultFilter( os, pTop, pEnd );
+			DefaultFilter( os, docInfo, pTop, pEnd );
 			return true;
 		}
 		/* 外部フィルタを優先して検索 */ {
@@ -104,7 +113,7 @@ namespace turnup {
 			}
 		}
 		// 指定された名前のフィルタが見つからない場合はデフォルトの <pre> 出力で false 復帰
-		DefaultFilter( os, pTop, pEnd );
+		DefaultFilter( os, docInfo, pTop, pEnd );
 		return false;
 	}
 
@@ -114,8 +123,10 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	static void DefaultFilter( std::ostream& os,
+							   const DocumentInfo& docInfo,
 							   const TextSpan* pTop, const TextSpan* pEnd ) {
-		os << "<pre>" << std::endl;
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( std::cout, "pre" ) << std::endl;
 		for( ; pTop < pEnd; ++pTop ) {
 			pTop->WriteSimple( os ) << std::endl;
 		}

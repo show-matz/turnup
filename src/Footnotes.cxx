@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Footnotes.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <vector>
@@ -66,13 +68,14 @@ namespace turnup {
 
 	void Footnotes::Impl::WriteFootnotes( std::ostream& os,
 										  DocumentInfo& docInfo ) const {
+		auto& styles = docInfo.Get<StyleStack>();
 		auto itr1 = m_notes.begin();
 		auto itr2 = m_notes.end();
 		for( uint32_t idx = 0; itr1 != itr2; ++itr1 ) {
 			++idx;
 			const TextSpan& line = *itr1;
-			os << "<p class='footnote'><a name='footnote" << idx << "' "
-			   <<       "href='#footnote_ref" << idx << "'>"
+			styles.WriteOpenTag( os, "p", " class='footnote'" );
+			os << "<a name='footnote" << idx << "' href='#footnote_ref" << idx << "'>"
 			   << idx << "</a> : ";
 			line.WriteTo( os, docInfo );
 			os << "</p>" << std::endl;

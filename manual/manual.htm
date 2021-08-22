@@ -71,16 +71,16 @@
 <p>　turnup は、<a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法で作成したテキストファイルから <a class='term' href='#ahN3t8jbawv'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
 <h2><a name='dcPEbaWhYMa'></a>3 用語</h2>
 <dl>
-  <dt><a name='fgvQnqibuC4'></a>GFM</dt>
-  <dd>GitHub Flavored <a class='term' href='#b3GXdVHw3CE'>Markdown</a> というものの略語だそうです。turnup は可能な範囲でサポートするように心掛けています。</dd>
+<dt><a name='fgvQnqibuC4'></a>GFM</dt>
+<dd>GitHub Flavored <a class='term' href='#b3GXdVHw3CE'>Markdown</a> というものの略語だそうです。turnup は可能な範囲でサポートするように心掛けています。</dd>
 </dl>
 <dl>
-  <dt><a name='b3GXdVHw3CE'></a>Markdown</dt>
-  <dd>マークダウンと読みます。<a class='term' href='#ahN3t8jbawv'>HTML</a> の Mark up をしないで済むという意図なんでしょうけど、命名にセンスが‥‥‥ね。</dd>
+<dt><a name='b3GXdVHw3CE'></a>Markdown</dt>
+<dd>マークダウンと読みます。<a class='term' href='#ahN3t8jbawv'>HTML</a> の Mark up をしないで済むという意図なんでしょうけど、命名にセンスが‥‥‥ね。</dd>
 </dl>
 <dl>
-  <dt><a name='ahN3t8jbawv'></a>HTML</dt>
-  <dd>Hyper text markup language の略語です。</dd>
+<dt><a name='ahN3t8jbawv'></a>HTML</dt>
+<dd>Hyper text markup language の略語です。</dd>
 </dl>
 <h2><a name='h1vILBov6aJ'></a>4 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
@@ -368,6 +368,7 @@ Table. title of table
 <p style="color: red;">ここは赤字のはず。</p>
 <p>ここも範囲外です。</p>
 </details>
+<p>　スタイルスタックの効果は、<a href='#f71ZNSHqufB'>フィルタ機能</a>が生成する出力には及びません。また、その他にもスタイルスタックが影響しないタグが存在します。</p>
 <h3><a name='cjJv49XsD9d'></a>6.5 ページ内へのリンク</h3>
 <p>　リンクの書法を拡張することで、ページ内の<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成することができます。</p>
 <p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
@@ -627,10 +628,13 @@ index 16fc9f4..8387187 100644
 <ul>
 <li>ENHANCE : <a href='#dOeJnU6OE95'>スタイルスタック</a>拡張を追加</li>
 </ul>
+<<<<<<< HEAD
 <li><strong>2021/08/20</strong></li>
 <ul>
 <li>BUGFIX : 直前のテーブルの nowrap 指定が次のテーブルのヘッダに適用されてしまう問題の修正</li>
 </ul>
+=======
+>>>>>>> 6DcmmYiCurs_style_stack
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>

@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4Image.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <iostream>
@@ -20,7 +22,9 @@ namespace turnup {
 		if( line.IsMatch( "![", alt, "](", url, ")" ) == false )
 			return nullptr;
 
-		std::cout << "<p align='center'><img src='";
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( std::cout, "img",
+							 " style='display: block; margin: auto;'", " src='" );
 		std::cout.write( url.Top(), url.ByteLength() );
 		std::cout << "' ";
 		if( alt.IsEmpty() == false ) {
@@ -28,7 +32,7 @@ namespace turnup {
 			alt.WriteTo( std::cout, docInfo );
 			std::cout << "' ";
 		}
-		std::cout << "/></p>" << std::endl;
+		std::cout << "/>" << std::endl;
 		return pTop + 1;
 	}
 

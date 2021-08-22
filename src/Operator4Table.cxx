@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "Operator4Table.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
 #include <stdint.h>
@@ -48,12 +50,17 @@ namespace turnup {
 	const TextSpan* Operator4Table( const TextSpan* pTop,
 									const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		static const char* const s_tags[]   = { "th", "td" };
-		static const char* const s_labels[] = { "left", "center", "right" };
+		static const char* const s_styles[] = {
+			" nowrap align='left'",
+			" nowrap align='center'",
+			" nowrap align='right'"
+		};
 		TextSpan line = pTop->TrimHead();
 		if( line[0] != '|' )
 			return nullptr;
 
-		std::cout << "<table align='center'>" << std::endl;
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( std::cout, "table", " align='center'" ) << std::endl;
 		for( uint32_t row = 0; pTop < pEnd; ++pTop, ++row ) {
 
 			line = pTop->Trim();
@@ -63,7 +70,7 @@ namespace turnup {
 			if( row == 1 && s_aligns.Load( line ) )
 				continue;
 
-			std::cout << "<tr>";
+			styles.WriteOpenTag( std::cout, "tr" );
 			auto p1 = line.Top();
 			auto p2 = line.End();
 			for( uint32_t col = 0;  p1 < p2; ++col ) {
@@ -73,13 +80,14 @@ namespace turnup {
 				auto item   = TextSpan{ p1 + 1, pDelim }.Trim();
 				bool bNoWrap = false; 
 				auto align  = s_aligns.Get( col, bNoWrap );
-				std::cout << '<' << s_tags[!!row];
+				const char* pDefaultStyle = "";
 				if( 0 < row ) {
-					if( bNoWrap )
-						std::cout << " nowrap";
-					std::cout << " align='" << s_labels[align] << "'";
+					pDefaultStyle =  s_styles[align];
+					if( !bNoWrap )
+						pDefaultStyle += 7;
+
 				}
-				std::cout << '>';
+				styles.WriteOpenTag( std::cout, s_tags[!!row], pDefaultStyle );
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << s_tags[!!row] << '>';
 				p1 = pDelim;

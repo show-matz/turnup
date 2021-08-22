@@ -85,17 +85,20 @@ namespace turnup {
 		return m_pImpl->PopStyle( tagName );
 	}
 
-	void StyleStack::WriteOpenTag( std::ostream& os, const char* pTagName ) const {
+	std::ostream& StyleStack::WriteOpenTag( std::ostream& os, const char* pTagName,
+											const char* pDefault, const char* pTail ) const {
 		const TextSpan* pStyle = nullptr;
+		if( !pTail )	pTail    = ">";
+		if( !pDefault )	pDefault = "";
 		if( m_pImpl )
 			pStyle = m_pImpl->GetCurrentStyle( pTagName );
 		if( !pStyle )
-			os << '<' << pTagName << '>';
+			os << '<' << pTagName << pDefault << pTail;
 		else {
 			os << '<' << pTagName << ' ';
-			pStyle->WriteSimple( os );
-			os << '>';
+			pStyle->WriteSimple( os ) << pTail;
 		}
+		return os;
 	}
 
 

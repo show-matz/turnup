@@ -51,7 +51,7 @@ namespace turnup {
 		ExecRecursive( os, TextSpan{ span.Top(), result.Top() }, pUnit + 1 );
 
 		//発見した範囲を span tag 付きで出力
-		os << "<span class='" << pUnit->className << "'>";
+		os << "<span class='" << pUnit->className << "'>";	//MEMO : ignore StyleStack.
 		result.WriteSimple( os );
 		os << "</span>";
 		

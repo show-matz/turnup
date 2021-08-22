@@ -10,6 +10,7 @@
 
 namespace turnup {
 
+	class DocumentInfo;
 	class TextSpan;
 
 	//--------------------------------------------------------------------------
@@ -23,7 +24,9 @@ namespace turnup {
 		~Filters();
 	public:
 		void RegistExternal( const TextSpan& label, const TextSpan& command );
-		bool ExecuteFilter( std::ostream& os, const TextSpan& type,
+		bool ExecuteFilter( std::ostream& os,
+							const TextSpan& type,
+							const DocumentInfo& docInfo,
 							const TextSpan* pTop, const TextSpan* pEnd );
 	private:
 		class Impl;

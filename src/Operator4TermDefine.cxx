@@ -7,6 +7,7 @@
 
 #include "TextSpan.hxx"
 #include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
 #include "Glossary.hxx"
 #include "Utilities.hxx"
 
@@ -37,18 +38,20 @@ namespace turnup {
 		if( IsTermDefine( *pTop, p1, p2 ) == false )
 			return nullptr;
 
+		auto& styles = docInfo.Get<StyleStack>();
 		{
 			const char* pTermTop = p1;
 			const char* pTermEnd = p2;
 			Utilities::Trim( pTermTop, pTermEnd );
 			auto& glossary = docInfo.Get<Glossary>();
 			const char* pAnchor = glossary.GetAnchorTag( pTermTop, pTermEnd );
-			std::cout << "<dl>" << std::endl;
-			std::cout << "  <dt><a name='" << pAnchor <<  "'></a>";
+			styles.WriteOpenTag( std::cout, "dl" ) << std::endl;
+			styles.WriteOpenTag( std::cout, "dt" );
+			std::cout << "<a name='" << pAnchor <<  "'></a>";
 			std::cout.write( pTermTop, pTermEnd - pTermTop );
 			std::cout << "</dt>" << std::endl;
 		}
-		std::cout << "  <dd>"; {
+		styles.WriteOpenTag( std::cout, "dd" ); {
 			TextSpan line = *pTop;
 			line = line.Chomp( (p2+2) - pTop->Top(), 0 ).Trim();
 			line.WriteTo( std::cout, docInfo );
