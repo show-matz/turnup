@@ -1,34 +1,29 @@
 //------------------------------------------------------------------------------
 //
-// DocumentInfo.hxx
+// StylePalette.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef DOCUMENTINFO_HXX__
-#define DOCUMENTINFO_HXX__
+#ifndef STYLEPALETTE_HXX__
+#define STYLEPALETTE_HXX__
+
+#include <stdint.h>
 
 namespace turnup {
 
-	class HtmlHeader;
-	class Config;
-	class ToC;
-	class Glossary;
-	class Footnotes;
-	class Filters;
-	class StyleStack;
-	class StylePalette;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
-	// class DocumentInfo
+	// class StylePalette
 	//
 	//--------------------------------------------------------------------------
-	class DocumentInfo {
+	class StylePalette {
 	public:
-		DocumentInfo();
-		~DocumentInfo();
+		StylePalette();
+		~StylePalette();
 	public:
-		template <typename T> T& Get();
-		template <typename T> const T& Get() const;
+		void RegisterStyle( uint32_t index, const TextSpan& style );
+		const TextSpan* GetStyle( uint32_t index ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;
@@ -36,4 +31,4 @@ namespace turnup {
 
 } // namespace turnup
 
-#endif // DOCUMENTINFO_HXX__
+#endif // STYLEPALETTE_HXX__

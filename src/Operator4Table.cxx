@@ -7,6 +7,7 @@
 
 #include "DocumentInfo.hxx"
 #include "StyleStack.hxx"
+#include "StylePalette.hxx"
 #include "TextSpan.hxx"
 
 #include <stdint.h>
@@ -15,6 +16,9 @@
 #include <algorithm>
 
 namespace turnup {
+
+	static void WriteWithPalette( std::ostream& os, const char* tag,
+								  const TextSpan* pPalette, const char* pStyle = nullptr );
 
 	//--------------------------------------------------------------------------
 	//
@@ -60,22 +64,43 @@ namespace turnup {
 			return nullptr;
 
 		auto& styles = docInfo.Get<StyleStack>();
+		auto& palette = docInfo.Get<StylePalette>();
 		styles.WriteOpenTag( std::cout, "table", " align='center'" ) << std::endl;
 		for( uint32_t row = 0; pTop < pEnd; ++pTop, ++row ) {
 
 			line = pTop->Trim();
+
+			uint32_t idx = 10;	// palette index : 10 means 'not specified'.
+			TextSpan tmp;
+			TextSpan rest;
+
+			// 行頭が [N| で始まる場合に tr にスタイル付けをする
+			if( line.IsMatch( "[", tmp, "|", rest, "" ) &&
+					tmp.ByteLength() == 1 && '0' <= tmp[0] && tmp[0] <= '9' ) {
+				idx  = (tmp[0] - '0');
+				line = TextSpan{ rest.Top() - 1, rest.End() };
+			}
 			if( line[0] != '|' )
 				break;
 
 			if( row == 1 && s_aligns.Load( line ) )
 				continue;
 
-			styles.WriteOpenTag( std::cout, "tr" );
+			if( idx == 10 )
+				styles.WriteOpenTag( std::cout, "tr" );
+			else
+				WriteWithPalette( std::cout, "tr", palette.GetStyle( idx ) );
+
 			auto p1 = line.Top();
 			auto p2 = line.End();
 			for( uint32_t col = 0;  p1 < p2; ++col ) {
 				if( *p1 == '|' && p1+1 == p2 )
 					break;
+				idx = 10;
+				if( p1[2] == ']' && '0' <= p1[1] && p1[1] <= '9' ) {
+					idx = p1[1] - '0';
+					p1 += 2;
+				}
 				auto pDelim = std::find( p1 + 1, p2, '|' );
 				auto item   = TextSpan{ p1 + 1, pDelim }.Trim();
 				bool bNoWrap = false; 
@@ -87,7 +112,11 @@ namespace turnup {
 						pDefaultStyle += 7;
 
 				}
-				styles.WriteOpenTag( std::cout, s_tags[!!row], pDefaultStyle );
+				if( idx == 10 )
+					styles.WriteOpenTag( std::cout, s_tags[!!row], pDefaultStyle );
+				else
+					WriteWithPalette( std::cout, s_tags[!!row],
+									  palette.GetStyle( idx ), pDefaultStyle );
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << s_tags[!!row] << '>';
 				p1 = pDelim;
@@ -168,6 +197,23 @@ namespace turnup {
 			m_pColumns->clear();
 	}
 
+
+	//--------------------------------------------------------------------------
+	//
+	// local functions
+	//
+	//--------------------------------------------------------------------------
+	static void WriteWithPalette( std::ostream& os, const char* tag,
+								  const TextSpan* pPalette, const char* pStyle ) {
+		os << '<' << tag;
+		if( !!pPalette ) {
+			os << ' ';
+			os.write( pPalette->Top(), pPalette->ByteLength() );
+		}
+		if( !!pStyle )
+			os << pStyle;
+		os << ">";
+	}
 
 } // namespace turnup
 

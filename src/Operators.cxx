@@ -21,6 +21,7 @@
 #include "Operator4PreBlock.hxx"
 #include "Operator4Quote.hxx"
 #include "Operator4RawHTML.hxx"
+#include "Operator4StylePalette.hxx"
 #include "Operator4StyleStack.hxx"
 #include "Operator4Table.hxx"
 #include "Operator4TermDefine.hxx"
@@ -55,6 +56,7 @@ namespace turnup {
 		Operator4EmbedFootnotes,
 		Operator4EmbedPageBreak,
 		Operator4StyleStack,
+		Operator4StylePalette,
 		Operator4Comment,
 		Operator4HorizontalLine,
 		Operator4Paragraph
