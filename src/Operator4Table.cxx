@@ -21,8 +21,11 @@ namespace turnup {
 							 uint32_t* pIndex = nullptr, TextSpan* pRest = nullptr );
 	static const TextSpan* FindAlignmentLine( const TextSpan* pTop,
 											  const TextSpan* pEnd );
+	static const char* RetrieveColSpan( const char* p1,
+										const char* p2, uint32_t& colSpan );
 	static void WriteWithPalette( std::ostream& os, const char* tag,
-								  const TextSpan* pPalette, const char* pStyle = nullptr );
+								  const TextSpan* pPalette,
+								  const char* pStyle = nullptr, const char* pTail = nullptr );
 
 	//--------------------------------------------------------------------------
 	//
@@ -106,6 +109,9 @@ namespace turnup {
 					idx = p1[1] - '0';
 					p1 += 2;
 				}
+				uint32_t colSpan = 0;
+				p1 = RetrieveColSpan( p1, p2, colSpan );
+
 				auto pDelim = std::find( p1 + 1, p2, '|' );
 				auto item   = TextSpan{ p1 + 1, pDelim }.Trim();
 				bool bNoWrap = false; 
@@ -119,10 +125,13 @@ namespace turnup {
 				}
 				const char* pTag = s_tags[borderLine <= row];
 				if( idx == 10 )
-					styles.WriteOpenTag( std::cout, pTag, pDefaultStyle );
+					styles.WriteOpenTag( std::cout, pTag, pDefaultStyle, "" );
 				else
 					WriteWithPalette( std::cout, pTag,
-									  palette.GetStyle( idx ), pDefaultStyle );
+									  palette.GetStyle( idx ), pDefaultStyle, "" );
+				if( 1 < colSpan )
+					std::cout << " colspan='" << colSpan <<  "'";
+				std::cout << '>';
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << pTag << '>';
 				p1 = pDelim;
@@ -243,8 +252,25 @@ namespace turnup {
 		return nullptr;
 	}
 
+	static const char* RetrieveColSpan( const char* p1,
+										const char* p2, uint32_t& colSpan ) {
+		auto chk = []( char c ) -> bool {
+			return '0' <= c && c <= '9';
+		};
+		colSpan = 0;
+		auto delim = std::find( p1, p2, '>' );
+		if( delim == p2 )
+			return p1;
+		if( std::all_of( p1+1, delim, chk ) == false )
+			return p1;
+		for( ++p1; p1 < delim; ++p1 )
+			colSpan = (colSpan * 10) + (*p1 - '0');
+		return delim + 1;
+	}
+
 	static void WriteWithPalette( std::ostream& os, const char* tag,
-								  const TextSpan* pPalette, const char* pStyle ) {
+								  const TextSpan* pPalette,
+								  const char* pStyle, const char* pTail ) {
 		os << '<' << tag;
 		if( !!pPalette ) {
 			os << ' ';
@@ -252,7 +278,7 @@ namespace turnup {
 		}
 		if( !!pStyle )
 			os << pStyle;
-		os << ">";
+		os << (pTail ? pTail : ">");
 	}
 
 } // namespace turnup
