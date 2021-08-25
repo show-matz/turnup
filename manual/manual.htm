@@ -44,16 +44,17 @@
 <li><a href='#gg7i7uPfLlo'>6.2 図と表のタイトル</a></li>
 <li><a href='#2Hh9eF0BTk3'>6.3 インラインスタイル指定</a></li>
 <li><a href='#dOeJnU6OE95'>6.4 スタイルスタック</a></li>
-<li><a href='#cjJv49XsD9d'>6.5 ページ内へのリンク</a></li>
-<li><a href='#6LkDjrI3ASb'>6.6 生の HTML の出力</a></li>
-<li><a href='#9Dfk88hOKmk'>6.7 脚注</a></li>
-<li><a href='#7maM1Z8DaEp'>6.8 目次の生成</a></li>
-<li><a href='#iVFblGs7lu7'>6.9 図表一覧の生成</a></li>
-<li><a href='#9rssNl2PzbD'>6.10 定義リストへの自動リンク</a></li>
-<li><a href='#f71ZNSHqufB'>6.11 フィルタ機能</a></li>
-<li><a href='#18dTPnzNOgg'>6.12 外部フィルタの登録</a></li>
-<li><a href='#hMHXjTrWEnw'>6.13 領域の折り畳み</a></li>
-<li><a href='#hs1guSfsFGb'>6.14 改ページ指定</a></li>
+<li><a href='#hVp0EDLBsmJ'>6.5 スタイルパレット</a></li>
+<li><a href='#cjJv49XsD9d'>6.6 ページ内へのリンク</a></li>
+<li><a href='#6LkDjrI3ASb'>6.7 生の HTML の出力</a></li>
+<li><a href='#9Dfk88hOKmk'>6.8 脚注</a></li>
+<li><a href='#7maM1Z8DaEp'>6.9 目次の生成</a></li>
+<li><a href='#iVFblGs7lu7'>6.10 図表一覧の生成</a></li>
+<li><a href='#9rssNl2PzbD'>6.11 定義リストへの自動リンク</a></li>
+<li><a href='#f71ZNSHqufB'>6.12 フィルタ機能</a></li>
+<li><a href='#18dTPnzNOgg'>6.13 外部フィルタの登録</a></li>
+<li><a href='#hMHXjTrWEnw'>6.14 領域の折り畳み</a></li>
+<li><a href='#hs1guSfsFGb'>6.15 改ページ指定</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -186,7 +187,7 @@ int main( void ) {
     return 0;
 }
 </pre>
-<p>　拡張機能として、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#f71ZNSHqufB'>6.11  フィルタ機能</a>を参照してください。</p>
+<p>　拡張機能として、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#f71ZNSHqufB'>6.12  フィルタ機能</a>を参照してください。</p>
 <h3><a name='g6xjP526KX7'></a>5.5 テーブル</h3>
 <p>　以下のような記述でテーブルを作成できます。１行目は常にヘッダ（th タグ）であり、各列の中央揃え、右寄せなどを制御したい場合には ２行目に :---: や ---: を記述します。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
 <pre>
@@ -285,7 +286,7 @@ lv.2<br>
   [テキスト](URL)
 </pre>
 <p>　たとえば、<code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
-<p>　拡張機能として、ページ内の見出しや図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.5  節</a>を参照してください。</p>
+<p>　拡張機能として、ページ内の見出しや図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.6  節</a>を参照してください。</p>
 <h3><a name='2TegSYAerqJ'></a>5.14 コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
 <pre>
@@ -369,7 +370,35 @@ Table. title of table
 <p>ここも範囲外です。</p>
 </details>
 <p>　スタイルスタックの効果は、<a href='#f71ZNSHqufB'>フィルタ機能</a>が生成する出力には及びません。また、その他にもスタイルスタックが影響しないタグが存在します。</p>
-<h3><a name='cjJv49XsD9d'></a>6.5 ページ内へのリンク</h3>
+<h3><a name='hVp0EDLBsmJ'></a>6.5 スタイルパレット</h3>
+<p>　<a href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、<strong>「スタイルパレット」</strong>が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
+<pre>
+ &lt;!-- palette: 0 style="background: #f4f4f4;" --&gt;
+ &lt;!-- palette: 1 style="color: red;" --&gt;
+</pre>
+<p>　<code>&lt;!-- palette: </code> に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code> --&gt;</code> で終了します。</p>
+<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a href='#g6xjP526KX7'>テーブル</a>しかスタイルパレットに対応していない<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>ため、ここではテーブルでの利用方法を説明します。以下に例を示します。</p>
+<pre>
+  | title | count | price | 
+  |:------|------:|------:|
+  | foo   |     1 |   666 |
+[0| bar   |     2 |1] -99 |
+  | baz   |     3 |1]  -8 |
+[0| quux  |     4 |   123 |
+</pre>
+<ul>
+<li>行全体にスタイルを適用したい場合、行頭の | の手前に <code>[N</code> を記述</li>
+<li>セル単独でスタイルを適用したい場合は、セルを開始する | に続けて <code>N]</code> を記述</li>
+</ul>
+<p>　上記において、N は適用したいスタイルを登録したパレットのインデックスです。実際に使ってみると、以下のように表示されます。</p>
+<table align='center'>
+<tr><th>title</th><th>count</th><th>price</th></tr>
+<tr><td align='left'>foo</td><td align='right'>1</td><td align='right'>666</td></tr>
+<tr style="background: #f4f4f4;"><td align='left'>bar</td><td align='right'>2</td><td style="color: red;" align='right'>-99</td></tr>
+<tr><td align='left'>baz</td><td align='right'>3</td><td style="color: red;" align='right'>-8</td></tr>
+<tr style="background: #f4f4f4;"><td align='left'>quux</td><td align='right'>4</td><td align='right'>123</td></tr>
+</table>
+<h3><a name='cjJv49XsD9d'></a>6.6 ページ内へのリンク</h3>
 <p>　リンクの書法を拡張することで、ページ内の<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成することができます。</p>
 <p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
 <p>　図表タイトルへのリンクを作成するには、（ちょっと無様ですが）以下のように F#, T# に続けてタイトルを記述します。それ以外のルールは見出しへのリンクと同じです。</p>
@@ -382,7 +411,7 @@ Table. title of table
 <li><code>$@</code> : 自動ナンバリングによって付与されるプレフィクス</li>
 <li><code>$$</code> : 見出しや図表タイトルの文字列</li>
 </ul>
-<h3><a name='6LkDjrI3ASb'></a>6.6 生の <a class='term' href='#ahN3t8jbawv'>HTML</a> の出力</h3>
+<h3><a name='6LkDjrI3ASb'></a>6.7 生の <a class='term' href='#ahN3t8jbawv'>HTML</a> の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> をそのまま出力することができます。</p>
 <pre>
   &lt;raw_html&gt;
@@ -390,7 +419,7 @@ Table. title of table
       :
   &lt;/raw_html&gt;
 </pre>
-<h3><a name='9Dfk88hOKmk'></a>6.7 脚注</h3>
+<h3><a name='9Dfk88hOKmk'></a>6.8 脚注</h3>
 <p>　文章中に脚注を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
 <pre>
   {{fn:これが脚注の内容です。}}
@@ -400,7 +429,7 @@ Table. title of table
   &lt;!-- embed:footnotes --&gt;
 </pre>
 <p>　このマニュアル文書でも、いくつかの脚注を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
-<h3><a name='7maM1Z8DaEp'></a>6.8 目次の生成</h3>
+<h3><a name='7maM1Z8DaEp'></a>6.9 目次の生成</h3>
 <p>　見出し情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
 <pre>
   &lt;!-- embed:toc --&gt;
@@ -410,7 +439,7 @@ Table. title of table
   &lt;!-- embed:toc 2 4 --&gt;
 </pre>
 <p>　この例では、見出しレベル２〜４までが目次化の対象となります。</p>
-<h3><a name='iVFblGs7lu7'></a>6.9 図表一覧の生成</h3>
+<h3><a name='iVFblGs7lu7'></a>6.10 図表一覧の生成</h3>
 <p>　目次と同様、図と表の一覧を生成することができます。以下のように記述すると、その場所に図の一覧が作成されます。</p>
 <pre>
   &lt;!-- embed:figure-list --&gt;
@@ -420,10 +449,10 @@ Table. title of table
   &lt;!-- embed:table-list --&gt;
 </pre>
 <p>　これによって生成される一覧でも、<a href='#gg7i7uPfLlo'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
-<h3><a name='9rssNl2PzbD'></a>6.10 定義リストへの自動リンク</h3>
-<p>　<a href='#9PbJaRizVB7'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup></p>
+<h3><a name='9rssNl2PzbD'></a>6.11 定義リストへの自動リンク</h3>
+<p>　<a href='#9PbJaRizVB7'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#fH3KsaVXKY8'>見出しにおける用語の自動リンク</a>があります。</p>
-<h3><a name='f71ZNSHqufB'></a>6.11 フィルタ機能</h3>
+<h3><a name='f71ZNSHqufB'></a>6.12 フィルタ機能</h3>
 <p>　<a href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では<strong>フィルタ機能</strong>と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
 <pre>
 ~~~diff
@@ -452,14 +481,14 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
 <li>diff</li>
 </ul>
-<p>　しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.12  外部フィルタの登録</a>を参照してください。また内蔵のフィルタ機能については<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
-<h3><a name='18dTPnzNOgg'></a>6.12 外部フィルタの登録</h3>
+<p>　しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.13  外部フィルタの登録</a>を参照してください。また内蔵のフィルタ機能については<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
+<h3><a name='18dTPnzNOgg'></a>6.13 外部フィルタの登録</h3>
 <p>　<a href='#2HUs4TZfCPd'>preブロック</a> で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
 <pre>
   &lt;!-- filter:foo = quux %in %out --&gt;
@@ -476,7 +505,7 @@ index 16fc9f4..8387187 100644
 <li>%out に指定した一時ファイルの内容を読み込み、preブロックのフィルタ結果として出力する</li>
 </ul>
 <p>　外部フィルタは turnup が提供するフィルタ機能よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
-<h3><a name='hMHXjTrWEnw'></a>6.13 領域の折り畳み</h3>
+<h3><a name='hMHXjTrWEnw'></a>6.14 領域の折り畳み</h3>
 <p>　以下のように 2 つのコメントで囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
 <pre>
   &lt;!-- collapse:begin --&gt;
@@ -497,8 +526,8 @@ index 16fc9f4..8387187 100644
 <li>contents3</li>
 </ul>
 </details>
-<h3><a name='hs1guSfsFGb'></a>6.14 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup></p>
+<h3><a name='hs1guSfsFGb'></a>6.15 改ページ指定</h3>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -515,7 +544,7 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -553,7 +582,7 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
@@ -641,6 +670,10 @@ index 16fc9f4..8387187 100644
 <li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>における用語自動リンクに関するバグを修正</li>
 <li>ENHANCE : スペース＋バックスラッシュを使用した継続行の機能を追加</li>
 </ul>
+<li><strong>2021/08/25</strong></li>
+<ul>
+<li>ENHANCE : <a href='#hVp0EDLBsmJ'>スタイルパレット</a>拡張を追加</li>
+</ul>
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
@@ -650,10 +683,11 @@ index 16fc9f4..8387187 100644
 <p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
 <p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
 <p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : テーブル以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>
