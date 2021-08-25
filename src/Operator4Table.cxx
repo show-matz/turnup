@@ -17,6 +17,10 @@
 
 namespace turnup {
 
+	static bool IsTableLine( const TextSpan* pLine,
+							 uint32_t* pIndex = nullptr, TextSpan* pRest = nullptr );
+	static const TextSpan* FindAlignmentLine( const TextSpan* pTop,
+											  const TextSpan* pEnd );
 	static void WriteWithPalette( std::ostream& os, const char* tag,
 								  const TextSpan* pPalette, const char* pStyle = nullptr );
 
@@ -59,33 +63,34 @@ namespace turnup {
 			" nowrap align='center'",
 			" nowrap align='right'"
 		};
-		TextSpan line = pTop->TrimHead();
-		if( line[0] != '|' )
+		// テーブル行でなければ　nullptr 復帰で終了
+		if( IsTableLine( pTop ) == false )
 			return nullptr;
+
+		// header/contents 境界（かつ aligment 指定）行を検索
+		uint32_t borderLine = 1;
+		const TextSpan* pAlignment = FindAlignmentLine( pTop, pEnd );
+		if( !!pAlignment )
+			borderLine = pAlignment - pTop;
+
 
 		auto& styles = docInfo.Get<StyleStack>();
 		auto& palette = docInfo.Get<StylePalette>();
 		styles.WriteOpenTag( std::cout, "table", " align='center'" ) << std::endl;
 		for( uint32_t row = 0; pTop < pEnd; ++pTop, ++row ) {
 
-			line = pTop->Trim();
+			TextSpan line;
+			uint32_t idx;	// palette index : 10 means 'not specified'.
 
-			uint32_t idx = 10;	// palette index : 10 means 'not specified'.
-			TextSpan tmp;
-			TextSpan rest;
-
-			// 行頭が [N| で始まる場合に tr にスタイル付けをする
-			if( line.IsMatch( "[", tmp, "|", rest, "" ) &&
-					tmp.ByteLength() == 1 && '0' <= tmp[0] && tmp[0] <= '9' ) {
-				idx  = (tmp[0] - '0');
-				line = TextSpan{ rest.Top() - 1, rest.End() };
-			}
-			if( line[0] != '|' )
+			// パレットインデックス等を回収しつつテーブル行かチェック→違うならループ脱出
+			if( IsTableLine( pTop, &idx, &line ) == false )
 				break;
-
-			if( row == 1 && s_aligns.Load( line ) )
+			// header/contents 境界（かつ aligment 指定）行ならロードしてループ継続
+			if( !!pAlignment && row == borderLine ) {
+				s_aligns.Load( line );
 				continue;
-
+			}
+			// tr タグ開始
 			if( idx == 10 )
 				styles.WriteOpenTag( std::cout, "tr" );
 			else
@@ -112,13 +117,14 @@ namespace turnup {
 						pDefaultStyle += 7;
 
 				}
+				const char* pTag = s_tags[borderLine <= row];
 				if( idx == 10 )
-					styles.WriteOpenTag( std::cout, s_tags[!!row], pDefaultStyle );
+					styles.WriteOpenTag( std::cout, pTag, pDefaultStyle );
 				else
-					WriteWithPalette( std::cout, s_tags[!!row],
+					WriteWithPalette( std::cout, pTag,
 									  palette.GetStyle( idx ), pDefaultStyle );
 				item.WriteTo( std::cout, docInfo );
-				std::cout << "</" << s_tags[!!row] << '>';
+				std::cout << "</" << pTag << '>';
 				p1 = pDelim;
 			}
 			std::cout << "</tr>" << std::endl;
@@ -203,6 +209,40 @@ namespace turnup {
 	// local functions
 	//
 	//--------------------------------------------------------------------------
+	static bool IsTableLine( const TextSpan* pLine,
+							 uint32_t* pIndex, TextSpan* pRest ) {
+		TextSpan line = pLine->Trim();
+		if( line[0] == '|' ) {
+			if( !!pIndex )	*pIndex = 10;
+			if( !!pRest )	*pRest  = line;
+			return true;
+		}
+		TextSpan tmp;
+		TextSpan rest;
+		if( line.IsMatch( "[", tmp, "|", rest, "" ) &&
+				tmp.ByteLength() == 1 && '0' <= tmp[0] && tmp[0] <= '9' ) {
+			if( !!pIndex )	*pIndex = (tmp[0] - '0');
+			if( !!pRest )	*pRest  = TextSpan{ rest.Top() - 1, rest.End() };
+			return true;
+		}
+		return false;
+	}
+
+	static const TextSpan* FindAlignmentLine( const TextSpan* pTop, 
+											  const TextSpan* pEnd ) {
+		auto chk = []( char c ) {
+			return c == '-' || c == '=' || c == '|' || c == ':' || c == ' ';
+		};
+		for( ; pTop < pEnd; ++pTop ) {
+			TextSpan line = pTop->Trim();
+			if( IsTableLine( &line ) == false )
+				break;
+			if( std::all_of( line.Top(), line.End(), chk ) == true )
+				return pTop;
+		}
+		return nullptr;
+	}
+
 	static void WriteWithPalette( std::ostream& os, const char* tag,
 								  const TextSpan* pPalette, const char* pStyle ) {
 		os << '<' << tag;
