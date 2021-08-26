@@ -117,7 +117,7 @@ namespace turnup {
 				bool bNoWrap = false; 
 				auto align  = s_aligns.Get( col, bNoWrap );
 				const char* pDefaultStyle = "";
-				if( 0 < row ) {
+				if( borderLine <= row ) {
 					pDefaultStyle =  s_styles[align];
 					if( !bNoWrap )
 						pDefaultStyle += 7;
