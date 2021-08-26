@@ -66,10 +66,14 @@ blockquote{
 }
 hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;
 	 border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
-pre, code, kbd, samp { color: #000; background:#eee;
-					   	line-height:1.2em;
-					   _font-family: monospace, monospace;
-					   font-family: 'Courier New', monospace; font-size: 0.98em; }
+pre, kbd, samp { color: #000; background:#eee;
+				 line-height:1.2em;
+				 _font-family: monospace, monospace;
+				 font-family: 'Courier New', monospace; font-size: 0.98em; }
+code { color: #000;
+	   line-height:1.2em;
+	   _font-family: monospace, monospace;
+	   font-family: 'Courier New', monospace; font-size: 0.98em; }
 pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
 
 b, strong { font-weight: bold; }
