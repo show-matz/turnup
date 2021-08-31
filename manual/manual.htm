@@ -10,7 +10,7 @@
 <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
 <h1><a name='iI4sykJQemx'></a>README - turnup</h1>
-<p>　この文書は、<strong>turnup</strong> のためのマニュアル文書です。</p>
+<p>　この文書は、 <strong>turnup</strong> のためのマニュアル文書です。</p>
 <h2><a name='0qJQvVjc3Xy'></a>1 Table of contents</h2>
 <ul>
 <li><a href='#0qJQvVjc3Xy'>1 Table of contents</a></li>
@@ -65,6 +65,13 @@
 <li><a href='#8a3vnTcmVrk'>7.5 コメントの出力</a></li>
 </ul>
 <li><a href='#4e69JBVCRLW'>8 細かい話</a></li>
+<ul>
+<li><a href='#fSSOiFwQpEj'>8.1 入力ファイルのエンコーディングと改行スタイル</a></li>
+<li><a href='#9s47bTtYstx'>8.2 文字装飾やリンクの制約と継続行</a></li>
+<li><a href='#6lxsyJvfG4q'>8.3 一部の文字装飾における制約</a></li>
+<li><a href='#l3wNcsiymoY'>8.4 フィルタ機能について</a></li>
+<li><a href='#8pNcG5W73uy'>8.5 領域の折り畳みについて</a></li>
+</ul>
 <li><a href='#dGdSPnvay5N'>9 更新履歴</a></li>
 </ul>
 <p>　</p>
@@ -82,6 +89,10 @@
 <dl>
 <dt><a name='ahN3t8jbawv'></a>HTML</dt>
 <dd>Hyper text markup language の略語です。</dd>
+</dl>
+<dl>
+<dt><a name='8sf6EgPf8j8'></a>空白類文字</dt>
+<dd>スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。</dd>
 </dl>
 <h2><a name='h1vILBov6aJ'></a>4 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
@@ -218,7 +229,7 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　拡張機能として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。<code>:====:</code> などとした場合、その列は nowrap 指定が追加され、「自動的な折り返し」を禁止することができます<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。</p>
+<p>　拡張機能として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、「自動的な折り返し」を禁止することができます<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。</p>
 <p>　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に渡るヘッダ行を記述することができます。以下のように。</p>
 <pre>
 	|     A    |     B    |    C     |	
@@ -231,7 +242,7 @@ int main( void ) {
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th>A</th><th>B</th><th>C</th></tr>
-<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
+<tr><th>Alpha</th><th>Bravo</th><th>Charlie</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
@@ -248,7 +259,7 @@ int main( void ) {
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th colspan='2'>A &amp; B</th><th>C</th></tr>
-<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
+<tr><th>Alpha</th><th>Bravo</th><th>Charlie</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
@@ -318,28 +329,32 @@ lv.2<br>
 <h3><a name='d2FXT7Fqg21'></a>5.9 強調</h3>
 <p>　1 〜 3 個の連続するアスタリスクまたはアンダースコアで括ることにより、文字列を強調することができます。どのように表示されるのかは、スタイルシート次第です。</p>
 <ul>
-<li>１つだと、em タグによる強調になります。<code>*これ*</code>が、<em>これ</em> になります。</li>
-<li>２つだと、strong タグによる強調になります。<code>**これ**</code>が、<strong>これ</strong> になります。</li>
-<li>３つだと、em と strong の併用になります。<code>***これ***</code>が、<em><strong>これ</strong></em> になります。</li>
+<li>１つだと、em タグによる強調になります。 <code>*これ*</code> が、 <em>これ</em> になります。</li>
+<li>２つだと、strong タグによる強調になります。 <code>**これ**</code> が、 <strong>これ</strong> になります。</li>
+<li>３つだと、em と strong の併用になります。 <code>***これ***</code> が、 <em><strong>これ</strong></em> になります。</li>
 </ul>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='hBdBkqlaJVW'></a>5.10 取消し線</h3>
-<p>　２つのチルダ ~~ で括ることで、文字列に取消線を引くことができます。<code>~~この部分は取消し~~</code>が、<strike>この部分は取消し</strike>になります。</p>
+<p>　２つのチルダ ~~ で括ることで、文字列に取消線を引くことができます。<code>~~この部分は取消し~~</code> が、 <strike>この部分は取消し</strike> になります。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='9k1sm8QrDHi'></a>5.11 マーカー</h3>
-<p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、<code>==例えばこんなふう==</code>が、<mark>例えばこんなふう</mark>になります。</p>
+<p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、 <code>==例えばこんなふう==</code> が、 <mark>例えばこんなふう</mark> になります。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='hVz7Qq0YetS'></a>5.12 上付きと下付き</h3>
-<p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、<code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
+<p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、 <code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='fbLcMRTVXac'></a>5.13 リンク</h3>
 <p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
-<p>　たとえば、<code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
+<p>　たとえば、 <code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
 <p>　拡張機能として、ページ内の見出しや図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.6  節</a>を参照してください。</p>
 <h3><a name='2TegSYAerqJ'></a>5.14 コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、用語の自動リンクやその他の文字装飾は実行されません。</p>
 <pre>
   `code`
 </pre>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='ba5hSrekAxp'></a>5.15 水平線</h3>
 <p>　行頭からハイフン、等号、アンダースコア、アスタリスクを３個以上を記述すると水平線として出力されます。文字種は混在させないでください。</p>
 <h3><a name='hpQu1WK1Nkr'></a>5.16 画像の挿入</h3>
@@ -382,22 +397,22 @@ Table. title of table
 <p>　この方法でタイトルをつけておけば、同じく拡張機能の<a href='#iVFblGs7lu7'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
 <p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.3 インラインスタイル指定</h3>
-<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のような書法で、<code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
+<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のような書法で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
 <pre>
  @{{STYLES}{CONTETS}}
 </pre>
-<p>　上記は、<code>&lt;span style='STYLES'&gt;CONTENTS&lt;/span&gt;</code> のように展開されます。たとえば、<code>@{{background:red; color:white;}{赤地の白抜き}}</code> が<span style='background:red; color:white;'>赤地の白抜き</span>になります。</p>
+<p>　上記は、 <code>&lt;span style='STYLES'&gt;CONTENTS&lt;/span&gt;</code> のように展開されます。たとえば、<code>@{{background:red; color:white;}{赤地の白抜き}}</code> が<span style='background:red; color:white;'>赤地の白抜き</span>になります。</p>
 <p>　範囲指定でタグ別にスタイルを指定したい場合、次に説明する「<a href='#dOeJnU6OE95'>スタイルスタック</a>」を利用してください。</p>
 <h3><a name='dOeJnU6OE95'></a>6.4 スタイルスタック</h3>
-<p>　<a href='#2Hh9eF0BTk3'>インラインスタイル指定</a> は文章の一部分にスタイルを指定するものでしたが、もっと広い範囲でスタイルを一時的に変更したい場合もあります。そのような場合には、<strong>「スタイルスタック」</strong>が使用できます。これは、以下の要領で <a class='term' href='#ahN3t8jbawv'>HTML</a> タグと区間を指定し、class や style を設定するものです。</p>
+<p>　<a href='#2Hh9eF0BTk3'>インラインスタイル指定</a> は文章の一部分にスタイルを指定するものでしたが、もっと広い範囲でスタイルを一時的に変更したい場合もあります。そのような場合には、 <strong>「スタイルスタック」</strong> が使用できます。これは、以下の要領で <a class='term' href='#ahN3t8jbawv'>HTML</a> タグと区間を指定し、class や style を設定するものです。</p>
 <pre>
  &lt;!-- stack:push p style="color: red;" --&gt;
         :
         :
  &lt;!-- stack:pop p --&gt;
 </pre>
-<p>　上記の例では、<code>stack:push</code> として p タグに style を設定しています。この行以降、<code>stack:pop p</code> されるまでの間に turnup が生成する全ての p タグには、<code>style="color: red;"</code>が設定されるようになります。</p>
-<p>　名前の通り、この設定はスタックのように振舞います。<code>stack:push</code> で指定する各種のタグそれぞれについて、最後に <code>stack:push</code> した内容が有効であり、 <code>stack:pop</code> すると設定前の状態に戻ります。以下に例を示します。</p>
+<p>　上記の例では、 <code>stack:push</code> として p タグに style を設定しています。この行以降、<code>stack:pop p</code> されるまでの間に turnup が生成する全ての p タグには、 <code>style="color: red;"</code>が設定されるようになります。</p>
+<p>　名前の通り、この設定はスタックのように振舞います。 <code>stack:push</code> で指定する各種のタグそれぞれについて、最後に <code>stack:push</code> した内容が有効であり、 <code>stack:pop</code> すると設定前の状態に戻ります。以下に例を示します。</p>
 <pre>
  ここは範囲外です。
  &lt;!-- stack:push p style="color: red;" --&gt;
@@ -419,12 +434,12 @@ Table. title of table
 </details>
 <p>　スタイルスタックの効果は、<a href='#f71ZNSHqufB'>フィルタ機能</a>が生成する出力には及びません。また、その他にもスタイルスタックが影響しないタグが存在します。</p>
 <h3><a name='hVp0EDLBsmJ'></a>6.5 スタイルパレット</h3>
-<p>　<a href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、<strong>「スタイルパレット」</strong>が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
+<p>　<a href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、 <strong>「スタイルパレット」</strong> が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
 <pre>
  &lt;!-- palette: 0 style="background: #f4f4f4;" --&gt;
  &lt;!-- palette: 1 style="color: red;" --&gt;
 </pre>
-<p>　<code>&lt;!-- palette: </code> に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code> --&gt;</code> で終了します。</p>
+<p>　<code>&lt;!-- palette:</code>  に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code>--&gt;</code> で終了します。</p>
 <p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a href='#g6xjP526KX7'>テーブル</a>しかスタイルパレットに対応していない<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>ため、ここではテーブルでの利用方法を説明します。以下に例を示します。</p>
 <pre>
   | title | count | price | 
@@ -448,13 +463,13 @@ Table. title of table
 </table>
 <h3><a name='cjJv49XsD9d'></a>6.6 ページ内へのリンク</h3>
 <p>　リンクの書法を拡張することで、ページ内の<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成することができます。</p>
-<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、<code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、<code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
+<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、 <code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、 <code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
 <p>　図表タイトルへのリンクを作成するには、（ちょっと無様ですが）以下のように F#, T# に続けてタイトルを記述します。それ以外のルールは見出しへのリンクと同じです。</p>
 <pre>
   [テキスト](F#図のタイトル)
   [テキスト](T#表のタイトル)
 </pre>
-<p>　さらに、テキスト部分では <code>$@</code>, <code>$$</code> を使うことができます。これらは、以下のように展開されます。</p>
+<p>　さらに、テキスト部分では <code>$@</code> と <code>$$</code> を使うことができます。これらは、以下のように展開されます。</p>
 <ul>
 <li><code>$@</code> : 自動ナンバリングによって付与されるプレフィクス</li>
 <li><code>$$</code> : 見出しや図表タイトルの文字列</li>
@@ -501,7 +516,7 @@ Table. title of table
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>をつかって用語を定義すると、文章中に登場したその用語は自動的に定義箇所へのリンクになります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup></p>
 <p>　この拡張機能に関与する設定として、<a href='#fH3KsaVXKY8'>見出しにおける用語の自動リンク</a>があります。</p>
 <h3><a name='f71ZNSHqufB'></a>6.12 フィルタ機能</h3>
-<p>　<a href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では<strong>フィルタ機能</strong>と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
+<p>　<a href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong>フィルタ機能</strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
 <pre>
 ~~~diff
 diff --git a/main.cxx b/main.cxx
@@ -529,7 +544,7 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、<strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
@@ -541,11 +556,11 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- filter:foo = quux %in %out --&gt;
 </pre>
-<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、<code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnnup が都度決定します。</p>
+<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnnup が都度決定します。</p>
 <p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された preブロックを見つけた場合に、以下の要領で処理を行ないます。</p>
 <ul>
 <li>pre ブロックの中身を一時ファイルに保存する</li>
-<li>フィルタプログラムの定義に従い、<code>quux %in %out</code> を実行する</li>
+<li>フィルタプログラムの定義に従い、 <code>quux %in %out</code> を実行する</li>
 <ul>
 <li>この時、preブロックの中身を保存した一時ファイル名で %in を置き換える</li>
 <li>同様に、%out を別の一時ファイル名で置き換える</li>
@@ -636,21 +651,22 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
+<h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
+<p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</p>
+<h3><a name='9s47bTtYstx'></a>8.2 文字装飾やリンクの制約と継続行</h3>
+<p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</p>
+<h3><a name='6lxsyJvfG4q'></a>8.3 一部の文字装飾における制約</h3>
+<p>　以下の文字装飾において対象範囲を括る（**などの文字列の）ペアのすぐ外側には、 <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でない文字があってはいけません」</strong> 。また、ペアのすぐ内側には <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があってはいけません」</strong> 。</p>
 <ul>
-<li>入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードはLf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</li>
+<li><a href='#d2FXT7Fqg21'>強調</a></li>
+<li><a href='#hBdBkqlaJVW'>取消し線</a></li>
+<li><a href='#9k1sm8QrDHi'>マーカー</a></li>
+<li><a href='#2TegSYAerqJ'>コード</a></li>
 </ul>
-<ul>
-<li>リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</li>
-</ul>
-<ul>
-<li>turnup が標準で提供する<a href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</li>
-</ul>
-<ul>
-<li><a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</li>
-</ul>
-<ul>
-<li>他、何か思いついたら記載します。</li>
-</ul>
+<h3><a name='l3wNcsiymoY'></a>8.4 フィルタ機能について</h3>
+<p>　turnup が標準で提供する<a href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
+<h3><a name='8pNcG5W73uy'></a>8.5 領域の折り畳みについて</h3>
+<p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>9 更新履歴</h2>
 <p>　更新履歴です。バージョン番号の付与はまだ行なっていません。</p>
@@ -724,13 +740,17 @@ index 16fc9f4..8387187 100644
 <li>ENHANCE : <a href='#g6xjP526KX7'>テーブル</a>におけるヘッダ／データ境界行の扱いを拡張（複数行ヘッダを許可）</li>
 <li>ENHANCE : <a href='#g6xjP526KX7'>テーブル</a>における colspan 指定の拡張を追加</li>
 </ul>
+<li><strong>2021/08/31</strong></li>
+<ul>
+<li>BUGFIX : <a href='#d2FXT7Fqg21'>強調</a>、<a href='#hBdBkqlaJVW'>取消し線</a>、<a href='#9k1sm8QrDHi'>マーカー</a>、<a href='#2TegSYAerqJ'>コード</a> の<a href='#6lxsyJvfG4q'>適用条件を変更</a></li>
+</ul>
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
-<p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
+<p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> :  <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
 <p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
 <p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
-<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定と同時に行なう場合、<code>|N]M&gt;</code> の要領で指定してください。</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定と同時に行なう場合、 <code>|N]M&gt;</code> の要領で指定してください。</p>
 <p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
 <p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
 <p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : テーブル以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>

@@ -30,6 +30,23 @@ namespace turnup {
 								   min3( t8, t9, t10 ) ) );
 	}
 
+	inline bool IsSpaceForward( const char* p ) {
+		if( *p == 0x20 || *p == 0x09 || !*p )
+			return true;
+		auto q = reinterpret_cast<const uint8_t*>( p );
+		if( q[0] == 0xE3 && q[1] == 0x80 && q[2] == 0x80 )
+			return true;
+		return false;
+	}
+	inline bool IsSpaceBackward( const char* p ) {
+		if( *p == 0x20 || *p == 0x09 || !*p )
+			return true;
+		auto q = reinterpret_cast<const uint8_t*>( p );
+		if( q[-2] == 0xE3 && q[-1] == 0x80 && q[0] == 0x80 )
+			return true;
+		return false;
+	}
+
 	static void WriteTextSpanImp( std::ostream& os,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink );
@@ -378,11 +395,20 @@ namespace turnup {
 			os.write( pTop, 1 );
 			return pTop + 1;
 		}
-		//終端を検索
-		auto p = std::search( pTop + 2, pEnd, target, target + 2 );
-		if( p == pEnd ) {
+		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 2 ) ) {
 			os << "==";
 			return pTop + 2;
+		}
+		//終端を検索
+		const char* p = pTop;
+		while( true ) {
+			p = std::search( p + 2, pEnd, target, target + 2 );
+			if( p == pEnd ) {
+				os << "==";
+				return pTop + 2;
+			}
+			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 2 ) )
+				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "mark" );
@@ -558,10 +584,19 @@ namespace turnup {
 									DocumentInfo& docInfo, bool bTermLink ) {
 		(void)docInfo;
 		(void)bTermLink;
-		auto p = std::find( pTop + 1, pEnd, '`' );
-		if( p == pEnd ) {
+		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 1 ) ) {
 			os << "`";
 			return pTop + 1;
+		}
+		const char* p = pTop;
+		while( true ) {
+			p = std::find( p + 1, pEnd, '`' );
+			if( p == pEnd ) {
+				os << "`";
+				return pTop + 1;
+			}
+			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 1 ) )
+				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "code" );
@@ -612,11 +647,20 @@ namespace turnup {
 			os.write( pTop, 1 );
 			return pTop + 1;
 		}
-		//終端を検索
-		auto p = std::search( pTop + 2, pEnd, target, target + 2 );
-		if( p == pEnd ) {
+		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 2 ) ) {
 			os << "~~";
 			return pTop + 2;
+		}
+		//終端を検索
+		const char* p = pTop;
+		while( true ) {
+			p = std::search( p + 2, pEnd, target, target + 2 );
+			if( p == pEnd ) {
+				os << "~~";
+				return pTop + 2;
+			}
+			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 2 ) )
+				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "strike" );
@@ -637,12 +681,21 @@ namespace turnup {
 			if( pTop[2] == pTop[0] )
 				++cnt;
 		}
-		//終端を検索
-		//ToDo : 終端検索に失敗した場合、より短いのであれば成功するかも。どうやる？
-		auto p = std::search( pTop + cnt, pEnd, pTop, pTop + cnt );
-		if( p == pEnd ) {
+		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + cnt ) ) {
 			os.write( pTop, cnt );
 			return pTop + cnt;
+		}
+		//終端を検索
+		//ToDo : 終端検索に失敗した場合、より短いのであれば成功するかも。どうやる？
+		const char* p = pTop;
+		while( true ) {
+			p = std::search( p + cnt, pEnd, pTop, pTop + cnt );
+			if( p == pEnd ) {
+				os.write( pTop, cnt );
+				return pTop + cnt;
+			}
+			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + cnt ) )
+				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		if( cnt & 1 )	styles.WriteOpenTag( os, "em" );
