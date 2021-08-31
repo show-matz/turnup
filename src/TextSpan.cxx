@@ -115,6 +115,11 @@ namespace turnup {
 	TextSpan::TextSpan() : m_pTop( nullptr ), m_pEnd( nullptr ) {
 	}
 
+	TextSpan::TextSpan( const char* p ) : m_pTop( p ),
+										  m_pEnd( nullptr ) {
+		m_pEnd = p + ::strlen( p );
+	}
+
 	TextSpan::TextSpan( const char* pTop, const char* pEnd ) : m_pTop( pTop ),
 															   m_pEnd( pEnd ) {
 	}
@@ -482,14 +487,15 @@ namespace turnup {
 							  pLbl1, pLbl2, pURL1 + 2, pURL2, docInfo );
 		// ページ内アンカー指定でない場合
 		else {
-			if( pLbl1 == pLbl2 ) {
-				pLbl1 = pURL1;
-				pLbl2 = pURL2;
-			}
 			os << "<a href='";
 			os.write( pURL1, pURL2 - pURL1 );
 			os << "'>";
-			WriteWithEscape( os, pLbl1, pLbl2 );
+			if( pLbl1 == pLbl2 )
+				WriteWithEscape( os, pURL1, pURL2 );
+			else {
+				TextSpan tmp{ pLbl1, pLbl2 };
+				tmp.WriteTo( os, docInfo, false );
+			}
 			os << "</a>";
 
 		}
@@ -520,17 +526,17 @@ namespace turnup {
 				if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
 					os << prefix << ' ';
 			}
-			WriteWithEscape( os, pURL1, pURL2 );
+			TextSpan{ pURL1, pURL2 }.WriteTo( os, docInfo, false );
 		} else {
 			while( pLbl1 < pLbl2 ) {
 				const char* pPivot = FindLinkLabelPlaceHolder( pLbl1, pLbl2 );
 				if( pLbl1 < pPivot )
-					WriteWithEscape( os, pLbl1, pPivot );
+					TextSpan{ pLbl1, pPivot }.WriteTo( os, docInfo, false );
 				pLbl1 = pPivot;
 				if( pLbl1 < pLbl2 ) {
 					switch( pLbl1[1] ) {
 					case '$':
-						WriteWithEscape( os, pURL1, pURL2 );
+						TextSpan{ pURL1, pURL2 }.WriteTo( os, docInfo, false );
 						break;
 					case '@':
 						if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )

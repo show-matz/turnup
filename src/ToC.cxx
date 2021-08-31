@@ -9,6 +9,7 @@
 #include "StyleStack.hxx"
 #include "Config.hxx"
 #include "CRC64.hxx"
+#include "TextSpan.hxx"
 
 #include <stdio.h>
 #include <string.h>
@@ -155,10 +156,10 @@ namespace turnup {
 							 const char* pTitle, const char* pTitleEnd ) const;
 	public:
 		void WriteTOC( std::ostream& os,
-					   const DocumentInfo& docInfo,
+					   DocumentInfo& docInfo,
 					   uint32_t minLevel, uint32_t maxLevel ) const;
 		void WriteTableFigureList( std::ostream& os,
-								   ToC::EntryT type, const DocumentInfo& docInfo ) const;
+								   ToC::EntryT type, DocumentInfo& docInfo ) const;
 	private:
 		const TocEntry* FindEntry( ToC::EntryT type,
 								   const char* pTitle, const char* pTitleEnd ) const;
@@ -197,14 +198,14 @@ namespace turnup {
 		return m_pImpl->GetEntryNumber( pBuf, type, cfg, pTitle, pTitleEnd );
 	}
 	void ToC::WriteTOC( std::ostream& os,
-						const DocumentInfo& docInfo,
+						DocumentInfo& docInfo,
 						uint32_t minLevel, uint32_t maxLevel ) const {
 		m_pImpl->WriteTOC( os, docInfo, minLevel, maxLevel );
 	}
-	void ToC::WriteTableList( std::ostream& os, const DocumentInfo& docInfo ) const {
+	void ToC::WriteTableList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::TABLE, docInfo );
 	}
-	void ToC::WriteFigureList( std::ostream& os, const DocumentInfo& docInfo ) const {
+	void ToC::WriteFigureList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::FIGURE, docInfo );
 	}
 
@@ -261,7 +262,7 @@ namespace turnup {
 	}
 
 	void ToC::Impl::WriteTOC( std::ostream& os,
-							  const DocumentInfo& docInfo,
+							  DocumentInfo& docInfo,
 							  uint32_t minLevel, uint32_t maxLevel ) const {
 		auto& cfg    = docInfo.Get<Config>();
 		auto& styles = docInfo.Get<StyleStack>();
@@ -286,7 +287,8 @@ namespace turnup {
 				entry.GetChapterPrefix( cfg, chapter );
 				os << chapter;
 			}
-			os << entry.GetTitle() << "</a></li>" << std::endl;
+			TextSpan tmp{ entry.GetTitle() };
+			tmp.WriteTo( os, docInfo, false ) << "</a></li>" << std::endl;
 		}
 		for( ; minLevel < curLevel; --curLevel )
 			os << "</ul>" << std::endl;
@@ -294,7 +296,7 @@ namespace turnup {
 	}
 
 	void ToC::Impl::WriteTableFigureList( std::ostream& os,
-										  ToC::EntryT type, const DocumentInfo& docInfo ) const {
+										  ToC::EntryT type, DocumentInfo& docInfo ) const {
 		auto& cfg    = docInfo.Get<Config>();
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "ul" ) << std::endl;
@@ -307,7 +309,9 @@ namespace turnup {
 							<< "<a href='#" << entry.GetAnchorTag() << "'>";
 			char prefix[64];
 			this->GetFigureAndTablePrefix( prefix, &entry, cfg );
-			os << prefix << ' '  << entry.GetTitle() << "</a></li>" << std::endl;
+			os << prefix << ' ';
+			TextSpan tmp{ entry.GetTitle() };
+			tmp.WriteTo( os, docInfo, false ) << "</a></li>" << std::endl;
 		}
 		os << "</ul>" << std::endl;
 	}

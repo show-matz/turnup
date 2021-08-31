@@ -22,6 +22,7 @@ namespace turnup {
 	public:
 		TextSpan();
 		TextSpan( const TextSpan& ) = default;
+		explicit TextSpan( const char* p );
 		TextSpan( const char* pTop, const char* pEnd );
 		~TextSpan();
 	public:
