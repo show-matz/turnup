@@ -242,15 +242,15 @@ int main( void ) {
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th>A</th><th>B</th><th>C</th></tr>
-<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
+<tr><th>Alpha</th><th>Bravo</th><th>Charlie</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　また別の拡張として、セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列跨がせることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
+<p>　また別の拡張として、セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列跨がせることができます。同様に、N^ とすることでセルを縦方向に N 列跨がせることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
 <pre>
-	|2&gt;      A &amp; B        |    C     |	
-	|   Alpha  |   Bravo  |  Charlie |	
+	|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
+	|   Alpha  |   Bravo  |  
 	| :------- | :------: | -------: |	
 	|     0    |     1    |    2     |	
 	|     3    |     4    |    5     |	
@@ -258,8 +258,8 @@ int main( void ) {
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
-<tr><th colspan='2'>A &amp; B</th><th>C</th></tr>
-<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
+<tr><th colspan='2'>A &amp; B</th><th rowspan='2'>C<br>Charlie</th></tr>
+<tr><th>Alpha</th><th>Bravo</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
@@ -748,6 +748,7 @@ index 16fc9f4..8387187 100644
 <li><strong>2021/09/04</strong></li>
 <ul>
 <li>BUGFIX : <a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>の末尾に<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があると出力にゴミが混じる問題を修正</li>
+<li>ENHANCE : <a href='#g6xjP526KX7'>テーブル</a>における rowspan 指定の拡張を追加</li>
 </ul>
 </ul>
 <hr>
@@ -755,7 +756,7 @@ index 16fc9f4..8387187 100644
 <p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> :  <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
 <p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
 <p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
-<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定と同時に行なう場合、 <code>|N]M&gt;</code> の要領で指定してください。</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定も含め、複数の指定を同時にする場合、 <code>|N]M&gt;U^</code> の順序で指定してください。</p>
 <p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
 <p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
 <p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : テーブル以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>

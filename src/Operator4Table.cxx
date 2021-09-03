@@ -23,6 +23,10 @@ namespace turnup {
 											  const TextSpan* pEnd );
 	static const char* RetrieveColSpan( const char* p1,
 										const char* p2, uint32_t& colSpan );
+	static const char* RetrieveRowSpan( const char* p1,
+										const char* p2, uint32_t& rowSpan );
+	static const char* RetrieveCellSpanImp( const char* p1,
+											const char* p2, uint32_t& span, char c );
 	static void WriteWithPalette( std::ostream& os, const char* tag,
 								  const TextSpan* pPalette,
 								  const char* pStyle = nullptr, const char* pTail = nullptr );
@@ -110,10 +114,12 @@ namespace turnup {
 					p1 += 2;
 				}
 				uint32_t colSpan = 0;
-				p1 = RetrieveColSpan( p1, p2, colSpan );
+				uint32_t rowSpan = 0;
+				p1 = RetrieveColSpan( p1+1, p2, colSpan );
+				p1 = RetrieveRowSpan( p1,   p2, rowSpan );
 
-				auto pDelim = std::find( p1 + 1, p2, '|' );
-				auto item   = TextSpan{ p1 + 1, pDelim }.Trim();
+				auto pDelim = std::find( p1, p2, '|' );
+				auto item   = TextSpan{ p1, pDelim }.Trim();
 				bool bNoWrap = false; 
 				auto align  = s_aligns.Get( col, bNoWrap );
 				const char* pDefaultStyle = "";
@@ -131,6 +137,8 @@ namespace turnup {
 									  palette.GetStyle( idx ), pDefaultStyle, "" );
 				if( 1 < colSpan )
 					std::cout << " colspan='" << colSpan <<  "'";
+				if( 1 < rowSpan )
+					std::cout << " rowspan='" << rowSpan <<  "'";
 				std::cout << '>';
 				item.WriteTo( std::cout, docInfo );
 				std::cout << "</" << pTag << '>';
@@ -254,17 +262,27 @@ namespace turnup {
 
 	static const char* RetrieveColSpan( const char* p1,
 										const char* p2, uint32_t& colSpan ) {
+		return RetrieveCellSpanImp( p1, p2, colSpan, '>' );
+	}
+
+	static const char* RetrieveRowSpan( const char* p1,
+										const char* p2, uint32_t& rowSpan ) {
+		return RetrieveCellSpanImp( p1, p2, rowSpan, '^' );
+	}
+
+	static const char* RetrieveCellSpanImp( const char* p1,
+											const char* p2, uint32_t& span, char c ) {
 		auto chk = []( char c ) -> bool {
 			return '0' <= c && c <= '9';
 		};
-		colSpan = 0;
-		auto delim = std::find( p1, p2, '>' );
+		span = 0;
+		auto delim = std::find( p1, p2, c );
 		if( delim == p2 )
 			return p1;
-		if( std::all_of( p1+1, delim, chk ) == false )
+		if( std::all_of( p1, delim, chk ) == false )
 			return p1;
-		for( ++p1; p1 < delim; ++p1 )
-			colSpan = (colSpan * 10) + (*p1 - '0');
+		for( ; p1 < delim; ++p1 )
+			span = (span * 10) + (*p1 - '0');
 		return delim + 1;
 	}
 
