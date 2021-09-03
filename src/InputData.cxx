@@ -120,6 +120,8 @@ namespace turnup {
 			//見出しであれば ToC に登録する
 			uint32_t lv = line.CountTopOf('#');
 			if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
+				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
+				const_cast<char*>( line.End() )[0] = 0;	//HACK
 				const char* pTitle = line.Top() + lv + 1;
 				if( toc.RegisterHeader( lv, pTitle ) == false )
 					std::cerr << "ERROR : header '" << pTitle << "' is duplicated." << std::endl;
@@ -127,8 +129,11 @@ namespace turnup {
 			}
 			TextSpan tmp;
 			//図表タイトルであれば ToC に登録する
-			if( line.IsMatch( "Table.", tmp, "" ) ) {
-				tmp = tmp.Trim();
+			if( line.BeginWith( "Table." ) ) {
+				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
+				const_cast<char*>( line.End() )[0] = 0;	//HACK
+				tmp = line;
+				tmp = tmp.Chomp( 6, 0 ).Trim();
 				if( toc.RegisterTable( tmp.Top() ) == false ) {
 					std::cerr << "ERROR : table '";
 					std::cerr.write( tmp.Top(), tmp.ByteLength() );
@@ -136,8 +141,11 @@ namespace turnup {
 				}
 				continue;
 			}
-			if( line.IsMatch( "Figure.", tmp, "" ) ) {
-				tmp = tmp.Trim();
+			if( line.BeginWith( "Figure." ) ) {
+				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
+				const_cast<char*>( line.End() )[0] = 0;	//HACK
+				tmp = line;
+				tmp = tmp.Chomp( 7, 0 ).Trim();
 				if( toc.RegisterFigure( tmp.Top() ) == false ) {
 					std::cerr << "ERROR : figure '";
 					std::cerr.write( tmp.Top(), tmp.ByteLength() );

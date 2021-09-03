@@ -242,7 +242,7 @@ int main( void ) {
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th>A</th><th>B</th><th>C</th></tr>
-<tr><th>Alpha</th><th>Bravo</th><th>Charlie</th></tr>
+<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
@@ -259,7 +259,7 @@ int main( void ) {
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th colspan='2'>A &amp; B</th><th>C</th></tr>
-<tr><th>Alpha</th><th>Bravo</th><th>Charlie</th></tr>
+<tr><th align='left'>Alpha</th><th align='center'>Bravo</th><th align='right'>Charlie</th></tr>
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
@@ -744,6 +744,10 @@ index 16fc9f4..8387187 100644
 <ul>
 <li>BUGFIX : <a href='#d2FXT7Fqg21'>強調</a>、<a href='#hBdBkqlaJVW'>取消し線</a>、<a href='#9k1sm8QrDHi'>マーカー</a>、<a href='#2TegSYAerqJ'>コード</a> の<a href='#6lxsyJvfG4q'>適用条件を変更</a></li>
 <li>BUGFIX : <a href='#7maM1Z8DaEp'>目次</a>と<a href='#iVFblGs7lu7'>図表一覧</a>、および<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクにおいて文字装飾が正しく処理されない問題を修正</li>
+</ul>
+<li><strong>2021/09/04</strong></li>
+<ul>
+<li>BUGFIX : <a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>の末尾に<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があると出力にゴミが混じる問題を修正</li>
 </ul>
 </ul>
 <hr>
