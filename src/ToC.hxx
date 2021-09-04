@@ -13,6 +13,7 @@ namespace turnup {
 
 	class DocumentInfo;
 	class Config;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
@@ -30,9 +31,9 @@ namespace turnup {
 		ToC();
 		~ToC();
 	public:
-		bool RegisterHeader( uint32_t level, const char* pTitle );
-		bool RegisterTable( const char* pTitle );
-		bool RegisterFigure( const char* pTitle );
+		bool RegisterHeader( uint32_t level, const TextSpan& title );
+		bool RegisterTable( const TextSpan& title );
+		bool RegisterFigure( const TextSpan& title );
 		const char* GetAnchorTag( EntryT type,
 								  const char* pTitle,
 								  const char* pTitleEnd = nullptr ) const;

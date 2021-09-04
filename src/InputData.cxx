@@ -120,21 +120,20 @@ namespace turnup {
 			//見出しであれば ToC に登録する
 			uint32_t lv = line.CountTopOf('#');
 			if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
-				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
-				const_cast<char*>( line.End() )[0] = 0;	//HACK
-				const char* pTitle = line.Top() + lv + 1;
-				if( toc.RegisterHeader( lv, pTitle ) == false )
-					std::cerr << "ERROR : header '" << pTitle << "' is duplicated." << std::endl;
+				TextSpan tmp = line.TrimTail();	// 末尾の空白類文字を除去
+				tmp.Chomp( lv + 1, 0 );
+				if( toc.RegisterHeader( lv, tmp ) == false ) {
+					std::cerr << "ERROR : header '";
+					std::cerr.write( tmp.Top(), tmp.ByteLength() );
+					std::cerr << "' is duplicated." << std::endl;
+				}
 				continue;
 			}
-			TextSpan tmp;
 			//図表タイトルであれば ToC に登録する
 			if( line.BeginWith( "Table." ) ) {
-				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
-				const_cast<char*>( line.End() )[0] = 0;	//HACK
-				tmp = line;
-				tmp = tmp.Chomp( 6, 0 ).Trim();
-				if( toc.RegisterTable( tmp.Top() ) == false ) {
+				TextSpan tmp = line;
+				tmp = tmp.Chomp( 6, 0 ).Trim();	// Table. を除去してから Trim
+				if( toc.RegisterTable( tmp ) == false ) {
 					std::cerr << "ERROR : table '";
 					std::cerr.write( tmp.Top(), tmp.ByteLength() );
 					std::cerr << "' is duplicated." << std::endl;
@@ -142,11 +141,9 @@ namespace turnup {
 				continue;
 			}
 			if( line.BeginWith( "Figure." ) ) {
-				line = line.TrimTail();	// ここで末尾の空白類文字を除去してしまう
-				const_cast<char*>( line.End() )[0] = 0;	//HACK
-				tmp = line;
-				tmp = tmp.Chomp( 7, 0 ).Trim();
-				if( toc.RegisterFigure( tmp.Top() ) == false ) {
+				TextSpan tmp = line;
+				tmp = tmp.Chomp( 7, 0 ).Trim();	// Figure. を除去してから Trim
+				if( toc.RegisterFigure( tmp ) == false ) {
 					std::cerr << "ERROR : figure '";
 					std::cerr.write( tmp.Top(), tmp.ByteLength() );
 					std::cerr << "' is duplicated." << std::endl;
@@ -164,7 +161,7 @@ namespace turnup {
 				continue;
 			}
 			//コメントの場合
-			tmp = line.TrimTail();
+			TextSpan tmp = line.TrimTail();
 			TextSpan item;
 			TextSpan command;
 			if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {

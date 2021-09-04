@@ -68,7 +68,7 @@ namespace turnup {
 	public:
 		TocEntry();
 		TocEntry( ToC::EntryT type, uint32_t lv,
-				  const char* pTitle, const ChapterNumber& chapterNum );
+				  const TextSpan& title, const ChapterNumber& chapterNum );
 		TocEntry( const TocEntry& entry );
 		~TocEntry();
 		TocEntry& operator=( const TocEntry& rhs );
@@ -77,7 +77,7 @@ namespace turnup {
 		inline uint32_t GetLevel() const { return m_level; }
 		inline uint64_t	GetHash() const { return m_hash; }
 		inline const char* GetAnchorTag() const { return m_anchorTag; }
-		inline const char* GetTitle() const { return m_pTitle; }
+		inline const TextSpan& GetTitle() const { return m_title; }
 		inline const ChapterNumber& GetChapterNumber() const { return m_chapterNum; }
 	public:
 		const char* GetChapterPrefix( const Config& cfg, char* pBuf ) const;
@@ -86,32 +86,32 @@ namespace turnup {
 		uint64_t		m_hash;				// タイトルから生成されたハッシュ値
 		uint32_t		m_level;			// 1 - 6（見出し以外の場合は０）
 		char			m_anchorTag[12];	// ハッシュ値の文字列表現（null 終端を含む）
-		const char*		m_pTitle;			// タイトル文字列のポインタ
+		TextSpan		m_title;			// タイトル文字列を指す TextSpan
 		ChapterNumber	m_chapterNum;		//
 	};
 
 	TocEntry::TocEntry() : m_type( ToC::EntryT::HEADER ),
 						   m_hash( 0 ),
 						   m_level( 0 ),
-						   m_pTitle( nullptr ) {
+						   m_title( {} ) {
 		m_anchorTag[0] = 0;
 	}
 
-	TocEntry::TocEntry( ToC::EntryT type,
-						uint32_t lv, const char* pTitle,
+	TocEntry::TocEntry( ToC::EntryT type, uint32_t lv,
+						const TextSpan& title,
 						const ChapterNumber& chapterNum ) : m_type( type ),
 															m_hash( 0 ),
 															m_level( lv ),
-															m_pTitle( pTitle ),
+															m_title( title ),
 															m_chapterNum( chapterNum ) {
 		m_hash = CRC64::Calc( GetCrcType( type ),
-							  pTitle, nullptr, m_anchorTag );
+							  title.Top(), title.End(), m_anchorTag );
 	}
 
 	TocEntry::TocEntry( const TocEntry& entry ) : m_type( entry.m_type ),
 												  m_hash( entry.m_hash ),
 												  m_level( entry.m_level ),
-												  m_pTitle( entry.m_pTitle ),
+												  m_title( entry.m_title ),
 												  m_chapterNum( entry.m_chapterNum ) {
 		::strcpy( this->m_anchorTag, entry.m_anchorTag );
 	}
@@ -124,7 +124,7 @@ namespace turnup {
 		this->m_type	= rhs.m_type;
 		this->m_hash	= rhs.m_hash;
 		this->m_level	= rhs.m_level;
-		this->m_pTitle	= rhs.m_pTitle;
+		this->m_title	= rhs.m_title;
 		::strcpy( this->m_anchorTag, rhs.m_anchorTag );
 		return *this;
 	}
@@ -149,7 +149,7 @@ namespace turnup {
 		Impl();
 		~Impl();
 	public:
-		bool RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle );
+		bool RegisterImpl( ToC::EntryT type, uint32_t level, const TextSpan& title );
 		const char* GetAnchorTag( ToC::EntryT type,
 								  const char* pTitle, const char* pTitleEnd ) const;
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
@@ -179,14 +179,14 @@ namespace turnup {
 	ToC::~ToC() {
 		delete m_pImpl;
 	}
-	bool ToC::RegisterHeader( uint32_t level, const char* pTitle ) {
-		return m_pImpl->RegisterImpl( ToC::EntryT::HEADER, level, pTitle );
+	bool ToC::RegisterHeader( uint32_t level, const TextSpan& title ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::HEADER, level, title );
 	}
-	bool ToC::RegisterTable( const char* pTitle ) {
-		return m_pImpl->RegisterImpl( ToC::EntryT::TABLE, 0, pTitle );
+	bool ToC::RegisterTable( const TextSpan& title ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::TABLE, 0, title );
 	}
-	bool ToC::RegisterFigure( const char* pTitle ) {
-		return m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, pTitle );
+	bool ToC::RegisterFigure( const TextSpan& title ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, title );
 	}
 	const char* ToC::GetAnchorTag( EntryT type,
 								   const char* pTitle,
@@ -221,14 +221,15 @@ namespace turnup {
 		m_entries.clear();
 	}
 
-	bool ToC::Impl::RegisterImpl( ToC::EntryT type, uint32_t level, const char* pTitle ) {
+	bool ToC::Impl::RegisterImpl( ToC::EntryT type, 
+								  uint32_t level, const TextSpan& title ) {
 		//既存のエントリを走査し、タイトル名の重複をチェックしつつ新規エントリの章節番号を特定
 		bool bDuplicated = false;
 		ChapterNumber chapterNum{};
 		auto itr1 = m_entries.begin();
 		auto itr2 = m_entries.end();
 		for( ; itr1 != itr2; ++itr1 ) {
-			if( itr1->GetType() == type && !::strcmp( pTitle, itr1->GetTitle() ) )
+			if( itr1->GetType() == type && title.IsEqual( itr1->GetTitle() ) )
 				bDuplicated = true; 
 			if( itr1->GetType() == ToC::EntryT::HEADER )
 				chapterNum.Increment( itr1->GetLevel() );
@@ -237,7 +238,7 @@ namespace turnup {
 		//MEMO : ヘッダ以外の場合、所属チャプターのコピーが入るかたちになる。
 		if( type == ToC::EntryT::HEADER )
 			chapterNum.Increment( level );
-		m_entries.emplace_back( type, level, pTitle, chapterNum );
+		m_entries.emplace_back( type, level, title, chapterNum );
 		return !bDuplicated;
 	}
 
