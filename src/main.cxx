@@ -34,7 +34,7 @@ int main( int argc, char* argv[] ) {
 
 	InputData* pInData = InputData::Create( argv[1] );
 	if( !pInData ) {
-		//ToDo : error message...
+		std::cerr << "aborted." << std::endl;
 		return 1;
 	}
 

@@ -54,7 +54,8 @@
 <li><a href='#f71ZNSHqufB'>6.12 フィルタ機能</a></li>
 <li><a href='#18dTPnzNOgg'>6.13 外部フィルタの登録</a></li>
 <li><a href='#hMHXjTrWEnw'>6.14 領域の折り畳み</a></li>
-<li><a href='#hs1guSfsFGb'>6.15 改ページ指定</a></li>
+<li><a href='#a2FYBDWqZUA'>6.15 別ファイルの include</a></li>
+<li><a href='#hs1guSfsFGb'>6.16 改ページ指定</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -589,7 +590,23 @@ index 16fc9f4..8387187 100644
 <li>contents3</li>
 </ul>
 </details>
-<h3><a name='hs1guSfsFGb'></a>6.15 改ページ指定</h3>
+<h3><a name='a2FYBDWqZUA'></a>6.15 別ファイルの include</h3>
+<p>　長大な文書を作成するような場合、章毎にデータファイルを分割しtたくなるかもしれません。あるいは、サンプルコードを別ファイルにしておき、実際に動作することをいつでも確認できるようにしておきたいかもしれません。理由はさておき、他のファイルの内容を取り込みたい場合には以下のようにすることができます。</p>
+<!-- start raw html -->
+<pre>
+&lt;!-- include: EXTERNAL_FILE --&gt;
+</pre>
+<!-- end raw html -->
+<p>　こうしておくと、 <code>EXTERNAL_FILE</code> で指定されたファイルの内容がそこに書いてあったかのように展開されます。この展開はファイルの読み込み時点で実行されるため、<a href='#2HUs4TZfCPd'>preブロック</a>や<a href='#6LkDjrI3ASb'>raw_html ブロック</a> の内部に書くことだってできます。つまり、サンプルコードの中身を内部フィルタでコードハイライトさせたければ、以下のようにできるということです。</p>
+<!-- start raw html -->
+<pre>
+```C
+&lt;!-- include: sample.01.c --&gt;
+```
+</pre>
+<!-- end raw html -->
+<p>　include されるファイルの中で、さらに別のファイルを include することもできます。ただし、相互に（あるいは循環的に）include しあうようなファイルを処理することはできません。また、（当たり前ですが）存在しないファイルを指定するとエラーになります。</p>
+<h3><a name='hs1guSfsFGb'></a>6.16 改ページ指定</h3>
 <p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
@@ -750,6 +767,7 @@ index 16fc9f4..8387187 100644
 <li>BUGFIX : <a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>の末尾に<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があると出力にゴミが混じる問題を修正</li>
 <li>ENHANCE : <a href='#g6xjP526KX7'>テーブル</a>における rowspan 指定の拡張を追加</li>
 <li>REFACTORING : 内部実装を整理</li>
+<li>ENHANCE : <a href='#a2FYBDWqZUA'>別ファイルの include</a> をサポートする拡張を追加</li>
 </ul>
 </ul>
 <hr>

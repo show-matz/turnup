@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 #include "InputData.hxx"
 
+#include "InputFile.hxx"
 #include "DocumentInfo.hxx"
 #include "HtmlHeader.hxx"
 #include "Config.hxx"
@@ -27,19 +28,24 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	class InputDataImpl : public InputData {
+	private:
+		typedef std::vector<InputFile*> InputFileStack;
 	public:
-		InputDataImpl( const char* pFileName );
+		InputDataImpl( const TextSpan& fileName );
 		virtual ~InputDataImpl();
 	public:
 		virtual uint32_t Size() const override;
 		virtual const TextSpan* Begin() const override;
 		virtual const TextSpan* End() const override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
+	public:
+		bool Loaded() const;
 	private:
-		static char* FixLineEnd( char* pTop, char* pEnd );
-		static char* FixLineContinuous( char* pTop, char* pEnd );
+		void Cleanup();
+		InputFile* LoadFileIfNeed( const TextSpan& fileName );
+		bool RecursiveLoadFile( InputFileStack& stack, const TextSpan& fileName );
 	private:
-		WholeFile*				m_pFileData;
+		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
 	};
 
@@ -55,7 +61,13 @@ namespace turnup {
 	}
 
 	InputData* InputData::Create( const char* pFileName ) {
-		return new InputDataImpl{ pFileName };
+		TextSpan fileName{ pFileName };
+		InputDataImpl* pImpl = new InputDataImpl{ fileName };
+		if( pImpl->Loaded() == false ) {
+			Release( pImpl );
+			pImpl = nullptr;
+		}
+		return pImpl;
 	}
 
 	void InputData::Release( InputData* pInputData ) {
@@ -67,26 +79,17 @@ namespace turnup {
 	// implementation of class InputDataImpl
 	//
 	//--------------------------------------------------------------------------
-	InputDataImpl::InputDataImpl( const char* pFileName ) : InputData(),
-															m_pFileData( File::LoadWhole( pFileName ) ),
-															m_lines( ) {
+	InputDataImpl::InputDataImpl( const TextSpan& fileName ) : InputData(),
+															   m_inFiles(),
+															   m_lines() {
 		m_lines.reserve( 1000 );	//ToDo : ok?
-		char* pTop = m_pFileData->GetBuffer<char>();
-		char* pEnd = pTop + m_pFileData->Count<char>();
-		pEnd = FixLineEnd( pTop, pEnd );
-		pEnd = FixLineContinuous( pTop, pEnd );
-		while( pTop < pEnd ) {
-			char* pEOL = std::find( pTop, pEnd, 0x0A );
-			char* pNext = pEOL + 1;
-			pEOL[0] = 0;
-			m_lines.emplace_back( pTop, pEOL );
-			pTop = pNext;
-		}
+		InputFileStack stack;
+		if( RecursiveLoadFile( stack, fileName ) == false )
+			this->Cleanup();
 	}
 
 	InputDataImpl::~InputDataImpl() {
-		m_lines.clear();
-		File::ReleaseWholeFile( m_pFileData );
+		this->Cleanup();
 	}
 
 	uint32_t InputDataImpl::Size() const {
@@ -218,42 +221,83 @@ namespace turnup {
 		}
 	}
 
-	char* InputDataImpl::FixLineEnd( char* pTop, char* pEnd ) {
-		char target[2] = { 0x0D, 0x0A };
-		//ひとつめの CrLf を検索
-		char* p = std::search( pTop, pEnd, target, target + 2 );
-		if( p == pEnd ) {
-			//みつからなければ何もしないでよし
-			return pEnd;
-		}
-		pTop = p + 1;
-		char* pDest = p;
-		while( pTop < pEnd ) {
-			p = std::search( pTop, pEnd, target, target + 2 );
-			pDest = std::copy( pTop, p, pDest );
-			pTop = p + 1;
-		}
-		*pDest = 0;
-		return pDest;
+	bool InputDataImpl::Loaded() const {
+		return (0 < m_inFiles.size()) && (0 < m_lines.size());
 	}
 
-	char* InputDataImpl::FixLineContinuous( char* pTop, char* pEnd ) {
-		char target[3] = { ' ', '\\', 0x0A };
-		//ひとつめの継続行を検索
-		char* p = std::search( pTop, pEnd, target, target + 3 );
-		if( p == pEnd ) {
-			//みつからなければ何もしないでよし
-			return pEnd;
+	void InputDataImpl::Cleanup() {
+		m_lines.clear();
+		auto itr1 = m_inFiles.begin();
+		auto itr2 = m_inFiles.begin();
+		for( ; itr1 != itr2; ++itr1 ) {
+			InputFile::ReleaseInputFile( *itr1 );
+			*itr1 = nullptr;
 		}
-		pTop = p + 3;
-		char* pDest = p;
-		while( pTop < pEnd ) {
-			p = std::search( pTop, pEnd, target, target + 3 );
-			pDest = std::copy( pTop, p, pDest );
-			pTop = p + 3;
+		m_inFiles.clear();
+	}
+
+	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName ) {
+		auto itr1 = m_inFiles.begin();
+		auto itr2 = m_inFiles.end();
+		for( ; itr1 != itr2; ++itr1 ) {
+			if( fileName.IsEqual( (*itr1)->GetFileName() ) )
+				return *itr1;
 		}
-		*pDest = 0;
-		return pDest;
+		InputFile* pNew = InputFile::LoadInputFile( fileName );
+		if( pNew )
+			m_inFiles.push_back( pNew );
+		return pNew;
+	}
+
+	bool InputDataImpl::RecursiveLoadFile( InputFileStack& stack, 
+										   const TextSpan& fileName ) {
+
+		InputFile* pInFile = LoadFileIfNeed( fileName );
+		if( !pInFile ) {
+			std::cerr << "ERROR : Failure loading '";
+			std::cerr.write( fileName.Top(), fileName.ByteLength() );
+			std::cerr << "'." << std::endl;
+			return false;
+		}
+		if( 0 == pInFile->LineSize() )
+			return true;
+
+		{ // Check inclusion loop.
+			auto itr1 = stack.begin();
+			auto itr2 = stack.end();
+			if( std::find( itr1, itr2, pInFile ) != itr2 ) {
+				std::cerr << "ERROR : Inclusion loop detected." << std::endl;
+				for( ; itr1 != itr2; ++itr1 ) {
+					const TextSpan& file = (*itr1)->GetFileName();
+					std::cerr << "        --> ";
+					std::cerr.write( file.Top(), file.ByteLength() );
+					std::cerr << std::endl;
+				}
+				std::cerr << "        --> ";
+				std::cerr.write( fileName.Top(), fileName.ByteLength() );
+				std::cerr << std::endl;
+				return false;
+			}
+		}
+		bool result = true;
+		stack.push_back( pInFile );
+		const TextSpan* pTop = pInFile->LineTop();
+		const TextSpan* pEnd = pInFile->LineEnd();
+		for( ; pTop < pEnd; ++pTop ) {
+			TextSpan tmp = pTop->Trim();
+			TextSpan fileName;
+			if( tmp.IsMatch( "<!-- include:", fileName, "-->" ) == false )
+				m_lines.push_back( *pTop );
+			else {
+				fileName = fileName.Trim();
+				if( RecursiveLoadFile( stack, fileName ) == false ) {
+					result = false;
+					break;
+				}
+			}
+		}
+		stack.pop_back();
+		return result;
 	}
 
 } // namespace turnup

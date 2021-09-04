@@ -61,6 +61,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Filters.o					\
 		$(TARGETDIR)/FilterBuffer.o				\
 		$(TARGETDIR)/TextSpan.o					\
+		$(TARGETDIR)/InputFile.o				\
 		$(TARGETDIR)/InputData.o				\
 		$(TARGETDIR)/HtmlHeader.o				\
 		$(TARGETDIR)/Config.o					\
