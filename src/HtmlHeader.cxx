@@ -13,7 +13,7 @@
 
 namespace turnup {
 
-	static bool EmbedStyleSheet( std::ostream& os, const char* pStyleSheet );
+	static void EmbedStyleSheet( std::ostream& os, const char* pStyleSheet );
 
 	//--------------------------------------------------------------------------
 	//
@@ -44,14 +44,10 @@ namespace turnup {
 		if( !!m_pTitle )
 			std::cout << "	<title>" << m_pTitle << "</title>" << std::endl;
 		if( !!m_pStyleSheet ) {
-			if( cfg.bEmbedStyleSheet == false )
+			if( cfg.bEmbedStyleSheet )
+				EmbedStyleSheet( os, m_pStyleSheet );
+			else
 				std::cout << "	<link rel=stylesheet href=\"" << m_pStyleSheet << "\">" << std::endl;
-			else {
-				if( !EmbedStyleSheet( os, m_pStyleSheet ) ) {
-					std::cerr << "ERROR : stylesheet file '"
-							  << m_pStyleSheet << "' is not found." << std::endl;
-				}
-			}
 		}
 		std::cout << "</header>" << std::endl;
 		return os;
@@ -62,13 +58,13 @@ namespace turnup {
 	// local functions
 	//
 	//--------------------------------------------------------------------------
-	static bool EmbedStyleSheet( std::ostream& os, const char* pStyleSheet ) {
-		InputData* pCssFile = nullptr;
-		try {
-			pCssFile = InputData::Create( pStyleSheet );
-		} catch( ... ) {
-			return false;
-		}
+	static void EmbedStyleSheet( std::ostream& os, const char* pStyleSheet ) {
+
+		// file missing などの理由でロード失敗の場合は InputData::Create() 内部で errmsg 出してる
+		InputData* pCssFile = InputData::Create( pStyleSheet );
+		if( !pCssFile )
+			return;
+
 		os << "  <style>" << std::endl;
 		os << "  <!--" << std::endl;
 		
@@ -81,7 +77,6 @@ namespace turnup {
 		os << "  -->" << std::endl;
 		os << "  </style>" << std::endl;
 		InputData::Release( pCssFile );
-		return true;
 	}
 
 } // namespace turnup
