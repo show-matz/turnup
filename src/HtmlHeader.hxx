@@ -6,6 +6,8 @@
 #ifndef HTMLHEADER_HXX__
 #define HTMLHEADER_HXX__
 
+#include "TextSpan.hxx"
+
 #include <stdint.h>
 #include <iosfwd>
 
@@ -25,12 +27,12 @@ namespace turnup {
 		~HtmlHeader();
 		HtmlHeader& operator=( const HtmlHeader& ) = delete;
 	public:
-		void SetTitle( const char* pTitle );
-		void SetStyleSheet( const char* pStyleSheet );
+		void SetTitle( const TextSpan& title );
+		void SetStyleSheet( const TextSpan& styleSheet );
 		std::ostream& WriteTo( std::ostream& os, const Config& cfg ) const;
 	private:
-		const char* m_pTitle;
-		const char* m_pStyleSheet;
+		TextSpan m_title;
+		TextSpan m_styleSheet;
 	};
 
 } // namespace turnup

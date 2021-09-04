@@ -168,13 +168,11 @@ namespace turnup {
 			TextSpan item;
 			TextSpan command;
 			if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {
-				const_cast<char*>( item.End() )[0] = 0;
-				header.SetTitle( item.Top() );
+				header.SetTitle( item.Trim() );
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- style:", item, " -->" ) ) {
-				const_cast<char*>( item.End() )[0] = 0;
-				header.SetStyleSheet( item.Top() );
+				header.SetStyleSheet( item.Trim() );
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
