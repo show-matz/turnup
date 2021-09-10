@@ -15,8 +15,7 @@ namespace turnup {
 							  const TextSpan* pTop, const TextSpan* pEnd ) {
 		os << "<pre class='diff'>" << std::endl;
 		for( ; pTop < pEnd; ++pTop ) {
-			if( pTop->BeginWith( "---" ) || pTop->BeginWith( "+++" ) ||
-					pTop->BeginWith( "diff " ) || pTop->BeginWith( "index " ) ) {
+			if( pTop->BeginWith( "---" ) || pTop->BeginWith( "+++" ) ) {
 				os << "<span class='diff_head'>";
 				pTop->WriteSimple( os ) << "</span>" << std::endl;
 			} else if( pTop->BeginWith( "@@" )  ) {
