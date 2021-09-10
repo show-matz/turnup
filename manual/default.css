@@ -66,7 +66,8 @@ blockquote{
 }
 hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;
 	 border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
-pre, kbd, samp { color: #000; background:#eee;
+
+kbd, samp { color: #000; background:#eee;
 				 line-height:1.2em;
 				 _font-family: monospace, monospace;
 				 font-family: 'Courier New', monospace; font-size: 0.98em; }
@@ -74,7 +75,25 @@ code { color: #000;
 	   line-height:1.2em;
 	   _font-family: monospace, monospace;
 	   font-family: 'Courier New', monospace; font-size: 0.98em; }
-pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+/* normal pre block */
+pre {
+	background:	#eee;
+	color:		#000;
+	font-size:	0.98em;
+	border:			1px solid #ccc;
+	border-radius:	8px;
+	margin-left:	2em;
+	margin-right:	2em;
+	padding:		.5em;
+
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	line-height:1.2em;
+	_font-family: monospace, monospace;
+	font-family: 'Courier New', monospace;
+}
 
 b, strong { font-weight: bold; }
 
@@ -103,18 +122,36 @@ th { text-align;  center; padding: 3px; border: 1px solid black; border-bottom: 
 td { vertical-align: top; padding: 3px; border: 1px solid black;}
 
 /* for filters */
-pre.diff { font-size:14px; background: #F8F8F8; }
+pre.diff {
+	background:		#334;
+	color:			#fff;
+	font-size:		14px;
+	border:			1px solid #000;
+	border-radius:	8px;
+	margin-left:	2em;
+	margin-right:	2em;
+	padding:		.5em;
+}
 span.diff_head { color: #FF88FF; background: #550055; font-weight: bold; }
 span.diff_line { color: #CCCCFF; background: #000077; font-weight: bold; }
-span.diff_add  { color: #004400; background: #DCFBDC; }
-span.diff_del  { color: #550000; background: #FBDCDC; }
+span.diff_add  { color: #DCFBDC; background: #004400; font-weight: bold; }
+span.diff_del  { color: #FBDCDC; background: #550000; font-weight: bold; }
 
-pre.code { font-size:14px; background: #F8F8F8; }
+pre.code {
+	background:		#334;
+	color:			#fff;
+	font-size:		14px;
+	border:			1px solid #000;
+	border-radius:	8px;
+	margin-left:	2em;
+	margin-right:	2em;
+	padding:		.5em;
+}
 span.comment  { color: brown; }
-span.keyword1 { color: blue; }
-span.keyword2 { color: green; }
-span.keyword3 { color: darkslategray; }
-span.literal  { color: purple; }
+span.keyword1 { color: cyan; }
+span.keyword2 { color: lime; }
+span.keyword3 { color: slateblue; }
+span.literal  { color: pink; }
 
 
 /* for collapse */
