@@ -73,7 +73,12 @@
 <li><a href='#l3wNcsiymoY'>8.4 フィルタ機能について</a></li>
 <li><a href='#8pNcG5W73uy'>8.5 領域の折り畳みについて</a></li>
 </ul>
-<li><a href='#dGdSPnvay5N'>9 更新履歴</a></li>
+<li><a href='#8tTIqHSNoTg'>9 既知の問題点</a></li>
+<ul>
+<li><a href='#cHrenaAukMU'>9.1 リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
+<li><a href='#75ptLkjx268'>9.2 テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
+</ul>
+<li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
 <p>　</p>
 <h2><a name='ii4jRxV2ffy'></a>2 turnup とは</h2>
@@ -685,7 +690,43 @@ index 16fc9f4..8387187 100644
 <h3><a name='8pNcG5W73uy'></a>8.5 領域の折り畳みについて</h3>
 <p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
 <p>　　</p>
-<h2><a name='dGdSPnvay5N'></a>9 更新履歴</h2>
+<h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
+<h3><a name='cHrenaAukMU'></a>9.1 リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
+<p>　リンクテキストの末尾に文字装飾があると正しく処理されない問題が確認されています。たとえば、<code>[Table of __contents__](#Table of contents)</code> は <a href='#0qJQvVjc3Xy'>Table of __contents__</a> となってしまいます。</p>
+<p>　内部実装に問題があることが確認できていますが、修正が少々面倒なため着手できてません。</p>
+<p>　　</p>
+<h3><a name='75ptLkjx268'></a>9.2 テーブルで colspan/rowspan を使うとアライメント指定がずれる</h3>
+<p>　<a href='#g6xjP526KX7'>テーブル</a>において列毎のアライメント指定と横／縦方向のセル結合を併用すると意図したようにアライメントが設定されない問題があります。これは、セルの処理においてセル結合の情報を考慮に入れていないために発生します。たとえば、以下の例では水平方向の結合によってそれよりも右側のセルで問題が生じています。</p>
+<pre>
+| column A | column B | column C |
+|:---------|:--------:|---------:|
+|left      |center    |right     |
+|2&gt; left              |right?    |
+|left      |center    |right     |
+</pre>
+<table align='center'>
+<tr><th>column A</th><th>column B</th><th>column C</th></tr>
+<tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
+<tr><td align='left' colspan='2'>left</td><td style="background: #fff0f0;" align='center'>right?</td></tr>
+<tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
+</table>
+<p>　上記のような例では、問題は行に閉じているため対処は簡単だと思うかもしれません。しかし、縦方向の結合では先行する行の影響を受けることがわかります。</p>
+<pre>
+| column A | column B | column C |
+|:---------|:--------:|---------:|
+|2^ left   |center    |right     |
+           |center?   |right?    |
+|left      |center    |right     |
+</pre>
+<table align='center'>
+<tr><th>column A</th><th>column B</th><th>column C</th></tr>
+<tr><td align='left' rowspan='2'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
+<tr><td style="background: #fff0f0;" align='left'>center?</td><td style="background: #fff0f0;" align='center'>right?</td></tr>
+<tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
+</table>
+<p>　さらに、これらのセル結合指定が複合した場合、プログラムとして正し処理を行なうのは難しくなります。この問題に対する対処は未定ですが、コードで頑張ることは避け、アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする方向で検討中です。</p>
+<p>　　</p>
+<h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。バージョン番号の付与はまだ行なっていません。</p>
 <ul>
 <li><strong>2021/07/23</strong></li>
