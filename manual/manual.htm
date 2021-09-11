@@ -76,7 +76,7 @@
 <li><a href='#8tTIqHSNoTg'>9 既知の問題点</a></li>
 <ul>
 <li><a href='#cHrenaAukMU'>9.1 リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
-<li><a href='#75ptLkjx268'>9.2 テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
+<li><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
@@ -208,10 +208,10 @@ int main( void ) {
 <h3><a name='g6xjP526KX7'></a>5.5 テーブル</h3>
 <p>　以下のような記述でテーブルを作成できます。以下のように記述した場合、１行目は常にヘッダ行（th タグ）であり、２行目以降がデータ行（td タグ）になります。</p>
 <pre>
-	| header A | header B | header C |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+| header A | header B | header C |	
+|     0    |     1    |    2     |	
+|     3    |     4    |    5     |	
+|     6    |     7    |    8     |	
 </pre>
 <p>　上記は、以下のようになります。この場合、各列のデータはすべて左寄せになります。</p>
 <table align='center'>
@@ -220,13 +220,13 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='left'>4</td><td align='left'>5</td></tr>
 <tr><td align='left'>6</td><td align='left'>7</td><td align='left'>8</td></tr>
 </table>
-<p>　列毎に中央揃え、右寄せなどを指定したい場合には、２行目に :---: や ---: を記述します。</p>
+<p>　列毎に中央揃え、右寄せなどのアライメント指定を指定をしたい場合には、２行目に :---: や ---: を記述します。</p>
 <pre>
-	| header A | header B | header C |	
-	| :------- | :------: | -------: |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+| header A | header B | header C |	
+| :------- | :------: | -------: |	
+|     0    |     1    |    2     |	
+|     3    |     4    |    5     |	
+|     6    |     7    |    8     |	
 </pre>
 <p>　上記は、以下のように出力されます（表はデフォルトでセンタリングされます）。</p>
 <table align='center'>
@@ -235,15 +235,15 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　拡張機能として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、「自動的な折り返し」を禁止することができます<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。</p>
+<p>　拡張機能として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、<strong>「自動的な折り返しを禁止」</strong> することができます<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。</p>
 <p>　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に渡るヘッダ行を記述することができます。以下のように。</p>
 <pre>
-	|     A    |     B    |    C     |	
-	|   Alpha  |   Bravo  |  Charlie |	
-	| :------- | :------: | -------: |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+|     A    |     B    |    C     |	
+|   Alpha  |   Bravo  |  Charlie |	
+| :------- | :------: | -------: |	
+|     0    |     1    |    2     |	
+|     3    |     4    |    5     |	
+|     6    |     7    |    8     |	
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
@@ -253,14 +253,14 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　また別の拡張として、セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列跨がせることができます。同様に、N^ とすることでセルを縦方向に N 列跨がせることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
+<p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
 <pre>
-	|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
-	|   Alpha  |   Bravo  |  
-	| :------- | :------: | -------: |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
+|   Alpha  |   Bravo  |  
+| :------- | :------: | -------: |	
+|     0    |     1    |    2     |	
+|     3    |     4    |    5     |	
+|     6    |     7    |    8     |	
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
@@ -269,6 +269,23 @@ int main( void ) {
 <tr><td align='left'>0</td><td align='center'>1</td><td align='right'>2</td></tr>
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
+</table>
+<p>　　</p>
+<p>　アライメント指定行は複数記述できるようになりました。最初のアライメント指定行がヘッダとデータの境界となるのは従来通りで、アライメント指定は次のアライメント指定行が登場するまでの間有効となります。これにより、<a href='#kjPiZRKvp7P'>セル結合とアライメント指定を併用した場合の問題</a>に対処することができます。以下に例を示します。</p>
+<pre>
+| column A | column B | column C |
+|:---------|:--------:|---------:|
+|left      |center    |right     |
+|:--------------------|---------:|
+|2&gt; left              |right?    |
+|:---------|:--------:|---------:|
+|left      |center    |right     |
+</pre>
+<table align='center'>
+<tr><th>column A</th><th>column B</th><th>column C</th></tr>
+<tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
+<tr><td align='left' colspan='2'>left</td><td align='right'>right?</td></tr>
+<tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
 </table>
 <h3><a name='2c4WKrG50Sg'></a>5.6 引用</h3>
 <p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
@@ -695,7 +712,9 @@ index 16fc9f4..8387187 100644
 <p>　リンクテキストの末尾に文字装飾があると正しく処理されない問題が確認されています。たとえば、<code>[Table of __contents__](#Table of contents)</code> は <a href='#0qJQvVjc3Xy'>Table of __contents__</a> となってしまいます。</p>
 <p>　内部実装に問題があることが確認できていますが、修正が少々面倒なため着手できてません。</p>
 <p>　　</p>
-<h3><a name='75ptLkjx268'></a>9.2 テーブルで colspan/rowspan を使うとアライメント指定がずれる</h3>
+<h3><a name='kjPiZRKvp7P'></a>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</h3>
+<details>
+<summary>アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする修正を行ないました。詳細は<a href='#g6xjP526KX7'>テーブル</a>の説明を参照してください。</summary>
 <p>　<a href='#g6xjP526KX7'>テーブル</a>において列毎のアライメント指定と横／縦方向のセル結合を併用すると意図したようにアライメントが設定されない問題があります。これは、セルの処理においてセル結合の情報を考慮に入れていないために発生します。たとえば、以下の例では水平方向の結合によってそれよりも右側のセルで問題が生じています。</p>
 <pre>
 | column A | column B | column C |
@@ -725,6 +744,7 @@ index 16fc9f4..8387187 100644
 <tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
 </table>
 <p>　さらに、これらのセル結合指定が複合した場合、プログラムとして正し処理を行なうのは難しくなります。この問題に対する対処は未定ですが、コードで頑張ることは避け、アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする方向で検討中です。</p>
+</details>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。バージョン番号の付与はまだ行なっていません。</p>
@@ -810,6 +830,10 @@ index 16fc9f4..8387187 100644
 <li>REFACTORING : 内部実装を整理</li>
 <li>ENHANCE : <a href='#a2FYBDWqZUA'>別ファイルの include</a> をサポートする拡張を追加</li>
 <li>BUGFIX : <a href='#jkzhEyZU0ts'>スタイルシートの埋め込み</a>設定時に指定 css ファイルが存在しないとクラッシュする問題を修正</li>
+</ul>
+<li><strong>2021/09/11</strong></li>
+<ul>
+<li>BUGFIX : <a href='#kjPiZRKvp7P'>テーブルで colspan/rowspan を使うとアライメント指定がずれる問題</a>に対処する機能を追加</li>
 </ul>
 </ul>
 <hr>

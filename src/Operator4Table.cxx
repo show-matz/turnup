@@ -19,6 +19,7 @@ namespace turnup {
 
 	static bool IsTableLine( const TextSpan* pLine,
 							 uint32_t* pIndex = nullptr, TextSpan* pRest = nullptr );
+	static bool IsAlignmentLine( const TextSpan* pTop );
 	static const TextSpan* FindAlignmentLine( const TextSpan* pTop,
 											  const TextSpan* pEnd );
 	static const char* RetrieveColSpan( const char* p1,
@@ -75,11 +76,11 @@ namespace turnup {
 			return nullptr;
 
 		// header/contents 境界（かつ aligment 指定）行を検索
-		uint32_t borderLine = 1;
-		const TextSpan* pAlignment = FindAlignmentLine( pTop, pEnd );
-		if( !!pAlignment )
-			borderLine = pAlignment - pTop;
-
+		uint32_t firstBorder = 1; {
+			const TextSpan* pAlignment = FindAlignmentLine( pTop, pEnd );
+			if( !!pAlignment )
+				firstBorder = pAlignment - pTop;
+		}
 
 		auto& styles = docInfo.Get<StyleStack>();
 		auto& palette = docInfo.Get<StylePalette>();
@@ -92,8 +93,8 @@ namespace turnup {
 			// パレットインデックス等を回収しつつテーブル行かチェック→違うならループ脱出
 			if( IsTableLine( pTop, &idx, &line ) == false )
 				break;
-			// header/contents 境界（かつ aligment 指定）行ならロードしてループ継続
-			if( !!pAlignment && row == borderLine ) {
+			// aligment 指定行ならロードしてループ継続
+			if( IsAlignmentLine( &line ) ) {
 				s_aligns.Load( line );
 				continue;
 			}
@@ -123,13 +124,12 @@ namespace turnup {
 				bool bNoWrap = false; 
 				auto align  = s_aligns.Get( col, bNoWrap );
 				const char* pDefaultStyle = "";
-				if( borderLine <= row ) {
+				if( firstBorder <= row ) {
 					pDefaultStyle =  s_styles[align];
 					if( !bNoWrap )
 						pDefaultStyle += 7;
-
 				}
-				const char* pTag = s_tags[borderLine <= row];
+				const char* pTag = s_tags[firstBorder <= row];
 				if( idx == 10 )
 					styles.WriteOpenTag( std::cout, pTag, pDefaultStyle, "" );
 				else
@@ -243,6 +243,16 @@ namespace turnup {
 			return true;
 		}
 		return false;
+	}
+
+	static bool IsAlignmentLine( const TextSpan* pTop ) {
+		auto chk = []( char c ) {
+			return c == '-' || c == '=' || c == '|' || c == ':' || c == ' ';
+		};
+		TextSpan line = pTop->Trim();
+		if( IsTableLine( &line ) == false )
+			return false;
+		return std::all_of( line.Top(), line.End(), chk );
 	}
 
 	static const TextSpan* FindAlignmentLine( const TextSpan* pTop, 
