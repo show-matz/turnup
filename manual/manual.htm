@@ -75,7 +75,7 @@
 </ul>
 <li><a href='#8tTIqHSNoTg'>9 既知の問題点</a></li>
 <ul>
-<li><a href='#cHrenaAukMU'>9.1 リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
+<li><a href='#95miNJcW6DM'>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
 <li><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
@@ -708,9 +708,12 @@ index 16fc9f4..8387187 100644
 <p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
 <p>　　</p>
 <h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
-<h3><a name='cHrenaAukMU'></a>9.1 リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
-<p>　リンクテキストの末尾に文字装飾があると正しく処理されない問題が確認されています。たとえば、<code>[Table of __contents__](#Table of contents)</code> は <a href='#0qJQvVjc3Xy'>Table of __contents__</a> となってしまいます。</p>
-<p>　内部実装に問題があることが確認できていますが、修正が少々面倒なため着手できてません。</p>
+<h3><a name='95miNJcW6DM'></a>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
+<details>
+<summary>　この問題は 2021/09/12 に修正されました（まだバージョン番号の管理を始めていないので日付で記載しています）。</summary>
+<p>　リンクテキストの末尾に文字装飾があると正しく処理されない問題が確認されています。たとえば、<code>[Table of __contents__](#Table of contents)</code> は <code>Table of __contents__</code> と表示されてしまいます。</p>
+<p>　<strike>内部実装に問題があることが確認できていますが、修正が少々面倒なため着手できてません。</strike></p>
+</details>
 <p>　　</p>
 <h3><a name='kjPiZRKvp7P'></a>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</h3>
 <details>
@@ -834,6 +837,10 @@ index 16fc9f4..8387187 100644
 <li><strong>2021/09/11</strong></li>
 <ul>
 <li>BUGFIX : <a href='#kjPiZRKvp7P'>テーブルで colspan/rowspan を使うとアライメント指定がずれる問題</a>に対処する機能を追加</li>
+</ul>
+<li><strong>2021/09/12</strong></li>
+<ul>
+<li>BUGFIX : <a href='#95miNJcW6DM'>リンクテキストの末尾に文字装飾があると正しく処理されない問題</a>を修正</li>
 </ul>
 </ul>
 <hr>

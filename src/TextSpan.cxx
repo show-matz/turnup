@@ -46,28 +46,46 @@ namespace turnup {
 			return true;
 		return false;
 	}
+	inline bool IsTopOfSpaceRequiredOperator( const char* p1,
+											  const char* p2, const TextSpan& whole ) {
+		// 内側に空白類文字があれば該当しないと判断
+		if( IsSpaceForward( p2 ) )
+			return false;
+		// 先頭であるか、または手前に空白類文字があれば該当
+		return ( p1 == whole.Top() || IsSpaceBackward( p1 - 1 ) );
+	}
+	inline bool IsEndOfSpaceRequiredOperator( const char* p1,
+											  const char* p2, const TextSpan& whole ) {
+		// 内側に空白類文字があれば該当しないと判断
+		if( IsSpaceBackward( p1 - 1 ) )
+			return false;
+		// 末尾であるか、または直後に空白類文字があれば該当
+		return ( p2 == whole.End() || IsSpaceForward( p2 ) );
+	}
 
-	static void WriteTextSpanImp( std::ostream& os,
+
+
+	static void WriteTextSpanImp( std::ostream& os, const TextSpan& whole,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink );
 	// ^xxx^ 形式（sup）を処理する
-	static const char* OperateSup( std::ostream& os,
+	static const char* OperateSup( std::ostream& os, const TextSpan& whole,
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink );
 	// ~xxx~ 形式（sub）を処理する
-	static const char* OperateSub( std::ostream& os,
+	static const char* OperateSub( std::ostream& os, const TextSpan& whole,
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink );
 	// ==xxx== 形式（mark）を処理する
-	static const char* OperateMark( std::ostream& os,
+	static const char* OperateMark( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
 	// @{{styles}{xxxxxx}} 形式（styles）を処理する
-	static const char* OperateStyles( std::ostream& os,
+	static const char* OperateStyles( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink );
 	// [label](URL) 形式のリンクを処理する
-	static const char* OperateLink( std::ostream& os,
+	static const char* OperateLink( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
 	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
@@ -77,28 +95,28 @@ namespace turnup {
 	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
 												 const char* pLabelEnd );
 	// <br> 形式の（一部の許可された）HTMLタグを処理する
-	static const char* OperateTags( std::ostream& os,
+	static const char* OperateTags( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
 	// `code` 形式を処理する
-	static const char* OperateCode( std::ostream& os,
+	static const char* OperateCode( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
 	// ![alt](url) 形式を処理する
-	static const char* OperateImage( std::ostream& os,
+	static const char* OperateImage( std::ostream& os, const TextSpan& whole,
 									 const char* pTop, const char* pEnd,
 									 DocumentInfo& docInfo, bool bTermLink );
 	// ~~string~~ 形式を処理する
-	static const char* OperateStrike( std::ostream& os,
+	static const char* OperateStrike( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink );
 	// *string*, **string**, ***string***,
 	// _string_, __string__, ___string___ 　の各種形式による強調を処理する
-	static const char* OperateEmphasis( std::ostream& os,
+	static const char* OperateEmphasis( std::ostream& os, const TextSpan& whole,
 										const char* pTop, const char* pEnd,
 										DocumentInfo& docInfo, bool bTermLink );
 	// {{fn:string}} 形式の脚注を処理する
-	static const char* OperateFootnote( std::ostream& os,
+	static const char* OperateFootnote( std::ostream& os, const TextSpan& whole,
 										const char* pTop, const char* pEnd,
 										DocumentInfo& docInfo, bool bTermLink );
 	static void WriteWithTermLink( std::ostream& os,
@@ -276,7 +294,7 @@ namespace turnup {
 
 	std::ostream& TextSpan::WriteTo( std::ostream& os,
 									 DocumentInfo& docInfo, bool bTermLink ) const {
-		WriteTextSpanImp( os, this->Top(), this->End(), docInfo, bTermLink );
+		WriteTextSpanImp( os, *this, this->Top(), this->End(), docInfo, bTermLink );
 		return os;
 	}
 
@@ -299,7 +317,7 @@ namespace turnup {
 	 * [表示文字](URL) 形式でリンク
 	 * [表示文字](#見出し文字列) 形式で見出しへのページ内リンク
 	 */
-	static void WriteTextSpanImp( std::ostream& os,
+	static void WriteTextSpanImp( std::ostream& os, const TextSpan& whole,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink ) {
 		auto i00 = std::find( pTop, pEnd, '!' );
@@ -326,21 +344,21 @@ namespace turnup {
 			pTop = pStart;
 			//発見された要素で分岐
 			switch( *pTop ) {
-			case '!':	pTop = OperateImage(    os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '*':	pTop = OperateEmphasis( os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '<':	pTop = OperateTags(     os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '=':	pTop = OperateMark(     os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '@':	pTop = OperateStyles(   os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '[':	pTop = OperateLink(     os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '^':	pTop = OperateSup(      os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '_':	pTop = OperateEmphasis( os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '`':	pTop = OperateCode(     os, pTop, pEnd, docInfo, bTermLink );	break;
-			case '{':	pTop = OperateFootnote( os, pTop, pEnd, docInfo, bTermLink );	break;
+			case '!':	pTop = OperateImage(    os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '*':	pTop = OperateEmphasis( os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '<':	pTop = OperateTags(     os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '=':	pTop = OperateMark(     os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '@':	pTop = OperateStyles(   os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '[':	pTop = OperateLink(     os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '^':	pTop = OperateSup(      os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '_':	pTop = OperateEmphasis( os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '`':	pTop = OperateCode(     os, whole, pTop, pEnd, docInfo, bTermLink );	break;
+			case '{':	pTop = OperateFootnote( os, whole, pTop, pEnd, docInfo, bTermLink );	break;
 			case '~':
 					if( pTop[1] != '~' )
-						pTop = OperateSub(      os, pTop, pEnd, docInfo, bTermLink );
+						pTop = OperateSub(      os, whole, pTop, pEnd, docInfo, bTermLink );
 					else
-						pTop = OperateStrike(   os, pTop, pEnd, docInfo, bTermLink );
+						pTop = OperateStrike(   os, whole, pTop, pEnd, docInfo, bTermLink );
 					break;
 			}
 			i00 = std::find( pTop, pEnd, '!' );
@@ -359,7 +377,7 @@ namespace turnup {
 
 
 	// ^xxx^ 形式（sup）を処理する
-	static const char* OperateSup( std::ostream& os,
+	static const char* OperateSup( std::ostream& os, const TextSpan& whole,
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink ) {
 		auto p = std::find( pTop + 1, pEnd, '^' );
@@ -369,13 +387,13 @@ namespace turnup {
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "sup" );
-		WriteTextSpanImp( os, pTop + 1, p, docInfo, bTermLink );	// sup タグ内部でさらに他を適用する
+		WriteTextSpanImp( os, whole, pTop + 1, p, docInfo, bTermLink );	// sup タグ内部でさらに他を適用する
 		os << "</sup>";
 		return p + 1;
 	}
 
 	// ~xxx~ 形式（sub）を処理する
-	static const char* OperateSub( std::ostream& os,
+	static const char* OperateSub( std::ostream& os, const TextSpan& whole,
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink ) {
 		auto p = std::find( pTop + 1, pEnd, '~' );
@@ -385,13 +403,13 @@ namespace turnup {
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "sub" );
-		WriteTextSpanImp( os, pTop + 1, p, docInfo, bTermLink );	// sub タグ内部でさらに他を適用する
+		WriteTextSpanImp( os, whole, pTop + 1, p, docInfo, bTermLink );	// sub タグ内部でさらに他を適用する
 		os << "</sub>";
 		return p + 1;
 	}
 
 	// ==xxx== 形式（mark）を処理する
-	static const char* OperateMark( std::ostream& os,
+	static const char* OperateMark( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink ) {
 		const char* target = "==";
@@ -400,7 +418,8 @@ namespace turnup {
 			os.write( pTop, 1 );
 			return pTop + 1;
 		}
-		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 2 ) ) {
+		// ==xxx== 形式（mark）の開始条件を満たしていなければ "==" を出力して終了
+		if( !IsTopOfSpaceRequiredOperator( pTop, pTop + 2, whole ) ) {
 			os << "==";
 			return pTop + 2;
 		}
@@ -408,24 +427,27 @@ namespace turnup {
 		const char* p = pTop;
 		while( true ) {
 			p = std::search( p + 2, pEnd, target, target + 2 );
+			//範囲内で "==" を見つけることができなければ "==" を出力して終了
 			if( p == pEnd ) {
 				os << "==";
 				return pTop + 2;
 			}
-			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 2 ) )
+			//発見した "==" が終端の条件を満たしていればループ脱出
+			if( IsEndOfSpaceRequiredOperator( p, p + 2, whole ) )
 				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "mark" );
-		WriteTextSpanImp( os, pTop + 2, p, docInfo, bTermLink );	// mark タグ内部でさらに他を適用する
+		WriteTextSpanImp( os, whole, pTop + 2, p, docInfo, bTermLink );	// mark タグ内部でさらに他を適用する
 		os << "</mark>";
 		return p + 2;
 	}
 
 	// @{{styles}{xxxxxx}} 形式（styles）を処理する
-	static const char* OperateStyles( std::ostream& os,
+	static const char* OperateStyles( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
 		(void)docInfo;
 		(void)bTermLink;
 		// @{{ で始まっていなければ無視
@@ -450,9 +472,10 @@ namespace turnup {
 	}
 
 	// [label](URL) 形式のリンクを処理する
-	static const char* OperateLink( std::ostream& os,
+	static const char* OperateLink( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
 		(void)bTermLink;
 		const char* target = "](";
 		//終端1を検索
@@ -566,9 +589,10 @@ namespace turnup {
 	}
 
 	// <br> 形式の（一部の許可された）HTMLタグを処理する
-	static const char* OperateTags( std::ostream& os,
+	static const char* OperateTags( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
 		(void)pEnd;
 		(void)docInfo;
 		(void)bTermLink;
@@ -585,23 +609,26 @@ namespace turnup {
 	}
 
 	// `code` 形式を処理する
-	static const char* OperateCode( std::ostream& os,
+	static const char* OperateCode( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink ) {
-		(void)docInfo;
 		(void)bTermLink;
-		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 1 ) ) {
+		// `code` 形式の開始条件を満たしていなければ "==" を出力して終了
+		if( !IsTopOfSpaceRequiredOperator( pTop, pTop + 1, whole ) ) {
 			os << "`";
 			return pTop + 1;
 		}
+		//終端を検索
 		const char* p = pTop;
 		while( true ) {
 			p = std::find( p + 1, pEnd, '`' );
+			//範囲内で "`" を見つけることができなければ "`" を出力して終了
 			if( p == pEnd ) {
 				os << "`";
 				return pTop + 1;
 			}
-			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 1 ) )
+			//発見した "`" が終端の条件を満たしていればループ脱出
+			if( IsEndOfSpaceRequiredOperator( p, p + 1, whole ) )
 				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
@@ -612,10 +639,11 @@ namespace turnup {
 	}
 
 	// ![alt](url) 形式を処理する
-	static const char* OperateImage( std::ostream& os,
+	static const char* OperateImage( std::ostream& os, const TextSpan& whole,
 									 const char* pTop, const char* pEnd,
 									 DocumentInfo& docInfo, bool bTermLink ) {
 		(void)bTermLink;
+		(void)whole;
 		// 終端の ) を検索
 		auto pDelim = std::find( pTop, pEnd, ')' );
 		// 終端が見つからない場合は ! だけ出力して終了
@@ -644,7 +672,7 @@ namespace turnup {
 	}
 
 	// ~~string~~ 形式を処理する
-	static const char* OperateStrike( std::ostream& os,
+	static const char* OperateStrike( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink ) {
 		const char* target = "~~";
@@ -653,7 +681,8 @@ namespace turnup {
 			os.write( pTop, 1 );
 			return pTop + 1;
 		}
-		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + 2 ) ) {
+		// ~~string~~ 形式の開始条件を満たしていなければ "~~" を出力して終了
+		if( !IsTopOfSpaceRequiredOperator( pTop, pTop + 2, whole ) ) {
 			os << "~~";
 			return pTop + 2;
 		}
@@ -661,23 +690,25 @@ namespace turnup {
 		const char* p = pTop;
 		while( true ) {
 			p = std::search( p + 2, pEnd, target, target + 2 );
+			//範囲内で "~~" を見つけることができなければ "~~" を出力して終了
 			if( p == pEnd ) {
 				os << "~~";
 				return pTop + 2;
 			}
-			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + 2 ) )
+			//発見した "~~" が終端の条件を満たしていればループ脱出
+			if( IsEndOfSpaceRequiredOperator( p, p + 2, whole ) )
 				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "strike" );
-		WriteTextSpanImp( os, pTop + 2, p, docInfo, bTermLink );	// 取り消し線内部でさらに他を適用する
+		WriteTextSpanImp( os, whole, pTop + 2, p, docInfo, bTermLink );	// 取り消し線内部でさらに他を適用する
 		os << "</strike>";
 		return p + 2;
 	}
 
 	// *string*, **string**, ***string***,
 	// _string_, __string__, ___string___ 　の各種形式による強調を処理する
-	static const char* OperateEmphasis( std::ostream& os,
+	static const char* OperateEmphasis( std::ostream& os, const TextSpan& whole,
 										const char* pTop, const char* pEnd,
 										DocumentInfo& docInfo, bool bTermLink ) {
 		//単独か、２連続か、３連続かを特定
@@ -687,7 +718,8 @@ namespace turnup {
 			if( pTop[2] == pTop[0] )
 				++cnt;
 		}
-		if( !IsSpaceBackward( pTop - 1 ) || IsSpaceForward( pTop + cnt ) ) {
+		// この形式の開始条件を満たしていなければ "==" を出力して終了
+		if( !IsTopOfSpaceRequiredOperator( pTop, pTop + cnt, whole ) ) {
 			os.write( pTop, cnt );
 			return pTop + cnt;
 		}
@@ -696,26 +728,29 @@ namespace turnup {
 		const char* p = pTop;
 		while( true ) {
 			p = std::search( p + cnt, pEnd, pTop, pTop + cnt );
+			//範囲内で終端を見つけることができなければ該当部分を出力して終了
 			if( p == pEnd ) {
 				os.write( pTop, cnt );
 				return pTop + cnt;
 			}
-			if( !IsSpaceBackward( p - 1 ) && IsSpaceForward( p + cnt ) )
+			//発見した終端が条件を満たしていればループ脱出
+			if( IsEndOfSpaceRequiredOperator( p, p + cnt, whole ) )
 				break;
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		if( cnt & 1 )	styles.WriteOpenTag( os, "em" );
 		if( cnt & 2 )	styles.WriteOpenTag( os, "strong" );
-		WriteTextSpanImp( os, pTop + cnt, p, docInfo, bTermLink );	// 強調内部でさらに他を適用する
+		WriteTextSpanImp( os, whole, pTop + cnt, p, docInfo, bTermLink );	// 強調内部でさらに他を適用する
 		if( cnt & 2 )	os << "</strong>";
 		if( cnt & 1 )	os << "</em>";
 		return p + cnt;
 	}
 
 	// {{fn:string}} 形式の脚注を処理する
-	static const char* OperateFootnote( std::ostream& os,
+	static const char* OperateFootnote( std::ostream& os, const TextSpan& whole,
 										const char* pTop, const char* pEnd,
 										DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
 		(void)bTermLink;
 		//無関係な open bracket だった場合は出力して終了
 		if( !!::strncmp( pTop, "{{fn:", 5 ) ) {
