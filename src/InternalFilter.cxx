@@ -7,6 +7,7 @@
 
 #include "InternalFilter4CandCxx.hxx"
 #include "InternalFilter4Diff.hxx"
+#include "InternalFilter4Shell.hxx"
 
 #include "TextSpan.hxx"
 
@@ -25,6 +26,7 @@ namespace turnup {
 		if( type.IsEqual( "C++" ) ||
 			type.IsEqual( "c++" ) )		return InternalFilter4Cxx;
 		if( type.IsEqual( "diff" ) )	return InternalFilter4Diff;
+		if( type.IsEqual( "sh" ) )		return InternalFilter4Shell;
 		return nullptr;
 	}
 
