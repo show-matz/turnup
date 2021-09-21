@@ -80,7 +80,7 @@ namespace turnup {
 	static const char* OperateMark( std::ostream& os, const TextSpan& whole,
 									const char* pTop, const char* pEnd,
 									DocumentInfo& docInfo, bool bTermLink );
-	// @{{styles}{xxxxxx}} 形式（styles）を処理する
+	// @{{STYLES}{CONTENTS}} / @((STYLES)(CONTENTS)) 形式を処理する
 	static const char* OperateStyles( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink );
@@ -443,22 +443,28 @@ namespace turnup {
 		return p + 2;
 	}
 
-	// @{{styles}{xxxxxx}} 形式（styles）を処理する
+	// @{{STYLES}{CONTENTS}} / @((STYLES)(CONTENTS)) 形式を処理する
 	static const char* OperateStyles( std::ostream& os, const TextSpan& whole,
 									  const char* pTop, const char* pEnd,
 									  DocumentInfo& docInfo, bool bTermLink ) {
 		(void)whole;
 		(void)docInfo;
 		(void)bTermLink;
-		// @{{ で始まっていなければ無視
-		if( !!::strncmp( pTop, "@{{", 3 ) ) {
+		const char* target1 = nullptr;
+		const char* target2 = nullptr;
+		// @{{ または @(( で始まっていなければ無視
+		if( !::strncmp( pTop, "@{{", 3 ) ) {
+			target1 = "}{";
+			target2 = "}}";
+		} else if( !::strncmp( pTop, "@((", 3 ) ) {
+			target1 = ")(";
+			target2 = "))";
+		} else {
 			os.write( pTop, '@' ); 
 			return pTop + 1;
 		}
-		const char* target = "}{";
-		const char* end1 = std::search( pTop + 3, pEnd, target, target + 2 );
-		target = "}}";
-		const char* end2 = std::search( pTop + 3, pEnd, target, target + 2 );
+		const char* end1 = std::search( pTop + 3, pEnd, target1, target1 + 2 );
+		const char* end2 = std::search( pTop + 3, pEnd, target2, target2 + 2 );
 		if( end1 == pEnd || end2 == pEnd || end2 < end1 ) {
 			os.write( pTop, '@' ); 
 			return pTop + 1;
