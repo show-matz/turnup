@@ -56,6 +56,7 @@
 <li><a href='#hMHXjTrWEnw'>6.14 領域の折り畳み</a></li>
 <li><a href='#a2FYBDWqZUA'>6.15 別ファイルの include</a></li>
 <li><a href='#hs1guSfsFGb'>6.16 改ページ指定</a></li>
+<li><a href='#4eSrElLWBcH'>6.17 変数の定義と展開</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -69,9 +70,10 @@
 <ul>
 <li><a href='#fSSOiFwQpEj'>8.1 入力ファイルのエンコーディングと改行スタイル</a></li>
 <li><a href='#9s47bTtYstx'>8.2 文字装飾やリンクの制約と継続行</a></li>
-<li><a href='#6lxsyJvfG4q'>8.3 一部の文字装飾における制約</a></li>
-<li><a href='#l3wNcsiymoY'>8.4 フィルタ機能について</a></li>
-<li><a href='#8pNcG5W73uy'>8.5 領域の折り畳みについて</a></li>
+<li><a href='#9IN7afRR0hr'>8.3 内部的な処理順序</a></li>
+<li><a href='#6lxsyJvfG4q'>8.4 一部の文字装飾における制約</a></li>
+<li><a href='#l3wNcsiymoY'>8.5 フィルタ機能について</a></li>
+<li><a href='#8pNcG5W73uy'>8.6 領域の折り畳みについて</a></li>
 </ul>
 <li><a href='#8tTIqHSNoTg'>9 既知の問題点</a></li>
 <ul>
@@ -356,13 +358,13 @@ lv.2<br>
 <li>２つだと、strong タグによる強調になります。 <code>**これ**</code> が、 <strong>これ</strong> になります。</li>
 <li>３つだと、em と strong の併用になります。 <code>***これ***</code> が、 <em><strong>これ</strong></em> になります。</li>
 </ul>
-<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='hBdBkqlaJVW'></a>5.10 取消し線</h3>
 <p>　２つのチルダ ~~ で括ることで、文字列に取消線を引くことができます。<code>~~この部分は取消し~~</code> が、 <strike>この部分は取消し</strike> になります。</p>
-<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='9k1sm8QrDHi'></a>5.11 マーカー</h3>
 <p>　== を使って括ることで、マーカーを利用することができます。スタイルシート次第ですが、 <code>==例えばこんなふう==</code> が、 <mark>例えばこんなふう</mark> になります。</p>
-<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='hVz7Qq0YetS'></a>5.12 上付きと下付き</h3>
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、 <code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='fbLcMRTVXac'></a>5.13 リンク</h3>
@@ -377,7 +379,7 @@ lv.2<br>
 <pre>
   `code`
 </pre>
-<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.3  一部の文字装飾における制約</a>を参照してください。</p>
+<p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='ba5hSrekAxp'></a>5.15 水平線</h3>
 <p>　行頭からハイフン、等号、アンダースコア、アスタリスクを３個以上を記述すると水平線として出力されます。文字種は混在させないでください。</p>
 <h3><a name='hpQu1WK1Nkr'></a>5.16 画像の挿入</h3>
@@ -647,6 +649,17 @@ index 16fc9f4..8387187 100644
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
+<h3><a name='4eSrElLWBcH'></a>6.17 変数の定義と展開</h3>
+<p>　変数に値を設定し、任意の場所でその値を展開することができます。変数の定義は以下の要領で記述します。ここでは、変数 FOO に値として 777 を設定しています。</p>
+<pre>
+&lt;!-- define: FOO = 777 --&gt;
+</pre>
+<p>　<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を（特に値の前後端に）含む値を変数に設定したい場合、以下のように値にシングルクォートまたはダブルクォートで括ることができます（この場合クォート文字は値に含まれません）。</p>
+<pre>
+&lt;!-- define: VAR = ' a b c ' --&gt;
+</pre>
+<p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。</p>
+<p>　設定した変数を参照（展開）するには ${FOO} という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -708,7 +721,16 @@ index 16fc9f4..8387187 100644
 <p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</p>
 <h3><a name='9s47bTtYstx'></a>8.2 文字装飾やリンクの制約と継続行</h3>
 <p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</p>
-<h3><a name='6lxsyJvfG4q'></a>8.3 一部の文字装飾における制約</h3>
+<h3><a name='9IN7afRR0hr'></a>8.3 内部的な処理順序</h3>
+<p>　turnup に様々な機能が追加された結果、当初は 1-pass だった内部処理も複雑になっていきました。現在では、以下の内部ステップを実行しています。</p>
+<table align='center'>
+<tr><th>step</th><th>action</th><th>description</th></tr>
+<tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理し、単一の行シーケンスを生成します。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
+<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。</td></tr>
+<tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、見出しや図表タイトル、用語定義などを解析して各種の拡張機能の利用に備えます。</td></tr>
+<tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
+</table>
+<h3><a name='6lxsyJvfG4q'></a>8.4 一部の文字装飾における制約</h3>
 <p>　以下の文字装飾において対象範囲を括る（**などの文字列の）ペアのすぐ外側には、 <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でない文字があってはいけません」</strong> 。また、ペアのすぐ内側には <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があってはいけません」</strong> 。</p>
 <ul>
 <li><a href='#d2FXT7Fqg21'>強調</a></li>
@@ -716,9 +738,9 @@ index 16fc9f4..8387187 100644
 <li><a href='#9k1sm8QrDHi'>マーカー</a></li>
 <li><a href='#2TegSYAerqJ'>コード</a></li>
 </ul>
-<h3><a name='l3wNcsiymoY'></a>8.4 フィルタ機能について</h3>
+<h3><a name='l3wNcsiymoY'></a>8.5 フィルタ機能について</h3>
 <p>　turnup が標準で提供する<a href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
-<h3><a name='8pNcG5W73uy'></a>8.5 領域の折り畳みについて</h3>
+<h3><a name='8pNcG5W73uy'></a>8.6 領域の折り畳みについて</h3>
 <p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
 <p>　　</p>
 <h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
@@ -860,6 +882,10 @@ index 16fc9f4..8387187 100644
 <li><strong>2021/09/21</strong></li>
 <ul>
 <li>ENHANCE : <code>@((STYLES)(CONTENTS))</code> 形式での<a href='#2Hh9eF0BTk3'>インラインスタイル指定</a>を可能にする修正</li>
+</ul>
+<li><strong>2021/09/25</strong></li>
+<ul>
+<li>ENHANCE : <a href='#4eSrElLWBcH'>変数の定義と展開</a>機能を追加</li>
 </ul>
 </ul>
 <hr>

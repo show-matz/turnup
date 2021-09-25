@@ -7,6 +7,7 @@
 #include "DocumentInfo.hxx"
 #include "HtmlHeader.hxx"
 #include "Operators.hxx"
+#include "PreProcessor.hxx"
 
 //#include <vector>
 //#include <algorithm>
@@ -36,6 +37,17 @@ int main( int argc, char* argv[] ) {
 	if( !pInData ) {
 		std::cerr << "aborted." << std::endl;
 		return 1;
+	}
+
+	{
+		PreProcessor* pPP = PreProcessor::Create();
+		bool ret = pInData->PreProcess( pPP );
+		PreProcessor::Release( pPP );
+		if( !ret ) {
+			std::cerr << "aborted." << std::endl;
+			InputData::Release( pInData ); 
+			return 1;	
+		}
 	}
 
 	DocumentInfo	docInfo;

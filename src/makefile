@@ -69,6 +69,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Glossary.o					\
 		$(TARGETDIR)/Footnotes.o				\
 		$(TARGETDIR)/DocumentInfo.o				\
+		$(TARGETDIR)/PreProcessor.o				\
 		$(TARGETDIR)/InternalFilter.o			\
 		$(TARGETDIR)/InternalFilter4Diff.o		\
 		$(TARGETDIR)/InternalFilter4CandCxx.o	\

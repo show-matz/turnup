@@ -11,6 +11,7 @@
 namespace turnup {
 
 	class DocumentInfo;
+	class PreProcessor;
 
 	//--------------------------------------------------------------------------
 	//
@@ -25,6 +26,7 @@ namespace turnup {
 		virtual uint32_t Size() const = 0;
 		virtual const TextSpan* Begin() const = 0;
 		virtual const TextSpan* End() const = 0;
+		virtual bool PreProcess( PreProcessor* pPreProsessor ) = 0;
 		virtual void PreScan( DocumentInfo& docInfo ) = 0;
 	public:
 		static InputData* Create( const char* pFileName );

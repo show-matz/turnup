@@ -303,6 +303,10 @@ namespace turnup {
 		return os;
 	}
 
+	std::ostream& operator<<( std::ostream& os, const TextSpan& txt ) {
+		os.write( txt.Top(), txt.ByteLength() );
+		return os;
+	}
 	//--------------------------------------------------------------------------
 	//
 	// local functions

@@ -15,6 +15,7 @@
 #include "File.hxx"
 #include "Operator4TermDefine.hxx"
 #include "Utilities.hxx"
+#include "PreProcessor.hxx"
 
 #include <vector>
 #include <algorithm>
@@ -37,6 +38,7 @@ namespace turnup {
 		virtual uint32_t Size() const override;
 		virtual const TextSpan* Begin() const override;
 		virtual const TextSpan* End() const override;
+		virtual bool PreProcess( PreProcessor* pPreProsessor ) override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
 	public:
 		bool Loaded() const;
@@ -47,6 +49,7 @@ namespace turnup {
 	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
+		std::vector<char*>		m_buffers;
 	};
 
 	//--------------------------------------------------------------------------
@@ -81,7 +84,8 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	InputDataImpl::InputDataImpl( const TextSpan& fileName ) : InputData(),
 															   m_inFiles(),
-															   m_lines() {
+															   m_lines(),
+															   m_buffers() {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
 		if( RecursiveLoadFile( stack, fileName ) == false )
@@ -106,6 +110,18 @@ namespace turnup {
 		if( m_lines.empty() )
 			return nullptr;
 		return &(m_lines[0]) + this->Size();
+	}
+
+	bool InputDataImpl::PreProcess( PreProcessor* pPreProsessor ) {
+		if( m_lines.empty() )
+			return true;
+		TextSpan* pTop = &(m_lines[0]);
+		TextSpan* pEnd = pTop + m_lines.size();
+		auto callback = []( char* pBuffer, void* pOpaque ) -> void {
+			auto pContainer = reinterpret_cast<std::vector<char*>*>( pOpaque );
+			pContainer->push_back( pBuffer );
+		};
+		return pPreProsessor->Execute( pTop, pEnd, callback, &m_buffers );
 	}
 
 	void InputDataImpl::PreScan( DocumentInfo& docInfo ) {
@@ -232,6 +248,16 @@ namespace turnup {
 			*itr1 = nullptr;
 		}
 		m_inFiles.clear();
+
+		/* clear preprocessed line buffes */ {
+			auto itr1 = m_buffers.begin();
+			auto itr2 = m_buffers.begin();
+			for( ; itr1 != itr2; ++itr1 ) {
+				char* p = *itr1;
+				delete[] p;
+				*itr1 = nullptr;
+			}
+		}
 	}
 
 	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName ) {

@@ -59,6 +59,8 @@ namespace turnup {
 		const char* m_pEnd;
 	};
 
+	std::ostream& operator<<( std::ostream& os, const TextSpan& txt );
+
 } // namespace turnup
 
 #endif // TEXTSPAN_HXX__
