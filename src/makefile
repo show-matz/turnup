@@ -98,6 +98,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/StyleStack.o				\
 		$(TARGETDIR)/StylePalette.o				\
 		$(TARGETDIR)/Utilities.o				\
+		$(TARGETDIR)/Parameters.o				\
 		$(TARGETDIR)/main.o						\
 
 

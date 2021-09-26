@@ -6,12 +6,13 @@
 #ifndef INPUTDATA_HXX__
 #define INPUTDATA_HXX__
 
-#include "TextSpan.hxx"
+#include <stdint.h>
 
 namespace turnup {
 
 	class DocumentInfo;
 	class PreProcessor;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
@@ -29,7 +30,7 @@ namespace turnup {
 		virtual bool PreProcess( PreProcessor* pPreProsessor ) = 0;
 		virtual void PreScan( DocumentInfo& docInfo ) = 0;
 	public:
-		static InputData* Create( const char* pFileName );
+		static InputData* Create( const TextSpan& fileName );
 		static void Release( InputData* pInputData );
 	};
 

@@ -63,8 +63,7 @@ namespace turnup {
 	InputData::~InputData() {
 	}
 
-	InputData* InputData::Create( const char* pFileName ) {
-		TextSpan fileName{ pFileName };
+	InputData* InputData::Create( const TextSpan& fileName ) {
 		InputDataImpl* pImpl = new InputDataImpl{ fileName };
 		if( pImpl->Loaded() == false ) {
 			Release( pImpl );
