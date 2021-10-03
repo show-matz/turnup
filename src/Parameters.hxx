@@ -26,8 +26,8 @@ namespace turnup {
 	public:
 		bool GetTargetFile( TextSpan& ref ) const;
 		bool VersionMode() const;	// --version
-//		uint32_t DefinitionCount() const;
-//		bool Definition( uint32_t idx, TextSpan& ref ) const;
+		uint32_t DefinitionCount() const;
+		bool Definition( uint32_t idx, TextSpan& ref ) const;
 //		uint32_t IncludePathCount() const;
 //		bool IncludePath( uint32_t idx, TextSpan& ref ) const;
 	private:

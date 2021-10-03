@@ -32,8 +32,8 @@ namespace turnup {
 	public:
 		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd,
 							  void (*pCallback)( char*, void* ), void* pOpaque ) override;
+		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) override;
 	private:
-		void RegisterVariable( const TextSpan& name, const TextSpan& value );
 		bool FindVariable( const TextSpan& name, TextSpan& value ) const;
 		char* ExpandVariables( const char* pTop, 
 							   const char* pEnd, TextSpan posRef, uint32_t& length );
@@ -73,7 +73,6 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	PreProcessorImpl::PreProcessorImpl() : m_variables() {
-		//ToDo : eiRfJCrt9ae : システム変数はコンストラクタに渡して登録、だろうな。 ⇒ 将来やる
 	}
 
 	PreProcessorImpl::~PreProcessorImpl() {
@@ -101,18 +100,20 @@ namespace turnup {
 			//define 行の場合、変数を登録／更新
 			TextSpan name, value;
 			if( IsDefineLine( pLine, name, value ) ) {
-				if( std::all_of( name.Top(), name.End(), IsVarNameChar ) == false ) {
+				if( this->RegisterVariable( name, value ) == false ) {
 					std::cerr << "ERROR : invalid variable name '" << name << "'." << std::endl;
 					return false;
 				}
-				this->RegisterVariable( name, value );
 			}
 			//ToDo : eiRfJCrt9ae : 条件分岐を処理する必要がある... ⇒ 将来やる
 		}
 		return true;
 	}
 
-	void PreProcessorImpl::RegisterVariable( const TextSpan& name, const TextSpan& value ) {
+	bool PreProcessorImpl::RegisterVariable( const TextSpan& name, const TextSpan& value ) {
+		//check name
+		if( std::all_of( name.Top(), name.End(), IsVarNameChar ) == false )
+			return false;
 		Variable tmp{ name, value };
 		auto itr = std::lower_bound( m_variables.begin(),
 									 m_variables.end(), tmp, CompareVariable );
@@ -120,6 +121,7 @@ namespace turnup {
 			itr->second = value;
 		else
 			m_variables.insert( itr, tmp );
+		return true;
 	}
 
 	bool PreProcessorImpl::FindVariable( const TextSpan& name, TextSpan& value ) const {

@@ -12,11 +12,13 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace turnup;
 
 
 static void ShowVersion();
+static bool InjectVariables( PreProcessor& pp, const Parameters& params );
 
 
 //------------------------------------------------------------------------------
@@ -50,6 +52,11 @@ int main( int argc, char* argv[] ) {
 
 	{
 		PreProcessor* pPP = PreProcessor::Create();
+		//ToDo : eiRfJCrt9ae : システム変数は将来ここで登録
+		if( InjectVariables( *pPP, params ) == false ) {
+			std::cerr << "aborted." << std::endl;
+			return 1;
+		}
 		bool ret = pInData->PreProcess( pPP );
 		PreProcessor::Release( pPP );
 		if( !ret ) {
@@ -111,4 +118,23 @@ static void ShowVersion() {
 #endif //TURNUP_DRAFT_VERSION
 	std::cout << std::endl;
 
+}
+
+static bool InjectVariables( PreProcessor& pp, const Parameters& params ) {
+	bool result = true;
+	const uint32_t cnt = params.DefinitionCount();
+	for( uint32_t i = 0; i < cnt; ++i ) {
+		TextSpan ref;
+		params.Definition( i, ref );	// ref := '-DSYMBOL(=VALUE)?'
+		const char* pTop = ref.Top();
+		const char* pEnd = ref.End();
+		const char* pDelim = std::find( pTop, pEnd, '=' );
+		TextSpan name{ pTop + 2, pDelim };
+		TextSpan value{ pDelim == pEnd ? pEnd : pDelim + 1, pEnd };
+		if( pp.RegisterVariable( name, value ) == false ) {
+			std::cerr << "ERROR : invalid variable name in '" << ref << "'." << std::endl;
+			result = false;
+		}
+	}
+	return result;
 }

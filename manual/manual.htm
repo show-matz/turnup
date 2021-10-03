@@ -7,6 +7,7 @@
 </header>
 <body>
 <!-- define: APPNAME = turnup -->
+<!-- define: BLANK_PARAGRAPH = '　　' -->
 <!-- config:term-link-in-header -->			
 <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
@@ -83,7 +84,7 @@
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
-<p>　</p>
+<p>　　</p>
 <h2><a name='ii4jRxV2ffy'></a>2 turnup とは</h2>
 <p>　turnup は、<a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法で作成したテキストファイルから <a class='term' href='#ahN3t8jbawv'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
 <h2><a name='dcPEbaWhYMa'></a>3 用語</h2>
@@ -396,7 +397,7 @@ lv.2<br>
 <p>　文中で改行させるには、<a class='term' href='#ahN3t8jbawv'>HTML</a> タグ <code>&lt;br&gt;</code> をそのまま書きます。</p>
 <h3><a name='iwCMutWJWjc'></a>5.18 段落</h3>
 <p>　拡張機能を含め、他の書法と認識されない行はすべて段落の開始とみなされます。段落は空行または<a href='#cPmXTXvPhJd'>コメント</a>行に至るまでのすべての行が連結され、単一の段落として出力されます。</p>
-<p>　 　 </p>
+<p>　　</p>
 <h2><a name='i9uAZw3xFSK'></a>6 拡張機能</h2>
 <p>　turnup には、いくつかの拡張機能があります。一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kyMp8IkRK8n'></a>6.1 文書タイトルとスタイルシートの指定</h3>
@@ -661,6 +662,14 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。</p>
 <p>　設定した変数を参照（展開）するには ${FOO} という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
+<pre>
+turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
+</pre>
+<p>　この場合、<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を含めたい場合は以下のようにします。</p>
+<pre>
+turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
+</pre>
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -787,7 +796,7 @@ index 16fc9f4..8387187 100644
 </details>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
-<p>　更新履歴です。バージョン番号の付与はまだ行なっていません。</p>
+<p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
 <ul>
 <li><strong>2021/07/23</strong></li>
 <ul>
@@ -892,6 +901,10 @@ index 16fc9f4..8387187 100644
 <ul>
 <li>ENHANCE : バージョン番号の付与を開始</li>
 <li>ENHANCE : 起動オプション --version でバージョン情報を表示</li>
+</ul>
+<li><strong>2021/10/03 - version 0.801</strong></li>
+<ul>
+<li>ENHANCE : 起動オプション <code>-DSYMBOL=VALUE</code> での<a href='#4eSrElLWBcH'>変数定義</a>サポートの追加</li>
 </ul>
 </ul>
 <hr>

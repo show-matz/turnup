@@ -25,6 +25,7 @@ namespace turnup {
 	public:
 		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd,
 							  void (*pCallback)( char*, void* ), void* pOpaque ) = 0;
+		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) = 0;
 	public:
 		static PreProcessor* Create();
 		static void Release( PreProcessor* pPreProcessor );

@@ -8,6 +8,7 @@
 #include "TextSpan.hxx"
 
 #include <string.h>
+#include <vector>
 
 namespace turnup {
 
@@ -25,9 +26,14 @@ namespace turnup {
 	public:
 		bool GetTargetFile( TextSpan& ref ) const;
 		bool VersionMode() const;	// --version
+		uint32_t DefinitionCount() const;
+		bool Definition( uint32_t idx, TextSpan& ref ) const;
+	private:
+		typedef std::vector<TextSpan> Definitions;
 	public:
 		TextSpan	m_inputFile;
 		bool		m_versionMode;
+		Definitions	m_definitions;
 	};
 
 	//--------------------------------------------------------------------------
@@ -49,6 +55,12 @@ namespace turnup {
 	bool Parameters::VersionMode() const {
 		return m_pImpl->VersionMode();
 	}
+	uint32_t Parameters::DefinitionCount() const {
+		return m_pImpl->DefinitionCount();
+	}
+	bool Parameters::Definition( uint32_t idx, TextSpan& ref ) const {
+		return m_pImpl->Definition( idx, ref );
+	}
 
 	//--------------------------------------------------------------------------
 	//
@@ -68,6 +80,8 @@ namespace turnup {
 			const char* p = argv[i];
 			if( !::strcmp( p, "--version" ) ) {
 				m_versionMode = true;
+			} else if( !::strncmp( p, "-D", 2 ) ) {
+				m_definitions.emplace_back( p, p + ::strlen( p ) );
 			} else {
 				break;
 			}
@@ -92,6 +106,16 @@ namespace turnup {
 		return m_versionMode;
 	}
 
+	uint32_t Parameters::Impl::DefinitionCount() const {
+		return m_definitions.size();
+	}
+
+	bool Parameters::Impl::Definition( uint32_t idx, TextSpan& ref ) const {
+		if( m_definitions.size() <= idx )
+			return false;
+		ref = m_definitions[idx];
+		return true;
+	}
 
 } // namespace turnup
 
