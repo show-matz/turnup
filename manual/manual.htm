@@ -59,6 +59,11 @@
 <li><a href='#a2FYBDWqZUA'>6.15 別ファイルの include</a></li>
 <li><a href='#hs1guSfsFGb'>6.16 改ページ指定</a></li>
 <li><a href='#4eSrElLWBcH'>6.17 変数の定義と展開</a></li>
+<ul>
+<li><a href='#2yDQLphjQX0'>6.17.1 データ内での設定と展開</a></li>
+<li><a href='#kW5fA3S8XIj'>6.17.2 起動オプションでの変数設定</a></li>
+<li><a href='#9Z7pya1EZOR'>6.17.3 システム変数</a></li>
+</ul>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -652,6 +657,7 @@ index 16fc9f4..8387187 100644
 &lt;!-- embed:pagebreak --&gt;
 </pre>
 <h3><a name='4eSrElLWBcH'></a>6.17 変数の定義と展開</h3>
+<h4><a name='2yDQLphjQX0'></a>6.17.1 データ内での設定と展開</h4>
 <p>　変数に値を設定し、任意の場所でその値を展開することができます。変数の定義は以下の要領で記述します。ここでは、変数 FOO に値として 777 を設定しています。</p>
 <pre>
 &lt;!-- define: FOO = 777 --&gt;
@@ -660,8 +666,9 @@ index 16fc9f4..8387187 100644
 <pre>
 &lt;!-- define: VAR = ' a b c ' --&gt;
 </pre>
-<p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。</p>
+<p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには ${FOO} という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<h4><a name='kW5fA3S8XIj'></a>6.17.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre>
 turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
@@ -670,6 +677,16 @@ turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
 <pre>
 turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
+<h4><a name='9Z7pya1EZOR'></a>6.17.3 システム変数</h4>
+<p>　システム変数は turnup によって自動的に設定される変数です。以下が用意されています。</p>
+<table align='center'>
+<tr><th>name</th><th>description</th></tr>
+<tr><td align='left'><code>__APP_NAME</code></td><td align='left'>起動された turnup のプログラム名（パスは取り除かれます）</td></tr>
+<tr><td align='left'><code>__APP_VERSION</code></td><td align='left'>turnup のバージョン番号（ <code>0.000</code> 形式）</td></tr>
+<tr><td align='left'><code>__FILE</code></td><td align='left'>turnup 起動時に指定した入力ファイル名（パスは取り除かれます）</td></tr>
+<tr><td align='left'><code>__DATE</code></td><td align='left'>turnup を実行した日付（ <code>YYYY/MM/DD</code> 形式）</td></tr>
+<tr><td align='left'><code>__TIME</code></td><td align='left'>turnup を実行した時刻（ <code>HH:MM:DD</code> 形式）</td></tr>
+</table>
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -905,6 +922,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2021/10/03 - version 0.801</strong></li>
 <ul>
 <li>ENHANCE : 起動オプション <code>-DSYMBOL=VALUE</code> での<a href='#4eSrElLWBcH'>変数定義</a>サポートの追加</li>
+</ul>
+<li><strong>2021/10/04 - version 0.802</strong></li>
+<ul>
+<li>ENHANCE : <a href='#9Z7pya1EZOR'>システム変数</a>を追加</li>
 </ul>
 </ul>
 <hr>
