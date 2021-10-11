@@ -64,6 +64,7 @@
 <li><a href='#kW5fA3S8XIj'>6.17.2 起動オプションでの変数設定</a></li>
 <li><a href='#9Z7pya1EZOR'>6.17.3 システム変数</a></li>
 </ul>
+<li><a href='#8sNFPrNb9kM'>6.18 条件分岐</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -86,6 +87,7 @@
 <ul>
 <li><a href='#95miNJcW6DM'>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
 <li><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
+<li><a href='#g5C1ywVtqUT'>9.3 条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
@@ -650,7 +652,8 @@ index 16fc9f4..8387187 100644
 ```
 </pre>
 <!-- end raw html -->
-<p>　include されるファイルの中で、さらに別のファイルを include することもできます。ただし、相互に（あるいは循環的に）include しあうようなファイルを処理することはできません。また、（当たり前ですが）存在しないファイルを指定するとエラーになります。</p>
+<p>　include されるファイルの中で、さらに別のファイルを include することもできます。ただし、相互に（あるいは循環的に）include しあうようなファイルを処理することはできません。また、（当たり前ですが）存在しないファイルを指定するとエラーになります。また、相互に（あるいは循環的に）include しあうようなファイルを処理することはできませんし、存在しないファイルを指定すると（当たり前ですが）エラーになります。</p>
+<p>　include は便利な機能ですが、ひとつ残念な制約があります。include は<a href='#9IN7afRR0hr'>プリプロセス</a>よりも先に実行されるため、 <strong>ファイル名を格納した変数を include のパラメータ部分で展開することはできません。</strong></p>
 <h3><a name='hs1guSfsFGb'></a>6.16 改ページ指定</h3>
 <p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
 <pre>
@@ -687,6 +690,56 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td align='left'><code>__DATE</code></td><td align='left'>turnup を実行した日付（ <code>YYYY/MM/DD</code> 形式）</td></tr>
 <tr><td align='left'><code>__TIME</code></td><td align='left'>turnup を実行した時刻（ <code>HH:MM:DD</code> 形式）</td></tr>
 </table>
+<h3><a name='8sNFPrNb9kM'></a>6.18 条件分岐</h3>
+<p>　簡単な論理式を使用した条件分岐ができます。以下のように、コメントを利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
+<!-- start raw html -->
+<pre>
+&lt!-- if: EXPRESSION --&gt
+      :
+      :
+&lt!-- elif: EXPRESSION --&gt
+      :
+      :
+&lt!-- else --&gt
+      :
+      :
+&lt!-- endif --&gt
+</pre>
+<!-- end raw html -->
+<p>　<code>EXPRESSION</code> で指定する条件式は最大で 4 要素からなる以下のパターンになります。</p>
+<table align='center'>
+<tr><th>count</th><th>pattern</th><th>description</th></tr>
+<tr><td align='center'>0</td><td align='left'></td><td align='left'>常に偽に評価されます</td></tr>
+<tr><td align='center'>1</td><td align='left'><code>PARAM</code></td><td align='left'>文字列 <code>PARAM</code> の長さが 1 以上か否か</td></tr>
+<tr><td align='center'>2</td><td align='left'><code>! PARAM</code></td><td align='left'>1つめが ! なら上記の否定</td></tr>
+<tr><td align='center'>2</td><td align='left'><code>-op PARAM</code></td><td align='left'>1つめが ! 以外なら先頭が演算子</td></tr>
+<tr><td align='center'>3</td><td align='left'><code>! -op PARAM</code></td><td align='left'>1つめが ! なら上記の否定</td></tr>
+<tr><td align='center'>3</td><td align='left'><code>PARAM1 -op PARAM2</code></td><td align='left'>1つめが ! 以外なら 2 つめが演算子</td></tr>
+<tr><td align='center'>4</td><td align='left'><code>! PARAM1 -op PARAM2</code></td><td align='left'>1つめが ! なら上記の否定（それ以外はエラー）</td></tr>
+</table>
+<p>　具体的なパターンは以下の通りです。</p>
+<table align='center'>
+<tr><th>expression</th><th>description</th></tr>
+<tr><td nowrap align='left'><code>! EXPRSSION</code></td><td align='left'>条件式 <code>EXPRSSION</code> の否定</td></tr>
+<tr><td nowrap align='left'><code>STRING</code></td><td align='left'><code>-n STRING</code> と同様</td></tr>
+<tr><td nowrap align='left'><code>-n STRING</code></td><td align='left'>文字列 <code>STRING</code> の長さが 0 より大きいか否か</td></tr>
+<tr><td nowrap align='left'><code>-z STRING</code></td><td align='left'>文字列 <code>STRING</code> の長さが 0 か否か</td></tr>
+<tr><td nowrap align='left'><code>STRING1 == STRING2</code></td><td align='left'>2つの文字列が等しいか否か</td></tr>
+<tr><td nowrap align='left'><code>STRING1 != STRING2</code></td><td align='left'>2つの文字列が等しくないか否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -eq INTEGER2</code></td><td align='left'>2つの整数値として比較して等しいか否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -ne INTEGER2</code></td><td align='left'>2つの整数値として比較して等しくないか否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -ge INTEGER2</code></td><td align='left'>2つの整数値として比較して <code>INTEGER1 &gt;= INTEGER2</code> か否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -gt INTEGER2</code></td><td align='left'>2つの整数値として比較して <code>INTEGER1 &gt; INTEGER2</code> か否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -le INTEGER2</code></td><td align='left'>2つの整数値として比較して <code>INTEGER1 &lt;= INTEGER2</code> か否か</td></tr>
+<tr><td nowrap align='left'><code>INTEGER1 -lt INTEGER2</code></td><td align='left'>2つの整数値として比較して <code>INTEGER1 &lt; INTEGER2</code> か否か</td></tr>
+<tr><td nowrap align='left'><code>FILE1 -nt FILE2</code></td><td align='left'>2つのファイルの更新日付で比較して <code>FILE1</code> の方が新しいか否か</td></tr>
+<tr><td nowrap align='left'><code>FILE1 -ot FILE2</code></td><td align='left'>2つのファイルの更新日付で比較して <code>FILE1</code> の方が古いか否か</td></tr>
+<tr><td nowrap align='left'><code>-d FILE</code></td><td align='left'><code>FILE</code> がディレクトリとして存在するか否か</td></tr>
+<tr><td nowrap align='left'><code>-e FILE</code></td><td align='left'><code>FILE</code> が存在するか否か</td></tr>
+<tr><td nowrap align='left'><code>-f FILE</code></td><td align='left'><code>FILE</code> がファイルとして存在するか否か</td></tr>
+<tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
+</table>
+<p>　現在、条件分岐機能には<a href='#g5C1ywVtqUT'>include機能との組み合わせに関連した問題</a>があることがわかっています。</p>
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -753,7 +806,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <table align='center'>
 <tr><th>step</th><th>action</th><th>description</th></tr>
 <tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理し、単一の行シーケンスを生成します。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
-<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。</td></tr>
+<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、条件分岐の処理もこの時点で実施します。</td></tr>
 <tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、見出しや図表タイトル、用語定義などを解析して各種の拡張機能の利用に備えます。</td></tr>
 <tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
 </table>
@@ -811,6 +864,16 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </table>
 <p>　さらに、これらのセル結合指定が複合した場合、プログラムとして正し処理を行なうのは難しくなります。この問題に対する対処は未定ですが、コードで頑張ることは避け、アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする方向で検討中です。</p>
 </details>
+<h3><a name='g5C1ywVtqUT'></a>9.3 条件分岐でファイル存在チェックをしても include がエラーになる</h3>
+<p>　<a href='#9IN7afRR0hr'>内部的な処理順序</a> で説明している通り、<a href='#a2FYBDWqZUA'>別ファイルの include</a>はプリプロセスに先行して実施されます。そのため、以下のように「ファイルが存在した場合だけ include する」という意図で書かれた以下のコードは期待される動作をしません（入力データのロード時点でエラー終了してしまいます）。</p>
+<!-- start raw html -->
+<pre>
+&lt!-- if: -f foo.txt --&gt
+  &lt!-- include: foo.txt --&gt
+&lt!-- endif --&gt
+</pre>
+<!-- end raw html -->
+<p>　この問題を解決するために、include の際のエラー出力方式変更を検討中です。</p>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
@@ -923,9 +986,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>ENHANCE : 起動オプション <code>-DSYMBOL=VALUE</code> での<a href='#4eSrElLWBcH'>変数定義</a>サポートの追加</li>
 </ul>
-<li><strong>2021/10/04 - version 0.802</strong></li>
+<li><strong>2021/10/11 - version 0.802</strong></li>
 <ul>
 <li>ENHANCE : <a href='#9Z7pya1EZOR'>システム変数</a>を追加</li>
+<li>ENHANCE : <a href='#8sNFPrNb9kM'>条件分岐</a>機能を追加</li>
 </ul>
 </ul>
 <hr>
