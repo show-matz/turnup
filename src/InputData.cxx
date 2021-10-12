@@ -250,7 +250,7 @@ namespace turnup {
 
 		/* clear preprocessed line buffes */ {
 			auto itr1 = m_buffers.begin();
-			auto itr2 = m_buffers.begin();
+			auto itr2 = m_buffers.end();
 			for( ; itr1 != itr2; ++itr1 ) {
 				char* p = *itr1;
 				delete[] p;
