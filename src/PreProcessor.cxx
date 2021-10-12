@@ -73,8 +73,10 @@ namespace turnup {
 		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) override;
 	private:
 		bool FindVariable( const TextSpan& name, TextSpan& value ) const;
-		char* ExpandVariables( const char* pTop, 
-							   const char* pEnd, TextSpan posRef, uint32_t& length );
+		void ExpandVariables( TextSpan& line,
+							  void (*pCallback)( char*, void* ), void* pOpaque );
+		char* ExpandVariablesImpl( const char* pTop, 
+								   const char* pEnd, TextSpan posRef, uint32_t& length );
 		bool SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length );
 	private:
 		typedef std::pair<TextSpan, TextSpan>	Variable;
@@ -122,20 +124,8 @@ namespace turnup {
 									void (*pCallback)( char*, void* ), void* pOpaque ) {
 		//与えられた行シーケンスを反復して処理
 		for( TextSpan* pLine = pLineTop; pLine < pLineEnd; ++pLine ) {
-			const char* pTop = pLine->Top();
-			const char* pEnd = pLine->End();
-			//行内に変数参照が存在するかチェック
-			TextSpan var = GetNextVariableRef( pTop, pEnd );
-			if( var.IsEmpty() == false ) {
-				//存在する場合、新しいバッファに展開
-				uint32_t length = 0;
-				char* newBuf = ExpandVariables( pTop, pEnd, var, length );
-				//現在行の TextSpan を置き換え、バッファをコールバック
-				pTop = newBuf;
-				pEnd = pTop + length;
-				*pLine = TextSpan{ pTop, pEnd };
-				pCallback( newBuf, pOpaque );
-			}
+			//行内に存在する変数参照を展開
+			this->ExpandVariables( *pLine, pCallback, pOpaque );
 			//define 行の場合、変数を登録／更新
 			TextSpan name, value;
 			if( IsDefineLine( pLine, name, value ) ) {
@@ -179,6 +169,7 @@ namespace turnup {
 									   []( TextSpan& line ) -> void { line.Clear(); } );
 					}
 					pLine = pEndOfClause;
+					this->ExpandVariables( *pLine, pCallback, pOpaque );
 				} while( IsNextCondition( pLine, &(expr[0]) ) );
 			}
 		}
@@ -210,8 +201,26 @@ namespace turnup {
 		return false;
 	}
 
-	char* PreProcessorImpl::ExpandVariables( const char* pTop,  const char* pEnd,
-											 TextSpan posRef, uint32_t& length ) {
+	void PreProcessorImpl::ExpandVariables( TextSpan& line,
+											void (*pCallback)( char*, void* ), void* pOpaque ) {
+		const char* pTop = line.Top();
+		const char* pEnd = line.End();
+		//行内に変数参照が存在するかチェック
+		TextSpan var = GetNextVariableRef( pTop, pEnd );
+		if( var.IsEmpty() == false ) {
+			//存在する場合、新しいバッファに展開
+			uint32_t length = 0;
+			char* newBuf = ExpandVariablesImpl( pTop, pEnd, var, length );
+			//現在行の TextSpan を置き換え、バッファをコールバック
+			pTop = newBuf;
+			pEnd = pTop + length;
+			line = TextSpan{ pTop, pEnd };
+			pCallback( newBuf, pOpaque );
+		}
+	}
+
+	char* PreProcessorImpl::ExpandVariablesImpl( const char* pTop,  const char* pEnd,
+												 TextSpan posRef, uint32_t& length ) {
 		m_sequence.clear();
 		do {
 			m_sequence.push_back( TextSpan{ pTop, posRef.Top() } ); 
