@@ -29,7 +29,7 @@ namespace turnup {
 		else if ( pTop->IsMatch( "Table.", title, "" ) )
 			type = ToC::EntryT::TABLE;
 		else
-			return nullptr;
+			return pTop;
 
 		title = title.Trim();
 

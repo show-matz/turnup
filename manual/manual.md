@@ -1037,6 +1037,32 @@ ${APPNAME} '-DVAR= a b c '  DATA.md > OUTPUT.htm
 
 
 
+### エラーと警告の出力
+
+　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には 
+`error` および `warning` が使用できます。
+
+　サンプルを以下に示します。以下の例では、条件式 `CONDITION` が成立しなかった場合、エラーとしています。
+
+<raw_html>
+<pre>
+&lt!-- if: ! CONDITION --&gt
+    &lt!-- error: CONDITION is not true --&gt
+&lt!-- endif --&gt
+</pre>
+</raw_html>
+
+　これによって出力されるエラーメッセージは以下のようなものです。類似のメッセージは標準エラー出力にも
+書き出されます。
+
+<raw_html>
+<p><span style='background:pink; color:red;'>ERROR : CONDITION is not true</span></p>
+</raw_html>
+
+　`error` と `warning` はともに上記のようなメッセージを出力しますが、 `error` は文書の生成プロセス
+全体を中止するのに対し、 `warning` は処理を続行する点が異なります。
+
+
 ${BLANK_PARAGRAPH}
 
 ## 設定
@@ -1375,6 +1401,7 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : [$$](#条件分岐)機能を追加
 * __2021/10/12 - version 0.803__
 	* BUGFIX : [$$](#条件分岐)機能における `elif` で変数展開されない問題を修正
+	* ENHANCE : [$$](#エラーと警告の出力)機能を追加
 
 --------------------------------------------------------------------------------
 

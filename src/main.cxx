@@ -114,10 +114,14 @@ int main( int argc, char* argv[] ) {
 	const TextSpan* pEnd = pInData->End();
 	while( pTop < pEnd ) {
 		pTop = operators.OperateLines( pTop, pEnd, docInfo );
+		if( !pTop ) {
+			std::cerr << "aborted." << std::endl;
+			break;
+		}
 	}
-
-	std::cout << "</body>" << std::endl
-			  << "</html>" << std::endl;
+	if( !!pTop )
+		std::cout << "</body>" << std::endl
+				  << "</html>" << std::endl;
 
 	InputData::Release( pInData ); 
 	return 0;

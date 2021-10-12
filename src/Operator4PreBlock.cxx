@@ -27,7 +27,7 @@ namespace turnup {
 		TextSpan endTag;
 		TextSpan type;
 		if( IsStartOfPreBlock( *pTop, endTag, type ) == false )
-			return nullptr;
+			return pTop;
 		const TextSpan* pBlockEnd = FindEndOfBlock( ++pTop, pEnd, endTag );
 		auto& filters = docInfo.Get<Filters>();
 		bool ret = filters.ExecuteFilter( std::cout, type, docInfo, pTop, pBlockEnd );

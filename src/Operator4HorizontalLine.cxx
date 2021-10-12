@@ -30,7 +30,7 @@ namespace turnup {
 			styles.WriteOpenTag( std::cout, "hr" ) << std::endl;
 			return pTop + 1;
 		}
-		return nullptr;
+		return pTop;
 	}
 
 

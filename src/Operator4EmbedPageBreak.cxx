@@ -18,7 +18,7 @@ namespace turnup {
 		(void)docInfo;
 		// 対象外の行であれば無視
 		if( pTop->Trim().IsEqual( "<!-- embed:pagebreak -->" ) == false )
-			return nullptr;
+			return pTop;
 		std::cout << "<p class='pagebreak'></p>" << std::endl;	//MEMO : ignore StyleStack
 		return pTop + 1;
 	}

@@ -21,12 +21,12 @@ namespace turnup {
 
 		// <!-- palette: で始まっていない行は対象外なので無視
 		if( pTop->BeginWith( "<!-- palette:" ) == false )
-			return nullptr;
+			return pTop;
 
 		// --> で終わっていない行も対象外なので無視
 		TextSpan line = pTop->TrimTail();
 		if( line.EndWith( "-->" ) == false )
-			return nullptr;
+			return pTop;
 
 		// 先頭の <!-- palette: と 末尾の --> を除去して更に Trim
 		line = line.Chomp( 13, 3 ).Trim();
@@ -35,7 +35,7 @@ namespace turnup {
 		TextSpan idx = line.CutNextToken( ' ' );
 		line = line.Trim();
 		if( idx.ByteLength() != 1 || !('0' <= idx[0] && idx[0] <= '9') )
-			return nullptr;
+			return pTop;
 
 		StylePalette& palette = docInfo.Get<StylePalette>();
 

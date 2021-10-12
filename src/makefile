@@ -1,3 +1,4 @@
+# make MAJOR_VER=0 MINOR_VER=800 DRAFT_LV=0 clean release-build
 
 DEFINES = 
 
@@ -81,6 +82,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4EmbedPageBreak.o	\
 		$(TARGETDIR)/Operator4EmbedTOC.o		\
 		$(TARGETDIR)/Operator4EmptyLine.o		\
+		$(TARGETDIR)/Operator4Error.o			\
 		$(TARGETDIR)/Operator4FigureAndTable.o	\
 		$(TARGETDIR)/Operator4Header.o			\
 		$(TARGETDIR)/Operator4HorizontalLine.o	\

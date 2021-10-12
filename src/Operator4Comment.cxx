@@ -17,7 +17,7 @@ namespace turnup {
 									  const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		TextSpan tmp = pTop->Trim();
 		if( tmp.BeginWith( "<!--" ) == false )
-			return nullptr;
+			return pTop;
 		bool bWrite = docInfo.Get<Config>().bWriteComment;
 		while( pTop < pEnd ) {
 			// 設定で明示的に指定されている場合のみコメントを出力

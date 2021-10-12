@@ -20,7 +20,7 @@ namespace turnup {
 		TextSpan alt;
 		TextSpan url;
 		if( line.IsMatch( "![", alt, "](", url, ")" ) == false )
-			return nullptr;
+			return pTop;
 
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( std::cout, "img",

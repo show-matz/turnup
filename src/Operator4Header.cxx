@@ -23,7 +23,7 @@ namespace turnup {
 		auto& styles = docInfo.Get<StyleStack>();
 		uint32_t level = pTop->CountTopOf( '#' );
 		if( !level || 6 < level || (*pTop)[level] != ' ' )
-			return nullptr;
+			return pTop;
 		TextSpan tmp = TextSpan{ pTop->Top() + level, pTop->End() }.Trim();
 		const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER, tmp.Top(), tmp.End() );
 		char tag[3] = { 'h', (char)('0'+level), 0 };

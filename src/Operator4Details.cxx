@@ -20,7 +20,7 @@ namespace turnup {
 		(void)pEnd;
 		TextSpan type;
 		if( pTop->TrimTail().IsMatch( "<!-- collapse:", type, " -->" ) == false )
-			return nullptr;
+			return pTop;
 
 		if( type.IsEqual( "begin" ) ) {
 			auto& styles = docInfo.Get<StyleStack>();
@@ -33,7 +33,7 @@ namespace turnup {
 			std::cout << "</details>" << std::endl;
 			return pTop + 1;
 		} else
-			return nullptr;
+			return pTop;
 	}
 
 

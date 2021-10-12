@@ -36,7 +36,7 @@ namespace turnup {
 		const char* p1;
 		const char* p2;
 		if( IsTermDefine( *pTop, p1, p2 ) == false )
-			return nullptr;
+			return pTop;
 
 		auto& styles = docInfo.Get<StyleStack>();
 		{

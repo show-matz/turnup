@@ -18,7 +18,7 @@ namespace turnup {
 		(void)pEnd;
 		// 対象外の行であれば無視
 		if( pTop->Trim().IsEqual( "<!-- embed:footnotes -->" ) == false )
-			return nullptr;
+			return pTop;
 		auto& footnotes = docInfo.Get<Footnotes>();
 		footnotes.WriteFootnotes( std::cout, docInfo );
 		return pTop + 1;

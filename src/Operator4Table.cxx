@@ -73,7 +73,7 @@ namespace turnup {
 		};
 		// テーブル行でなければ　nullptr 復帰で終了
 		if( IsTableLine( pTop ) == false )
-			return nullptr;
+			return pTop;
 
 		// header/contents 境界（かつ aligment 指定）行を検索
 		uint32_t firstBorder = 1; {

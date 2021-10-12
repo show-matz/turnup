@@ -21,7 +21,7 @@ namespace turnup {
 		TextSpan line = *pTop;
 		uint32_t curLevel = GetQuoteLevel( line );
 		if( !curLevel )
-			return nullptr;
+			return pTop;
 
 		auto& styles = docInfo.Get<StyleStack>();
 

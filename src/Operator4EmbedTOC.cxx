@@ -20,9 +20,9 @@ namespace turnup {
 
 		// 対象外の行であれば無視
 		if( pTop->BeginWith( "<!-- embed:toc " ) == false )
-			return nullptr;
+			return pTop;
 		if( pTop->EndWith( " -->" ) == false )
-			return nullptr;
+			return pTop;
 
 		// min/max level 指定があるなら読み取る
 		bool isError = false;
@@ -55,7 +55,7 @@ namespace turnup {
 		(void)pEnd;
 		// 対象外の行であれば無視
 		if( pTop->IsEqual( "<!-- embed:table-list -->" ) == false )
-			return nullptr;
+			return pTop;
 		auto& toc = docInfo.Get<ToC>();
 		toc.WriteTableList( std::cout, docInfo );
 		return pTop + 1;
@@ -66,7 +66,7 @@ namespace turnup {
 		(void)pEnd;
 		// 対象外の行であれば無視
 		if( pTop->IsEqual( "<!-- embed:figure-list -->" ) == false )
-			return nullptr;
+			return pTop;
 		auto& toc = docInfo.Get<ToC>();
 		toc.WriteFigureList( std::cout, docInfo );
 		return pTop + 1;

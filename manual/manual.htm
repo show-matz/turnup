@@ -65,6 +65,7 @@
 <li><a href='#9Z7pya1EZOR'>6.17.3 システム変数</a></li>
 </ul>
 <li><a href='#8sNFPrNb9kM'>6.18 条件分岐</a></li>
+<li><a href='#bs9N19eIT7w'>6.19 エラーと警告の出力</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -740,6 +741,21 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
 </table>
 <p>　現在、条件分岐機能には<a href='#g5C1ywVtqUT'>include機能との組み合わせに関連した問題</a>があることがわかっています。</p>
+<h3><a name='bs9N19eIT7w'></a>6.19 エラーと警告の出力</h3>
+<p>　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には <code>error</code> および <code>warning</code> が使用できます。</p>
+<p>　サンプルを以下に示します。以下の例では、条件式 <code>CONDITION</code> が成立しなかった場合、エラーとしています。</p>
+<!-- start raw html -->
+<pre>
+&lt!-- if: ! CONDITION --&gt
+    &lt!-- error: CONDITION is not true --&gt
+&lt!-- endif --&gt
+</pre>
+<!-- end raw html -->
+<p>　これによって出力されるエラーメッセージは以下のようなものです。類似のメッセージは標準エラー出力にも書き出されます。</p>
+<!-- start raw html -->
+<p><span style='background:pink; color:red;'>ERROR : CONDITION is not true</span></p>
+<!-- end raw html -->
+<p>　<code>error</code> と <code>warning</code> はともに上記のようなメッセージを出力しますが、 <code>error</code> は文書の生成プロセス全体を中止するのに対し、 <code>warning</code> は処理を続行する点が異なります。</p>
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='fH3KsaVXKY8'></a>7.1 見出しにおける用語の自動リンク</h3>
@@ -994,6 +1010,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2021/10/12 - version 0.803</strong></li>
 <ul>
 <li>BUGFIX : <a href='#8sNFPrNb9kM'>条件分岐</a>機能における <code>elif</code> で変数展開されない問題を修正</li>
+<li>ENHANCE : <a href='#bs9N19eIT7w'>エラーと警告の出力</a>機能を追加</li>
 </ul>
 </ul>
 <hr>

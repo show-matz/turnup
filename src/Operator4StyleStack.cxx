@@ -21,12 +21,12 @@ namespace turnup {
 
 		// <!-- stack: で始まっていない行は対象外なので無視
 		if( pTop->BeginWith( "<!-- stack:" ) == false )
-			return nullptr;
+			return pTop;
 
 		// --> で終わっていない行も対象外なので無視
 		TextSpan line = pTop->TrimTail();
 		if( line.EndWith( "-->" ) == false )
-			return nullptr;
+			return pTop;
 
 		// 先頭の <!-- stack: と 末尾の --> を除去して更に Trim
 		line = line.Chomp( 11, 3 ).Trim();
@@ -35,7 +35,7 @@ namespace turnup {
 		TextSpan type = line.CutNextToken( ' ' );
 		line = line.Trim();
 		if( type.IsEqual( "push" ) == false && type.IsEqual( "pop" ) == false )
-			return nullptr;
+			return pTop;
 
 		StyleStack& styles = docInfo.Get<StyleStack>();
 

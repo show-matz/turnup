@@ -22,7 +22,7 @@ namespace turnup {
 		TextSpan line = *pTop;
 		uint32_t curLevel = GetNumberedListLevel( line );
 		if( !curLevel )
-			return nullptr;
+			return pTop;
 
 		for( uint32_t lvl = 0; lvl < curLevel; ++lvl )
 			styles.WriteOpenTag( std::cout, "ol" ) << std::endl;

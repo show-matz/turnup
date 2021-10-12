@@ -15,7 +15,7 @@ namespace turnup {
 									  const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		(void)docInfo;
 		if( pTop->TrimTail().IsEqual( "<raw_html>" ) == false )
-			return nullptr;
+			return pTop;
 
 		const TextSpan* pLine = ++pTop;
 		for( ; pLine < pEnd; ++pLine ) {

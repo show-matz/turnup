@@ -11,6 +11,7 @@
 #include "Operator4EmbedPageBreak.hxx"
 #include "Operator4EmbedTOC.hxx"
 #include "Operator4EmptyLine.hxx"
+#include "Operator4Error.hxx"
 #include "Operator4FigureAndTable.hxx"
 #include "Operator4Header.hxx"
 #include "Operator4HorizontalLine.hxx"
@@ -57,6 +58,7 @@ namespace turnup {
 		Operator4EmbedPageBreak,
 		Operator4StyleStack,
 		Operator4StylePalette,
+		Operator4Error,
 		Operator4Comment,
 		Operator4HorizontalLine,
 		Operator4Paragraph
@@ -77,7 +79,7 @@ namespace turnup {
 											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		for( uint32_t i = 0; i < count_of(s_operators); ++i ) {
 			const TextSpan* pRet = s_operators[i]( pTop, pEnd, docInfo );
-			if( !!pRet )
+			if( !pRet || pTop < pRet )	// null means 'abort by error'
 				return pRet;
 		}
 		//ToDo : implement... output error message ?
