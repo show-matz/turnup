@@ -88,7 +88,7 @@
 <ul>
 <li><a href='#95miNJcW6DM'>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
 <li><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
-<li><a href='#g5C1ywVtqUT'>9.3 条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
+<li><a href='#78o6GpB2DHz'>9.3 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
@@ -740,7 +740,6 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td nowrap align='left'><code>-f FILE</code></td><td align='left'><code>FILE</code> がファイルとして存在するか否か</td></tr>
 <tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
 </table>
-<p>　現在、条件分岐機能には<a href='#g5C1ywVtqUT'>include機能との組み合わせに関連した問題</a>があることがわかっています。</p>
 <h3><a name='bs9N19eIT7w'></a>6.19 エラーと警告の出力</h3>
 <p>　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には <code>error</code> および <code>warning</code> が使用できます。</p>
 <p>　サンプルを以下に示します。以下の例では、条件式 <code>CONDITION</code> が成立しなかった場合、エラーとしています。</p>
@@ -794,9 +793,9 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
 &lt;html&gt;
 &lt;header&gt;
-	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
-	&lt;meta http-equiv="Content-Style-Type" content="text/css"&gt;
-	&lt;title&gt;document title&lt;/title&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+    &lt;meta http-equiv="Content-Style-Type" content="text/css"&gt;
+    &lt;title&gt;document title&lt;/title&gt;
   &lt;style&gt;
   &lt;!--
     :
@@ -880,8 +879,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </table>
 <p>　さらに、これらのセル結合指定が複合した場合、プログラムとして正し処理を行なうのは難しくなります。この問題に対する対処は未定ですが、コードで頑張ることは避け、アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする方向で検討中です。</p>
 </details>
-<h3><a name='g5C1ywVtqUT'></a>9.3 条件分岐でファイル存在チェックをしても include がエラーになる</h3>
-<p>　<a href='#9IN7afRR0hr'>内部的な処理順序</a> で説明している通り、<a href='#a2FYBDWqZUA'>別ファイルの include</a>はプリプロセスに先行して実施されます。そのため、以下のように「ファイルが存在した場合だけ include する」という意図で書かれた以下のコードは期待される動作をしません（入力データのロード時点でエラー終了してしまいます）。</p>
+<h3><a name='78o6GpB2DHz'></a>9.3 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる</h3>
+<details>
+<summary>　この問題は version 0.804 で修正されました。</summary>
+<p>　<a href='#9IN7afRR0hr'>内部的な処理順序</a> で説明している通り、<a href='#a2FYBDWqZUA'>別ファイルの include</a>はプリプロセスに先行して実施されます。そのため、以下のように「ファイルが存在した場合だけ include する」という意図で書かれた以下のコードは期待される動作をしませんでした（入力データのロード時点でエラー終了してしまいます）。</p>
 <!-- start raw html -->
 <pre>
 &lt!-- if: -f foo.txt --&gt
@@ -889,7 +890,8 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 &lt!-- endif --&gt
 </pre>
 <!-- end raw html -->
-<p>　この問題を解決するために、include の際のエラー出力方式変更を検討中です。</p>
+<p>　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、入力データのロード時点ではエラー終了とせず、include 箇所に <a href='#bs9N19eIT7w'>errorディレクティブ</a>を埋め込むようにしました。これにより、エラー処理が出力生成段階まで遅延されることになり、条件分岐で適切に括られていれば意図した動作をする（エラーが回避できる）ことになります。</p>
+</details>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
@@ -1011,6 +1013,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>BUGFIX : <a href='#8sNFPrNb9kM'>条件分岐</a>機能における <code>elif</code> で変数展開されない問題を修正</li>
 <li>ENHANCE : <a href='#bs9N19eIT7w'>エラーと警告の出力</a>機能を追加</li>
+</ul>
+<li><strong>2021/10/?? - version 0.804</strong></li>
+<ul>
+<li>BUGFIX : <a href='#78o6GpB2DHz'>条件分岐と include に関する問題</a>を修正</li>
 </ul>
 </ul>
 <hr>

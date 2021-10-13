@@ -16,6 +16,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #ifndef TURNUP_MAJOR_VERSION
 	#define TURNUP_MAJOR_VERSION 0
@@ -74,10 +75,8 @@ int main( int argc, char* argv[] ) {
 			return 1;
 		}
 		pInData = InputData::Create( fileName );
-		if( !pInData ) {
-			std::cerr << "aborted." << std::endl;
-			return 1;
-		}
+		assert( pInData != nullptr );	// 失敗しない（ロードエラーは error ディレクティブで遅延される）
+
 		sysVars.fileName = RemovePath( fileName.Top(), fileName.End() );
 	}
 

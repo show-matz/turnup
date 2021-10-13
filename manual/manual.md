@@ -1030,9 +1030,6 @@ ${APPNAME} '-DVAR= a b c '  DATA.md > OUTPUT.htm
 | `-s FILE`               | `FILE` がサイズが 0 でないファイルとして存在するか否か |
 
 
-　現在、条件分岐機能には[include機能との組み合わせに関連した問題](#条件分岐でファイル存在チェックを \
-しても include がエラーになる)があることがわかっています。
-
 
 
 ### エラーと警告の出力
@@ -1142,9 +1139,9 @@ ${BLANK_PARAGRAPH}
 ~~~
 <html>
 <header>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta http-equiv="Content-Style-Type" content="text/css">
-	<title>document title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>document title</title>
   <style>
   <!--
     :
@@ -1301,11 +1298,15 @@ ${BLANK_PARAGRAPH}
 
 <!-- collapse:end -->
 
-### 条件分岐でファイル存在チェックをしても include がエラーになる
+
+### 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる
+
+<!-- collapse:begin -->
+　この問題は version 0.804 で修正されました。
 
 　[$$](#内部的な処理順序) で説明している通り、[$$](#別ファイルの include)はプリプロセス
 に先行して実施されます。そのため、以下のように「ファイルが存在した場合だけ include する」
-という意図で書かれた以下のコードは期待される動作をしません（入力データのロード時点でエラー
+という意図で書かれた以下のコードは期待される動作をしませんでした（入力データのロード時点でエラー
 終了してしまいます）。
 
 <raw_html>
@@ -1316,7 +1317,12 @@ ${BLANK_PARAGRAPH}
 </pre>
 </raw_html>
 
-　この問題を解決するために、include の際のエラー出力方式変更を検討中です。
+　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、
+入力データのロード時点ではエラー終了とせず、include 箇所に [errorディレクティブ](#エラーと警告の出力)
+を埋め込むようにしました。これにより、エラー処理が出力生成段階まで遅延されることになり、
+条件分岐で適切に括られていれば意図した動作をする（エラーが回避できる）ことになります。
+
+<!-- collapse:end -->
 
 
 ${BLANK_PARAGRAPH}
@@ -1400,6 +1406,8 @@ ${BLANK_PARAGRAPH}
 * __2021/10/12 - version 0.803__
 	* BUGFIX : [$$](#条件分岐)機能における `elif` で変数展開されない問題を修正
 	* ENHANCE : [$$](#エラーと警告の出力)機能を追加
+* __2021/10/?? - version 0.804__
+	* BUGFIX : [条件分岐と include に関する問題](#【解決済】条件分岐でファイル存在チェックをしても include がエラーになる)を修正
 
 --------------------------------------------------------------------------------
 

@@ -20,6 +20,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <string.h>
+#include <assert.h>
 
 namespace turnup {
 
@@ -40,12 +42,10 @@ namespace turnup {
 		virtual const TextSpan* End() const override;
 		virtual bool PreProcess( PreProcessor* pPreProsessor ) override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
-	public:
-		bool Loaded() const;
 	private:
-		void Cleanup();
 		InputFile* LoadFileIfNeed( const TextSpan& fileName );
-		bool RecursiveLoadFile( InputFileStack& stack, const TextSpan& fileName );
+		void RecursiveLoadFile( InputFileStack& stack, const TextSpan& fileName );
+		void AddErrorLine( const char* msg, const TextSpan& fileName );
 	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
@@ -64,12 +64,7 @@ namespace turnup {
 	}
 
 	InputData* InputData::Create( const TextSpan& fileName ) {
-		InputDataImpl* pImpl = new InputDataImpl{ fileName };
-		if( pImpl->Loaded() == false ) {
-			Release( pImpl );
-			pImpl = nullptr;
-		}
-		return pImpl;
+		return new InputDataImpl{ fileName };
 	}
 
 	void InputData::Release( InputData* pInputData ) {
@@ -87,12 +82,28 @@ namespace turnup {
 															   m_buffers() {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
-		if( RecursiveLoadFile( stack, fileName ) == false )
-			this->Cleanup();
+		RecursiveLoadFile( stack, fileName );
 	}
 
 	InputDataImpl::~InputDataImpl() {
-		this->Cleanup();
+		m_lines.clear();
+		auto itr1 = m_inFiles.begin();
+		auto itr2 = m_inFiles.begin();
+		for( ; itr1 != itr2; ++itr1 ) {
+			InputFile::ReleaseInputFile( *itr1 );
+			*itr1 = nullptr;
+		}
+		m_inFiles.clear();
+
+		/* clear preprocessed line buffes */ {
+			auto itr1 = m_buffers.begin();
+			auto itr2 = m_buffers.end();
+			for( ; itr1 != itr2; ++itr1 ) {
+				char* p = *itr1;
+				delete[] p;
+				*itr1 = nullptr;
+			}
+		}
 	}
 
 	uint32_t InputDataImpl::Size() const {
@@ -234,31 +245,6 @@ namespace turnup {
 		}
 	}
 
-	bool InputDataImpl::Loaded() const {
-		return (0 < m_inFiles.size()) && (0 < m_lines.size());
-	}
-
-	void InputDataImpl::Cleanup() {
-		m_lines.clear();
-		auto itr1 = m_inFiles.begin();
-		auto itr2 = m_inFiles.begin();
-		for( ; itr1 != itr2; ++itr1 ) {
-			InputFile::ReleaseInputFile( *itr1 );
-			*itr1 = nullptr;
-		}
-		m_inFiles.clear();
-
-		/* clear preprocessed line buffes */ {
-			auto itr1 = m_buffers.begin();
-			auto itr2 = m_buffers.end();
-			for( ; itr1 != itr2; ++itr1 ) {
-				char* p = *itr1;
-				delete[] p;
-				*itr1 = nullptr;
-			}
-		}
-	}
-
 	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName ) {
 		auto itr1 = m_inFiles.begin();
 		auto itr2 = m_inFiles.end();
@@ -272,37 +258,30 @@ namespace turnup {
 		return pNew;
 	}
 
-	bool InputDataImpl::RecursiveLoadFile( InputFileStack& stack, 
+	void InputDataImpl::RecursiveLoadFile( InputFileStack& stack, 
 										   const TextSpan& fileName ) {
-
+		// 対象ファイルをロード
 		InputFile* pInFile = LoadFileIfNeed( fileName );
 		if( !pInFile ) {
-			std::cerr << "ERROR : Failure loading '";
-			std::cerr.write( fileName.Top(), fileName.ByteLength() );
-			std::cerr << "'." << std::endl;
-			return false;
+			AddErrorLine( "Failure loading ", fileName );
+			return;
 		}
 		if( 0 == pInFile->LineSize() )
-			return true;
+			return;
 
-		{ // Check inclusion loop.
+		/* 循環インクルードになっていないかチェック */ {
 			auto itr1 = stack.begin();
 			auto itr2 = stack.end();
 			if( std::find( itr1, itr2, pInFile ) != itr2 ) {
-				std::cerr << "ERROR : Inclusion loop detected." << std::endl;
-				for( ; itr1 != itr2; ++itr1 ) {
-					const TextSpan& file = (*itr1)->GetFileName();
-					std::cerr << "        --> ";
-					std::cerr.write( file.Top(), file.ByteLength() );
-					std::cerr << std::endl;
-				}
-				std::cerr << "        --> ";
-				std::cerr.write( fileName.Top(), fileName.ByteLength() );
-				std::cerr << std::endl;
-				return false;
+				AddErrorLine( "Inclusion loop detected in ", fileName );
+//				do {	// 最初のエラーで abort してしまうので無意味
+//					--itr2;
+//					AddErrorLine( "from ", (*itr2)->GetFileName() );
+//				} while( itr1 != itr2 );
+				return;
 			}
 		}
-		bool result = true;
+		// ファイルの内容を include を探しつつ行シーケンスに追加
 		stack.push_back( pInFile );
 		const TextSpan* pTop = pInFile->LineTop();
 		const TextSpan* pEnd = pInFile->LineEnd();
@@ -311,16 +290,24 @@ namespace turnup {
 			TextSpan fileName;
 			if( tmp.IsMatch( "<!-- include:", fileName, "-->" ) == false )
 				m_lines.push_back( *pTop );
-			else {
-				fileName = fileName.Trim();
-				if( RecursiveLoadFile( stack, fileName ) == false ) {
-					result = false;
-					break;
-				}
-			}
+			else
+				RecursiveLoadFile( stack, fileName.Trim() );
 		}
 		stack.pop_back();
-		return result;
+		return;
+	}
+
+	void InputDataImpl::AddErrorLine( const char* msg, const TextSpan& fileName ) {
+		uint32_t len1 = ::strlen( msg ); 
+		uint32_t len2 = fileName.ByteLength();
+		uint32_t totalLen = 12 + len1 + len2 + 4;
+		char* pBuffer = new char[totalLen + 1];
+		::strcpy(  pBuffer +  0, "<!-- error: " );
+		::strcpy(  pBuffer + 12, msg );
+		::strncpy( pBuffer + 12 + len1, fileName.Top(), len2 );
+		::strcpy(  pBuffer + 12 + len1 + len2, " -->" );
+		m_buffers.push_back( pBuffer );
+		m_lines.push_back( TextSpan{ pBuffer } );
 	}
 
 } // namespace turnup
