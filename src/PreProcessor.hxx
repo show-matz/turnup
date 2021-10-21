@@ -23,8 +23,7 @@ namespace turnup {
 		PreProcessor( const PreProcessor& ) = delete;
 		PreProcessor& operator=( const PreProcessor& ) = delete;
 	public:
-		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd,
-							  void (*pCallback)( char*, void* ), void* pOpaque ) = 0;
+		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) = 0;
 		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) = 0;
 	public:
 		static PreProcessor* Create();

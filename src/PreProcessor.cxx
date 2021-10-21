@@ -6,6 +6,7 @@
 #include "PreProcessor.hxx"
 
 #include "TextSpan.hxx"
+#include "Buffer.hxx"
 
 #include <sys/stat.h>	//ToDo : C標準ライブラリの範囲内で実現する必要がある。
 #include <algorithm>
@@ -68,15 +69,12 @@ namespace turnup {
 		PreProcessorImpl();
 		virtual ~PreProcessorImpl();
 	public:
-		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd,
-							  void (*pCallback)( char*, void* ), void* pOpaque ) override;
+		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) override;
 		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) override;
 	private:
 		bool FindVariable( const TextSpan& name, TextSpan& value ) const;
-		void ExpandVariables( TextSpan& line,
-							  void (*pCallback)( char*, void* ), void* pOpaque );
-		char* ExpandVariablesImpl( const char* pTop, 
-								   const char* pEnd, TextSpan posRef, uint32_t& length );
+		void ExpandVariables( TextSpan& line );
+		TextSpan ExpandVariablesImpl( const char* pTop, const char* pEnd, TextSpan posRef );
 		bool SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length );
 	private:
 		typedef std::pair<TextSpan, TextSpan>	Variable;
@@ -120,12 +118,11 @@ namespace turnup {
 		m_variables.clear();
 	}
 
-	bool PreProcessorImpl::Execute( TextSpan* pLineTop, TextSpan* pLineEnd,
-									void (*pCallback)( char*, void* ), void* pOpaque ) {
+	bool PreProcessorImpl::Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) {
 		//与えられた行シーケンスを反復して処理
 		for( TextSpan* pLine = pLineTop; pLine < pLineEnd; ++pLine ) {
 			//行内に存在する変数参照を展開
-			this->ExpandVariables( *pLine, pCallback, pOpaque );
+			this->ExpandVariables( *pLine );
 			//define 行の場合、変数を登録／更新
 			TextSpan name, value;
 			if( IsDefineLine( pLine, name, value ) ) {
@@ -160,7 +157,7 @@ namespace turnup {
 					if( result ) {
 						bSatisfied = true;
 						//現在の clause 内部を再帰呼び出しで処理（内部でエラーなら終了）
-						if( this->Execute( pLine + 1, pEndOfClause, pCallback, pOpaque ) == false )
+						if( this->Execute( pLine + 1, pEndOfClause ) == false )
 							return false;
 					//条件式の評価結果が偽（または成立済み）の場合
 					} else {
@@ -169,7 +166,7 @@ namespace turnup {
 									   []( TextSpan& line ) -> void { line.Clear(); } );
 					}
 					pLine = pEndOfClause;
-					this->ExpandVariables( *pLine, pCallback, pOpaque );
+					this->ExpandVariables( *pLine );
 				} while( IsNextCondition( pLine, &(expr[0]) ) );
 			}
 		}
@@ -201,32 +198,25 @@ namespace turnup {
 		return false;
 	}
 
-	void PreProcessorImpl::ExpandVariables( TextSpan& line,
-											void (*pCallback)( char*, void* ), void* pOpaque ) {
+	void PreProcessorImpl::ExpandVariables( TextSpan& line ) {
 		const char* pTop = line.Top();
 		const char* pEnd = line.End();
 		//行内に変数参照が存在するかチェック
 		TextSpan var = GetNextVariableRef( pTop, pEnd );
 		if( var.IsEmpty() == false ) {
-			//存在する場合、新しいバッファに展開
-			uint32_t length = 0;
-			char* newBuf = ExpandVariablesImpl( pTop, pEnd, var, length );
-			//現在行の TextSpan を置き換え、バッファをコールバック
-			pTop = newBuf;
-			pEnd = pTop + length;
-			line = TextSpan{ pTop, pEnd };
-			pCallback( newBuf, pOpaque );
+			//存在する場合、新しいバッファに置き換え
+			line = ExpandVariablesImpl( pTop, pEnd, var );
 		}
 	}
 
-	char* PreProcessorImpl::ExpandVariablesImpl( const char* pTop,  const char* pEnd,
-												 TextSpan posRef, uint32_t& length ) {
-		m_sequence.clear();
+	TextSpan PreProcessorImpl::ExpandVariablesImpl( const char* pTop,
+													const char* pEnd, TextSpan posRef ) {
+		Buffer buf;
 		do {
-			m_sequence.push_back( TextSpan{ pTop, posRef.Top() } ); 
+			buf << TextSpan{ pTop, posRef.Top() }; 
 			TextSpan value;
 			if( this->FindVariable( posRef.Chomp( 2, 1 ), value ) )
-				m_sequence.push_back( value );
+				buf << value;
 			else
 				std::cerr << "ERROR : Variable '" << posRef << "' is not found." << std::endl;
 			pTop = posRef.End() + 1;
@@ -234,25 +224,11 @@ namespace turnup {
 				break;
 			posRef = GetNextVariableRef( pTop, pEnd );
 			if( posRef.IsEmpty() ) {
-				m_sequence.push_back( TextSpan{ pTop, pEnd } ); 
+				buf << TextSpan{ pTop, pEnd }; 
 				pTop = pEnd;
 			}
 		} while( pTop < pEnd );
-		uint32_t len = std::accumulate( m_sequence.begin(), m_sequence.end(), 0,
-										[]( uint32_t n, const TextSpan& rng ) -> uint32_t {
-											return n + rng.ByteLength();
-										} );
-		char* pBuf = new char[len+1]; {
-			char* p = pBuf;
-			for( const auto& rng : m_sequence ) {
-				::strncpy( p, rng.Top(), rng.ByteLength() );
-				p += rng.ByteLength();
-			}
-			*p = 0;
-		}
-		length = len;
-		m_sequence.clear();
-		return pBuf;
+		return buf.GetSpan();
 	}
 
 	bool PreProcessorImpl::SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length ) {

@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 #include "InputData.hxx"
 
+#include "Buffer.hxx"
 #include "InputFile.hxx"
 #include "DocumentInfo.hxx"
 #include "HtmlHeader.hxx"
@@ -49,7 +50,6 @@ namespace turnup {
 	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
-		std::vector<char*>		m_buffers;
 	};
 
 	//--------------------------------------------------------------------------
@@ -78,8 +78,7 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	InputDataImpl::InputDataImpl( const TextSpan& fileName ) : InputData(),
 															   m_inFiles(),
-															   m_lines(),
-															   m_buffers() {
+															   m_lines() {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
 		RecursiveLoadFile( stack, fileName );
@@ -94,16 +93,6 @@ namespace turnup {
 			*itr1 = nullptr;
 		}
 		m_inFiles.clear();
-
-		/* clear preprocessed line buffes */ {
-			auto itr1 = m_buffers.begin();
-			auto itr2 = m_buffers.end();
-			for( ; itr1 != itr2; ++itr1 ) {
-				char* p = *itr1;
-				delete[] p;
-				*itr1 = nullptr;
-			}
-		}
 	}
 
 	uint32_t InputDataImpl::Size() const {
@@ -127,11 +116,7 @@ namespace turnup {
 			return true;
 		TextSpan* pTop = &(m_lines[0]);
 		TextSpan* pEnd = pTop + m_lines.size();
-		auto callback = []( char* pBuffer, void* pOpaque ) -> void {
-			auto pContainer = reinterpret_cast<std::vector<char*>*>( pOpaque );
-			pContainer->push_back( pBuffer );
-		};
-		return pPreProsessor->Execute( pTop, pEnd, callback, &m_buffers );
+		return pPreProsessor->Execute( pTop, pEnd );
 	}
 
 	void InputDataImpl::PreScan( DocumentInfo& docInfo ) {
@@ -298,16 +283,9 @@ namespace turnup {
 	}
 
 	void InputDataImpl::AddErrorLine( const char* msg, const TextSpan& fileName ) {
-		uint32_t len1 = ::strlen( msg ); 
-		uint32_t len2 = fileName.ByteLength();
-		uint32_t totalLen = 12 + len1 + len2 + 4;
-		char* pBuffer = new char[totalLen + 1];
-		::strcpy(  pBuffer +  0, "<!-- error: " );
-		::strcpy(  pBuffer + 12, msg );
-		::strncpy( pBuffer + 12 + len1, fileName.Top(), len2 );
-		::strcpy(  pBuffer + 12 + len1 + len2, " -->" );
-		m_buffers.push_back( pBuffer );
-		m_lines.push_back( TextSpan{ pBuffer } );
+		Buffer buf;
+		buf << "<!-- error: " << msg << fileName << " -->";
+		m_lines.push_back( buf.GetSpan() );
 	}
 
 } // namespace turnup

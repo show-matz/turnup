@@ -57,7 +57,8 @@ OBJS =
 
 .SUFFIXES: .cxx .o .hxx .h
 
-OBJS +=	$(TARGETDIR)/CRC64.o					\
+OBJS +=	$(TARGETDIR)/Buffer.o					\
+		$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/File.o						\
 		$(TARGETDIR)/Filters.o					\
 		$(TARGETDIR)/FilterBuffer.o				\
