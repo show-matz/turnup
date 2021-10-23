@@ -30,7 +30,8 @@ namespace turnup {
 		virtual bool PreProcess( PreProcessor* pPreProsessor ) = 0;
 		virtual void PreScan( DocumentInfo& docInfo ) = 0;
 	public:
-		static InputData* Create( const TextSpan& fileName );
+		static InputData* Create( const TextSpan& fileName,
+								  const TextSpan* pIncPathTop, const TextSpan* pIncPathEnd );
 		static void Release( InputData* pInputData );
 	};
 

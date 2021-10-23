@@ -74,7 +74,9 @@ int main( int argc, char* argv[] ) {
 			std::cerr << "ERROR : Input file not specified." << std::endl;
 			return 1;
 		}
-		pInData = InputData::Create( fileName );
+		pInData = InputData::Create( fileName,
+									 params.IncludePathTop(),
+									 params.IncludePathEnd() );
 		assert( pInData != nullptr );	// 失敗しない（ロードエラーは error ディレクティブで遅延される）
 
 		sysVars.fileName = RemovePath( fileName.Top(), fileName.End() );

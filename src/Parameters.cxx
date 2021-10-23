@@ -28,12 +28,16 @@ namespace turnup {
 		bool VersionMode() const;	// --version
 		uint32_t DefinitionCount() const;
 		bool Definition( uint32_t idx, TextSpan& ref ) const;
+		const TextSpan* IncludePathTop() const;
+		const TextSpan* IncludePathEnd() const;
 	private:
 		typedef std::vector<TextSpan> Definitions;
+		typedef std::vector<TextSpan> IncludePaths;
 	public:
 		TextSpan	m_inputFile;
 		bool		m_versionMode;
 		Definitions	m_definitions;
+		IncludePaths	m_includePaths;
 	};
 
 	//--------------------------------------------------------------------------
@@ -61,6 +65,12 @@ namespace turnup {
 	bool Parameters::Definition( uint32_t idx, TextSpan& ref ) const {
 		return m_pImpl->Definition( idx, ref );
 	}
+	const TextSpan* Parameters::IncludePathTop() const {
+		return m_pImpl->IncludePathTop();
+	}
+	const TextSpan* Parameters::IncludePathEnd() const {
+		return m_pImpl->IncludePathEnd();
+	}
 
 	//--------------------------------------------------------------------------
 	//
@@ -68,10 +78,14 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	Parameters::Impl::Impl() : m_inputFile(),
-							   m_versionMode( false ) {
+							   m_versionMode( false ),
+							   m_definitions(),
+							   m_includePaths() {
 	}
 
 	Parameters::Impl::~Impl() {
+		m_definitions.clear();
+		m_includePaths.clear();
 	}
 
 	bool Parameters::Impl::Analyze( int argc, char* argv[] ) {
@@ -82,6 +96,8 @@ namespace turnup {
 				m_versionMode = true;
 			} else if( !::strncmp( p, "-D", 2 ) ) {
 				m_definitions.emplace_back( p, p + ::strlen( p ) );
+			} else if( !::strncmp( p, "-I", 2 ) ) {
+				m_includePaths.emplace_back( p + 2, p + ::strlen( p ) );
 			} else {
 				break;
 			}
@@ -115,6 +131,19 @@ namespace turnup {
 			return false;
 		ref = m_definitions[idx];
 		return true;
+	}
+
+	const TextSpan* Parameters::Impl::IncludePathTop() const {
+		if( m_includePaths.empty() )
+			return nullptr;
+		else
+			return &(m_includePaths[0]);
+	}
+	const TextSpan* Parameters::Impl::IncludePathEnd() const {
+		if( m_includePaths.empty() )
+			return nullptr;
+		else
+			return &(m_includePaths[0]) + m_includePaths.size();
 	}
 
 } // namespace turnup

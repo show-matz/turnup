@@ -27,7 +27,8 @@ namespace turnup {
 		virtual const TextSpan* LineTop() const = 0;
 		virtual const TextSpan* LineEnd() const = 0;
 	public:
-		static InputFile* LoadInputFile( const TextSpan& fileName );
+		static InputFile* LoadInputFile( const TextSpan& fileName, 
+										 const TextSpan* pIncludePath = nullptr );
 		static void ReleaseInputFile( InputFile* pInputFile );
 	};
 

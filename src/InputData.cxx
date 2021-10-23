@@ -28,6 +28,22 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
+	// class FileFinder
+	//
+	//--------------------------------------------------------------------------
+	class FileFinder {
+	public:
+		FileFinder( const TextSpan* pIncPathTop, const TextSpan* pIncPathEnd );
+		~FileFinder();
+	public:
+		InputFile* LoadInputFile( const TextSpan& fileName, uint32_t level );
+	private:
+		const TextSpan* m_pPathTop;
+		const TextSpan* m_pPathEnd;
+	};
+
+	//--------------------------------------------------------------------------
+	//
 	// class InputDataImpl
 	//
 	//--------------------------------------------------------------------------
@@ -35,7 +51,8 @@ namespace turnup {
 	private:
 		typedef std::vector<InputFile*> InputFileStack;
 	public:
-		InputDataImpl( const TextSpan& fileName );
+		InputDataImpl( const TextSpan& fileName,
+					   const TextSpan* pIncPathTop, const TextSpan* pIncPathEnd );
 		virtual ~InputDataImpl();
 	public:
 		virtual uint32_t Size() const override;
@@ -44,12 +61,13 @@ namespace turnup {
 		virtual bool PreProcess( PreProcessor* pPreProsessor ) override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
 	private:
-		InputFile* LoadFileIfNeed( const TextSpan& fileName );
+		InputFile* LoadFileIfNeed( const TextSpan& fileName, uint32_t level );
 		void RecursiveLoadFile( InputFileStack& stack, const TextSpan& fileName );
 		void AddErrorLine( const char* msg, const TextSpan& fileName );
 	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
+		FileFinder				m_fileFinder;
 	};
 
 	//--------------------------------------------------------------------------
@@ -63,8 +81,9 @@ namespace turnup {
 	InputData::~InputData() {
 	}
 
-	InputData* InputData::Create( const TextSpan& fileName ) {
-		return new InputDataImpl{ fileName };
+	InputData* InputData::Create( const TextSpan& fileName,
+								  const TextSpan* pIncPathTop, const TextSpan* pIncPathEnd ) {
+		return new InputDataImpl{ fileName, pIncPathTop, pIncPathEnd };
 	}
 
 	void InputData::Release( InputData* pInputData ) {
@@ -73,12 +92,49 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
+	// implementation of class FileFinder
+	//
+	//--------------------------------------------------------------------------
+	FileFinder::FileFinder( const TextSpan* pIncPathTop,
+							const TextSpan* pIncPathEnd ) : m_pPathTop( pIncPathTop ),
+															m_pPathEnd( pIncPathEnd ) {
+	}
+
+	FileFinder::~FileFinder() {
+	}
+
+	InputFile* FileFinder::LoadInputFile( const TextSpan& fileName, uint32_t level ) {
+		// まずは fileName のみで open を試行
+		InputFile* pInFile = InputFile::LoadInputFile( fileName );
+
+		// 上記で見つからず、0 < level の場合のみパス指定 open を試行
+		if( !pInFile && 0 < level ) {
+			for( const TextSpan* pPath = m_pPathTop; pPath != m_pPathEnd; ++pPath ) {
+				pInFile = InputFile::LoadInputFile( fileName, pPath );
+				if( pInFile ) {
+				#ifndef NDEBUG
+					std::cerr << "NOTE : file '" << fileName << "'"
+							  << " found in " << *pPath << "." << std::endl;
+				#endif
+					break;
+				}
+			}
+		}
+		return pInFile;
+	}
+
+	//--------------------------------------------------------------------------
+	//
 	// implementation of class InputDataImpl
 	//
 	//--------------------------------------------------------------------------
-	InputDataImpl::InputDataImpl( const TextSpan& fileName ) : InputData(),
-															   m_inFiles(),
-															   m_lines() {
+	InputDataImpl::InputDataImpl( const TextSpan& fileName,
+								  const TextSpan* pIncPathTop,
+								  const TextSpan* pIncPathEnd ) : InputData(),
+																  m_inFiles(),
+																  m_lines(),
+																  m_fileFinder( pIncPathTop,
+																				pIncPathEnd ) {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
 		RecursiveLoadFile( stack, fileName );
@@ -230,14 +286,14 @@ namespace turnup {
 		}
 	}
 
-	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName ) {
+	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName, uint32_t level ) {
 		auto itr1 = m_inFiles.begin();
 		auto itr2 = m_inFiles.end();
 		for( ; itr1 != itr2; ++itr1 ) {
 			if( fileName.IsEqual( (*itr1)->GetFileName() ) )
 				return *itr1;
 		}
-		InputFile* pNew = InputFile::LoadInputFile( fileName );
+		InputFile* pNew = m_fileFinder.LoadInputFile( fileName, level );
 		if( pNew )
 			m_inFiles.push_back( pNew );
 		return pNew;
@@ -246,7 +302,7 @@ namespace turnup {
 	void InputDataImpl::RecursiveLoadFile( InputFileStack& stack, 
 										   const TextSpan& fileName ) {
 		// 対象ファイルをロード
-		InputFile* pInFile = LoadFileIfNeed( fileName );
+		InputFile* pInFile = LoadFileIfNeed( fileName, stack.size() );
 		if( !pInFile ) {
 			AddErrorLine( "Failure loading ", fileName );
 			return;

@@ -28,8 +28,8 @@ namespace turnup {
 		bool VersionMode() const;	// --version
 		uint32_t DefinitionCount() const;
 		bool Definition( uint32_t idx, TextSpan& ref ) const;
-//		uint32_t IncludePathCount() const;
-//		bool IncludePath( uint32_t idx, TextSpan& ref ) const;
+		const TextSpan* IncludePathTop() const;
+		const TextSpan* IncludePathEnd() const;
 	private:
 		class Impl;
 		Impl*	m_pImpl;

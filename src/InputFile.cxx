@@ -14,7 +14,11 @@
 
 namespace turnup {
 
-	static char s_fileNameBuf[256+1];
+	static char*	s_pNameBuf   = nullptr;
+	static uint32_t	s_nameBufLen = 0;
+
+	static const char* MakeAscizFileName( const TextSpan& fileName, 
+										  const TextSpan* pIncludePath );
 
 	//--------------------------------------------------------------------------
 	//
@@ -48,24 +52,16 @@ namespace turnup {
 	}
 	InputFile::~InputFile() {
 	}
-	InputFile* InputFile::LoadInputFile( const TextSpan& fileName ) {
+	InputFile* InputFile::LoadInputFile( const TextSpan& fileName, 
+										 const TextSpan* pIncludePath ) {
 
-		uint32_t nameLen = fileName.ByteLength();
-		char* pFileName = nullptr;
-		if( nameLen < sizeof(s_fileNameBuf) )
-			pFileName = s_fileNameBuf;
-		else
-			pFileName = new char[nameLen+1];
-		::strncpy( pFileName, fileName.Top(), nameLen );
-		pFileName[nameLen] = 0;
+		const char* pFileName = MakeAscizFileName( fileName, pIncludePath );
 
 		InputFile* pInputFile = nullptr;
 		if( File::IsExist( pFileName ) ) {
 			WholeFile* pFileData = File::LoadWhole( pFileName );
 			pInputFile = new InputFileImpl{ pFileData, fileName };
 		}
-		if( pFileName != s_fileNameBuf )
-			delete[] pFileName;
 		return pInputFile;
 	}
 
@@ -156,6 +152,42 @@ namespace turnup {
 		}
 		*pDest = 0;
 		return pDest;
+	}
+
+	//--------------------------------------------------------------------------
+	//
+	// local functions
+	//
+	//--------------------------------------------------------------------------
+	static const char* MakeAscizFileName( const TextSpan& fileName, 
+										  const TextSpan* pIncludePath ) {
+		uint32_t	len			= 0;
+		bool		bNeedDelim	= false;
+		if( pIncludePath ) {
+			len = pIncludePath->ByteLength();
+			if( (*pIncludePath)[len-1] != '/' ) {
+				++len;
+				bNeedDelim = true;
+			}
+		}
+		len += fileName.ByteLength();
+		
+		if( s_nameBufLen <= len ) {
+			delete[] s_pNameBuf;
+			s_nameBufLen = std::max( len + 1, 1024u );
+			s_pNameBuf = new char[s_nameBufLen];
+		}
+		char* pBuf = s_pNameBuf;
+		if( pIncludePath ) {
+			::strncpy( pBuf, pIncludePath->Top(), pIncludePath->ByteLength() );
+			pBuf += pIncludePath->ByteLength();
+		}
+		if( bNeedDelim )
+			*pBuf++ = '/';
+		::strncpy( pBuf, fileName.Top(), fileName.ByteLength() );
+		pBuf += fileName.ByteLength();
+		*pBuf = 0;
+		return s_pNameBuf;
 	}
 
 } // namespace turnup
