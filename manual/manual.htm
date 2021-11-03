@@ -663,7 +663,7 @@ index 16fc9f4..8387187 100644
 <pre>
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
-<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「実行時のカレントディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
+<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
 <h3><a name='hs1guSfsFGb'></a>6.16 改ページ指定</h3>
 <p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
 <pre>
@@ -1032,6 +1032,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li>REFACTORING : 内部実装を整理（実行時文字列作成機能を集約）</li>
 <li>ENHANCE : <a href='#a2FYBDWqZUA'>別ファイルの include</a>機能で検索パスを指定する機能を追加</li>
 </ul>
+<li><strong>2021/11/03 - version 0.806</strong></li>
+<ul>
+<li>BUGFIX : <a href='#a2FYBDWqZUA'>別ファイルの include</a>機能でファイル検索順序に関する仕様の曖昧さを修正</li>
+</ul>
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
@@ -1045,7 +1049,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : テーブル以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
 <p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : 現在の実装では、「実行時のカレントディレクトリ」以外の場所にあるファイルを入力データとして指定し、かつそのファイルの場所を検索パスとして指定しなかった場合、入力ファイルと同じ場所にあるファイルは include の検索にかからないことになります。この挙動については将来修正されるかもしれません。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
 <p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
 <p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
 <p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>

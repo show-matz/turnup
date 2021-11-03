@@ -10,6 +10,8 @@
 
 namespace turnup {
 
+	class TextSpan;
+
 	//--------------------------------------------------------------------------
 	//
 	// class WholeFile
@@ -45,9 +47,14 @@ namespace turnup {
 		File& operator=( const File& ) = delete;
 		~File() = delete;
 	public:
-		static bool IsExist( const char* pFileName );
+		static bool IsFullPath( const TextSpan& fileName );
+		static TextSpan GetPath( const TextSpan& filePath );
+		static bool IsExist( const TextSpan& fileName );
+		static bool IsExist( const TextSpan& basePath,
+							 const TextSpan& relPath, TextSpan* pResult );
 		static bool Remove( const char* pFileName );
 		static WholeFile* LoadWhole( const char* pFileName );
+		static WholeFile* LoadWhole( const TextSpan& fileName );
 		static void ReleaseWholeFile( WholeFile* pWholeFile );
 	};
 

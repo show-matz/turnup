@@ -36,7 +36,7 @@ namespace turnup {
 		FileFinder( const TextSpan* pIncPathTop, const TextSpan* pIncPathEnd );
 		~FileFinder();
 	public:
-		InputFile* LoadInputFile( const TextSpan& fileName, uint32_t level );
+		TextSpan FindFile( const TextSpan& fileName, const TextSpan& curFileName );
 	private:
 		const TextSpan* m_pPathTop;
 		const TextSpan* m_pPathEnd;
@@ -61,8 +61,9 @@ namespace turnup {
 		virtual bool PreProcess( PreProcessor* pPreProsessor ) override;
 		virtual void PreScan( DocumentInfo& docInfo ) override;
 	private:
-		InputFile* LoadFileIfNeed( const TextSpan& fileName, uint32_t level );
-		void RecursiveLoadFile( InputFileStack& stack, const TextSpan& fileName );
+		InputFile* LoadFileIfNeed( const TextSpan& fileName, const TextSpan& curFileName );
+		void RecursiveLoadFile( InputFileStack& stack,
+								const TextSpan& fileName, const TextSpan& curFileName );
 		void AddErrorLine( const char* msg, const TextSpan& fileName );
 	private:
 		std::vector<InputFile*>	m_inFiles;
@@ -103,24 +104,40 @@ namespace turnup {
 	FileFinder::~FileFinder() {
 	}
 
-	InputFile* FileFinder::LoadInputFile( const TextSpan& fileName, uint32_t level ) {
-		// まずは fileName のみで open を試行
-		InputFile* pInFile = InputFile::LoadInputFile( fileName );
+	TextSpan FileFinder::FindFile( const TextSpan& fileName,
+								   const TextSpan& curFileName ) {
+		// 指定ファイルがフルパスの場合
+		if( File::IsFullPath( fileName ) ) {
+			// 実在ファイルならそのまま返却し、それ以外は空 TextSpan を返却
+			if( File::IsExist( fileName ) )
+				return fileName;
+			else
+				return TextSpan{};
 
-		// 上記で見つからず、0 < level の場合のみパス指定 open を試行
-		if( !pInFile && 0 < level ) {
+		// 上記以外の場合
+		} else {
+			TextSpan path{};
+			TextSpan curPath = File::GetPath( curFileName );
+			// まずは処理中ファイルのあるパスで検索
+			if( File::IsExist( curPath, fileName, &path ) ) {
+			#ifndef NDEBUG
+				std::cerr << "NOTE : file '" << fileName << "'"
+						  << " found in " << path << "." << std::endl;
+			#endif
+				return path;
+			}
+			// 上記でダメなら -I 指定の検索パスを順に処理
 			for( const TextSpan* pPath = m_pPathTop; pPath != m_pPathEnd; ++pPath ) {
-				pInFile = InputFile::LoadInputFile( fileName, pPath );
-				if( pInFile ) {
+				if( File::IsExist( *pPath, fileName, &path ) ) {
 				#ifndef NDEBUG
 					std::cerr << "NOTE : file '" << fileName << "'"
 							  << " found in " << *pPath << "." << std::endl;
 				#endif
-					break;
+					return path;
 				}
 			}
 		}
-		return pInFile;
+		return TextSpan{};
 	}
 
 	//--------------------------------------------------------------------------
@@ -137,7 +154,7 @@ namespace turnup {
 																				pIncPathEnd ) {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
-		RecursiveLoadFile( stack, fileName );
+		RecursiveLoadFile( stack, fileName, TextSpan{} );
 	}
 
 	InputDataImpl::~InputDataImpl() {
@@ -286,23 +303,40 @@ namespace turnup {
 		}
 	}
 
-	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName, uint32_t level ) {
-		auto itr1 = m_inFiles.begin();
-		auto itr2 = m_inFiles.end();
-		for( ; itr1 != itr2; ++itr1 ) {
-			if( fileName.IsEqual( (*itr1)->GetFileName() ) )
-				return *itr1;
+	InputFile* InputDataImpl::LoadFileIfNeed( const TextSpan& fileName,
+											  const TextSpan& curFileName ) {
+		InputFile* pNew = nullptr;
+		// curFileName が空なら最初の入力ファイル ⇒ そのままロード
+		if( curFileName.IsEmpty() ) {
+			pNew = InputFile::LoadInputFile( fileName );
+
+		// 上記以外の場合、FileFinder に探してもらう
+		} else {
+			// まずは FileFinder に探してもらう
+			TextSpan foundPath = m_fileFinder.FindFile( fileName, curFileName );
+			if( foundPath.IsEmpty() == false ) {
+				// みつかった場合、ロード済みファイルキャッシュにないか探し、見つかればそれを返す
+				auto itr1 = m_inFiles.begin();
+				auto itr2 = m_inFiles.end();
+				for( ; itr1 != itr2; ++itr1 ) {
+					if( fileName.IsEqual( (*itr1)->GetFileName() ) )
+						return *itr1;
+				}
+				// みつからなければロード				
+				pNew = InputFile::LoadInputFile( foundPath );
+			}
 		}
-		InputFile* pNew = m_fileFinder.LoadInputFile( fileName, level );
+		// 新規ロードしていればキャッシュに追加
 		if( pNew )
 			m_inFiles.push_back( pNew );
 		return pNew;
 	}
 
-	void InputDataImpl::RecursiveLoadFile( InputFileStack& stack, 
-										   const TextSpan& fileName ) {
+	void InputDataImpl::RecursiveLoadFile( InputFileStack& stack,
+										   const TextSpan& fileName,
+										   const TextSpan& curFileName ) {
 		// 対象ファイルをロード
-		InputFile* pInFile = LoadFileIfNeed( fileName, stack.size() );
+		InputFile* pInFile = LoadFileIfNeed( fileName, curFileName );
 		if( !pInFile ) {
 			AddErrorLine( "Failure loading ", fileName );
 			return;
@@ -328,11 +362,11 @@ namespace turnup {
 		const TextSpan* pEnd = pInFile->LineEnd();
 		for( ; pTop < pEnd; ++pTop ) {
 			TextSpan tmp = pTop->Trim();
-			TextSpan fileName;
-			if( tmp.IsMatch( "<!-- include:", fileName, "-->" ) == false )
+			TextSpan incFileName;
+			if( tmp.IsMatch( "<!-- include:", incFileName, "-->" ) == false )
 				m_lines.push_back( *pTop );
 			else
-				RecursiveLoadFile( stack, fileName.Trim() );
+				RecursiveLoadFile( stack, incFileName.Trim(), pInFile->GetFileName() );
 		}
 		stack.pop_back();
 		return;

@@ -14,12 +14,6 @@
 
 namespace turnup {
 
-	static char*	s_pNameBuf   = nullptr;
-	static uint32_t	s_nameBufLen = 0;
-
-	static const char* MakeAscizFileName( const TextSpan& fileName, 
-										  const TextSpan* pIncludePath );
-
 	//--------------------------------------------------------------------------
 	//
 	// class InputFileImpl
@@ -52,14 +46,11 @@ namespace turnup {
 	}
 	InputFile::~InputFile() {
 	}
-	InputFile* InputFile::LoadInputFile( const TextSpan& fileName, 
-										 const TextSpan* pIncludePath ) {
-
-		const char* pFileName = MakeAscizFileName( fileName, pIncludePath );
-
+	InputFile* InputFile::LoadInputFile( const TextSpan& fileName ) {
 		InputFile* pInputFile = nullptr;
-		if( File::IsExist( pFileName ) ) {
-			WholeFile* pFileData = File::LoadWhole( pFileName );
+		// 一応存在チェックはしなければならない
+		if( File::IsExist( fileName ) ) {
+			WholeFile* pFileData = File::LoadWhole( fileName );
 			pInputFile = new InputFileImpl{ pFileData, fileName };
 		}
 		return pInputFile;
@@ -152,42 +143,6 @@ namespace turnup {
 		}
 		*pDest = 0;
 		return pDest;
-	}
-
-	//--------------------------------------------------------------------------
-	//
-	// local functions
-	//
-	//--------------------------------------------------------------------------
-	static const char* MakeAscizFileName( const TextSpan& fileName, 
-										  const TextSpan* pIncludePath ) {
-		uint32_t	len			= 0;
-		bool		bNeedDelim	= false;
-		if( pIncludePath ) {
-			len = pIncludePath->ByteLength();
-			if( (*pIncludePath)[len-1] != '/' ) {
-				++len;
-				bNeedDelim = true;
-			}
-		}
-		len += fileName.ByteLength();
-		
-		if( s_nameBufLen <= len ) {
-			delete[] s_pNameBuf;
-			s_nameBufLen = std::max( len + 1, 1024u );
-			s_pNameBuf = new char[s_nameBufLen];
-		}
-		char* pBuf = s_pNameBuf;
-		if( pIncludePath ) {
-			::strncpy( pBuf, pIncludePath->Top(), pIncludePath->ByteLength() );
-			pBuf += pIncludePath->ByteLength();
-		}
-		if( bNeedDelim )
-			*pBuf++ = '/';
-		::strncpy( pBuf, fileName.Top(), fileName.ByteLength() );
-		pBuf += fileName.ByteLength();
-		*pBuf = 0;
-		return s_pNameBuf;
 	}
 
 } // namespace turnup

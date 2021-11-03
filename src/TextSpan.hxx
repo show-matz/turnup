@@ -32,6 +32,7 @@ namespace turnup {
 		inline const char* Top() const { return m_pTop; }
 		inline const char* End() const { return m_pEnd; }
 		inline char operator[]( uint32_t idx ) const { return m_pTop[idx]; }
+		inline bool IsAsciz() const { return m_pEnd && !*m_pEnd; }
 	public:
 		bool IsEmpty() const;
 		TextSpan Trim() const;

@@ -5,13 +5,19 @@
 //------------------------------------------------------------------------------
 #include "File.hxx"
 
+#include "TextSpan.hxx"
+#include "TextMaker.hxx"
+
 #include <sys/stat.h>	//ToDo : C標準ライブラリの範囲内で実現する必要がある。
 #include <memory>		// for new (nothrow)
 #include <stdio.h>
+#include <algorithm>
 
 using namespace std;
 
 namespace turnup {
+
+	static TextSpan MergePath( const TextSpan& basePath, const TextSpan& relPath );
 
 	//--------------------------------------------------------------------------
 	//
@@ -71,15 +77,62 @@ namespace turnup {
 	// implementation of class File
 	//
 	//--------------------------------------------------------------------------
-	bool File::IsExist( const char* pFileName ) {
-		//ToDo : ここ、C標準ライブラリの範囲内で実現する必要がある。
+	bool File::IsFullPath( const TextSpan& fileName ) {
+		if( fileName.IsEmpty() )
+			return false;
+		if( fileName[0] == '/' )
+			return true;
+		//ToDo : l3L6srJpzRp : Windows ファイルパスをどうするか
+		return false;
+	}
+
+	TextSpan File::GetPath( const TextSpan& filePath ) {
+		const char* pTop = filePath.Top();
+		const char* pEnd = filePath.End();
+		const char* target = "/";
+		const char* p = std::find_end( pTop, pEnd, target, target + 1 );
+		if( p == pEnd )
+			return TextSpan{};
+		return TextSpan{ pTop, p + 1 };
+	}
+
+	bool File::IsExist( const TextSpan& fileName ) {
+//		//ToDo : ここ、C標準ライブラリの範囲内で実現する必要がある。
 		struct stat st;
-		return !::stat( pFileName, &st );
+		if( fileName.IsAsciz() ) {
+			return !::stat( fileName.Top(), &st );
+		} else {
+			TextMaker tm;
+			tm << fileName;
+			TextSpan tmp = tm.GetSpan();
+			return !::stat( tmp.Top(), &st );
+		}
+	}
+
+	bool File::IsExist( const TextSpan& basePath,
+						const TextSpan& relPath, TextSpan* pResult ) {
+		TextSpan pathName = MergePath( basePath, relPath );
+		if( IsExist( pathName ) == false )
+			return false;
+		if( pResult )
+			*pResult = pathName;
+		return true;
 	}
 
 	bool File::Remove( const char* pFileName ) {
 		//ToDo : ここ、C標準ライブラリの範囲内で実現する必要がある。
 		return !::remove( pFileName );
+	}
+
+	WholeFile* File::LoadWhole( const TextSpan& fileName ) {
+		if( fileName.IsAsciz() )
+			return File::LoadWhole( fileName.Top() );
+		else {
+			TextMaker tm;
+			tm << fileName;
+			TextSpan tmp = tm.GetSpan();
+			return File::LoadWhole( tmp.Top() );
+		}
 	}
 
 	WholeFile* File::LoadWhole( const char* pFileName ) {
@@ -112,6 +165,20 @@ namespace turnup {
 
 	void File::ReleaseWholeFile( WholeFile* pWholeFile ) {
 		delete pWholeFile;
+	}
+
+	//--------------------------------------------------------------------------
+	//
+	// local functions
+	//
+	//--------------------------------------------------------------------------
+	static TextSpan MergePath( const TextSpan& basePath, const TextSpan& relPath ) {
+		TextMaker tm;
+		tm << basePath;
+		if( basePath.End()[-1] != '/' )
+			tm << "/";
+		tm << relPath;
+		return tm.GetSpan();
 	}
 
 } // namespace turnup
