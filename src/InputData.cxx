@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 #include "InputData.hxx"
 
-#include "Buffer.hxx"
+#include "TextMaker.hxx"
 #include "InputFile.hxx"
 #include "DocumentInfo.hxx"
 #include "HtmlHeader.hxx"
@@ -339,9 +339,9 @@ namespace turnup {
 	}
 
 	void InputDataImpl::AddErrorLine( const char* msg, const TextSpan& fileName ) {
-		Buffer buf;
-		buf << "<!-- error: " << msg << fileName << " -->";
-		m_lines.push_back( buf.GetSpan() );
+		TextMaker tm;
+		tm << "<!-- error: " << msg << fileName << " -->";
+		m_lines.push_back( tm.GetSpan() );
 	}
 
 } // namespace turnup

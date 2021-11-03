@@ -1,12 +1,10 @@
 //------------------------------------------------------------------------------
 //
-// Buffer.hxx
+// TextMaker.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef BUFFER_HXX__
-#define BUFFER_HXX__
-
-#include "TextSpan.hxx"
+#ifndef TEXTMAKER_HXX__
+#define TEXTMAKER_HXX__
 
 namespace turnup {
 
@@ -14,27 +12,27 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
-	// class Buffer
+	// class TextMaker
 	//
 	//--------------------------------------------------------------------------
-	class Buffer {
-		friend Buffer& operator<<( Buffer& buf, const char* p );
-		friend Buffer& operator<<( Buffer& buf, const TextSpan& span );
+	class TextMaker {
+		friend TextMaker& operator<<( TextMaker& tm, const char* p );
+		friend TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
 	public:
 		class Param;
 	public:
-		Buffer();
-		~Buffer();
+		TextMaker();
+		~TextMaker();
 	public:
 		TextSpan GetSpan() const;
 	private:
 		Param* m_pLast;
 	};
 
-	Buffer& operator<<( Buffer& buf, const char* p );
-	Buffer& operator<<( Buffer& buf, const TextSpan& span );
+	TextMaker& operator<<( TextMaker& tm, const char* p );
+	TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
 
 
 } // namespace turnup
 
-#endif // BUFFER_HXX__
+#endif // TEXTMAKER_HXX__

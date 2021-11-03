@@ -1,9 +1,11 @@
 //------------------------------------------------------------------------------
 //
-// Buffer.cxx
+// TextMaker.cxx
 //
 //------------------------------------------------------------------------------
-#include "Buffer.hxx"
+#include "TextMaker.hxx"
+
+#include "TextSpan.hxx"
 
 #include <vector>
 #include <algorithm>
@@ -21,10 +23,10 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
-	// class Buffer::Param
+	// class TextMaker::Param
 	//
 	//--------------------------------------------------------------------------
-	class Buffer::Param {
+	class TextMaker::Param {
 	public:
 		Param( const TextSpan& ts );
 		~Param();
@@ -47,13 +49,13 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
-	// class BufferCleaner
+	// class TextMakerCleaner
 	//
 	//--------------------------------------------------------------------------
-	class BufferCleaner {
+	class TextMakerCleaner {
 	public:
-		BufferCleaner() {}
-		~BufferCleaner() {
+		TextMakerCleaner() {}
+		~TextMakerCleaner() {
 			for( char*& pBuf : s_buffers ) {
 			#ifndef NDEBUG
 				std::cerr << "NOTE : release buffer 0x"
@@ -63,25 +65,25 @@ namespace turnup {
 				pBuf = nullptr;
 			}
 			s_buffers.clear();
-			Buffer::Param::Cleanup();
+			TextMaker::Param::Cleanup();
 		};
 	} s_bufCleaner;
 
 	//--------------------------------------------------------------------------
 	//
-	// implementation class Buffer
+	// implementation class TextMaker
 	//
 	//--------------------------------------------------------------------------
-	Buffer::Buffer() : m_pLast( nullptr ) {
+	TextMaker::TextMaker() : m_pLast( nullptr ) {
 	}
-	Buffer::~Buffer() {
+	TextMaker::~TextMaker() {
 		while( m_pLast != nullptr ) {
 			auto p = m_pLast;
 			m_pLast = p->GetPrev();
 			Param::Release( p );
 		}
 	}
-	TextSpan Buffer::GetSpan() const {
+	TextSpan TextMaker::GetSpan() const {
 		if( !m_pLast )
 			return TextSpan{};
 		uint32_t len = m_pLast->GetTotalLength();
@@ -97,14 +99,14 @@ namespace turnup {
 		#endif //NDEBUG
 		return TextSpan{ pBuffer, pEnd };
 	}
-	Buffer& operator<<( Buffer& buf, const char* p ) {
-		Buffer::Param* pParam = Buffer::Param::Create( TextSpan{ p } );
+	TextMaker& operator<<( TextMaker& buf, const char* p ) {
+		TextMaker::Param* pParam = TextMaker::Param::Create( TextSpan{ p } );
 		pParam->SetPrev( buf.m_pLast );
 		buf.m_pLast = pParam;
 		return buf;
 	}
-	Buffer& operator<<( Buffer& buf, const TextSpan& span ) {
-		Buffer::Param* pParam = Buffer::Param::Create( span );
+	TextMaker& operator<<( TextMaker& buf, const TextSpan& span ) {
+		TextMaker::Param* pParam = TextMaker::Param::Create( span );
 		pParam->SetPrev( buf.m_pLast );
 		buf.m_pLast = pParam;
 		return buf;
@@ -112,35 +114,35 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
-	// implementation of class Buffer::Param
+	// implementation of class TextMaker::Param
 	//
 	//--------------------------------------------------------------------------
-	Buffer::Param* Buffer::Param::s_pCemetery = nullptr;
+	TextMaker::Param* TextMaker::Param::s_pCemetery = nullptr;
 
-	Buffer::Param::Param( const TextSpan& ts ) : m_data( ts ),
+	TextMaker::Param::Param( const TextSpan& ts ) : m_data( ts ),
 												 m_pPrev( nullptr ) {
 	}
-	Buffer::Param::~Param() {
+	TextMaker::Param::~Param() {
 	}
-	uint32_t Buffer::Param::GetTotalLength() const {
+	uint32_t TextMaker::Param::GetTotalLength() const {
 		return m_data.ByteLength() + (!m_pPrev ? 0 : m_pPrev->GetTotalLength());
 	}
-	char* Buffer::Param::WriteToBuffer( char* pBuffer ) const {
+	char* TextMaker::Param::WriteToBuffer( char* pBuffer ) const {
 		if( m_pPrev )
 			pBuffer = m_pPrev->WriteToBuffer( pBuffer );
 		return std::copy( m_data.Top(), m_data.End(), pBuffer );
 	}
-	Buffer::Param* Buffer::Param::Create( const TextSpan& ts ) {
+	TextMaker::Param* TextMaker::Param::Create( const TextSpan& ts ) {
 		Param* pParam = s_pCemetery;
 		if( !pParam ) {
 			pParam = new Param{ ts };
 		#ifndef NDEBUG
-			std::cerr << "NOTE : allocate Buffer::Param 0x"
+			std::cerr << "NOTE : allocate TextMaker::Param 0x"
 					  << std::hex << (void*)pParam  << std::endl;
 		#endif //NDEBUG
 		} else {
 		#ifndef NDEBUG
-			std::cerr << "NOTE : recycle Buffer::Param 0x"
+			std::cerr << "NOTE : recycle TextMaker::Param 0x"
 					  << std::hex << (void*)pParam  << std::endl;
 		#endif //NDEBUG
 			s_pCemetery    = pParam->m_pPrev;
@@ -149,16 +151,16 @@ namespace turnup {
 		}
 		return pParam;
 	}
-	void Buffer::Param::Release( Param* p ) {
+	void TextMaker::Param::Release( Param* p ) {
 		p->m_data   = TextSpan{};
 		p->m_pPrev  = s_pCemetery;
 		s_pCemetery = p; 
 	}
-	void Buffer::Param::Cleanup() {
+	void TextMaker::Param::Cleanup() {
 		while( s_pCemetery ) {
 			auto p = s_pCemetery;
 		#ifndef NDEBUG
-			std::cerr << "NOTE : release Buffer::Param 0x"
+			std::cerr << "NOTE : release TextMaker::Param 0x"
 					  << std::hex << (void*)p  << std::endl;
 		#endif //NDEBUG
 			s_pCemetery = p->GetPrev();

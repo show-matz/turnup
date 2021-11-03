@@ -57,12 +57,12 @@ OBJS =
 
 .SUFFIXES: .cxx .o .hxx .h
 
-OBJS +=	$(TARGETDIR)/Buffer.o					\
-		$(TARGETDIR)/CRC64.o					\
+OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/File.o						\
 		$(TARGETDIR)/Filters.o					\
 		$(TARGETDIR)/FilterBuffer.o				\
 		$(TARGETDIR)/TextSpan.o					\
+		$(TARGETDIR)/TextMaker.o				\
 		$(TARGETDIR)/InputFile.o				\
 		$(TARGETDIR)/InputData.o				\
 		$(TARGETDIR)/HtmlHeader.o				\

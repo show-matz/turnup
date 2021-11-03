@@ -6,7 +6,7 @@
 #include "PreProcessor.hxx"
 
 #include "TextSpan.hxx"
-#include "Buffer.hxx"
+#include "TextMaker.hxx"
 
 #include <sys/stat.h>	//ToDo : C標準ライブラリの範囲内で実現する必要がある。
 #include <algorithm>
@@ -211,12 +211,12 @@ namespace turnup {
 
 	TextSpan PreProcessorImpl::ExpandVariablesImpl( const char* pTop,
 													const char* pEnd, TextSpan posRef ) {
-		Buffer buf;
+		TextMaker tm;
 		do {
-			buf << TextSpan{ pTop, posRef.Top() }; 
+			tm << TextSpan{ pTop, posRef.Top() }; 
 			TextSpan value;
 			if( this->FindVariable( posRef.Chomp( 2, 1 ), value ) )
-				buf << value;
+				tm << value;
 			else
 				std::cerr << "ERROR : Variable '" << posRef << "' is not found." << std::endl;
 			pTop = posRef.End() + 1;
@@ -224,11 +224,11 @@ namespace turnup {
 				break;
 			posRef = GetNextVariableRef( pTop, pEnd );
 			if( posRef.IsEmpty() ) {
-				buf << TextSpan{ pTop, pEnd }; 
+				tm << TextSpan{ pTop, pEnd }; 
 				pTop = pEnd;
 			}
 		} while( pTop < pEnd );
-		return buf.GetSpan();
+		return tm.GetSpan();
 	}
 
 	bool PreProcessorImpl::SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length ) {
