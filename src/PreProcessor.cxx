@@ -23,6 +23,9 @@ namespace turnup {
 	typedef bool BinaryOperator( const TextSpan& operand1, const TextSpan& operand2 );
 
 	static bool IsVarNameChar( char c );
+	static bool IsMacroFunction( const TextSpan& posRef );
+	static const char* FindMacroPlaceholder( const char* pTop, 
+											 const char* pEnd, uint32_t& index );
 	static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd );
 	static bool IsDefineLine( const TextSpan* pLine, TextSpan& name, TextSpan& value );
 	static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression );
@@ -72,14 +75,16 @@ namespace turnup {
 		virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) override;
 		virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) override;
 	private:
-		bool FindVariable( const TextSpan& name, TextSpan& value ) const;
+		TextSpan FindVariable( const TextSpan& posRef ) const;
+		TextSpan ExpandMacro( const TextSpan& posRef ) const;
+		bool FindVariableImpl( TextSpan name, TextSpan& value ) const;
 		void ExpandVariables( TextSpan& line );
 		TextSpan ExpandVariablesImpl( const char* pTop, const char* pEnd, TextSpan posRef );
 		bool SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length );
 	private:
 		typedef std::pair<TextSpan, TextSpan>	Variable;
 		std::vector<Variable>	m_variables;
-		std::vector<TextSpan>	m_sequence;	// temporary buffer
+		mutable std::vector<TextSpan>	m_sequence;	// temporary buffer
 	private:
 		static bool CompareVariable( const Variable& v1, const Variable& v2 );
 	};
@@ -187,7 +192,66 @@ namespace turnup {
 		return true;
 	}
 
-	bool PreProcessorImpl::FindVariable( const TextSpan& name, TextSpan& value ) const {
+	TextSpan PreProcessorImpl::FindVariable( const TextSpan& posRef ) const {
+		TextSpan name = posRef;
+		name = name.Chomp( 2, 1 );
+		TextSpan value;
+		bool ret = FindVariableImpl( name, value );
+		if( !ret ) {
+			std::cerr << "ERROR : Variable '" << name << "' is not found." << std::endl;
+			return posRef;
+		}
+		return value;
+	}
+
+	TextSpan PreProcessorImpl::ExpandMacro( const TextSpan& posRef ) const {
+		// ${{NAME}{param1}...} に含まれる NAME, param1... を作業用 vector に格納する
+		TextSpan data = posRef;
+		data.Chomp( 2, 1 );
+		m_sequence.clear(); {
+			TextSpan tmp;
+			TextSpan rest;
+			while( data.IsEmpty() == false ) {
+				if( data.IsMatch( "{", tmp, "}", rest, "" ) == false )
+					break;
+				m_sequence.push_back( tmp );
+				data = rest;
+			}
+			if( data.IsEmpty() == false ) {
+				std::cerr << "ERROR : Malformed macro expansion : " << posRef << std::endl;
+				return posRef;
+			}
+		}
+		// NAME に対応する define の定義文字列を取得する
+		TextSpan body;
+		if( FindVariableImpl( m_sequence[0], body ) == false ) {
+			std::cerr << "ERROR : Variable '" << m_sequence[0] << "' is not found." << std::endl;
+			return posRef;
+		}
+
+		TextMaker tm; {
+			const char* pTop = body.Top();
+			const char* pEnd = body.End();
+			uint32_t idx = 0;
+			bool bError = false;
+			const char* pCur = FindMacroPlaceholder( pTop, pEnd, idx );
+			while( !!pCur ) {
+				tm << TextSpan{ pTop, pCur };
+				if( idx < m_sequence.size() )
+					tm << m_sequence[idx];
+				else
+					bError = true; 
+				pTop = pCur + 2;
+				pCur = FindMacroPlaceholder( pTop, pEnd, idx );
+			}
+			tm << TextSpan{ pTop, pEnd };
+			if( bError )
+				std::cerr << "ERROR : Insufficient number of macro parameters : " << posRef << std::endl;
+		}
+		return tm.GetSpan();
+	}
+
+	bool PreProcessorImpl::FindVariableImpl( TextSpan name, TextSpan& value ) const {
 		Variable tmp{ name, TextSpan{} };
 		auto itr = std::lower_bound( m_variables.begin(),
 									 m_variables.end(), tmp, CompareVariable );
@@ -213,17 +277,20 @@ namespace turnup {
 													const char* pEnd, TextSpan posRef ) {
 		TextMaker tm;
 		do {
+			//見つかっている変数展開箇所の手前までを書き出す
 			tm << TextSpan{ pTop, posRef.Top() }; 
-			TextSpan value;
-			if( this->FindVariable( posRef.Chomp( 2, 1 ), value ) )
-				tm << value;
-			else
-				std::cerr << "ERROR : Variable '" << posRef << "' is not found." << std::endl;
-			pTop = posRef.End() + 1;
+			//変数展開箇所の置き換え
+			auto pFunc = IsMacroFunction( posRef )	? &PreProcessorImpl::ExpandMacro
+													: &PreProcessorImpl::FindVariable;
+			tm << (this->*pFunc)( posRef );
+			//[pTop,pEnd) 範囲を更新し、満了なら break
+			pTop = posRef.End();
 			if( !(pTop <pEnd) )
 				break;
+			//後続データがあるなら次の変数展開箇所を探索
 			posRef = GetNextVariableRef( pTop, pEnd );
 			if( posRef.IsEmpty() ) {
+				//変数展開箇所がもう無い場合は全て書き出す
 				tm << TextSpan{ pTop, pEnd }; 
 				pTop = pEnd;
 			}
@@ -259,23 +326,64 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	static bool IsVarNameChar( char c ) {
 		return	('A' <= c && c <= 'Z') || c == '_' ||
-			('0' <= c && c <= '9') || ('a' <= c && c <= 'z');
+				('0' <= c && c <= '9') || ('a' <= c && c <= 'z');
 	}
 
-	//行内に最初に登場する ${VAR_NAME} を探し、その位置を返す。ない場合は空 TextSpan を返す
+	static bool IsMacroFunction( const TextSpan& posRef ) {
+		return (posRef[1] == '{' && posRef[2] == '{');
+	}
+
+	static const char* FindMacroPlaceholder( const char* pTop, 
+											 const char* pEnd, uint32_t& index ) {
+		auto p = std::find( pTop, pEnd, '%' );
+		if( p  == pEnd || p+1 == pEnd )
+			return nullptr;
+		if( !( '1' <= p[1] && p[1] <= '9' ) )
+			return nullptr;
+		index = p[1] - '0'; 
+		return p;
+	}
+
+	//行内に最初に登場する ${VAR_NAME} または ${{VAR_NAME}...}} を探し、その位置を返す。
+	//ない場合は空 TextSpan を返す
 	static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd ) {
 		const char* target = "${";
 		const char* pCur = pTop;
+		//与えられた範囲全体を走査
 		while( pCur < pEnd ) {
+			//target を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
 			auto p1 = std::search( pCur, pEnd, target, target + 2 );
 			if( p1 == pEnd )
 				return TextSpan{};
-			auto p2 = std::find( p1 + 2, pEnd, '}' );
-			if( p2 == pEnd )
-				return TextSpan{};
-			if( std::all_of( p1 + 2, p2, IsVarNameChar ) )
-				return TextSpan{ p1, p2 + 1 };
-			pCur = p1 + 2;
+			//見つかったのが ${{ でない場合
+			if( p1[2] != '{' ) {
+				//終端の } を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
+				auto p2 = std::find( p1 + 2, pEnd, '}' );
+				if( p2 == pEnd )
+					return TextSpan{};
+				//${...} の ... 部分が全て変数名構成文字ならその範囲を返却して終了
+				if( std::all_of( p1 + 2, p2, IsVarNameChar ) )
+					return TextSpan{ p1, p2 + 1 };
+				//上記以外なら ${ の次に移動して続行
+				pCur = p1 + 2;
+			//見つかったのが ${{ の場合
+			} else {
+				//終端の }} を検索
+				const char* target2 = "}}";
+				auto p2 = std::search( p1 + 3, pEnd, target2, target2 + 2 );
+				if( p2 == pEnd ) {
+					//見つからなければ ${{ の次に移動して続行
+					pCur = p1 + 3;
+				} else {
+					//見つかれば ${{ 後で最初の } も検索（同じものになる可能性もある）
+					auto p3 = std::find( p1 + 3, p2 + 1, '}' );
+					//${{...}~~~}} の ... 部分が全て変数名構成文字ならその範囲を返却して終了
+					if( std::all_of( p1 + 3, p3, IsVarNameChar ) )
+						return TextSpan{ p1, p2 + 2 };
+					//上記以外なら ${ の次に移動して続行
+					pCur = p1 + 3;
+				}
+			}
 		}
 		return TextSpan{};
 	}

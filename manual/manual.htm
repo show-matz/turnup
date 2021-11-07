@@ -68,7 +68,8 @@
 <li><a href='#9Z7pya1EZOR'>6.17.3 システム変数</a></li>
 </ul>
 <li><a href='#8sNFPrNb9kM'>6.18 条件分岐</a></li>
-<li><a href='#bs9N19eIT7w'>6.19 エラーと警告の出力</a></li>
+<li><a href='#anSuBAd7F3R'>6.19 マクロ関数</a></li>
+<li><a href='#bs9N19eIT7w'>6.20 エラーと警告の出力</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -749,7 +750,24 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td nowrap align='left'><code>-f FILE</code></td><td align='left'><code>FILE</code> がファイルとして存在するか否か</td></tr>
 <tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
 </table>
-<h3><a name='bs9N19eIT7w'></a>6.19 エラーと警告の出力</h3>
+<h3><a name='anSuBAd7F3R'></a>6.19 マクロ関数</h3>
+<p>　<a href='#4eSrElLWBcH'>変数定義</a>機能の拡張として、マクロ関数を利用することができます。これは変数定義において %1 〜 %9 のプレースホルダを埋め込んでおき、変数展開時にパラメータを与えることでこのプレースホルダを置き換えるというものです。</p>
+<p>　例として、文字列の色と背景色を反転させてみましょう。マクロ <code>INVERT</code> の定義は以下のようになります。</p>
+<pre>
+ &lt;!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' --&gt;
+</pre>
+<!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' -->
+<p>　マクロにパラメータを与えて展開するには、{} を余分に使います。変数展開では $ に続いて変数名を {} で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
+<!-- MEMO : $ と {{ の間で no width space U+200B を使ってるところがあるよ -->
+<pre>
+ `$​{{NAME}{PARAM1}{PARAM2}...}}`
+</pre>
+<p>　ここで <code>NAME</code> はマクロ関数の名前、 <code>PARAM1</code> 以降は %1 〜 %9 のプレースホルダを置き換えるためのパラメータです。先程の <code>INVERT</code> マクロを使うのであれば、 <code>$​{{INVERT}{この部分は反転される}}</code> などと記述することになるでしょう。これは以下のように展開され、実際の表示は<span style='background:darkgray;color:white;'>この部分は反転される</span>、となります。</p>
+<pre>
+ @((background:darkgray;color:white;)(この部分は反転される))
+</pre>
+<p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されます。</p>
+<h3><a name='bs9N19eIT7w'></a>6.20 エラーと警告の出力</h3>
 <p>　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には <code>error</code> および <code>warning</code> が使用できます。</p>
 <p>　サンプルを以下に示します。以下の例では、条件式 <code>CONDITION</code> が成立しなかった場合、エラーとしています。</p>
 <!-- start raw html -->
@@ -1035,6 +1053,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2021/11/03 - version 0.806</strong></li>
 <ul>
 <li>BUGFIX : <a href='#a2FYBDWqZUA'>別ファイルの include</a>機能でファイル検索順序に関する仕様の曖昧さを修正</li>
+</ul>
+<li><strong>2021/11/06 - version 0.807</strong></li>
+<ul>
+<li>ENHANCE : <a href='#anSuBAd7F3R'>マクロ関数</a>機能を追加</li>
 </ul>
 </ul>
 <hr>
