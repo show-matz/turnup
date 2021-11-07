@@ -681,7 +681,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 &lt;!-- define: VAR = ' a b c ' --&gt;
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
-<p>　設定した変数を参照（展開）するには ${FOO} という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<p>　設定した変数を参照（展開）するには $​{FOO} または $​(FOO) という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <h4><a name='kW5fA3S8XIj'></a>6.17.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre>
@@ -757,10 +757,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
  &lt;!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' --&gt;
 </pre>
 <!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' -->
-<p>　マクロにパラメータを与えて展開するには、{} を余分に使います。変数展開では $ に続いて変数名を {} で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
+<p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を {} または () で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
 <!-- MEMO : $ と {{ の間で no width space U+200B を使ってるところがあるよ -->
 <pre>
- `$​{{NAME}{PARAM1}{PARAM2}...}}`
+ $​{{NAME}{PARAM1}{PARAM2}...}}
+ $​((NAME)(PARAM1)(PARAM2)...))
 </pre>
 <p>　ここで <code>NAME</code> はマクロ関数の名前、 <code>PARAM1</code> 以降は %1 〜 %9 のプレースホルダを置き換えるためのパラメータです。先程の <code>INVERT</code> マクロを使うのであれば、 <code>$​{{INVERT}{この部分は反転される}}</code> などと記述することになるでしょう。これは以下のように展開され、実際の表示は<span style='background:darkgray;color:white;'>この部分は反転される</span>、となります。</p>
 <pre>
@@ -1054,9 +1055,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>BUGFIX : <a href='#a2FYBDWqZUA'>別ファイルの include</a>機能でファイル検索順序に関する仕様の曖昧さを修正</li>
 </ul>
-<li><strong>2021/11/06 - version 0.807</strong></li>
+<li><strong>2021/11/07 - version 0.807</strong></li>
 <ul>
 <li>ENHANCE : <a href='#anSuBAd7F3R'>マクロ関数</a>機能を追加</li>
+<li>ENHANCE : <a href='#4eSrElLWBcH'>変数展開</a>と<a href='#anSuBAd7F3R'>マクロ</a>で {} だけでなく () も使えるように変更</li>
 </ul>
 </ul>
 <hr>

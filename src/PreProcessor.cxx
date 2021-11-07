@@ -206,13 +206,15 @@ namespace turnup {
 
 	TextSpan PreProcessorImpl::ExpandMacro( const TextSpan& posRef ) const {
 		// ${{NAME}{param1}...} に含まれる NAME, param1... を作業用 vector に格納する
+		char opener[2] = { posRef[1], 0 };
+		char closer[2] = { (opener[0] == '{' ? '}' : ')'), 0 };
 		TextSpan data = posRef;
 		data.Chomp( 2, 1 );
 		m_sequence.clear(); {
 			TextSpan tmp;
 			TextSpan rest;
 			while( data.IsEmpty() == false ) {
-				if( data.IsMatch( "{", tmp, "}", rest, "" ) == false )
+				if( data.IsMatch( opener, tmp, closer, rest, "" ) == false )
 					break;
 				m_sequence.push_back( tmp );
 				data = rest;
@@ -330,7 +332,8 @@ namespace turnup {
 	}
 
 	static bool IsMacroFunction( const TextSpan& posRef ) {
-		return (posRef[1] == '{' && posRef[2] == '{');
+		return	(posRef[1] == '{' && posRef[2] == '{') ||
+				(posRef[1] == '(' && posRef[2] == '(');
 	}
 
 	static const char* FindMacroPlaceholder( const char* pTop, 
@@ -347,40 +350,41 @@ namespace turnup {
 	//行内に最初に登場する ${VAR_NAME} または ${{VAR_NAME}...}} を探し、その位置を返す。
 	//ない場合は空 TextSpan を返す
 	static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd ) {
-		const char* target = "${";
 		const char* pCur = pTop;
 		//与えられた範囲全体を走査
 		while( pCur < pEnd ) {
-			//target を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
-			auto p1 = std::search( pCur, pEnd, target, target + 2 );
-			if( p1 == pEnd )
+			// ${ または $( を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
+			const char* p1 = std::find( pCur, pEnd, '$' );
+			if( p1 == pEnd || (p1[1] != '{' && p1[1] != '(') )
 				return TextSpan{};
-			//見つかったのが ${{ でない場合
-			if( p1[2] != '{' ) {
-				//終端の } を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
-				auto p2 = std::find( p1 + 2, pEnd, '}' );
+			char opener = p1[1];
+			char closer = (opener == '{' ? '}' : ')');
+			//見つかったのがマクロ展開でない場合
+			if( p1[2] != opener ) {
+				//終端の } または ) を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
+				auto p2 = std::find( p1 + 2, pEnd, closer );
 				if( p2 == pEnd )
 					return TextSpan{};
-				//${...} の ... 部分が全て変数名構成文字ならその範囲を返却して終了
+				//${...}/$(...) の ... 部分が全て変数名構成文字ならその範囲を返却して終了
 				if( std::all_of( p1 + 2, p2, IsVarNameChar ) )
 					return TextSpan{ p1, p2 + 1 };
-				//上記以外なら ${ の次に移動して続行
+				//上記以外なら ${/$( の次に移動して続行
 				pCur = p1 + 2;
-			//見つかったのが ${{ の場合
+			//見つかったのがマクロ展開の場合
 			} else {
 				//終端の }} を検索
-				const char* target2 = "}}";
+				const char target2[3] = { closer, closer, 0 };
 				auto p2 = std::search( p1 + 3, pEnd, target2, target2 + 2 );
 				if( p2 == pEnd ) {
-					//見つからなければ ${{ の次に移動して続行
+					//見つからなければ ${{/$(( の次に移動して続行
 					pCur = p1 + 3;
 				} else {
-					//見つかれば ${{ 後で最初の } も検索（同じものになる可能性もある）
-					auto p3 = std::find( p1 + 3, p2 + 1, '}' );
+					//見つかれば ${{/$(( 後で最初の }/) も検索（同じものになる可能性もある）
+					auto p3 = std::find( p1 + 3, p2 + 1, closer );
 					//${{...}~~~}} の ... 部分が全て変数名構成文字ならその範囲を返却して終了
 					if( std::all_of( p1 + 3, p3, IsVarNameChar ) )
 						return TextSpan{ p1, p2 + 2 };
-					//上記以外なら ${ の次に移動して続行
+					//上記以外なら ${/$( の次に移動して続行
 					pCur = p1 + 3;
 				}
 			}
