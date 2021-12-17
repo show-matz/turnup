@@ -93,6 +93,7 @@
 <li><a href='#95miNJcW6DM'>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</a></li>
 <li><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
 <li><a href='#78o6GpB2DHz'>9.3 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
+<li><a href='#brtS2jyAYs6'>9.4 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない</a></li>
 </ul>
 <li><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 </ul>
@@ -920,6 +921,34 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <!-- end raw html -->
 <p>　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、入力データのロード時点ではエラー終了とせず、include 箇所に <a href='#bs9N19eIT7w'>errorディレクティブ</a>を埋め込むようにしました。これにより、エラー処理が出力生成段階まで遅延されることになり、条件分岐で適切に括られていれば意図した動作をする（エラーが回避できる）ことになります。</p>
 </details>
+<h3><a name='brtS2jyAYs6'></a>9.4 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない</h3>
+<details>
+<summary>　この問題は version 0.808 で修正されました。</summary>
+<p>　<a href='#f71ZNSHqufB'>C/C++ のコードハイライト</a>に問題があり、 <code>#if</code> や <code>#else</code> が正しく処理されません。先に <code>if</code> や <code>else</code> が正しく処理されてしまうバグがあり、以下のようになってしまいます。</p>
+<!-- start raw html -->
+<pre class='code'>
+<span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
+#<span class='keyword1'>if</span> 0
+    foo();
+#<span class='keyword1'>else</span>
+    bar();
+<span class='keyword3'>#endif</span>
+    <span class='keyword1'>return</span> 0;
+}
+</pre>
+<!-- end raw html -->
+<p>　この問題を解決するために、キーワードの処理順序を変更しました。以下のように正しくハイライトされるように修正済みです。</p>
+<pre class='code'>
+<span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
+<span class='keyword3'>#if</span> 0
+    foo();
+<span class='keyword3'>#else</span>
+    bar();
+<span class='keyword3'>#endif</span>
+    <span class='keyword1'>return</span> 0;
+}
+</pre>
+</details>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
@@ -1059,6 +1088,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>ENHANCE : <a href='#anSuBAd7F3R'>マクロ関数</a>機能を追加</li>
 <li>ENHANCE : <a href='#4eSrElLWBcH'>変数展開</a>と<a href='#anSuBAd7F3R'>マクロ</a>で {} だけでなく () も使えるように変更</li>
+</ul>
+<li><strong>2021/12/18 - version 0.808</strong></li>
+<ul>
+<li>BUGFIX : <a href='#brtS2jyAYs6'>C/C++ のコードハイライトに関する問題</a>を修正</li>
 </ul>
 </ul>
 <hr>

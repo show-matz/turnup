@@ -1380,6 +1380,45 @@ ${BLANK_PARAGRAPH}
 <!-- collapse:end -->
 
 
+### 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない
+
+<!-- collapse:begin -->
+　この問題は version 0.808 で修正されました。
+
+　[C/C++ のコードハイライト](#フィルタ機能)に問題があり、 `#if` や `#else` が正しく
+処理されません。先に `if` や `else` が正しく処理されてしまうバグがあり、以下のように
+なってしまいます。
+
+<raw_html>
+<pre class='code'>
+<span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
+#<span class='keyword1'>if</span> 0
+    foo();
+#<span class='keyword1'>else</span>
+    bar();
+<span class='keyword3'>#endif</span>
+    <span class='keyword1'>return</span> 0;
+}
+</pre>
+</raw_html>
+
+　この問題を解決するために、キーワードの処理順序を変更しました。以下のように正しくハイ
+ライトされるように修正済みです。
+
+```C
+int main( int argc, char* argv[] ) {
+#if 0
+    foo();
+#else
+    bar();
+#endif
+    return 0;
+}
+```
+
+<!-- collapse:end -->
+
+
 ${BLANK_PARAGRAPH}
 
 ## 更新履歴
@@ -1471,6 +1510,8 @@ ${BLANK_PARAGRAPH}
 * __2021/11/07 - version 0.807__
 	* ENHANCE : [$$](#マクロ関数)機能を追加
 	* ENHANCE : [変数展開](#変数の定義と展開)と[マクロ](#マクロ関数)で {} だけでなく () も使えるように変更
+* __2021/12/18 - version 0.808__
+	* BUGFIX : [C/C++ のコードハイライトに関する問題](#【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない)を修正
 
 --------------------------------------------------------------------------------
 
