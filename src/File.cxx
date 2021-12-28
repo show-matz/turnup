@@ -174,9 +174,11 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	static TextSpan MergePath( const TextSpan& basePath, const TextSpan& relPath ) {
 		TextMaker tm;
-		tm << basePath;
-		if( basePath.End()[-1] != '/' )
-			tm << "/";
+		if( basePath.IsEmpty() == false ) {
+			tm << basePath;
+			if( basePath.End()[-1] != '/' )
+				tm << "/";
+		}
 		tm << relPath;
 		return tm.GetSpan();
 	}
