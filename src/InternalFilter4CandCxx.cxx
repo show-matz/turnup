@@ -15,14 +15,14 @@
 
 namespace turnup {
 
-	bool RangeCommentFinder( const TextSpan& span,
-							 const char* pTarget, TextSpan& result );
-	bool LineCommentFinder( const TextSpan& span,
-							const char* pTarget, TextSpan& result );
-	bool StringLiteralFinder( const TextSpan& span,
-							  const char* pTarget, TextSpan& result );
-	bool KeywordFinder( const TextSpan& span,
-						const char* pTarget, TextSpan& result );
+	static bool RangeCommentFinder( const TextSpan& span, const char* pTarget,
+									TextSpan& result, const char*& className );
+	static bool LineCommentFinder( const TextSpan& span, const char* pTarget,
+								   TextSpan& result, const char*& className );
+	static bool StringLiteralFinder( const TextSpan& span, const char* pTarget,
+									 TextSpan& result, const char*& className );
+	static bool KeywordFinder( const TextSpan& span, const char* pTarget, 
+							   TextSpan& result, const char*& className );
 
 	static const RangeFinderUnit s_units4C[] = {
 		{ RangeCommentFinder,	nullptr,    "comment"  },
@@ -269,8 +269,9 @@ namespace turnup {
 	// internal functions
 	//
 	//------------------------------------------------------------------------------
-	bool RangeCommentFinder( const TextSpan& span,
-							 const char* pTarget, TextSpan& result ) {
+	static bool RangeCommentFinder( const TextSpan& span, const char* pTarget,
+									TextSpan& result, const char*& className ) {
+		(void)className;
 		//MEMO : 文字列中の /* とかを回避するのは現状では諦めてる．．．
 		pTarget = "/*";
 		auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
@@ -285,8 +286,9 @@ namespace turnup {
 		return true;
 	}
 
-	bool LineCommentFinder( const TextSpan& span,
-							const char* pTarget, TextSpan& result ) {
+	static bool LineCommentFinder( const TextSpan& span, const char* pTarget,
+								   TextSpan& result, const char*& className ) {
+		(void)className;
 		//MEMO : 文字列中の // とかを回避するのは現状では諦めてる．．．
 		pTarget = "//";
 		auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
@@ -298,9 +300,10 @@ namespace turnup {
 		return true;
 	}
 
-	bool StringLiteralFinder( const TextSpan& span,
-							  const char* pTarget, TextSpan& result ) {
+	static bool StringLiteralFinder( const TextSpan& span, const char* pTarget,
+									 TextSpan& result, const char*& className ) {
 		(void)pTarget;
+		(void)className;
 		//エスケープされていない double quote を検索する
 		const char* p1 = span.Top();
 		while( true ) {
@@ -327,8 +330,9 @@ namespace turnup {
 		return true;
 	}
 
-	bool KeywordFinder( const TextSpan& span,
-						const char* pTarget, TextSpan& result ) {
+	static bool KeywordFinder( const TextSpan& span, const char* pTarget, 
+							   TextSpan& result, const char*& className ) {
+		(void)className;
 		static const char* IDCHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
 		uint32_t len = ::strlen( pTarget );
 		const char* p1 = span.Top();

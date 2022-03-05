@@ -15,16 +15,16 @@
 
 namespace turnup {
 
-	static bool LineCommentFinder( const TextSpan& span,
-								   const char* pTarget, TextSpan& result );
-	static bool StringLiteralFinder1( const TextSpan& span,
-									  const char* pTarget, TextSpan& result );
-	static bool StringLiteralFinder2( const TextSpan& span,
-									  const char* pTarget, TextSpan& result );
+	static bool LineCommentFinder( const TextSpan& span, const char* pTarget,
+								   TextSpan& result, const char*& className );
+	static bool StringLiteralFinder1( const TextSpan& span, const char* pTarget,
+									  TextSpan& result, const char*& className );
+	static bool StringLiteralFinder2( const TextSpan& span, const char* pTarget,
+									  TextSpan& result, const char*& className );
 	static bool StringLiteralFinderImpl( char chQuote, const TextSpan& span,
 										 const char* pTarget, TextSpan& result );
-	static bool KeywordFinder( const TextSpan& span,
-							   const char* pTarget, TextSpan& result );
+	static bool KeywordFinder( const TextSpan& span, const char* pTarget,
+							   TextSpan& result, const char*& className );
 
 
 	static const RangeFinderUnit s_units4Shell[] = {
@@ -74,8 +74,9 @@ namespace turnup {
 	// internal functions
 	//
 	//------------------------------------------------------------------------------
-	static bool LineCommentFinder( const TextSpan& span,
-								   const char* pTarget, TextSpan& result ) {
+	static bool LineCommentFinder( const TextSpan& span, const char* pTarget,
+								   TextSpan& result, const char*& className ) {
+		(void)className;
 		//MEMO : 文字列中の # とかを回避するのは現状では諦めてる．．．
 		pTarget = "#";
 		auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 1 );
@@ -87,13 +88,15 @@ namespace turnup {
 		return true;
 	}
 
-	static bool StringLiteralFinder1( const TextSpan& span,
-									  const char* pTarget, TextSpan& result ) {
+	static bool StringLiteralFinder1( const TextSpan& span, const char* pTarget,
+									  TextSpan& result, const char*& className ) {
+		(void)className;
 		return StringLiteralFinderImpl( '\'', span, pTarget, result );
 	}
 
-	static bool StringLiteralFinder2( const TextSpan& span,
-									  const char* pTarget, TextSpan& result ) {
+	static bool StringLiteralFinder2( const TextSpan& span, const char* pTarget,
+									  TextSpan& result, const char*& className ) {
+		(void)className;
 		return StringLiteralFinderImpl( '"', span, pTarget, result );
 	}
 
@@ -126,8 +129,9 @@ namespace turnup {
 		return true;
 	}
 
-	static bool KeywordFinder( const TextSpan& span,
-							   const char* pTarget, TextSpan& result ) {
+	static bool KeywordFinder( const TextSpan& span, const char* pTarget,
+							   TextSpan& result, const char*& className ) {
+		(void)className;
 		static const char* IDCHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
 		uint32_t len = ::strlen( pTarget );
 		const char* p1 = span.Top();

@@ -14,8 +14,8 @@ namespace turnup {
 
 	typedef bool InternalFilterFunc( std::ostream& os,
 									 const TextSpan* pTop, const TextSpan* pEnd );
-	typedef bool RangeFinder( const TextSpan& span,
-							  const char* pTarget, TextSpan& result );
+	typedef bool RangeFinder( const TextSpan& span, const char* pTarget, 
+							  TextSpan& result, const char*& className );
 
 	struct RangeFinderUnit {
 		RangeFinder*	finder;

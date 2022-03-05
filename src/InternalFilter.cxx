@@ -34,6 +34,7 @@ namespace turnup {
 										const TextSpan& span,
 										const RangeFinderUnit* pUnit ) {
 		TextSpan result{};
+		const char* pClassName;
 		while( true ) { 
 			//現在の finder 関数と target を取得
 			RangeFinder* finder = pUnit->finder;
@@ -44,7 +45,8 @@ namespace turnup {
 				return;
 			}
 			//finder 関数を実行し、true 復帰なら break
-			if( finder( span, target, result ) == true )
+			pClassName = pUnit->className;
+			if( finder( span, target, result, pClassName ) == true )
 				break;
 			//上記以外の場合は次の unit に移動してループ続行
 			++pUnit;
@@ -53,7 +55,7 @@ namespace turnup {
 		ExecRecursive( os, TextSpan{ span.Top(), result.Top() }, pUnit + 1 );
 
 		//発見した範囲を span tag 付きで出力
-		os << "<span class='" << pUnit->className << "'>";	//MEMO : ignore StyleStack.
+		os << "<span class='" << pClassName << "'>";	//MEMO : ignore StyleStack.
 		result.WriteSimple( os );
 		os << "</span>";
 		
