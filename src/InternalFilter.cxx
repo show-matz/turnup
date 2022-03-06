@@ -6,6 +6,7 @@
 #include "InternalFilter.hxx"
 
 #include "InternalFilter4CandCxx.hxx"
+#include "InternalFilter4CommonLISP.hxx"
 #include "InternalFilter4Diff.hxx"
 #include "InternalFilter4Shell.hxx"
 
@@ -27,6 +28,7 @@ namespace turnup {
 			type.IsEqual( "c++" ) )		return InternalFilter4Cxx;
 		if( type.IsEqual( "diff" ) )	return InternalFilter4Diff;
 		if( type.IsEqual( "sh" ) )		return InternalFilter4Shell;
+		if( type.IsEqual( "lisp" ) )	return InternalFilter4CommonLISP;
 		return nullptr;
 	}
 

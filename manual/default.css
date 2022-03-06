@@ -147,10 +147,13 @@ pre.code {
 	margin-right:	2em;
 	padding:		.5em;
 }
-span.comment  { color: brown; }
+span.comment  { color: darkorange; }
 span.keyword1 { color: cyan; }
 span.keyword2 { color: lime; }
 span.keyword3 { color: slateblue; }
+span.keyword4 { color: yellow; }
+span.keyword5 { color: skyblue; }
+span.keyword6 { color: lightgray; }
 span.literal  { color: pink; }
 
 
