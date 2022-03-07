@@ -599,7 +599,7 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- filter:foo = quux %in %out --&gt;
 </pre>
-<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnnup が都度決定します。</p>
+<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnup が都度決定します。</p>
 <p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された preブロックを見つけた場合に、以下の要領で処理を行ないます。</p>
 <ul>
 <li>pre ブロックの中身を一時ファイルに保存する</li>
