@@ -5,7 +5,7 @@
 <!-- style:./default.css -->			
 <!-- config:term-link-in-header -->			
 
-<!-- config:write-comment -->			
+<!-- <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
 
 # README - ${APPNAME}
@@ -81,7 +81,7 @@ ${BLANK_PARAGRAPH}
 　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペースを後続させると、箇条書きリストになります。
 ネストさせたい場合は、行頭にタブ文字を使用してください。
 
-~~~
+<!-- snippet: LIST-SAMPLE-1
 - List A
 + List B
 	* List B - 1
@@ -89,36 +89,34 @@ ${BLANK_PARAGRAPH}
 		+ List B - 2 - 1
 		* List B - 2 - 2
 - List C
+-->
+
+~~~
+<!-- expand: LIST-SAMPLE-1 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-- List A
-+ List B
-	* List B - 1
-	- List B - 2
-		+ List B - 2 - 1
-		* List B - 2 - 2
-- List C
+<!-- expand: LIST-SAMPLE-1 -->
 
 
 　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。
 
-~~~
+<!-- snippet: LIST-SAMPLE-2
 - Task list
 	- [X] completed task
 		* point 1
 		* point 2
 	- [ ] not completed task
+-->
+
+~~~
+<!-- expand: LIST-SAMPLE-2 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-- Task list
-	- [X] completed task
-		* point 1
-		* point 2
-	- [ ] not completed task
+<!-- expand: LIST-SAMPLE-2 -->
 
 
 
@@ -127,88 +125,92 @@ ${BLANK_PARAGRAPH}
 　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、
 行頭にタブ文字を使用してください。
 
-~~~
+<!-- snippet: LIST-SAMPLE-3
 1. List A
 1. List B
 	1. List B - 1
 	1. List B - 2
 		1. List B - 2 - 1
 1. List C
+-->
+
+~~~
+<!-- expand: LIST-SAMPLE-3 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-1. List A
-1. List B
-	1. List B - 1
-	1. List B - 2
-		1. List B - 2 - 1
-1. List C
+<!-- expand: LIST-SAMPLE-3 -->
+
+
 
 ### preブロック
 
 　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは `<pre>` ブロックとなります。
 {{fn:スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません}}
 
-```
-~~~
+<!-- snippet: PRE-SAMPLE
 int main( void ) {
     std::cout << "hello world." << std::endl;
     return 0;
 }
+-->
+
+```
+~~~
+<!-- expand: PRE-SAMPLE -->
 ~~~
 ```
 
 　上記は、以下のように出力されます。
 
 ~~~
-int main( void ) {
-    std::cout << "hello world." << std::endl;
-    return 0;
-}
+<!-- expand: PRE-SAMPLE -->
 ~~~
 
 　拡張機能として、preブロックを開始する行に言語などの名前をつけることでコードハイライトをする
 機能もあります。これについての詳細は[](#フィルタ機能)を参照してください。
+
 
 ### テーブル
 
 　以下のような記述でテーブルを作成できます。この場合、１行目は常にヘッダ行（th タグ）であり、
 ２行目以降がデータ行（td タグ）になります。
 
-~~~
+<!-- snippet: TABLE-SAMPLE-1
 | header A | header B | header C |	
 |     0    |     1    |    2     |	
 |     3    |     4    |    5     |	
 |     6    |     7    |    8     |	
+-->
+
+~~~
+<!-- expand: TABLE-SAMPLE-1 -->
 ~~~
 
 　上記は、以下のようになります。この場合、各列のデータはすべて左寄せになります。
 
-	| header A | header B | header C |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+<!-- expand: TABLE-SAMPLE-1 -->
 
 
 　列毎に中央揃え、右寄せなどのアライメント指定を指定をしたい場合には、２行目に :---: や ---: を
 記述します。
 
-~~~
+<!-- snippet: TABLE-SAMPLE-2
 | header A | header B | header C |	
 | :------- | :------: | -------: |	
 |     0    |     1    |    2     |	
 |     3    |     4    |    5     |	
 |     6    |     7    |    8     |	
+-->
+
+~~~
+<!-- expand: TABLE-SAMPLE-2 -->
 ~~~
 
 　上記は、以下のように出力されます（表はデフォルトでセンタリングされます）。
 
-	| header A | header B | header C |	
-	|:---------|:--------:|---------:|
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+<!-- expand: TABLE-SAMPLE-2 -->
 
 
 
@@ -220,23 +222,22 @@ __「自動的な折り返しを禁止」__ することができます
 　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に
 渡るヘッダ行を記述することができます。以下のように。
 
-~~~
+<!-- snippet: TABLE-SAMPLE-3
 |     A    |     B    |    C     |	
 |   Alpha  |   Bravo  |  Charlie |	
 | :------- | :------: | -------: |	
 |     0    |     1    |    2     |	
 |     3    |     4    |    5     |	
 |     6    |     7    |    8     |	
+-->
+
+~~~
+<!-- expand: TABLE-SAMPLE-3 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-	|     A    |     B    |    C     |	
-	|   Alpha  |   Bravo  |  Charlie |	
-	|:---------|:--------:|---------:|
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+<!-- expand: TABLE-SAMPLE-3 -->
 
 
 
@@ -245,23 +246,22 @@ __「自動的な折り返しを禁止」__ することができます
 結合させることができます{{fn:[$$](#スタイルパレット) の指定も含め、複数の指定を同時にする場合、  \
 `|N]M>U^` の順序で指定してください。}}。以下に例を示します。
 
-~~~
+<!-- snippet: TABLE-SAMPLE-4
 |2>      A & B        |2^ C<br>Charlie |	
 |   Alpha  |   Bravo  |  
 | :------- | :------: | -------: |	
 |     0    |     1    |    2     |	
 |     3    |     4    |    5     |	
 |     6    |     7    |    8     |	
+-->
+
+~~~
+<!-- expand: TABLE-SAMPLE-4 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-	|2>      A & B        |2^ C<br>Charlie |	
-	|   Alpha  |   Bravo  |  
-	| :------- | :------: | -------: |	
-	|     0    |     1    |    2     |	
-	|     3    |     4    |    5     |	
-	|     6    |     7    |    8     |	
+<!-- expand: TABLE-SAMPLE-4 -->
 
 
 
@@ -273,7 +273,7 @@ ${BLANK_PARAGRAPH}
 [セル結合とアライメント指定を併用した場合の問題](#【解決済】テーブルで colspan/rowspan を使うとアライメント \
 指定がずれる)に対処することができます。以下に例を示します。
 
-```
+<!-- snippet: TABLE-SAMPLE-5
 | column A | column B | column C |
 |:---------|:--------:|---------:|
 |left      |center    |right     |
@@ -281,15 +281,15 @@ ${BLANK_PARAGRAPH}
 |2> left              |right?    |
 |:---------|:--------:|---------:|
 |left      |center    |right     |
+-->
+
+```
+<!-- expand: TABLE-SAMPLE-5 -->
 ```
 
-| column A | column B | column C |
-|:---------|:--------:|---------:|
-|left      |center    |right     |
-|:--------------------|---------:|
-|2> left              |right?    |
-|:---------|:--------:|---------:|
-|left      |center    |right     |
+　上記は、以下のようになります。
+
+<!-- expand: TABLE-SAMPLE-5 -->
 
 
 
@@ -299,7 +299,7 @@ ${BLANK_PARAGRAPH}
 　行頭を > で始めると引用になります。複数の > 連続させると多段の引用になります。
 {{fn:現在の実装では > は行頭から始める必要があり、また複数の > の間に空白を入れることはできません。これは課題として将来修正される可能性があります。}}
 
-~~~
+<!-- snippet: CITATION-SAMPLE
 > lv.1 - 1
 > lv.1 - 2
 >> lv.2 - 1
@@ -308,18 +308,15 @@ ${BLANK_PARAGRAPH}
 > lv.1
 >>>> lv.4
 >> lv.2
+-->
+
+~~~
+<!-- expand: CITATION-SAMPLE -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-> lv.1 - 1
-> lv.1 - 2
->> lv.2 - 1
->> lv.2 - 2
->>> lv.3
-> lv.1
->>>> lv.4
->> lv.2
+<!-- expand: CITATION-SAMPLE -->
 
 
 
@@ -606,13 +603,18 @@ Table. title of table
 ひょっとしたら、リストでやるかもしれません。}}ため、ここではテーブルでの利用方法を説明します。
 以下に例を示します。
 
-```
+<!-- snippet: STYLEPALLETE-SAMPLE
   | title | count | price | 
   |:------|------:|------:|
   | foo   |     1 |   666 |
 [0| bar   |     2 |1] -99 |
   | baz   |     3 |1]  -8 |
 [0| quux  |     4 |   123 |
+-->
+
+
+```
+<!-- expand: STYLEPALLETE-SAMPLE -->
 ```
 
 * 行全体にスタイルを適用したい場合、行頭の | の手前に `[N` を記述
@@ -624,12 +626,7 @@ Table. title of table
 <!-- palette: 0 style="background: #f4f4f4;" -->
 <!-- palette: 1 style="color: red;" -->
 
-  | title | count | price | 
-  |:------|------:|------:|
-  | foo   |     1 |   666 |
-[0| bar   |     2 |1] -99 |
-  | baz   |     3 |1]  -8 |
-[0| quux  |     4 |   123 |
+<!-- expand: STYLEPALLETE-SAMPLE -->
 
 
 
@@ -749,8 +746,7 @@ Table. title of table
 これは ${APPNAME} では **フィルタ機能** と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換を
 かける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。
 
-```
-~~~diff
+<!-- snippet: FILTER-SAMPLE
 diff --git a/main.cxx b/main.cxx
 index 16fc9f4..8387187 100644
 --- a/main.cxx
@@ -761,22 +757,18 @@ index 16fc9f4..8387187 100644
 +    std::cout << "hello world." << std::endl;
 
     return 0;
+-->
+
+```
+~~~diff
+<!-- expand: FILTER-SAMPLE -->
 ~~~
 ```
 
 　これは以下のように表示されます。
 
 ~~~diff
-diff --git a/main.cxx b/main.cxx
-index 16fc9f4..8387187 100644
---- a/main.cxx
-+++ b/main.cxx
-@@ -3,5 +3,5 @@ int main( void ) {
- 
--    printf( "hello world.\n" );
-+    std::cout << "hello world." << std::endl;
-
-    return 0;
+<!-- expand: FILTER-SAMPLE -->
 ~~~
 
 
@@ -844,8 +836,7 @@ ${BLANK_PARAGRAPH}
 
 　以下に例を示します。以下のように記述すると、
 
-~~~
-<!-- collapse:begin -->
+<!-- snippet: COLLAPSE-SAMPLE
 タイトル行は@{{color: red;}{文字修飾}}可能。 __クリック__ するたびに状態をトグルできます。
 ２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。
 
@@ -853,6 +844,11 @@ ${BLANK_PARAGRAPH}
 * contents2
 * contents3
 
+-->
+
+~~~
+<!-- collapse:begin -->
+<!-- expand: COLLAPSE-SAMPLE -->
 <!-- collapse:end -->
 ~~~
 
@@ -860,14 +856,10 @@ ${BLANK_PARAGRAPH}
 　以下のように表示されます。あと、[$$](#細かい話)にも注意事項が書いてありますので参照してください。
 
 <!-- collapse:begin -->
-タイトル行は@{{color: red;}{文字修飾}}可能。 __クリック__ するたびに状態をトグルできます。
-２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。
-
-* contents1
-* contents2
-* contents3
-
+<!-- expand: COLLAPSE-SAMPLE -->
 <!-- collapse:end -->
+
+
 
 ### 別ファイルの include
 
@@ -917,6 +909,38 @@ ${APPNAME} -I../headers -I~/${APPNAME}/headers  DATA.md > OUTPUT.htm
 のは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定
 された順番になります。{{fn:version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される \
 仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。}}
+
+
+
+### スニペット定義と展開
+
+　[include](#別ファイルの include) は便利な機能ですが、別ファイルにする理由がない場合は煩雑に
+感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で
+完結する方がよいでしょう。そのような場合には、snippet と expand という拡張機能が使用できます。
+
+　スニペットの定義は以下の要領で記述します。 `NAME` 部分には任意の名前を指定してください。
+
+~~~
+<​!-- snippet: NAME
+    （ここに繰り返し使いたい内容を記述する）
+-​->
+~~~
+
+　そして、定義したスニペットは名前を指定して expand を使うことでその場所に展開できます。以下の
+ように。
+
+~~~$​{
+<​!-- expand: NAME -->
+~~~
+
+　スニペットの展開は、プリプロセスよりも先で、かつ [include](#別ファイルの include) よりは
+後に実施されます。そのため、スニペット内で変数展開を使用すれば、expand のたびに異なる出力を生成
+することもできます。
+
+　現在の実装では、スニペットの定義に関していくつかの制約があります。
+
+* スニペットの内部で他のスニペットを展開することはできません
+* スニペットの内部で <!-- --> 形式のコメントを使うことはできません
 
 
 
@@ -1247,8 +1271,8 @@ CrLf でも動作します。ただし、Lf の方がほんの少し高速にな
 
 | step |  action         | description        |
 |:----:|:================|:-------------------|
-|  1   | 入力データのロード | 指定された入力ファイルとその中の include 指令を再帰的に処理し、単一の行シーケンスを \
-生成します。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。 |
+|  1   | 入力データのロード | 指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを \
+生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。 |
 |  2   | プリプロセス      | 入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。 \
 また、条件分岐の処理もこの時点で実施します。 |
 |  3   | 予備スキャン      | 変数展開済みの行シーケンスを反復し、見出しや図表タイトル、用語定義などを解析して各種の \
@@ -1517,6 +1541,8 @@ ${BLANK_PARAGRAPH}
 	* BUGFIX : [include](#別ファイルの include)機能のバグを修正
 * __2022/03/06 - version 0.810__
 	* ENHANCE : [Common LISP 言語のコードハイライト](#フィルタ機能)を内部フィルタとして実装
+* __2022/03/13 - version 0.811__
+	* ENHANCE : [$$](#スニペット定義と展開)機能を追加 ( experimental )
 
 --------------------------------------------------------------------------------
 

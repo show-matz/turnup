@@ -6,11 +6,6 @@
 	<link rel=stylesheet href="./default.css">
 </header>
 <body>
-<!-- define: APPNAME = turnup -->
-<!-- define: BLANK_PARAGRAPH = '　　' -->
-<!-- config:term-link-in-header -->			
-<!-- config:write-comment -->			
-<!-- config:header-numbering 2 4 -->			
 <h1><a name='iI4sykJQemx'></a>README - turnup</h1>
 <p>　この文書は、 <strong>turnup</strong> のためのマニュアル文書です。</p>
 <h2><a name='0qJQvVjc3Xy'></a>1 Table of contents</h2>
@@ -60,16 +55,17 @@
 <ul>
 <li><a href='#7dx1C8sPEB4'>6.15.1 起動オプションでの検索パス追加</a></li>
 </ul>
-<li><a href='#hs1guSfsFGb'>6.16 改ページ指定</a></li>
-<li><a href='#4eSrElLWBcH'>6.17 変数の定義と展開</a></li>
+<li><a href='#8d4GujOuk9v'>6.16 スニペット定義と展開</a></li>
+<li><a href='#hs1guSfsFGb'>6.17 改ページ指定</a></li>
+<li><a href='#4eSrElLWBcH'>6.18 変数の定義と展開</a></li>
 <ul>
-<li><a href='#2yDQLphjQX0'>6.17.1 データ内での設定と展開</a></li>
-<li><a href='#kW5fA3S8XIj'>6.17.2 起動オプションでの変数設定</a></li>
-<li><a href='#9Z7pya1EZOR'>6.17.3 システム変数</a></li>
+<li><a href='#2yDQLphjQX0'>6.18.1 データ内での設定と展開</a></li>
+<li><a href='#kW5fA3S8XIj'>6.18.2 起動オプションでの変数設定</a></li>
+<li><a href='#9Z7pya1EZOR'>6.18.3 システム変数</a></li>
 </ul>
-<li><a href='#8sNFPrNb9kM'>6.18 条件分岐</a></li>
-<li><a href='#anSuBAd7F3R'>6.19 マクロ関数</a></li>
-<li><a href='#bs9N19eIT7w'>6.20 エラーと警告の出力</a></li>
+<li><a href='#8sNFPrNb9kM'>6.19 条件分岐</a></li>
+<li><a href='#anSuBAd7F3R'>6.20 マクロ関数</a></li>
+<li><a href='#bs9N19eIT7w'>6.21 エラーと警告の出力</a></li>
 </ul>
 <li><a href='#cNngUDCfTMJ'>7 設定</a></li>
 <ul>
@@ -298,6 +294,7 @@ int main( void ) {
 |:---------|:--------:|---------:|
 |left      |center    |right     |
 </pre>
+<p>　上記は、以下のようになります。</p>
 <table align='center'>
 <tr><th>column A</th><th>column B</th><th>column C</th></tr>
 <tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
@@ -667,13 +664,31 @@ index 16fc9f4..8387187 100644
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup></p>
-<h3><a name='hs1guSfsFGb'></a>6.16 改ページ指定</h3>
+<h3><a name='8d4GujOuk9v'></a>6.16 スニペット定義と展開</h3>
+<p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という拡張機能が使用できます。</p>
+<p>　スニペットの定義は以下の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
+<pre>
+&lt;​!-- snippet: NAME
+    （ここに繰り返し使いたい内容を記述する）
+-​-&gt;
+</pre>
+<p>　そして、定義したスニペットは名前を指定して expand を使うことでその場所に展開できます。以下のように。</p>
+<pre>
+&lt;​!-- expand: NAME --&gt;
+</pre>
+<p>　スニペットの展開は、プリプロセスよりも先で、かつ <a href='#a2FYBDWqZUA'>include</a> よりは後に実施されます。そのため、スニペット内で変数展開を使用すれば、expand のたびに異なる出力を生成することもできます。</p>
+<p>　現在の実装では、スニペットの定義に関していくつかの制約があります。</p>
+<ul>
+<li>スニペットの内部で他のスニペットを展開することはできません</li>
+<li>スニペットの内部で &lt;!-- --&gt; 形式のコメントを使うことはできません</li>
+</ul>
+<h3><a name='hs1guSfsFGb'></a>6.17 改ページ指定</h3>
 <p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
-<h3><a name='4eSrElLWBcH'></a>6.17 変数の定義と展開</h3>
-<h4><a name='2yDQLphjQX0'></a>6.17.1 データ内での設定と展開</h4>
+<h3><a name='4eSrElLWBcH'></a>6.18 変数の定義と展開</h3>
+<h4><a name='2yDQLphjQX0'></a>6.18.1 データ内での設定と展開</h4>
 <p>　変数に値を設定し、任意の場所でその値を展開することができます。変数の定義は以下の要領で記述します。ここでは、変数 FOO に値として 777 を設定しています。</p>
 <pre>
 &lt;!-- define: FOO = 777 --&gt;
@@ -684,7 +699,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには $​{FOO} または $​(FOO) という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
-<h4><a name='kW5fA3S8XIj'></a>6.17.2 起動オプションでの変数設定</h4>
+<h4><a name='kW5fA3S8XIj'></a>6.18.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre>
 turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
@@ -693,7 +708,7 @@ turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
 <pre>
 turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
-<h4><a name='9Z7pya1EZOR'></a>6.17.3 システム変数</h4>
+<h4><a name='9Z7pya1EZOR'></a>6.18.3 システム変数</h4>
 <p>　システム変数は turnup によって自動的に設定される変数です。以下が用意されています。</p>
 <table align='center'>
 <tr><th>name</th><th>description</th></tr>
@@ -703,7 +718,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td align='left'><code>__DATE</code></td><td align='left'>turnup を実行した日付（ <code>YYYY/MM/DD</code> 形式）</td></tr>
 <tr><td align='left'><code>__TIME</code></td><td align='left'>turnup を実行した時刻（ <code>HH:MM:DD</code> 形式）</td></tr>
 </table>
-<h3><a name='8sNFPrNb9kM'></a>6.18 条件分岐</h3>
+<h3><a name='8sNFPrNb9kM'></a>6.19 条件分岐</h3>
 <p>　簡単な論理式を使用した条件分岐ができます。以下のように、コメントを利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
 <!-- start raw html -->
 <pre>
@@ -752,15 +767,13 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td nowrap align='left'><code>-f FILE</code></td><td align='left'><code>FILE</code> がファイルとして存在するか否か</td></tr>
 <tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
 </table>
-<h3><a name='anSuBAd7F3R'></a>6.19 マクロ関数</h3>
+<h3><a name='anSuBAd7F3R'></a>6.20 マクロ関数</h3>
 <p>　<a href='#4eSrElLWBcH'>変数定義</a>機能の拡張として、マクロ関数を利用することができます。これは変数定義において %1 〜 %9 のプレースホルダを埋め込んでおき、変数展開時にパラメータを与えることでこのプレースホルダを置き換えるというものです。</p>
 <p>　例として、文字列の色と背景色を反転させてみましょう。マクロ <code>INVERT</code> の定義は以下のようになります。</p>
 <pre>
  &lt;!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' --&gt;
 </pre>
-<!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' -->
 <p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を {} または () で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
-<!-- MEMO : $ と {{ の間で no width space U+200B を使ってるところがあるよ -->
 <pre>
  $​{{NAME}{PARAM1}{PARAM2}...}}
  $​((NAME)(PARAM1)(PARAM2)...))
@@ -770,7 +783,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
  @((background:darkgray;color:white;)(この部分は反転される))
 </pre>
 <p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されます。</p>
-<h3><a name='bs9N19eIT7w'></a>6.20 エラーと警告の出力</h3>
+<h3><a name='bs9N19eIT7w'></a>6.21 エラーと警告の出力</h3>
 <p>　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には <code>error</code> および <code>warning</code> が使用できます。</p>
 <p>　サンプルを以下に示します。以下の例では、条件式 <code>CONDITION</code> が成立しなかった場合、エラーとしています。</p>
 <!-- start raw html -->
@@ -850,7 +863,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p>　turnup に様々な機能が追加された結果、当初は 1-pass だった内部処理も複雑になっていきました。現在では、以下の内部ステップを実行しています。</p>
 <table align='center'>
 <tr><th>step</th><th>action</th><th>description</th></tr>
-<tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理し、単一の行シーケンスを生成します。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
+<tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
 <tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、条件分岐の処理もこの時点で実施します。</td></tr>
 <tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、見出しや図表タイトル、用語定義などを解析して各種の拡張機能の利用に備えます。</td></tr>
 <tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
@@ -1101,6 +1114,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2022/03/06 - version 0.810</strong></li>
 <ul>
 <li>ENHANCE : <a href='#f71ZNSHqufB'>Common LISP 言語のコードハイライト</a>を内部フィルタとして実装</li>
+</ul>
+<li><strong>2022/03/13 - version 0.811</strong></li>
+<ul>
+<li>ENHANCE : <a href='#8d4GujOuk9v'>スニペット定義と展開</a>機能を追加 ( experimental )</li>
 </ul>
 </ul>
 <hr>
