@@ -16,57 +16,158 @@ namespace turnup {
 
 	//--------------------------------------------------------------------------
 	//
-	// class GlossaryEntry
+	// class EntryBase
 	//
 	//--------------------------------------------------------------------------
-	class GlossaryEntry {
+	class EntryBase {
 	public:
-		GlossaryEntry();
-		GlossaryEntry( const char* pTop, const char* pEnd );
-		GlossaryEntry( const GlossaryEntry& entry );
-		~GlossaryEntry();
-		GlossaryEntry& operator=( const GlossaryEntry& rhs );
+		EntryBase( const char* pTop, const char* pEnd );
+		virtual ~EntryBase();
 	public:
-		inline uint64_t	GetHash() const { return m_hash; }
-		inline const char* GetAnchorTag() const { return m_anchorTag; }
+		virtual uint64_t GetHash() const = 0;
+		virtual const char* GetAnchorTag() const = 0;
+		virtual void Write( std::ostream& os,
+							WriteFunction* pWriteFunc ) const = 0;
+	public:
 		inline uint32_t GetLength() const { return m_length; }
 		inline const char* GetTerm() const { return m_pTerm; }
 	private:
-		uint64_t	m_hash;				// 用語文字列から生成されたハッシュ値
-		char		m_anchorTag[12];	// ハッシュ値の文字列表現（null 終端を含む）
-		uint32_t	m_length;			// 用語文字列の長さ（バイト数）
-		const char*	m_pTerm;			// 用語文字列のポインタ
+		const char*	m_pTerm;	// 用語文字列のポインタ
+		uint32_t	m_length;	// 用語文字列の長さ（バイト数）
 	};
 
-	GlossaryEntry::GlossaryEntry() : m_hash( 0 ),
-									 m_length( 0 ),
-									 m_pTerm( nullptr ) {
-		m_anchorTag[0] = 0;
+	EntryBase::EntryBase( const char* pTop, const char* pEnd ) : m_pTerm( pTop ),
+																 m_length( pEnd - pTop ) {
 	}
+	EntryBase::~EntryBase() {
+	}
+
+	//--------------------------------------------------------------------------
+	//
+	// class GlossaryEntry
+	//
+	//--------------------------------------------------------------------------
+	class GlossaryEntry : public EntryBase {
+	public:
+		GlossaryEntry( const char* pTop, const char* pEnd );
+		virtual ~GlossaryEntry();
+	public:
+		virtual uint64_t GetHash() const;
+		virtual const char* GetAnchorTag() const;
+		virtual void Write( std::ostream& os, WriteFunction* pWriteFunc ) const;
+	private:
+		uint64_t	m_hash;				// 用語文字列から生成されたハッシュ値
+		char		m_anchorTag[12];	// ハッシュ値の文字列表現（null 終端を含む）
+	};
 
 	GlossaryEntry::GlossaryEntry( const char* pTop,
-								  const char* pEnd ) : m_hash( 0 ),
-													   m_length( pEnd - pTop ),
-													   m_pTerm( pTop ) {
+								  const char* pEnd ) : EntryBase( pTop, pEnd ),
+													   m_hash( 0 ) {
 		m_hash = CRC64::Calc( 'G', pTop, pEnd, m_anchorTag ); // 'G' means glossary.
 	}
-
-	GlossaryEntry::GlossaryEntry( const GlossaryEntry& entry ) : m_hash( entry.m_hash ),
-																 m_length( entry.m_length ),
-																 m_pTerm( entry.m_pTerm ) {
-		::strcpy( this->m_anchorTag, entry.m_anchorTag );
-	}
-
 	GlossaryEntry::~GlossaryEntry() {
 		//intentionally do nothing.
 	}
+	uint64_t GlossaryEntry::GetHash() const {
+		return m_hash;
+	}
+	const char* GlossaryEntry::GetAnchorTag() const {
+		return m_anchorTag;
+	}
+	void GlossaryEntry::Write( std::ostream& os, WriteFunction* pWriteFunc ) const {
+		os << "<a class='term' href='#" << this->GetAnchorTag()  << "'>";
+		const char* p = this->GetTerm();
+		pWriteFunc( os, p, p + this->GetLength() );
+		os << "</a>";
+	}
 
-	GlossaryEntry& GlossaryEntry::operator=( const GlossaryEntry& rhs ) {
-		this->m_hash	= rhs.m_hash;
-		this->m_length	= rhs.m_length;
-		this->m_pTerm	= rhs.m_pTerm;
-		::strcpy( this->m_anchorTag, rhs.m_anchorTag );
-		return *this;
+	//--------------------------------------------------------------------------
+	//
+	// class InternalAutoLinkEntry
+	//
+	//--------------------------------------------------------------------------
+	class InternalAutoLinkEntry : public EntryBase {
+	public:
+		InternalAutoLinkEntry( const char* pTop, const char* pEnd,
+							   const char* pTargetTop, const char* pTargetEnd );
+		virtual ~InternalAutoLinkEntry();
+	public:
+		virtual uint64_t GetHash() const;
+		virtual const char* GetAnchorTag() const;
+		virtual void Write( std::ostream& os, WriteFunction* pWriteFunc ) const;
+	private:
+		uint64_t	m_hash;				// 生成されたハッシュ値
+		char		m_anchorTag[12];	// ハッシュ値の文字列表現（null 終端を含む）
+	};
+
+	InternalAutoLinkEntry::InternalAutoLinkEntry( const char* pTop,
+												  const char* pEnd,
+												  const char* pTargetTop,
+												  const char* pTargetEnd ) : EntryBase( pTop, pEnd ),
+																			 m_hash( 0 ) {
+		if( *pTargetTop == '#' )
+			m_hash = CRC64::Calc( 'H', pTargetTop+1, pTargetEnd, m_anchorTag ); // 'H' means header.
+		else
+			m_hash = CRC64::Calc( *pTargetTop, pTargetTop+2, pTargetEnd, m_anchorTag );
+	}
+	InternalAutoLinkEntry::~InternalAutoLinkEntry() {
+		//intentionally do nothing.
+	}
+	uint64_t InternalAutoLinkEntry::GetHash() const {
+		return m_hash;
+	}
+	const char* InternalAutoLinkEntry::GetAnchorTag() const {
+		return m_anchorTag;
+	}
+	void InternalAutoLinkEntry::Write( std::ostream& os, WriteFunction* pWriteFunc ) const {
+		os << "<a class='autolink' href='#" << this->GetAnchorTag()  << "'>";
+		const char* p = this->GetTerm();
+		pWriteFunc( os, p, p + this->GetLength() );
+		os << "</a>";
+	}
+
+	//--------------------------------------------------------------------------
+	//
+	// class ExternalAutoLinkEntry
+	//
+	//--------------------------------------------------------------------------
+	class ExternalAutoLinkEntry : public EntryBase {
+	public:
+		ExternalAutoLinkEntry( const char* pTop, const char* pEnd,
+							   const char* pUrlTop, const char* pUrlEnd );
+		virtual ~ExternalAutoLinkEntry();
+	public:
+		virtual uint64_t GetHash() const;
+		virtual const char* GetAnchorTag() const;
+		virtual void Write( std::ostream& os, WriteFunction* pWriteFunc ) const;
+	private:
+		const char* m_pUrlTop;
+		const char* m_pUrlEnd;
+	};
+
+	ExternalAutoLinkEntry::ExternalAutoLinkEntry( const char* pTop,
+												  const char* pEnd,
+												  const char* pUrlTop,
+												  const char* pUrlEnd ) : EntryBase( pTop, pEnd ),
+																		  m_pUrlTop( pUrlTop ),
+																		  m_pUrlEnd( pUrlEnd ) {
+	}
+	ExternalAutoLinkEntry::~ExternalAutoLinkEntry() {
+		//intentionally do nothing.
+	}
+	uint64_t ExternalAutoLinkEntry::GetHash() const {
+		return 0;
+	}
+	const char* ExternalAutoLinkEntry::GetAnchorTag() const {
+		return nullptr;
+	}
+	void ExternalAutoLinkEntry::Write( std::ostream& os, WriteFunction* pWriteFunc ) const {
+		os << "<a class='autolink' href='";
+		os.write( m_pUrlTop, m_pUrlEnd - m_pUrlTop );
+		os << "'>";
+		const char* p = this->GetTerm();
+		pWriteFunc( os, p, p + this->GetLength() );
+		os << "</a>";
 	}
 
 	//--------------------------------------------------------------------------
@@ -79,7 +180,9 @@ namespace turnup {
 		Impl();
 		~Impl();
 	public:
-		void Register( const char* pTop, const char* pEnd );
+		bool RegisterTerm( const char* pTop, const char* pEnd );
+		bool RegisterAutoLink( const char* pTop, const char* pEnd,
+							   const char* pTargetTop, const char* pTargetEnd );
 		const char* GetAnchorTag( const char* pTerm,
 								  const char* pTermEnd ) const;
 		void SortIfNeed();
@@ -87,7 +190,9 @@ namespace turnup {
 								const char* pTop, const char* pEnd,
 								uint32_t idx, WriteFunction* pWriteFunc ) const;
 	private:
-		std::vector<GlossaryEntry>	m_entries;
+		bool CheckUniqueness( const char* pTop, const char* pEnd ) const;
+	private:
+		std::vector<EntryBase*>	m_entries;
 		bool m_sorted;
 	};
 
@@ -101,8 +206,12 @@ namespace turnup {
 	Glossary::~Glossary() {
 		delete m_pImpl;
 	}
-	void Glossary::Register( const char* pTop, const char* pEnd ) {
-		m_pImpl->Register( pTop, pEnd );
+	bool Glossary::RegisterTerm( const char* pTop, const char* pEnd ) {
+		return m_pImpl->RegisterTerm( pTop, pEnd );
+	}
+	bool Glossary::RegisterAutoLink( const char* pTop, const char* pEnd,
+									 const char* pUrlTop, const char* pUrlEnd ) {
+		return m_pImpl->RegisterAutoLink( pTop, pEnd, pUrlTop, pUrlEnd );
 	}
 	const char* Glossary::GetAnchorTag( const char* pTerm,
 										const char* pTermEnd ) const {
@@ -126,20 +235,44 @@ namespace turnup {
 	}
 
 	Glossary::Impl::~Impl() {
+		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
+			EntryBase*& pEntry = m_entries[i];
+			delete pEntry;
+			pEntry = nullptr;
+		}
 		m_entries.clear();
 	}
 
-	void Glossary::Impl::Register( const char* pTop, const char* pEnd ) {
-		m_entries.emplace_back( pTop, pEnd );
+	bool Glossary::Impl::RegisterTerm( const char* pTop, const char* pEnd ) {
+		if( CheckUniqueness( pTop, pEnd ) == false )
+			return false;
+		auto pEntry = new GlossaryEntry( pTop, pEnd );
+		m_entries.push_back( pEntry );
 		m_sorted = false;
+		return true;
+	}
+
+	bool Glossary::Impl::RegisterAutoLink( const char* pTop, const char* pEnd,
+										   const char* pTargetTop, const char* pTargetEnd ) {
+		if( CheckUniqueness( pTop, pEnd ) == false )
+			return false;
+		EntryBase* pEntry = nullptr;
+		const char* const p = pTargetTop;
+		if( *p == '#' || (p[1] == '#' && (*p == 'T' || *p == 'F')) )
+			pEntry = new InternalAutoLinkEntry( pTop, pEnd, pTargetTop, pTargetEnd );
+		else
+			pEntry = new ExternalAutoLinkEntry( pTop, pEnd, pTargetTop, pTargetEnd );
+		m_entries.push_back( pEntry );
+		m_sorted = false;
+		return true;
 	}
 
 	const char* Glossary::Impl::GetAnchorTag( const char* pTerm,
 											  const char* pTermEnd ) const {
 		uint64_t hash = CRC64::Calc( 'G', pTerm, pTermEnd ); // 'G' means glossary.
 		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
-			if( m_entries[i].GetHash() == hash )
-				return m_entries[i].GetAnchorTag();
+			if( m_entries[i]->GetHash() == hash )
+				return m_entries[i]->GetAnchorTag();
 		}
 		return nullptr;
 	}
@@ -148,8 +281,8 @@ namespace turnup {
 		if( !m_sorted ) {
 			if( m_entries.empty() == false ) {
 				std::sort( m_entries.begin(), m_entries.end(),
-						   []( const GlossaryEntry& e1, const GlossaryEntry& e2 ) -> bool {
-							   return e1.GetLength() > e2.GetLength();
+						   []( const EntryBase* p1, const EntryBase* p2 ) -> bool {
+							   return p1->GetLength() > p2->GetLength();
 						   } );
 			}		
 			m_sorted = true;
@@ -160,22 +293,31 @@ namespace turnup {
 											const char* pTop, const char* pEnd,
 											uint32_t idx, WriteFunction* pWriteFunc ) const {
 		for( ; idx < m_entries.size(); ++idx ) {
-			auto& entry = m_entries[idx];
-			auto pTerm1 = entry.GetTerm();
-			auto length = entry.GetLength();
+			EntryBase* pEntry = m_entries[idx];
+			auto pTerm1 = pEntry->GetTerm();
+			auto length = pEntry->GetLength();
 			while( pTop < pEnd ) {
 				auto p = std::search( pTop, pEnd, pTerm1, pTerm1 + length );
 				if( p == pEnd )
 					break;
 				if( pTop < p )
 					this->WriteWithTermLink( os, pTop, p, idx + 1, pWriteFunc );
-				os << "<a class='term' href='#" << entry.GetAnchorTag()  << "'>";
-				pWriteFunc( os, p, p + length );
-				os << "</a>";
+				pEntry->Write( os, pWriteFunc );
 				pTop = p + length;
 			}
 		}
 		pWriteFunc( os, pTop, pEnd );
+	}
+
+	bool Glossary::Impl::CheckUniqueness( const char* pTop, const char* pEnd ) const {
+		uint32_t len = pEnd - pTop;
+		for( uint32_t idx = 0; idx < m_entries.size(); ++idx ) {
+			EntryBase* pEntry = m_entries[idx];
+			if( len == pEntry->GetLength() &&
+						!::strncmp( pTop, pEntry->GetTerm(), len ) )
+				return false;
+		}
+		return true;
 	}
 
 } // namespace turnup

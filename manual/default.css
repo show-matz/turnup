@@ -24,6 +24,7 @@ a:focus{ outline: thin dotted; }
 a:hover, a:active{ outline: 0; }
 
 a.term:hover{ text-decoration:underline; }
+a.autolink:hover{ text-decoration:underline; }
 
 ::-moz-selection{background:rgba(255,255,0,0.3);color:#000}
 ::selection{background:rgba(255,255,0,0.3);color:#000}

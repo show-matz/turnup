@@ -244,11 +244,13 @@ namespace turnup {
 			}
 			//用語定義の処理
 			if( line.BeginWith( "*[" ) ) {
-				const char* pTermTop;
-				const char* pTermEnd;
-				if( IsTermDefine( line, pTermTop, pTermEnd ) ) {
-					Utilities::Trim( pTermTop, pTermEnd );
-					glossary.Register( pTermTop, pTermEnd );
+				const char* pTerm1;
+				const char* pTerm2;
+				if( IsTermDefine( line, pTerm1, pTerm2 ) ) {
+					Utilities::Trim( pTerm1, pTerm2 );
+					if( glossary.RegisterTerm( pTerm1, pTerm2 ) == false )
+						std::cerr << "ERROR : link keyword '"
+								  << TextSpan{ pTerm1, pTerm2 } << "' is duplicated." << std::endl;
 				}
 				continue;
 			}
@@ -266,6 +268,22 @@ namespace turnup {
 			}
 			if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
 				filters.RegistExternal( item.Trim(), command.Trim() );
+				line.Clear();
+			}
+			if( tmp.IsMatch( "<!-- autolink:", item, " -->" ) ) {
+				item = item.Trim();
+				TextSpan word;
+				TextSpan url;
+				if( item.IsMatch( "[", word, "](", url, ")" ) == false ) {
+					std::cerr << "ERROR : invalid autolink format '";
+					std::cerr.write( tmp.Top(), tmp.ByteLength() );
+					std::cerr << "'." << std::endl;
+				} else {
+					if( glossary.RegisterAutoLink( word.Top(), word.End(),
+												   url.Top(), url.End() ) == false )
+						std::cerr << "ERROR : link keyword '"
+								  << word << "' is duplicated." << std::endl;
+				}
 				line.Clear();
 			}
 			if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {

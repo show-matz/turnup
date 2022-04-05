@@ -22,7 +22,9 @@ namespace turnup {
 		Glossary();
 		~Glossary();
 	public:
-		void Register( const char* pTop, const char* pEnd );
+		bool RegisterTerm( const char* pTop, const char* pEnd );
+		bool RegisterAutoLink( const char* pTop, const char* pEnd,
+							   const char* pUrlTop, const char* pUrlEnd );
 		const char* GetAnchorTag( const char* pTerm,
 								  const char* pTermEnd = nullptr ) const;
 		void WriteWithTermLink( std::ostream& os, const char* pTop,
