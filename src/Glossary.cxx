@@ -31,6 +31,10 @@ namespace turnup {
 	public:
 		inline uint32_t GetLength() const { return m_length; }
 		inline const char* GetTerm() const { return m_pTerm; }
+		inline void Rebind( const char* pTop, const char* pEnd ) {
+			m_pTerm  = pTop;
+			m_length = pEnd - pTop;
+		}
 	private:
 		const char*	m_pTerm;	// 用語文字列のポインタ
 		uint32_t	m_length;	// 用語文字列の長さ（バイト数）
@@ -105,10 +109,17 @@ namespace turnup {
 												  const char* pTargetTop,
 												  const char* pTargetEnd ) : EntryBase( pTop, pEnd ),
 																			 m_hash( 0 ) {
+		char type = 'H';
+		const char* pTarget = nullptr;
 		if( *pTargetTop == '#' )
-			m_hash = CRC64::Calc( 'H', pTargetTop+1, pTargetEnd, m_anchorTag ); // 'H' means header.
-		else
-			m_hash = CRC64::Calc( *pTargetTop, pTargetTop+2, pTargetEnd, m_anchorTag );
+			pTarget = pTargetTop + 1;
+		else {
+			type = *pTargetTop;
+			pTarget = pTargetTop + 2;
+		}
+		m_hash = CRC64::Calc( type, pTarget, pTargetEnd, m_anchorTag );
+		if( pEnd - pTop == 2 && pTop[0] == '$' && pTop[1] == '$' )
+			this->Rebind( pTarget, pTargetEnd );
 	}
 	InternalAutoLinkEntry::~InternalAutoLinkEntry() {
 		//intentionally do nothing.

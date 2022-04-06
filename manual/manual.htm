@@ -556,6 +556,7 @@ Table. title of table
   &lt;!-- autolink: [TITLE](URL) --&gt;
 </pre>
 <p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
+<p>　この autolink コメントに記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。見出しや図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
 <p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
 <h3><a name='f71ZNSHqufB'></a>6.12 フィルタ機能</h3>
@@ -1128,6 +1129,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>ENHANCE : 自動リンク機能を追加</li>
 <li>ENHANCE : 上記に伴い、<a href='#8mg4uLSAXaz'>6.11  節</a>を追記・改変</li>
+</ul>
+<li><strong>2022/04/06 - version 0.813</strong></li>
+<ul>
+<li>ENHANCE : 自動リンク機能において <code>TITLE</code> に空文字列を指定した場合とエラーとする修正</li>
+<li>ENHANCE : 自動リンク機能において <code>TITLE</code> に <code>$$</code> を使用できるように変更</li>
 </ul>
 </ul>
 <hr>

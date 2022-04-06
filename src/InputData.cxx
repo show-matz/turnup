@@ -279,8 +279,10 @@ namespace turnup {
 					std::cerr.write( tmp.Top(), tmp.ByteLength() );
 					std::cerr << "'." << std::endl;
 				} else {
-					if( glossary.RegisterAutoLink( word.Top(), word.End(),
-												   url.Top(), url.End() ) == false )
+					if( word.IsEmpty() )
+						std::cerr << "ERROR : link keyword is empty." << std::endl;
+					else if( glossary.RegisterAutoLink( word.Top(), word.End(),
+														url.Top(), url.End() ) == false )
 						std::cerr << "ERROR : link keyword '"
 								  << word << "' is duplicated." << std::endl;
 				}
