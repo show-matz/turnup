@@ -617,7 +617,7 @@ index 16fc9f4..8387187 100644
 <h3><a name='hMHXjTrWEnw'></a>6.14 領域の折り畳み</h3>
 <p>　以下のように 2 つのコメントで囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
 <pre>
-  &lt;!-- collapse:begin --&gt;
+  &lt;!-- collapse:open --&gt;
   TITLE_LINE
       :
       : (contents)
@@ -625,9 +625,10 @@ index 16fc9f4..8387187 100644
   &lt;!-- collapse:end --&gt;
 </pre>
 <p>　　</p>
+<p>　最初の <code>collapse:</code> に続く <code>open</code> は「初期状態で折り畳まない」という意味で、 <code>close</code> にすると初期状態で折り畳んでおくことができます。また、以前のバージョンとの互換性を保つため、<code>collapse:begin</code> という記述も引き続き有効です。これは <code>collapse:close</code> と同じ意味になります。</p>
 <p>　以下に例を示します。以下のように記述すると、</p>
 <pre>
-&lt;!-- collapse:begin --&gt;
+&lt;!-- collapse:close --&gt;
 タイトル行は@{{color: red;}{文字修飾}}可能。 __クリック__ するたびに状態をトグルできます。
 ２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。
 
@@ -1138,6 +1139,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2022/04/07 - version 0.814</strong></li>
 <ul>
 <li>ENHANCE : <a href='#iYSlVZhYmRM'>番号付きリスト</a>における番号付与のルールを変更</li>
+</ul>
+<li><strong>2022/04/XX - version 0.815</strong></li>
+<ul>
+<li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>において初期状態の指定を可能にする変更</li>
 </ul>
 </ul>
 <hr>

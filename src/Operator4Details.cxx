@@ -22,9 +22,10 @@ namespace turnup {
 		if( pTop->TrimTail().IsMatch( "<!-- collapse:", type, " -->" ) == false )
 			return pTop;
 
-		if( type.IsEqual( "begin" ) ) {
+		if( type.IsEqual( "begin" ) || type.IsEqual( "open" ) || type.IsEqual( "close" ) ) {
+			const char* pTail = type.IsEqual( "open" ) ? " open>" : nullptr;
 			auto& styles = docInfo.Get<StyleStack>();
-			styles.WriteOpenTag( std::cout, "details" ) << std::endl;
+			styles.WriteOpenTag( std::cout, "details", nullptr, pTail ) << std::endl;
 			styles.WriteOpenTag( std::cout, "summary" );
 			pTop[1].WriteTo( std::cout, docInfo );
 			std::cout << "</summary>" << std::endl;

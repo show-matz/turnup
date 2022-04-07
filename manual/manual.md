@@ -851,7 +851,7 @@ turnup が都度決定します。
 
 
 ```
-  <!-- collapse:begin -->
+  <!-- collapse:open -->
   TITLE_LINE
       :
       : (contents)
@@ -860,6 +860,10 @@ turnup が都度決定します。
 ```
 
 ${BLANK_PARAGRAPH}
+
+　最初の `collapse:` に続く `open` は「初期状態で折り畳まない」という意味で、 `close` に
+すると初期状態で折り畳んでおくことができます。また、以前のバージョンとの互換性を保つため、
+`collapse:begin` という記述も引き続き有効です。これは `collapse:close` と同じ意味になります。
 
 　以下に例を示します。以下のように記述すると、
 
@@ -874,7 +878,7 @@ ${BLANK_PARAGRAPH}
 -->
 
 ~~~
-<!-- collapse:begin -->
+<!-- collapse:close -->
 <!-- expand: COLLAPSE-SAMPLE -->
 <!-- collapse:end -->
 ~~~
@@ -882,7 +886,7 @@ ${BLANK_PARAGRAPH}
 
 　以下のように表示されます。あと、[$$](#細かい話)にも注意事項が書いてありますので参照してください。
 
-<!-- collapse:begin -->
+<!-- collapse:close -->
 <!-- expand: COLLAPSE-SAMPLE -->
 <!-- collapse:end -->
 
@@ -1578,6 +1582,8 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : 自動リンク機能において `TITLE` に `$$` を使用できるように変更
 * __2022/04/07 - version 0.814__
 	* ENHANCE : [$$](#番号付きリスト)における番号付与のルールを変更
+* __2022/04/XX - version 0.815__
+	* ENHANCE : [$$](#領域の折り畳み)において初期状態の指定を可能にする変更
 
 --------------------------------------------------------------------------------
 
