@@ -77,6 +77,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/InternalFilter4CandCxx.o	\
 		$(TARGETDIR)/InternalFilter4CommonLISP.o	\
 		$(TARGETDIR)/InternalFilter4Shell.o		\
+		$(TARGETDIR)/InternalFilter4Raw.o		\
 		$(TARGETDIR)/Operators.o				\
 		$(TARGETDIR)/Operator4Comment.o			\
 		$(TARGETDIR)/Operator4Details.o			\

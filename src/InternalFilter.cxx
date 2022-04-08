@@ -9,6 +9,7 @@
 #include "InternalFilter4CommonLISP.hxx"
 #include "InternalFilter4Diff.hxx"
 #include "InternalFilter4Shell.hxx"
+#include "InternalFilter4Raw.hxx"
 
 #include "TextSpan.hxx"
 
@@ -22,6 +23,7 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	InternalFilterFunc* InternalFilter::FindFilter( const TextSpan& type ) {
+		if( type.IsEqual( "raw" ) )		return InternalFilter4Raw;
 		if( type.IsEqual( "C" ) ||
 			type.IsEqual( "c" ) )		return InternalFilter4C;
 		if( type.IsEqual( "C++" ) ||

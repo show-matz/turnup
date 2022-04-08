@@ -515,6 +515,13 @@ Table. title of table
 <h3><a name='6LkDjrI3ASb'></a>6.7 生の HTML の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> をそのまま出力することができます。</p>
 <pre>
+```raw
+    :
+    :
+```
+</pre>
+<p>　これは、後述する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>を利用しています。以前のバージョンでは以下のように <code>&lt;raw_html&gt;</code> タグで囲むことになっていましたが、これは非推奨となりました。まだ使用することはできますが、警告が表示されます。</p>
+<pre>
   &lt;raw_html&gt;
       :
       :
@@ -595,6 +602,7 @@ index 16fc9f4..8387187 100644
 <li>diff</li>
 <li>sh</li>
 <li>Common LISP</li>
+<li>raw （これは<a href='#6LkDjrI3ASb'>生の HTML を出力</a>するためのものです）</li>
 </ul>
 <p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.13  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>については<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.13 外部フィルタの登録</h3>
@@ -639,9 +647,7 @@ index 16fc9f4..8387187 100644
 &lt;!-- collapse:end --&gt;
 </pre>
 <p>　以下のように表示されます。あと、<a href='#4e69JBVCRLW'>細かい話</a>にも注意事項が書いてありますので参照してください。</p>
-<details>
-<summary>タイトル行は<span style='color: red;'>文字修飾</span>可能。 <strong>クリック</strong> するたびに状態をトグルできます。</summary>
-<p>２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。</p>
+<p>タイトル行は<span style='color: red;'>文字修飾</span>可能。 <strong>クリック</strong> するたびに状態をトグルできます。２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。</p>
 <ul>
 <li>contents1</li>
 <li>contents2</li>
@@ -1143,6 +1149,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><strong>2022/04/XX - version 0.815</strong></li>
 <ul>
 <li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>において初期状態の指定を可能にする変更</li>
+<li>ENHANCE : <a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>に <code>raw</code> を追加し、<a href='#6LkDjrI3ASb'>&lt;raw_html&gt; を非推奨とする</a>変更</li>
 </ul>
 </ul>
 <hr>

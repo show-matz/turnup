@@ -34,6 +34,10 @@ namespace turnup {
 			std::cout << std::endl;
 		}
 		std::cout << "<!-- end raw html -->" << std::endl;
+
+		// この機能は obsolete となったので警告を出しておく
+		std::cerr << "WARNING : <raw_html> is obsolete. use internal filter 'raw'." << std::endl;
+
 		return pLine + 1;
 	}
 
