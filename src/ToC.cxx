@@ -158,6 +158,9 @@ namespace turnup {
 		void WriteTOC( std::ostream& os,
 					   DocumentInfo& docInfo,
 					   uint32_t minLevel, uint32_t maxLevel ) const;
+		void WriteTOC_X( std::ostream& os,
+						 DocumentInfo& docInfo,
+						 uint32_t minLevel, uint32_t maxLevel ) const;
 		void WriteTableFigureList( std::ostream& os,
 								   ToC::EntryT type, DocumentInfo& docInfo ) const;
 	private:
@@ -198,9 +201,12 @@ namespace turnup {
 		return m_pImpl->GetEntryNumber( pBuf, type, cfg, pTitle, pTitleEnd );
 	}
 	void ToC::WriteTOC( std::ostream& os,
-						DocumentInfo& docInfo,
+						DocumentInfo& docInfo, bool bFoldable,
 						uint32_t minLevel, uint32_t maxLevel ) const {
-		m_pImpl->WriteTOC( os, docInfo, minLevel, maxLevel );
+		if( !bFoldable )
+			m_pImpl->WriteTOC( os, docInfo, minLevel, maxLevel );
+		else
+			m_pImpl->WriteTOC_X( os, docInfo, minLevel, maxLevel );
 	}
 	void ToC::WriteTableList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::TABLE, docInfo );
@@ -208,6 +214,55 @@ namespace turnup {
 	void ToC::WriteFigureList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::FIGURE, docInfo );
 	}
+
+	//--------------------------------------------------------------------------
+	//
+	// template helper function for toc-x
+	//
+	//--------------------------------------------------------------------------
+	template <typename T>
+	T GetNextLevelEntry( T itr1, T itr2, uint32_t lv ) {
+		for( ; itr1 != itr2; ++itr1 )
+			if( (*itr1)->GetLevel() <= lv )
+				break;
+		return itr1;
+	}
+
+	template <typename T>
+	void FooBar( T itr, std::ostream& os,
+				 const char* pTag, DocumentInfo& docInfo ) {
+		auto& cfg    = docInfo.Get<Config>();
+		auto& styles = docInfo.Get<StyleStack>();
+		styles.WriteOpenTag( os, pTag )
+			<< "<a href='#" << (*itr)->GetAnchorTag() << "'>";
+		if( cfg.bNumberingHeader ) {
+			char chapter[32];
+			(*itr)->GetChapterPrefix( cfg, chapter );
+			os << chapter;
+		}
+		TextSpan tmp{ (*itr)->GetTitle() };
+		tmp.WriteTo( os, docInfo, false ) << "</a></" << pTag << ">" << std::endl;
+	}
+
+	template <typename T>
+	void RecursiveWriteEntries( T itr1, T itr2,
+								std::ostream& os, DocumentInfo& docInfo ) {
+		auto& styles = docInfo.Get<StyleStack>();
+		while( itr1 != itr2 ) {
+			auto itr = GetNextLevelEntry( itr1 + 1, itr2, (*itr1)->GetLevel() );
+			if( (itr - itr1) == 1 ) {
+				FooBar( itr1, os, "li", docInfo );
+			} else {
+				styles.WriteOpenTag( os, "details", nullptr, " open>" ) << std::endl;
+				FooBar( itr1, os, "summary", docInfo );
+				styles.WriteOpenTag( os, "blockquote" ) << std::endl;
+				RecursiveWriteEntries( itr1 + 1, itr, os, docInfo );
+				os << "</blockquote>" << std::endl;
+				os << "</details>" << std::endl;
+			}
+			itr1 = itr;
+		}
+	} 
 
 	//--------------------------------------------------------------------------
 	//
@@ -294,6 +349,41 @@ namespace turnup {
 		for( ; minLevel < curLevel; --curLevel )
 			os << "</ul>" << std::endl;
 		os << "</ul>" << std::endl;
+	}
+
+	void ToC::Impl::WriteTOC_X( std::ostream& os,
+								DocumentInfo& docInfo,
+								uint32_t minLevel, uint32_t maxLevel ) const {
+
+		//対象となるエントリの const ポインタのみ一時コンテナに回収
+		std::vector<const TocEntry*> entries;
+		for( uint32_t i = 0; i < m_entries.size(); ++i ) {
+			const TocEntry& e = m_entries[i];
+			if( e.GetType() == ToC::EntryT::HEADER ) {
+				uint32_t lv = e.GetLevel();
+				if( minLevel <= lv && lv <= maxLevel )
+					entries.push_back( &e );
+			}
+		}
+		//MEMO : 妥当かどうかわからないが、上記回収結果のシーケンスは必ず minLevel の
+		//       エントリから始まり、レベルに跳躍はないと想定する。
+
+		auto& styles = docInfo.Get<StyleStack>(); {
+			TextSpan listitm{ "li" };
+			TextSpan details{ "details" };
+			TextSpan summary{ "summary" };
+			TextSpan bkquote{ "blockquote" };
+			TextSpan clstocx{ "class='tocx'" };
+			styles.PushStyle( listitm, clstocx );
+			styles.PushStyle( details, clstocx );
+			styles.PushStyle( summary, clstocx );
+			styles.PushStyle( bkquote, clstocx );
+			RecursiveWriteEntries( entries.begin(), entries.end(), os, docInfo );
+			styles.PopStyle( listitm );
+			styles.PopStyle( details );
+			styles.PopStyle( summary );
+			styles.PopStyle( bkquote );
+		}
 	}
 
 	void ToC::Impl::WriteTableFigureList( std::ostream& os,

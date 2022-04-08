@@ -15,7 +15,7 @@
 
 ## Table of contents
 
-<!-- embed:toc 2 4 -->
+<!-- embed:toc-x 2 4 -->
 
 ${BLANK_PARAGRAPH}
 
@@ -337,12 +337,12 @@ ${BLANK_PARAGRAPH}
 
 　上記は、以下のように出力されます。
 
-<raw_html>
+```raw
 <dl>
   <dt>用語</dt>
   <dd>用語の定義をここに記述します。複数行に渡る定義も記述できます。空行で終わります。</dd>
 </dl>
-</raw_html>
+```
 
 　[ と ] に囲まれた用語は、前後のスペースは無視されますが、途中にあるスペースは用語の一部とみなされます。
 
@@ -353,7 +353,7 @@ ${BLANK_PARAGRAPH}
 　${APPNAME} は、以下のような HTML 形式のコメントをコメントとして扱います。つまり、出力
 される HTML の内容には含まれません。
 
-<raw_html>
+```raw
 <pre>
   &lt;!-- comment --&gt;
 
@@ -363,7 +363,7 @@ ${BLANK_PARAGRAPH}
     comment
   --&gt;
 </pre>
-</raw_html>
+```
 
 　ただし、この挙動は変更することができます。[write-comment設定](#コメントの出力)を参照して
 ください。
@@ -725,7 +725,9 @@ Table. title of table
 
 　この例では、見出しレベル２〜４までが目次化の対象となります。
 
-
+　`embed:toc` のかわりに `embed:toc-x` を使うことで、折り畳み可能な目次を生成できます。
+このマニュアルの[冒頭にある目次](#Table of contents)も `toc-x` を使用して生成されて
+います。
 
 ### 図表一覧の生成
 
@@ -839,7 +841,7 @@ index 16fc9f4..8387187 100644
 　ここで `<!-- filter:` の直後から `=` まで（ここでは `foo` ）がフィルタ名、 `=` から 最後
 の `-->` の手前まで（ここでは `quux %in %out` ）が実行するフィルタプログラムです。
 %in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は 
-turnup が都度決定します。
+${APPNAME} が都度決定します。
 
 　上記のように定義されていると、${APPNAME} はフィルタ名として foo が指定された preブロックを
 見つけた場合に、以下の要領で処理を行ないます。
@@ -911,24 +913,24 @@ ${BLANK_PARAGRAPH}
 ようにしておきたいかもしれません。理由はさておき、他のファイルの内容を取り込みたい場合には
 以下のようにすることができます。
 
-<raw_html>
+```raw
 <pre>
 &lt;!-- include: EXTERNAL_FILE --&gt;
 </pre>
-</raw_html>
+```
 
 　こうしておくと、 `EXTERNAL_FILE` で指定されたファイルの内容がそこに書いてあったかの
 ように展開されます。この展開はファイルの読み込み時点で実行されるため、preブロックや
 [raw_html ブロック](#生の HTML の出力) の内部に書くことだってできます。つまり、サンプル
 コードの中身を内部フィルタでコードハイライトさせたければ、以下のようにできるということです。
 
-<raw_html>
+~~~raw
 <pre>
 ```C
 &lt;!-- include: sample.01.c --&gt;
 ```
 </pre>
-</raw_html>
+~~~
 
 　include されるファイルの中で、さらに別のファイルを include することもできます。ただし、
 相互に（あるいは循環的に）include しあうようなファイルを処理することはできません。また、
@@ -972,7 +974,7 @@ ${APPNAME} -I../headers -I~/${APPNAME}/headers  DATA.md > OUTPUT.htm
 　そして、定義したスニペットは名前を指定して expand を使うことでその場所に展開できます。以下の
 ように。
 
-~~~$​{
+~~~
 <​!-- expand: NAME -->
 ~~~
 
@@ -1060,7 +1062,7 @@ ${APPNAME} '-DVAR= a b c '  DATA.md > OUTPUT.htm
 を記述することができます。 `elif, else` についてはオプションです。 `EXPRESSION` で与える条件式が
 成立した部分だけが出力されます。
 
-<raw_html>
+```raw
 <pre>
 &lt!-- if: EXPRESSION --&gt
       :
@@ -1073,7 +1075,7 @@ ${APPNAME} '-DVAR= a b c '  DATA.md > OUTPUT.htm
       :
 &lt!-- endif --&gt
 </pre>
-</raw_html>
+```
 
 　`EXPRESSION` で指定する条件式は最大で 4 要素からなる以下のパターンになります。
 
@@ -1162,20 +1164,20 @@ ${{INVERT}{この部分は反転される}}、となります。
 
 　サンプルを以下に示します。以下の例では、条件式 `CONDITION` が成立しなかった場合、エラーとしています。
 
-<raw_html>
+```raw
 <pre>
 &lt!-- if: ! CONDITION --&gt
     &lt!-- error: CONDITION is not true --&gt
 &lt!-- endif --&gt
 </pre>
-</raw_html>
+```
 
 　これによって出力されるエラーメッセージは以下のようなものです。類似のメッセージは標準エラー出力にも
 書き出されます。
 
-<raw_html>
+```raw
 <p><span style='background:pink; color:red;'>ERROR : CONDITION is not true</span></p>
-</raw_html>
+```
 
 　`error` と `warning` はともに上記のようなメッセージを出力しますが、 `error` は文書の生成プロセス
 全体を中止するのに対し、 `warning` は処理を続行する点が異なります。
@@ -1432,13 +1434,13 @@ ${BLANK_PARAGRAPH}
 という意図で書かれた以下のコードは期待される動作をしませんでした（入力データのロード時点でエラー
 終了してしまいます）。
 
-<raw_html>
+```raw
 <pre>
 &lt!-- if: -f foo.txt --&gt
   &lt!-- include: foo.txt --&gt
 &lt!-- endif --&gt
 </pre>
-</raw_html>
+```
 
 　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、
 入力データのロード時点ではエラー終了とせず、include 箇所に [errorディレクティブ](#エラーと警告の出力)
@@ -1457,7 +1459,7 @@ ${BLANK_PARAGRAPH}
 処理されません。先に `if` や `else` が正しく処理されてしまうバグがあり、以下のように
 なってしまいます。
 
-<raw_html>
+```raw
 <pre class='code'>
 <span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
 #<span class='keyword1'>if</span> 0
@@ -1468,7 +1470,7 @@ ${BLANK_PARAGRAPH}
     <span class='keyword1'>return</span> 0;
 }
 </pre>
-</raw_html>
+```
 
 　この問題を解決するために、キーワードの処理順序を変更しました。以下のように正しくハイ
 ライトされるように修正済みです。
@@ -1597,6 +1599,7 @@ ${BLANK_PARAGRAPH}
 * __2022/04/XX - version 0.815__
 	* ENHANCE : [$$](#領域の折り畳み)において初期状態の指定を可能にする変更
 	* ENHANCE : フィルタ機能に `raw` を追加し、[<raw_html> を非推奨とする](#生の HTML の出力)変更
+	* ENHANCE : 折り畳み可能な[$$](#目次の生成)のための `embed:toc-x` を追加
 
 --------------------------------------------------------------------------------
 

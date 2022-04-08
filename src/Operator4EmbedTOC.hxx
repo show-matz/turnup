@@ -13,6 +13,8 @@ namespace turnup {
 
 	const TextSpan* Operator4EmbedTOC( const TextSpan* pTop,
 									   const TextSpan* pEnd, DocumentInfo& docInfo );
+	const TextSpan* Operator4EmbedTOC_X( const TextSpan* pTop,
+										 const TextSpan* pEnd, DocumentInfo& docInfo );
 	const TextSpan* Operator4EmbedTableList( const TextSpan* pTop,
 											 const TextSpan* pEnd, DocumentInfo& docInfo );
 	const TextSpan* Operator4EmbedFigureList( const TextSpan* pTop,

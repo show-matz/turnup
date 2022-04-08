@@ -51,6 +51,7 @@ namespace turnup {
 		Operator4TermDefine,
 		Operator4FigureAndTable,
 		Operator4Details,
+		Operator4EmbedTOC_X,
 		Operator4EmbedTOC,
 		Operator4EmbedTableList,
 		Operator4EmbedFigureList,
