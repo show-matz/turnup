@@ -11,8 +11,9 @@
 
 namespace turnup {
 
-	bool InternalFilter4Diff( std::ostream& os,
+	bool InternalFilter4Diff( std::ostream& os, DocumentInfo& docInfo,
 							  const TextSpan* pTop, const TextSpan* pEnd ) {
+		(void)docInfo;
 		os << "<pre class='diff'>" << std::endl;
 		for( ; pTop < pEnd; ++pTop ) {
 			if( pTop->BeginWith( "---" ) || pTop->BeginWith( "+++" ) ) {

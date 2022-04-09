@@ -46,8 +46,8 @@ namespace turnup {
 	public:
 		void RegistExternal( const TextSpan& label, const TextSpan& command );
 		bool ExecuteFilter( std::ostream& os, 
+							DocumentInfo& docInfo,
 							const TextSpan& type,
-							const DocumentInfo& docInfo,
 							const TextSpan* pTop, const TextSpan* pEnd );
 	private:
 		ExtFilterList m_externals;
@@ -68,10 +68,10 @@ namespace turnup {
 		return m_pImpl->RegistExternal( label, command );
 	}
 	bool Filters::ExecuteFilter( std::ostream& os,
+								 DocumentInfo& docInfo,
 								 const TextSpan& type,
-								 const DocumentInfo& docInfo,
 								 const TextSpan* pTop, const TextSpan* pEnd ) {
-		return m_pImpl->ExecuteFilter( os, type, docInfo, pTop, pEnd );
+		return m_pImpl->ExecuteFilter( os, docInfo, type, pTop, pEnd );
 	}
 
 	//--------------------------------------------------------------------------
@@ -88,8 +88,8 @@ namespace turnup {
 		m_externals.emplace_back( label, command );
 	}
 	bool Filters::Impl::ExecuteFilter( std::ostream& os,
+									   DocumentInfo& docInfo,
 									   const TextSpan& type,
-									   const DocumentInfo& docInfo,
 									   const TextSpan* pTop, const TextSpan* pEnd ) {
 		// type 指定がなければデフォルトの <pre> 出力で終了
 		if( type.IsEmpty() ) {
@@ -109,7 +109,7 @@ namespace turnup {
 			auto pFilter = InternalFilter::FindFilter( type );
 			if( pFilter ) {
 				// 該当する内部フィルタが見つかれば実行して終了
-				return pFilter( os, pTop, pEnd );
+				return pFilter( os, docInfo, pTop, pEnd );
 			}
 		}
 		// 指定された名前のフィルタが見つからない場合はデフォルトの <pre> 出力で false 復帰

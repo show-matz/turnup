@@ -58,8 +58,9 @@ namespace turnup {
 	// exported functions
 	//
 	//------------------------------------------------------------------------------
-	bool InternalFilter4Shell( std::ostream& os,
+	bool InternalFilter4Shell( std::ostream& os, DocumentInfo& docInfo,
 							   const TextSpan* pTop, const TextSpan* pEnd ) {
+		(void)docInfo;
 		FilterBuffer buf{ pTop, pEnd };
 		TextSpan span = buf.GetBuffer();
 		os << "<pre class='code'>" << std::endl;

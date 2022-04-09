@@ -242,8 +242,9 @@ namespace turnup {
 	// exported functions
 	//
 	//------------------------------------------------------------------------------
-	bool InternalFilter4C( std::ostream& os,
+	bool InternalFilter4C( std::ostream& os, DocumentInfo& docInfo,
 						   const TextSpan* pTop, const TextSpan* pEnd ) {
+		(void)docInfo;
 		FilterBuffer buf{ pTop, pEnd };
 		TextSpan span = buf.GetBuffer();
 		os << "<pre class='code'>" << std::endl;
@@ -253,8 +254,9 @@ namespace turnup {
 
 	}
 
-	bool InternalFilter4Cxx( std::ostream& os,
+	bool InternalFilter4Cxx( std::ostream& os, DocumentInfo& docInfo,
 							 const TextSpan* pTop, const TextSpan* pEnd ) {
+		(void)docInfo;
 		FilterBuffer buf{ pTop, pEnd };
 		TextSpan span = buf.GetBuffer();
 		os << "<pre class='code'>" << std::endl;

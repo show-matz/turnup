@@ -11,8 +11,9 @@
 namespace turnup {
 
 	class TextSpan;
+	class DocumentInfo;
 
-	typedef bool InternalFilterFunc( std::ostream& os,
+	typedef bool InternalFilterFunc( std::ostream& os, DocumentInfo& docInfo,
 									 const TextSpan* pTop, const TextSpan* pEnd );
 	typedef bool RangeFinder( const TextSpan& span, const char* pTarget, 
 							  TextSpan& result, const char*& className );

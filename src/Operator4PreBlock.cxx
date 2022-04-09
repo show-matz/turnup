@@ -30,7 +30,7 @@ namespace turnup {
 			return pTop;
 		const TextSpan* pBlockEnd = FindEndOfBlock( ++pTop, pEnd, endTag );
 		auto& filters = docInfo.Get<Filters>();
-		bool ret = filters.ExecuteFilter( std::cout, type, docInfo, pTop, pBlockEnd );
+		bool ret = filters.ExecuteFilter( std::cout, docInfo, type, pTop, pBlockEnd );
 		if( !ret ) {
 			//ToDo : invalid 'type' : error message...?
 		}

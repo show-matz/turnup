@@ -52,26 +52,27 @@
 <li class='tocx'><a href='#8mg4uLSAXaz'>6.11 キーワードへの自動リンク</a></li>
 <li class='tocx'><a href='#f71ZNSHqufB'>6.12 フィルタ機能</a></li>
 <li class='tocx'><a href='#18dTPnzNOgg'>6.13 外部フィルタの登録</a></li>
-<li class='tocx'><a href='#hMHXjTrWEnw'>6.14 領域の折り畳み</a></li>
+<li class='tocx'><a href='#fJ4r3VpDmqg'>6.14 テーブルの生成</a></li>
+<li class='tocx'><a href='#hMHXjTrWEnw'>6.15 領域の折り畳み</a></li>
 <details class='tocx' open>
-<summary class='tocx'><a href='#a2FYBDWqZUA'>6.15 別ファイルの include</a></summary>
+<summary class='tocx'><a href='#a2FYBDWqZUA'>6.16 別ファイルの include</a></summary>
 <blockquote class='tocx'>
-<li class='tocx'><a href='#7dx1C8sPEB4'>6.15.1 起動オプションでの検索パス追加</a></li>
+<li class='tocx'><a href='#7dx1C8sPEB4'>6.16.1 起動オプションでの検索パス追加</a></li>
 </blockquote>
 </details>
-<li class='tocx'><a href='#8d4GujOuk9v'>6.16 スニペット定義と展開</a></li>
-<li class='tocx'><a href='#hs1guSfsFGb'>6.17 改ページ指定</a></li>
+<li class='tocx'><a href='#8d4GujOuk9v'>6.17 スニペット定義と展開</a></li>
+<li class='tocx'><a href='#hs1guSfsFGb'>6.18 改ページ指定</a></li>
 <details class='tocx' open>
-<summary class='tocx'><a href='#4eSrElLWBcH'>6.18 変数の定義と展開</a></summary>
+<summary class='tocx'><a href='#4eSrElLWBcH'>6.19 変数の定義と展開</a></summary>
 <blockquote class='tocx'>
-<li class='tocx'><a href='#2yDQLphjQX0'>6.18.1 データ内での設定と展開</a></li>
-<li class='tocx'><a href='#kW5fA3S8XIj'>6.18.2 起動オプションでの変数設定</a></li>
-<li class='tocx'><a href='#9Z7pya1EZOR'>6.18.3 システム変数</a></li>
+<li class='tocx'><a href='#2yDQLphjQX0'>6.19.1 データ内での設定と展開</a></li>
+<li class='tocx'><a href='#kW5fA3S8XIj'>6.19.2 起動オプションでの変数設定</a></li>
+<li class='tocx'><a href='#9Z7pya1EZOR'>6.19.3 システム変数</a></li>
 </blockquote>
 </details>
-<li class='tocx'><a href='#8sNFPrNb9kM'>6.19 条件分岐</a></li>
-<li class='tocx'><a href='#anSuBAd7F3R'>6.20 マクロ関数</a></li>
-<li class='tocx'><a href='#bs9N19eIT7w'>6.21 エラーと警告の出力</a></li>
+<li class='tocx'><a href='#8sNFPrNb9kM'>6.20 条件分岐</a></li>
+<li class='tocx'><a href='#anSuBAd7F3R'>6.21 マクロ関数</a></li>
+<li class='tocx'><a href='#bs9N19eIT7w'>6.22 エラーと警告の出力</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -281,7 +282,7 @@ int main( void ) {
 <p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
 <pre>
 |2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
-|   Alpha  |   Bravo  |  
+|   Alpha  |   Bravo  |
 | :------- | :------: | -------: |	
 |     0    |     1    |    2     |	
 |     3    |     4    |    5     |	
@@ -313,6 +314,8 @@ int main( void ) {
 <tr><td align='left' colspan='2'>left</td><td align='right'>right?</td></tr>
 <tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
 </table>
+<p>　　 </p>
+<p>　version 0.815 より、内部フィルタを使って CSV 形式などのデータから<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を生成できるようになりました。この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>については「<a href='#fJ4r3VpDmqg'>6.14  テーブルの生成</a>」を参照してください。</p>
 <h3><a name='2c4WKrG50Sg'></a>5.6 引用</h3>
 <p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
 <pre>
@@ -480,13 +483,13 @@ Table. title of table
 </details>
 <p>　<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>の効果は、<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>が生成する出力には及びません。また、その他にも<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>が影響しないタグが存在します。</p>
 <h3><a name='hVp0EDLBsmJ'></a>6.5 スタイルパレット</h3>
-<p>　<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a class='autolink' href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、 <strong>「スタイルパレット」</strong> が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
+<p>　<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a class='autolink' href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、 <strong>「<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>」</strong> が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
 <pre>
  &lt;!-- palette: 0 style="background: #f4f4f4;" --&gt;
  &lt;!-- palette: 1 style="color: red;" --&gt;
 </pre>
 <p>　<code>&lt;!-- palette:</code>  に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code>--&gt;</code> で終了します。</p>
-<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しかスタイルパレットに対応していない<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
+<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
 <pre>
   | title | count | price | 
   |:------|------:|------:|
@@ -612,8 +615,9 @@ index 16fc9f4..8387187 100644
 <li>sh</li>
 <li>Common LISP</li>
 <li>raw （これは<a href='#6LkDjrI3ASb'>生の HTML を出力</a>するためのものです）</li>
+<li>table （これは<a href='#fJ4r3VpDmqg'>テーブルの作成を支援</a>するためのものです）</li>
 </ul>
-<p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.13  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>については<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
+<p>　　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.13  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.13 外部フィルタの登録</h3>
 <p>　<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
 <pre>
@@ -631,7 +635,43 @@ index 16fc9f4..8387187 100644
 <li>%out に指定した一時ファイルの内容を読み込み、<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>のフィルタ結果として出力する</li>
 </ul>
 <p>　外部フィルタは turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
-<h3><a name='hMHXjTrWEnw'></a>6.14 領域の折り畳み</h3>
+<h3><a name='fJ4r3VpDmqg'></a>6.14 テーブルの生成</h3>
+<p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業場合は面倒です。そのような場合、内部フィルタの table が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
+<pre>
+~~~table
+foo,bar,quux
+10,20,30
+40,50,60
+70,80,90
+~~~
+</pre>
+<p>　外部ファイルからデータをコピーしてくるのが面倒なら、以下のように <code>include</code> で取り込んでしまえば良いでしょう。</p>
+<pre>
+~~~table
+&lt;!-- i​nclude: table.csv --&gt;
+~~~
+</pre>
+<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup>。</p>
+<pre>
+~~~table
+delimiter=tab
+foo	bar	quux
+10	20	30
+40	50	60
+70	80	90
+~~~
+</pre>
+<p>　この <code>table</code> フィルタは内部的には「行頭と行末に | を付加し、区切り文字を | に変換」した上で通常の<a class='autolink' href='#g6xjP526KX7'>テーブル</a>として処理する、という方法を取っています。そのため、以下のメリット／デメリットがあります。</p>
+<ul>
+<li>アライメント指定行が使用できます</li>
+<li>出力される<a class='autolink' href='#g6xjP526KX7'>テーブル</a>は<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>の影響を受けます</li>
+<li>しかし、変換においては | の前後にスペースを付加しているため、</li>
+<ul>
+<li><a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>は使用できません</li>
+<li>セル結合もできません</li>
+</ul>
+</ul>
+<h3><a name='hMHXjTrWEnw'></a>6.15 領域の折り畳み</h3>
 <p>　以下のように 2 つのコメントで囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
 <pre>
   &lt;!-- collapse:open --&gt;
@@ -665,7 +705,7 @@ index 16fc9f4..8387187 100644
 <li>contents3</li>
 </ul>
 </details>
-<h3><a name='a2FYBDWqZUA'></a>6.15 別ファイルの include</h3>
+<h3><a name='a2FYBDWqZUA'></a>6.16 別ファイルの include</h3>
 <p>　長大な文書を作成するような場合、章毎にデータファイルを分割したくなるかもしれません。あるいは、サンプルコードを別ファイルにしておき、実際に動作することをいつでも確認できるようにしておきたいかもしれません。理由はさておき、他のファイルの内容を取り込みたい場合には以下のようにすることができます。</p>
 <pre>
 &lt;!-- include: EXTERNAL_FILE --&gt;
@@ -678,13 +718,13 @@ index 16fc9f4..8387187 100644
 </pre>
 <p>　include されるファイルの中で、さらに別のファイルを include することもできます。ただし、相互に（あるいは循環的に）include しあうようなファイルを処理することはできません。また、（当たり前ですが）存在しないファイルを指定するとエラーになります。</p>
 <p>　include は便利な機能ですが、ひとつ残念な制約があります。include は<a href='#9IN7afRR0hr'>プリプロセス</a>よりも先に実行されるため、 <strong>ファイル名を格納した変数を include のパラメータ部分で展開することはできません。</strong></p>
-<h4><a name='7dx1C8sPEB4'></a>6.15.1 起動オプションでの検索パス追加</h4>
+<h4><a name='7dx1C8sPEB4'></a>6.16.1 起動オプションでの検索パス追加</h4>
 <p>　include するファイルは turnup 実行時のカレントディレクトリから検索されますが、起動オプションを指定することで複数のディレクトリを検索パスとして追加することができます。以下のように <code>-IPATH</code> の形式で指定してください。</p>
 <pre>
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
-<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
-<h3><a name='8d4GujOuk9v'></a>6.16 スニペット定義と展開</h3>
+<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
+<h3><a name='8d4GujOuk9v'></a>6.17 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
 <p>　スニペットの定義は以下の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
 <pre>
@@ -702,13 +742,13 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 <li>スニペットの内部で他のスニペットを展開することはできません</li>
 <li>スニペットの内部で &lt;!-- --&gt; 形式のコメントを使うことはできません</li>
 </ul>
-<h3><a name='hs1guSfsFGb'></a>6.17 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
+<h3><a name='hs1guSfsFGb'></a>6.18 改ページ指定</h3>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
-<h3><a name='4eSrElLWBcH'></a>6.18 変数の定義と展開</h3>
-<h4><a name='2yDQLphjQX0'></a>6.18.1 データ内での設定と展開</h4>
+<h3><a name='4eSrElLWBcH'></a>6.19 変数の定義と展開</h3>
+<h4><a name='2yDQLphjQX0'></a>6.19.1 データ内での設定と展開</h4>
 <p>　変数に値を設定し、任意の場所でその値を展開することができます。変数の定義は以下の要領で記述します。ここでは、変数 FOO に値として 777 を設定しています。</p>
 <pre>
 &lt;!-- define: FOO = 777 --&gt;
@@ -719,7 +759,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには $​{FOO} または $​(FOO) という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
-<h4><a name='kW5fA3S8XIj'></a>6.18.2 起動オプションでの変数設定</h4>
+<h4><a name='kW5fA3S8XIj'></a>6.19.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre>
 turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
@@ -728,7 +768,7 @@ turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
 <pre>
 turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
-<h4><a name='9Z7pya1EZOR'></a>6.18.3 システム変数</h4>
+<h4><a name='9Z7pya1EZOR'></a>6.19.3 システム変数</h4>
 <p>　システム変数は turnup によって自動的に設定される変数です。以下が用意されています。</p>
 <table align='center'>
 <tr><th>name</th><th>description</th></tr>
@@ -738,7 +778,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td align='left'><code>__DATE</code></td><td align='left'>turnup を実行した日付（ <code>YYYY/MM/DD</code> 形式）</td></tr>
 <tr><td align='left'><code>__TIME</code></td><td align='left'>turnup を実行した時刻（ <code>HH:MM:DD</code> 形式）</td></tr>
 </table>
-<h3><a name='8sNFPrNb9kM'></a>6.19 条件分岐</h3>
+<h3><a name='8sNFPrNb9kM'></a>6.20 条件分岐</h3>
 <p>　簡単な論理式を使用した条件分岐ができます。以下のように、コメントを利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
 <pre>
 &lt!-- if: EXPRESSION --&gt
@@ -785,7 +825,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td nowrap align='left'><code>-f FILE</code></td><td align='left'><code>FILE</code> がファイルとして存在するか否か</td></tr>
 <tr><td nowrap align='left'><code>-s FILE</code></td><td align='left'><code>FILE</code> がサイズが 0 でないファイルとして存在するか否か</td></tr>
 </table>
-<h3><a name='anSuBAd7F3R'></a>6.20 マクロ関数</h3>
+<h3><a name='anSuBAd7F3R'></a>6.21 マクロ関数</h3>
 <p>　<a href='#4eSrElLWBcH'>変数定義</a>機能の拡張として、マクロ関数を利用することができます。これは変数定義において %1 〜 %9 のプレースホルダを埋め込んでおき、変数展開時にパラメータを与えることでこのプレースホルダを置き換えるというものです。</p>
 <p>　例として、文字列の色と背景色を反転させてみましょう。マクロ <code>INVERT</code> の定義は以下のようになります。</p>
 <pre>
@@ -801,7 +841,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
  @((background:darkgray;color:white;)(この部分は反転される))
 </pre>
 <p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されます。</p>
-<h3><a name='bs9N19eIT7w'></a>6.21 エラーと警告の出力</h3>
+<h3><a name='bs9N19eIT7w'></a>6.22 エラーと警告の出力</h3>
 <p>　変数の状態など、特定の状況化ではエラーや警告を出力したい場合があるかもしれません。そのような目的には <code>error</code> および <code>warning</code> が使用できます。</p>
 <p>　サンプルを以下に示します。以下の例では、条件式 <code>CONDITION</code> が成立しなかった場合、エラーとしています。</p>
 <pre>
@@ -825,7 +865,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -863,7 +903,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
@@ -1148,6 +1188,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>において初期状態の指定を可能にする変更</li>
 <li>ENHANCE : <a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>に <code>raw</code> を追加し、<a href='#6LkDjrI3ASb'>&lt;raw_html&gt; を非推奨とする</a>変更</li>
 <li>ENHANCE : 折り畳み可能な<a href='#7maM1Z8DaEp'>目次の生成</a>のための <code>embed:toc-x</code> を追加</li>
+<li>ENHANCE : <a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>に <code>table</code> を追加（<a href='#fJ4r3VpDmqg'>6.14  節</a>参照）</li>
 </ul>
 </ul>
 <hr>
@@ -1163,9 +1204,10 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
 <p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、autolink 導入にあわせて修正してあります。</p>
 <p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
-<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
+<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
+<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>
