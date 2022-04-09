@@ -103,6 +103,7 @@
 <li class='tocx'><a href='#kjPiZRKvp7P'>9.2 【解決済】テーブルで colspan/rowspan を使うとアライメント指定がずれる</a></li>
 <li class='tocx'><a href='#78o6GpB2DHz'>9.3 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
 <li class='tocx'><a href='#brtS2jyAYs6'>9.4 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない</a></li>
+<li class='tocx'><a href='#hp0nK2nN2yS'>9.5 リストの仕様が一般的な markdown と異なる</a></li>
 </blockquote>
 </details>
 <li class='tocx'><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
@@ -1013,6 +1014,8 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 }
 </pre>
 </details>
+<h3><a name='hp0nK2nN2yS'></a>9.5 リストの仕様が一般的な markdown と異なる</h3>
+<p>　一般的な markdown では、リストや番号付きリストの処理はかなり柔軟に行なわれますが、それと比較すると turnup のリスト処理は限定的です。今後、一般的な markdown の処理にあわせる対処を実施する予定です。</p>
 <p>　　</p>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
@@ -1183,12 +1186,13 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <ul>
 <li>ENHANCE : <a href='#iYSlVZhYmRM'>番号付きリスト</a>における番号付与のルールを変更</li>
 </ul>
-<li><strong>2022/04/XX - version 0.815</strong></li>
+<li><strong>2022/04/09 - version 0.815</strong></li>
 <ul>
 <li>ENHANCE : <a href='#hMHXjTrWEnw'>領域の折り畳み</a>において初期状態の指定を可能にする変更</li>
 <li>ENHANCE : <a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>に <code>raw</code> を追加し、<a href='#6LkDjrI3ASb'>&lt;raw_html&gt; を非推奨とする</a>変更</li>
 <li>ENHANCE : 折り畳み可能な<a href='#7maM1Z8DaEp'>目次の生成</a>のための <code>embed:toc-x</code> を追加</li>
 <li>ENHANCE : <a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>に <code>table</code> を追加（<a href='#fJ4r3VpDmqg'>6.14  節</a>参照）</li>
+<li>ENHANCE : <a href='#hp0nK2nN2yS'>リストの仕様が一般的な markdown と異なる</a>件を<a class='autolink' href='#8tTIqHSNoTg'>既知の問題点</a>として計上</li>
 </ul>
 </ul>
 <hr>
