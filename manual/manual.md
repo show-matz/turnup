@@ -353,18 +353,29 @@ ${BLANK_PARAGRAPH}
 
 ### 引用
 
-　行頭を > で始めると引用になります。複数の > 連続させると多段の引用になります。
-{{fn:現在の実装では > は行頭から始める必要があり、また複数の > の間に空白を入れることはできません。これは課題として将来修正される可能性があります。}}
+　> で始まる行は引用になります。連続する引用のブロックは `<blockquote>` タグで括られ、通常の各種
+書法に従って処理されます。これはネストさせることができます。
 
 <!-- snippet: CITATION-SAMPLE
-> lv.1 - 1
-> lv.1 - 2
->> lv.2 - 1
->> lv.2 - 2
->>> lv.3
-> lv.1
->>>> lv.4
->> lv.2
+>  blah blah blah blah blah blah 
+> blah blah blah blah blah blah 
+>
+> * foo
+>     * bar
+>     * quux
+>
+>> blah blah blah blah blah blah 
+>> blah blah blah blah blah blah 
+>
+> block-quoted code
+>
+> ```C++
+>   int main( void ){
+>       std::cout << "hello world." << std::endl;
+>       return 0;
+>   }
+> ```
+>
 -->
 
 ~~~
@@ -374,8 +385,6 @@ ${BLANK_PARAGRAPH}
 　上記は、以下のように出力されます。
 
 <!-- expand: CITATION-SAMPLE -->
-
-
 
 ### 定義リスト
 
@@ -1723,6 +1732,8 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : [リストの仕様が一般的な markdown と異なる](#【解決済】リストの仕様が一般的な markdown と異なる)件を既知の問題点として計上
 * __2022/04/24 - version 0.816__
 	* ENHANCE : [リストの仕様が一般的な markdown と異なる](#【解決済】リストの仕様が一般的な markdown と異なる)問題の修正
+* __2022/04/24 - version 0.817__
+	* ENHANCE : [$$](#引用)ブロックの仕様をリスト同様に変更
 
 --------------------------------------------------------------------------------
 

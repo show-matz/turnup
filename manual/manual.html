@@ -228,9 +228,7 @@ blah blah
 </li>
 <li>list item with blockquote
 <blockquote>
-blah blah blah <br>
-blah blah blah <br>
-blah blah blah <br>
+<p>blah blah blah blah blah blah blah blah blah </p>
 </blockquote>
 </li>
 <li>list item with code
@@ -408,37 +406,49 @@ int main( void ) {
 <p>　　 </p>
 <p>　version 0.815 より、内部フィルタを使って CSV 形式などのデータから<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を生成できるようになりました。この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>については「<a href='#fJ4r3VpDmqg'>6.14  テーブルの生成</a>」を参照してください。</p>
 <h3><a name='2c4WKrG50Sg'></a>5.6 引用</h3>
-<p>　行頭を &gt; で始めると引用になります。複数の &gt; 連続させると多段の引用になります。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
+<p>　&gt; で始まる行は引用になります。連続する引用のブロックは <code>&lt;blockquote&gt;</code> タグで括られ、通常の各種書法に従って処理されます。これはネストさせることができます。</p>
 <pre>
-&gt; lv.1 - 1
-&gt; lv.1 - 2
-&gt;&gt; lv.2 - 1
-&gt;&gt; lv.2 - 2
-&gt;&gt;&gt; lv.3
-&gt; lv.1
-&gt;&gt;&gt;&gt; lv.4
-&gt;&gt; lv.2
+&gt;  blah blah blah blah blah blah 
+&gt; blah blah blah blah blah blah 
+&gt;
+&gt; * foo
+&gt;     * bar
+&gt;     * quux
+&gt;
+&gt;&gt; blah blah blah blah blah blah 
+&gt;&gt; blah blah blah blah blah blah 
+&gt;
+&gt; block-quoted code
+&gt;
+&gt; ```C++
+&gt;   int main( void ){
+&gt;       std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+&gt;       return 0;
+&gt;   }
+&gt; ```
+&gt;
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <blockquote>
-lv.1 - 1<br>
-lv.1 - 2<br>
+<p> blah blah blah blah blah blah blah blah blah blah blah blah </p>
+<ul>
+<li>foo
+<ul>
+<li>bar</li>
+<li>quux</li>
+</ul>
+</li>
+</ul>
 <blockquote>
-lv.2 - 1<br>
-lv.2 - 2<br>
-<blockquote>
-lv.3<br>
+<p>blah blah blah blah blah blah blah blah blah blah blah blah </p>
 </blockquote>
-</blockquote>
-lv.1<br>
-<blockquote>
-<blockquote>
-<blockquote>
-lv.4<br>
-</blockquote>
-</blockquote>
-lv.2<br>
-</blockquote>
+<p>block-quoted code</p>
+<pre class='code'>
+  <span class='keyword2'>int</span> main( <span class='keyword2'>void</span> ){
+      std::cout &lt;&lt; <span class='literal'>"hello world."</span> &lt;&lt; std::endl;
+      <span class='keyword1'>return</span> 0;
+  }
+</pre>
 </blockquote>
 <h3><a name='9PbJaRizVB7'></a>5.7 定義リスト</h3>
 <p>　以下のような記述により、定義リストを作成できます。turnup では、これによって定義された用語は<a href='#8mg4uLSAXaz'>自動リンク</a>の対象となります。</p>
@@ -482,7 +492,7 @@ lv.2<br>
 <h3><a name='hVz7Qq0YetS'></a>5.12 上付きと下付き</h3>
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、 <code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='fbLcMRTVXac'></a>5.13 リンク</h3>
-<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
@@ -536,7 +546,7 @@ Table. title of table
 <p>　この方法でタイトルをつけておけば、同じく<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の<a href='#iVFblGs7lu7'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
 <p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.3 インラインスタイル指定</h3>
-<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
+<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のいずれかの書法<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
 <pre>
  @{{STYLES}{CONTENTS}}
  @((STYLES)(CONTENTS))
@@ -580,7 +590,7 @@ Table. title of table
  &lt;!-- palette: 1 style="color: red;" --&gt;
 </pre>
 <p>　<code>&lt;!-- palette:</code>  に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code>--&gt;</code> で終了します。</p>
-<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
+<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
 <pre>
   | title | count | price | 
   |:------|------:|------:|
@@ -665,10 +675,10 @@ Table. title of table
 <pre>
   &lt;!-- autolink: [TITLE](URL) --&gt;
 </pre>
-<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
+<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。</p>
 <p>　この autolink コメントに記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。見出しや図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
-<p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
+<p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
 <h3><a name='f71ZNSHqufB'></a>6.12 フィルタ機能</h3>
 <p>　<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
 <pre>
@@ -698,7 +708,7 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
@@ -728,7 +738,7 @@ index 16fc9f4..8387187 100644
 </ul>
 <p>　外部フィルタは turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
 <h3><a name='fJ4r3VpDmqg'></a>6.14 テーブルの生成</h3>
-<p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業場合は面倒です。そのような場合、内部フィルタの table が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
+<p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの table が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
 <pre>
 ~~~table
 foo,bar,quux
@@ -743,7 +753,7 @@ foo,bar,quux
 &lt;!-- i​nclude: table.csv --&gt;
 ~~~
 </pre>
-<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup>。</p>
+<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。</p>
 <pre>
 ~~~table
 delimiter=tab
@@ -816,7 +826,7 @@ foo	bar	quux
 <pre>
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
-<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
+<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
 <h3><a name='8d4GujOuk9v'></a>6.17 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
 <p>　スニペットの定義は以下の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
@@ -836,7 +846,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 <li>スニペットの内部で &lt;!-- --&gt; 形式のコメントを使うことはできません</li>
 </ul>
 <h3><a name='hs1guSfsFGb'></a>6.18 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -958,7 +968,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -996,7 +1006,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
@@ -1329,6 +1339,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li>ENHANCE : <a href='#dguaQPYtqQN'>リストの仕様が一般的な markdown と異なる</a>問題の修正</li>
 </ul>
 </li>
+<li><strong>2022/04/24 - version 0.817</strong>
+<ul>
+<li>ENHANCE : <a href='#2c4WKrG50Sg'>引用</a>ブロックの仕様をリスト同様に変更</li>
+</ul>
+</li>
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
@@ -1336,17 +1351,16 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
 <p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
 <p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定も含め、複数の指定を同時にする場合、 <code>|N]M&gt;U^</code> の順序で指定してください。</p>
-<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : 現在の実装では &gt; は行頭から始める必要があり、また複数の &gt; の間に空白を入れることはできません。これは課題として将来修正される可能性があります。</p>
-<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、脚注の中での使用を可能にするために追加されました</p>
-<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
-<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、autolink 導入にあわせて修正してあります。</p>
-<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
-<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
-<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、脚注の中での使用を可能にするために追加されました</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、autolink 導入にあわせて修正してあります。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
+<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
+<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 </body>
 </html>
