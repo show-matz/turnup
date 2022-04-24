@@ -91,8 +91,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4Header.o			\
 		$(TARGETDIR)/Operator4HorizontalLine.o	\
 		$(TARGETDIR)/Operator4Image.o			\
-		$(TARGETDIR)/Operator4NormalList.o		\
-		$(TARGETDIR)/Operator4NumberedList.o	\
+		$(TARGETDIR)/Operator4List.o			\
 		$(TARGETDIR)/Operator4Paragraph.o		\
 		$(TARGETDIR)/Operator4PreBlock.o		\
 		$(TARGETDIR)/Operator4Quote.o			\
@@ -101,6 +100,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4StyleStack.o		\
 		$(TARGETDIR)/Operator4Table.o			\
 		$(TARGETDIR)/Operator4TermDefine.o		\
+		$(TARGETDIR)/LineType.o					\
 		$(TARGETDIR)/StyleStack.o				\
 		$(TARGETDIR)/StylePalette.o				\
 		$(TARGETDIR)/Utilities.o				\

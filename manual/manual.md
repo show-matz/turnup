@@ -58,7 +58,6 @@ ${BLANK_PARAGRAPH}
 {{fn: `GitHub Flavored Markdown` とか色々あるみたいで、何が標準なのか良くわかりませんが。}}
 を備えています。
 
-
 ### 見出し
 
 　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は見出し行になります。
@@ -78,71 +77,121 @@ ${BLANK_PARAGRAPH}
 
 ### 箇条書きリスト
 
-　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペースを後続させると、箇条書きリストになります。
-ネストさせたい場合は、行頭にタブ文字を使用してください。
+　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペース（またはタブ）を後続させると、
+箇条書きリストになります。ネストさせたい場合は、行頭にタブ文字または（4文字までの）スペースを
+使用してください。
 
-<!-- snippet: LIST-SAMPLE-1
+<!-- snippet: DOT-LIST-SAMPLE-1
 - List A
 + List B
-	* List B - 1
-	- List B - 2
-		+ List B - 2 - 1
-		* List B - 2 - 2
+    * List B - 1
+    - List B - 2
+        + List B - 2 - 1
+        * List B - 2 - 2
+    + List B - 3
 - List C
 -->
 
 ~~~
-<!-- expand: LIST-SAMPLE-1 -->
+<!-- expand: DOT-LIST-SAMPLE-1 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-<!-- expand: LIST-SAMPLE-1 -->
+<!-- expand: DOT-LIST-SAMPLE-1 -->
 
+#### リスト要素における改行
 
-　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。
+　一般的な markdown 書法同様、リストの要素は改行を利用して多くの情報をぶらさげることが
+できます。（正直面倒なので）細かい説明は省略しますが、以下に例を示します。
 
-<!-- snippet: LIST-SAMPLE-2
-- Task list
-	- [X] completed task
-		* point 1
-		* point 2
-	- [ ] not completed task
+<!-- snippet: DOT-LIST-SAMPLE-2
+-   blah blah 
+    blah blah 
+    blah blah 
+- blah blah 
+blah blah 
+
+  next paragraph : blah blah 
+blah blah blah blah blah
+
+- list item with blockquote
+    > blah blah blah 
+    > blah blah blah 
+    > blah blah blah 
+- list item with code
+    - c code
+        ```c
+          int main( void ) {
+              return 0;
+          }
+        ```
+    - lisp code
+        ```lisp
+          (defun factorial (n)
+            (labels ((impl (x acc)
+                       (if (<= x 1)
+                           acc
+                           (impl (1- x) (* acc x)))))
+              (impl n 1)))
+        ```
 -->
 
 ~~~
-<!-- expand: LIST-SAMPLE-2 -->
+<!-- expand: DOT-LIST-SAMPLE-2 -->
 ~~~
 
 　上記は、以下のように出力されます。
 
-<!-- expand: LIST-SAMPLE-2 -->
+<!-- expand: DOT-LIST-SAMPLE-2 -->
+
+#### チェックボックス付きのリスト
+
+　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。
+実際には X だけでなく、O や V、それらの小文字でも大丈夫です。
+
+<!-- snippet: DOT-LIST-SAMPLE-3
+- Task list
+    - [X] completed task
+        * point 1
+        * point 2
+    - [ ] not completed task
+-->
+
+~~~
+<!-- expand: DOT-LIST-SAMPLE-3 -->
+~~~
+
+　上記は、以下のように出力されます。
+
+<!-- expand: DOT-LIST-SAMPLE-3 -->
 
 
+　このチェックボックス付きリストについては１点だけ注意点があります。それはチェックボックスを使う場合、
+スタイルスタックが適用されなくなるということです。
 
 ### 番号付きリスト
 
-　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、
-行頭にタブ文字を使用してください。
+　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、行頭に
+タブ文字または（4文字までの）スペースを使用してください。
 
-<!-- snippet: LIST-SAMPLE-3
+<!-- snippet: NUM-LIST-SAMPLE-1
 1. List A
 1. List B
-	1. List B - 1
-	1. List B - 2
-		1. List B - 2 - 1
+    1. List B - 1
+    1. List B - 2
+        1. List B - 2 - 1
 1. List C
 -->
 
 ~~~
-<!-- expand: LIST-SAMPLE-3 -->
+<!-- expand: NUM-LIST-SAMPLE-1 -->
 ~~~
 
-　上記は、以下のように出力されます。
+　上記は、以下のように出力されます。改行を使用してリスト要素に情報をぶらさげられるのは箇条書き
+リストと同様です。ただし、番号付きリストではチェックボックスの利用はできません。
 
-<!-- expand: LIST-SAMPLE-3 -->
-
-
+<!-- expand: NUM-LIST-SAMPLE-1 -->
 
 ### preブロック
 
@@ -1548,11 +1597,16 @@ int main( int argc, char* argv[] ) {
 
 <!-- collapse:end -->
 
-### リストの仕様が一般的な markdown と異なる
+### 【解決済】リストの仕様が一般的な markdown と異なる
+
+<!-- collapse:begin -->
+　この問題は version 0.816 で修正されました。
 
 　一般的な markdown では、リストや番号付きリストの処理はかなり柔軟に行なわれますが、
-それと比較すると turnup のリスト処理は限定的です。今後、一般的な markdown の処理に
-あわせる対処を実施する予定です。
+それと比較すると turnup のリスト処理は限定的でした。version 0.816 において、一般的
+な markdown の処理にあわせる対処を実施しました。
+
+<!-- collapse:end -->
 
 ${BLANK_PARAGRAPH}
 
@@ -1666,7 +1720,9 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : フィルタ機能に `raw` を追加し、[<raw_html> を非推奨とする](#生の HTML の出力)変更
 	* ENHANCE : 折り畳み可能な[$$](#目次の生成)のための `embed:toc-x` を追加
 	* ENHANCE : フィルタ機能に `table` を追加（[$@ 節](#テーブルの生成)参照）
-	* ENHANCE : [$$](#リストの仕様が一般的な markdown と異なる)件を既知の問題点として計上
+	* ENHANCE : [リストの仕様が一般的な markdown と異なる](#【解決済】リストの仕様が一般的な markdown と異なる)件を既知の問題点として計上
+* __2022/04/24 - version 0.816__
+	* ENHANCE : [リストの仕様が一般的な markdown と異なる](#【解決済】リストの仕様が一般的な markdown と異なる)問題の修正
 
 --------------------------------------------------------------------------------
 

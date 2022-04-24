@@ -16,8 +16,7 @@
 #include "Operator4Header.hxx"
 #include "Operator4HorizontalLine.hxx"
 #include "Operator4Image.hxx"
-#include "Operator4NormalList.hxx"
-#include "Operator4NumberedList.hxx"
+#include "Operator4List.hxx"
 #include "Operator4Paragraph.hxx"
 #include "Operator4PreBlock.hxx"
 #include "Operator4Quote.hxx"
@@ -42,8 +41,7 @@ namespace turnup {
 		Operator4EmptyLine,
 		Operator4Header,
 		Operator4RawHTML,
-		Operator4NormalList,
-		Operator4NumberedList,
+		Operator4List,
 		Operator4PreBlock,
 		Operator4Table,
 		Operator4Quote,
