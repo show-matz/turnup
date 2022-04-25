@@ -99,7 +99,8 @@ namespace turnup {
 				WriteListEntry( lineType, p, p + (pEnd1st - pTop), p + lines.size(), docInfo );
 			}
 			// 次のリスト要素（ではないかもしれない）の種別を確認し、違えば脱出
-			LineType nextType = GetLineType( pTmp );
+			LineType nextType = (pTmp == pEnd) ? LineType::EMPTY
+											   : GetLineType( pTmp );
 			pTop = pTmp;
 			if( nextType != lineType )
 				break;
