@@ -48,6 +48,7 @@ namespace turnup {
 		uint32_t CountTopOf( char ch ) const;
 		bool Convert( uint32_t& val ) const;
 	public:
+		TextSpan CutNextToken();
 		TextSpan CutNextToken( char delimiter );
 		TextSpan& Chomp( uint32_t head, uint32_t tail );
 		void Clear();
@@ -55,6 +56,9 @@ namespace turnup {
 		std::ostream& WriteTo( std::ostream& os,
 							   DocumentInfo& docInfo, bool bTermLink = true ) const;
 		std::ostream& WriteSimple( std::ostream& os ) const;
+	public:
+		static void DestructureToken( TextSpan data,
+									  bool(*callback)(TextSpan, void*), void* pOpaque );
 	private:
 		const char* m_pTop;
 		const char* m_pEnd;

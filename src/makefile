@@ -65,6 +65,8 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/TextMaker.o				\
 		$(TARGETDIR)/InputFile.o				\
 		$(TARGETDIR)/InputData.o				\
+		$(TARGETDIR)/StringReplacer.o			\
+		$(TARGETDIR)/Snippet.o					\
 		$(TARGETDIR)/HtmlHeader.o				\
 		$(TARGETDIR)/Config.o					\
 		$(TARGETDIR)/ToC.o						\

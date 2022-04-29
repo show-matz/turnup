@@ -269,6 +269,16 @@ namespace turnup {
 		return true;
 	}
 
+	TextSpan TextSpan::CutNextToken() {
+		if( this->IsEmpty() )
+			return *this;
+		auto pTop = m_pTop;
+		auto p = std::find_if( pTop, m_pEnd,
+							   []( char c ) { return c == ' ' || c == 0x09; } );
+		this->Chomp( p - pTop, 0 );
+		return TextSpan{ pTop, p };
+	}
+
 	TextSpan TextSpan::CutNextToken( char delimiter ) {
 		if( this->IsEmpty() )
 			return *this;
@@ -301,6 +311,31 @@ namespace turnup {
 	std::ostream& TextSpan::WriteSimple( std::ostream& os ) const {
 		WriteWithEscape( os, this->Top(), this->End() );
 		return os;
+	}
+
+	void TextSpan::DestructureToken( TextSpan data,
+									 bool(*callback)(TextSpan, void*), void* pOpaque ) {
+		while( true ) {
+			data = data.Trim();
+			if( data.IsEmpty() )
+				return;
+			const char* pTop = data.Top();
+			const char* pEnd = data.End();
+			const char* p    = nullptr;
+			switch( *pTop ) {
+			case 0x22:	/* double-quote */
+			case 0x27:	/* single-quote */
+				p = std::find( pTop + 1, pEnd, *pTop );
+				if( p < pEnd ) {
+					callback( TextSpan{ pTop + 1, p }, pOpaque );
+					data.Chomp( p - pTop + 1, 0 );
+				} else {
+			default:
+					callback( data.CutNextToken(), pOpaque );
+				}
+				break;
+			}
+		}
 	}
 
 	std::ostream& operator<<( std::ostream& os, const TextSpan& txt ) {

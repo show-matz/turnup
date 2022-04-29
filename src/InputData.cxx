@@ -17,6 +17,7 @@
 #include "Operator4TermDefine.hxx"
 #include "Utilities.hxx"
 #include "PreProcessor.hxx"
+#include "Snippet.hxx"
 
 #include <vector>
 #include <algorithm>
@@ -67,8 +68,6 @@ namespace turnup {
 								const TextSpan& fileName, const TextSpan& curFileName );
 		void AddErrorLine( std::vector<TextSpan>& lines,
 						   const char* msg, const TextSpan& fileName );
-		void ExpandSnippet();
-		const TextSpan* FindEndOfSnippet( const TextSpan* pTop, const TextSpan* pEnd );
 	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
@@ -159,7 +158,7 @@ namespace turnup {
 		m_lines.reserve( 1000 );	//ToDo : ok?
 		InputFileStack stack;
 		RecursiveLoadFile( stack, fileName, TextSpan{} );
-		ExpandSnippet();
+		Snippet::Expand( m_lines );
 	}
 
 	InputDataImpl::~InputDataImpl() {
@@ -402,77 +401,6 @@ namespace turnup {
 		TextMaker tm;
 		tm << "<!-- error: " << msg << fileName << " -->";
 		lines.push_back( tm.GetSpan() );
-	}
-
-	void InputDataImpl::ExpandSnippet() {
-		// snippet の名前と開始行のコレクション
-		typedef std::pair<TextSpan,uint32_t> SnippetInfo;
-		std::vector<SnippetInfo>	snippets;
-
-		// snippet を名前で検索し、開始行を調べるための関数オブジェクト
-		auto findSnippet = [&snippets]( const TextSpan& name, uint32_t* pLine ) -> bool {
-			auto itr = std::find_if( snippets.begin(), snippets.end(),
-									 [&name]( const SnippetInfo& entry ) -> bool {
-										 return entry.first.IsEqual( name ); } );
-			if( itr == snippets.end() )
-				return false;
-			if( pLine )
-				*pLine = itr->second;
-			return true;
-		};
-
-		// 行シーケンス全体をスキャンし、snippet 位置と expand 個数を調べる
-		const uint32_t lineCount = m_lines.size();
-		uint32_t expandCount = 0;
-		for( uint32_t idx = 0; idx < lineCount; ++idx ) {
-			TextSpan line = m_lines[idx].Trim();
-			TextSpan tmp;
-			if( line.IsMatch( "<!-- expand:", tmp, "-->" ) )
-				++expandCount;
-			else if( line.IsMatch( "<!-- snippet:", tmp, "" ) ) {
-				tmp = tmp.Trim();
-				if( findSnippet( tmp, nullptr ) == true ) {
-					//ToDo : 3792pds1l2D : error of snippet name collision. use AddErrorLine?
-				} else {
-					snippets.push_back( std::make_pair( tmp, idx ) );
-				}
-			}
-		}
-		// expand が１つ以上ある場合のみ展開処理を実施
-		if( 0 < expandCount ) {
-			std::vector<TextSpan>	tmpLines;		// snippet 展開後の行シーケンス
-			for( uint32_t idx = 0; idx < lineCount; ++idx ) {
-				const TextSpan* pLine = &(m_lines[idx]);
-				TextSpan name;
-				if( pLine->IsMatch( "<!-- expand:", name, "-->" ) == false )
-					tmpLines.push_back( *pLine );
-				else {
-					name = name.Trim();
-					uint32_t line = 0;
-					if( findSnippet( name, &line ) == false )
-						AddErrorLine( tmpLines, "Snippet is not found : ", name );
-					else {
-						const TextSpan* pTop = &(m_lines[line]);
-						const TextSpan* pEnd = FindEndOfSnippet( pTop, &(m_lines[lineCount]) );
-						if( !pEnd )
-							AddErrorLine( tmpLines, "Snippet is not closed : ", name );
-						else
-							std::copy( pTop + 1, pEnd, std::back_inserter( tmpLines ) );
-					}
-				}
-			}
-			m_lines.swap( tmpLines );
-		}
-		
-	}
-
-	const TextSpan* InputDataImpl::FindEndOfSnippet( const TextSpan* pTop, const TextSpan* pEnd ) {
-		for( ; pTop < pEnd; ++pTop ) {
-			TextSpan line = pTop->TrimHead();
-			if( line.BeginWith( "-->" ) )
-				return pTop;
-		}
-		return nullptr;
 	}
 
 } // namespace turnup
