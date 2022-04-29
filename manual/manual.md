@@ -10,8 +10,7 @@
 
 # README - ${APPNAME}
 
-　この文書は、 **${APPNAME}** のためのマニュアル文書です。
-    
+　この文書は、 **${APPNAME}** のマニュアル文書です。
 
 ## Table of contents
 
@@ -25,19 +24,27 @@ ${BLANK_PARAGRAPH}
 {{fn:${APPNAME}という名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。}}。
 このマニュアル文書自体、${APPNAME} で作成されています。
 
+　${APPNAME} の目的は、 **「マニュアルや技術文書、設計文書などをテキストベースで作成・管理できるように \
+すること」** です。git のようなバージョン管理システムが普及した現在でも、これらの文書作成に
+バイナリ形式のファイルを使用している限り、文書の管理には困難が伴います。手軽にテキストで文書
+作成ができるツールとして markdown 書法がありますが、markdown に対応した従来のツールは本家
+{{fn:[](https://daringfireball.net/projects/markdown/)}}を始めとして、全体的に機能
+不足でした。${APPNAME} はこの不足を埋めることを目的としているため、[$$](#脚注)や[目次](#目次の生成)・
+[図表一覧](#図表一覧の生成)の生成、[$$](#見出しの自動ナンバリング)などの拡張機能を用意して
+います。
+
+　${APPNAME} は、ワープロソフトそのものを置き換えようとしているわけではありません。最終的に
+印刷して頒布することが想定されるような文書では、ワープロソフトやもっと高品質な出力が可能な組版
+ソフトを使用した方が良いでしょう。
 
 ## 用語
 
 *[GFM]: GitHub Flavored Markdown というものの略語だそうです。${APPNAME} は可能な範囲で
 サポートするように心掛けています。
 
-*[Markdown]: マークダウンと読みます。HTML の Mark up をしないで済むという意図なんで
-しょうけど、命名にセンスが‥‥‥ね。
-
 *[HTML]: Hyper text markup language の略語です。
 
 *[空白類文字]: スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。
-
 
 ## 使い方
 
@@ -45,12 +52,11 @@ ${BLANK_PARAGRAPH}
 に書き出されるので、必要に応じてリダイレクトしてください。
 
 ~~~
-  ${APPNAME}  input.md  >  output.htm
+  ${APPNAME}  input.md  >  output.html
 ~~~
 
 　入出力ファイルのエンコーディングは utf-8 で固定となっています。それ以外のエンコーディング
 への対応は現状では予定されていません。[$$](#細かい話)も参照してください。
-
 
 ## 記法
 
@@ -195,7 +201,7 @@ blah blah blah blah blah
 
 ### preブロック
 
-<!-- autolink: [preブロック](# preブロック) -->
+<!-- autolink: [preブロック](#preブロック) -->
 
 　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは `<pre>` ブロックとなります。
 {{fn:スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません}}
@@ -895,6 +901,8 @@ index 16fc9f4..8387187 100644
 
 ### 外部フィルタの登録
 
+<!-- autolink: [外部フィルタ](#外部フィルタの登録) -->
+
 　preブロックで指定するフィルタとして、外部プログラムを追加することができます。
 たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ
 以下のように指定します。
@@ -1424,19 +1432,16 @@ ${BLANK_PARAGRAPH}
 ${BLANK_PARAGRAPH}
 
 ## 細かい話
-
 ### 入力ファイルのエンコーディングと改行スタイル
 
 　入力となる Markdown ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも 
 CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。
-
 
 ### 文字装飾やリンクの制約と継続行
 
 　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので
 注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、
 行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。
-
 
 ### 内部的な処理順序
 
@@ -1453,7 +1458,6 @@ CrLf でも動作します。ただし、Lf の方がほんの少し高速にな
 拡張機能の利用に備えます。 |
 |  4   | 出力生成         | 行シーケンスを反復し、出力 HTML を生成します。 |
 
-
 ### 一部の文字装飾における制約
 
 　以下の文字装飾において対象範囲を括る（**などの文字列の）ペアのすぐ外側には、 __「空白類文字でない文字が \
@@ -1464,8 +1468,6 @@ CrLf でも動作します。ただし、Lf の方がほんの少し高速にな
 * [$$](#マーカー)
 * [$$](#コード)
 
-
-
 ### フィルタ機能について
 
 　${APPNAME} が標準で提供するフィルタ機能は簡易的なもので、せいぜいコメントと文字列
@@ -1473,13 +1475,124 @@ CrLf でも動作します。ただし、Lf の方がほんの少し高速にな
 リッチなコードハイライトが必要な場合、[外部フィルタの利用](#外部フィルタの登録)を検討して
 ください。
 
-
 ### 領域の折り畳みについて
 
 　[$$](#領域の折り畳み)を可能にする拡張は、スクリプトを使わず、<details> タグを使って
 実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる
 対象の中で[$$](#脚注)を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプ
 しないことがわかっていますので注意してください。
+
+### 外部フィルタにおける一時ファイル名について
+
+　[$$](#外部フィルタの登録) では、入出力ファイル名として `%in` および `%out` という
+プレースホルダを使用します。実際に使用されるファイル名は、${APPNAME} が都度決定すると
+説明していましたが、ここではその詳細について説明します。
+
+　外部フィルタの実行において使用する入出力ファイル名には、フィルタに渡すデータを元に作成
+したハッシュコードが使用されます。これにより、「同じデータであれば同じファイル名になる」
+ことが保証されます。このことを利用して、コストのかかる外部フィルタ実行についてはその出力
+をキャッシュしておく、といった措置が可能になります（具体的な方法については、[$@ 節](#PlantUML)
+などを参照してください）。
+
+### 作図まですべてテキストで実現する方法
+
+　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題に
+なります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでも
+ありません{{fn:アスキーアートと使うなと言ってるんじゃないですよ。}}。他の方法で作図を
+し、画像ファイルに変換して[貼り付ける](#画像の挿入)こともできますが、それをやった時点
+で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るため
+の方法を紹介します。
+
+#### PlantUML
+
+　UML を書きたければ、PlantUML{{fn:[](https://plantuml.com/)}} が現実的な選択肢に
+なります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択
+すればテキスト形式で ${APPNAME} の出力 HTML に埋め込むことができます。PlantUML の詳細
+については割愛しますが、PlantUML の jar が ${APPNAME} のデータディレクトリと同じ場所
+にあるなら、外部フィルタの定義は以下のようになるでしょう。
+
+```
+<​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg > %out -->
+```
+
+　これで、外部フィルタ `plantuml` が使えるようになります。PlantUML 公式サイトの例を借り
+るなら、以下のように記述すれば、
+
+~~~
+```plantuml
+@startuml
+Bob -> Alice : Request
+Alice -> Bob : Response
+@enduml
+```
+~~~
+
+　以下のように埋め込みが行なわれます。図中のテキストも選択・コピーなどが可能であることにご注目。
+
+<!-- MEMO :
+  このマニュアル自体は PlantUML が導入されていない環境でも生成できるように、
+  別途生成した SVG 形式画像を埋め込んでいます。
+-->
+
+```raw
+<div align='center'>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="141px" preserveAspectRatio="none" style="width:136px;height:141px;background:#FFFFFF;" version="1.1" viewBox="0 0 136 141" width="136px" zoomAndPan="magnify"><defs/><g><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="25" x2="25" y1="34" y2="108"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="106.5" x2="106.5" y1="34" y2="108"/><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="24.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="126.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="24.3184">Alice</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="126.3184">Alice</text><polygon fill="#181818" points="95,59,105,63,95,67,99,63" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="25" x2="101" y1="63" y2="63"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49" x="32" y="59.4385">Request</text><polygon fill="#181818" points="36,86,26,90,36,94,32,90" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="30" x2="106" y1="90" y2="90"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="58" x="42" y="86.4385">Response</text><!--MD5=[8e7ee5d8b195a523e828eb5189ffa1bd]
+@startuml
+Bob -> Alice : Request
+Alice -> Bob : Response
+@enduml
+
+PlantUML version 1.2022.2(Sun Mar 06 01:30:19 JST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: ja
+Country: JP
+--></g></svg>
+</div>
+```
+
+
+${BLANK_PARAGRAPH}
+
+　PlantUML のちょっとだけ残念な点は、Java ベースで動作が緩慢なことです。そのため、大量
+の UML ダイアグラムを含む文書を ${APPNAME} にかける場合、無条件に全ダイアグラムを生成
+すると非常に時間がかかります。そこで、[一時ファイル名の規則](#外部フィルタにおける一時ファイル名について)
+を利用して PlantUML の出力をキャッシュしましょう。以下のようなスクリプトを作成して、
+
+<!-- MEMO : $ と { の間で no width space U+200B を使ってるところがあるよ -->
+
+```sh
+#!bin/bash
+
+IN=$1
+OUT=$2
+CACHE=.cache
+JAR=./plantuml.jar
+OPT=-Dfile.encoding=UTF-8
+
+if [ ! -e ./$​{CACHE} ]; then
+    mkdir $​{CACHE}
+fi
+
+if [ -e ./$​{CACHE}/$​{OUT}.svg ]; then
+    touch ./$​{CACHE}/$​{OUT}.svg
+else
+    cat $​{IN} | java $​{OPT} -jar $​{JAR} -pipe -tsvg >> ./$​{CACHE}/$​{OUT}.svg
+fi
+
+echo "<div align='center'>"  > ./$​{OUT}
+cat ./$​{CACHE}/$​{OUT}.svg   >> ./$​{OUT}
+echo "</div>"               >> ./$​{OUT}
+```
+
+外部フィルタの定義で使うようにします。これで、.cache というディレクトリに PlantUML の
+出力ファイルがキャッシュされるようになり、${APPNAME} の実行時間が改善されます。
+
+```
+<!​-- filter:plantuml = bash ./plantuml.sh %in %out -->
+```
 
 ${BLANK_PARAGRAPH}
 

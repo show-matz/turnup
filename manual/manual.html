@@ -7,7 +7,7 @@
 </header>
 <body>
 <h1><a name='iI4sykJQemx'></a>README - turnup</h1>
-<p>　この文書は、 <strong>turnup</strong> のためのマニュアル文書です。</p>
+<p>　この文書は、 <strong>turnup</strong> のマニュアル文書です。</p>
 <h2><a name='0qJQvVjc3Xy'></a>1 Table of contents</h2>
 <li class='tocx'><a href='#0qJQvVjc3Xy'>1 Table of contents</a></li>
 <li class='tocx'><a href='#ii4jRxV2ffy'>2 turnup とは</a></li>
@@ -100,6 +100,13 @@
 <li class='tocx'><a href='#6lxsyJvfG4q'>8.4 一部の文字装飾における制約</a></li>
 <li class='tocx'><a href='#l3wNcsiymoY'>8.5 フィルタ機能について</a></li>
 <li class='tocx'><a href='#8pNcG5W73uy'>8.6 領域の折り畳みについて</a></li>
+<li class='tocx'><a href='#7l2ZW620d5G'>8.7 外部フィルタにおける一時ファイル名について</a></li>
+<details class='tocx' open>
+<summary class='tocx'><a href='#8qCsTwp3HZT'>8.8 作図まですべてテキストで実現する方法</a></summary>
+<blockquote class='tocx'>
+<li class='tocx'><a href='#bCCDfsVD85P'>8.8.1 PlantUML</a></li>
+</blockquote>
+</details>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -115,15 +122,13 @@
 <li class='tocx'><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
 <p>　　</p>
 <h2><a name='ii4jRxV2ffy'></a>2 turnup とは</h2>
-<p>　turnup は、<a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法で作成したテキストファイルから <a class='term' href='#ahN3t8jbawv'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
+<p>　turnup は、Markdown 書法で作成したテキストファイルから <a class='term' href='#ahN3t8jbawv'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
+<p>　turnup の目的は、 <strong>「マニュアルや技術文書、設計文書などをテキストベースで作成・管理できるようにすること」</strong> です。git のようなバージョン管理システムが普及した現在でも、これらの文書作成にバイナリ形式のファイルを使用している限り、文書の管理には困難が伴います。手軽にテキストで文書作成ができるツールとして markdown 書法がありますが、markdown に対応した従来のツールは本家<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup>を始めとして、全体的に機能不足でした。turnup はこの不足を埋めることを目的としているため、<a href='#9Dfk88hOKmk'>脚注</a>や<a href='#7maM1Z8DaEp'>目次</a>・<a href='#iVFblGs7lu7'>図表一覧</a>の生成、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>などの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>を用意しています。</p>
+<p>　turnup は、ワープロソフトそのものを置き換えようとしているわけではありません。最終的に印刷して頒布することが想定されるような文書では、ワープロソフトやもっと高品質な出力が可能な組版ソフトを使用した方が良いでしょう。</p>
 <h2><a name='dcPEbaWhYMa'></a>3 用語</h2>
 <dl>
 <dt><a name='fgvQnqibuC4'></a>GFM</dt>
-<dd>GitHub Flavored <a class='term' href='#b3GXdVHw3CE'>Markdown</a> というものの略語だそうです。turnup は可能な範囲でサポートするように心掛けています。</dd>
-</dl>
-<dl>
-<dt><a name='b3GXdVHw3CE'></a>Markdown</dt>
-<dd>マークダウンと読みます。<a class='term' href='#ahN3t8jbawv'>HTML</a> の Mark up をしないで済むという意図なんでしょうけど、命名にセンスが‥‥‥ね。</dd>
+<dd>GitHub Flavored Markdown というものの略語だそうです。turnup は可能な範囲でサポートするように心掛けています。</dd>
 </dl>
 <dl>
 <dt><a name='ahN3t8jbawv'></a>HTML</dt>
@@ -136,11 +141,11 @@
 <h2><a name='h1vILBov6aJ'></a>4 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
 <pre>
-  turnup  input.md  &gt;  output.htm
+  turnup  input.md  &gt;  output.html
 </pre>
 <p>　入出力ファイルのエンコーディングは utf-8 で固定となっています。それ以外のエンコーディングへの対応は現状では予定されていません。<a href='#4e69JBVCRLW'>細かい話</a>も参照してください。</p>
 <h2><a name='8wGebtcPJwd'></a>5 記法</h2>
-<p>　turnup の入力書式は一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法と基本的に同じですが、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a><sup><a name='footnote_ref2' href='#footnote2'>2</a></sup>を備えています。</p>
+<p>　turnup の入力書式は一般的な Markdown 書法と基本的に同じですが、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a><sup><a name='footnote_ref3' href='#footnote3'>3</a></sup>を備えています。</p>
 <h3><a name='7HkxqP1TWY5'></a>5.1 見出し</h3>
 <p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は見出し行になります。後続する文字列が見出しのタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
 <pre>
@@ -303,7 +308,7 @@ blah blah
 <li>List C</li>
 </ol>
 <h3><a name='2HUs4TZfCPd'></a>5.4 preブロック</h3>
-<p>　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは <code>&lt;pre&gt;</code> ブロックとなります。<sup><a name='footnote_ref3' href='#footnote3'>3</a></sup></p>
+<p>　バッククォート3つ、またはチルダ3つだけからなる行で囲まれたブロックは <code>&lt;pre&gt;</code> ブロックとなります。<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup></p>
 <pre>
 ~~~
 int main( void ) {
@@ -319,7 +324,7 @@ int main( void ) {
     return 0;
 }
 </pre>
-<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#f71ZNSHqufB'>6.12  フィルタ機能</a>を参照してください。</p>
+<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#f71ZNSHqufB'>6.12  フィルタ機能</a>を参照してください。</p>
 <h3><a name='g6xjP526KX7'></a>5.5 テーブル</h3>
 <p>　以下のような記述で<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を作成できます。この場合、１行目は常にヘッダ行（th タグ）であり、２行目以降がデータ行（td タグ）になります。</p>
 <pre>
@@ -350,7 +355,7 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、<strong>「自動的な折り返しを禁止」</strong> することができます<sup><a name='footnote_ref4' href='#footnote4'>4</a></sup>。</p>
+<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、<strong>「自動的な折り返しを禁止」</strong> することができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。</p>
 <p>　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に渡るヘッダ行を記述することができます。以下のように。</p>
 <pre>
 |     A    |     B    |    C     |	
@@ -368,7 +373,7 @@ int main( void ) {
 <tr><td align='left'>3</td><td align='center'>4</td><td align='right'>5</td></tr>
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
-<p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。以下に例を示します。</p>
+<p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup>。以下に例を示します。</p>
 <pre>
 |2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
 |   Alpha  |   Bravo  |
@@ -492,7 +497,7 @@ int main( void ) {
 <h3><a name='hVz7Qq0YetS'></a>5.12 上付きと下付き</h3>
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、 <code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='fbLcMRTVXac'></a>5.13 リンク</h3>
-<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup></p>
+<p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
 <pre>
   [テキスト](URL)
 </pre>
@@ -521,7 +526,7 @@ int main( void ) {
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>を含め、他の書法と認識されない行はすべて段落の開始とみなされます。段落は空行または<a href='#cPmXTXvPhJd'>コメント</a>行に至るまでのすべての行が連結され、単一の段落として出力されます。</p>
 <p>　　</p>
 <h2><a name='i9uAZw3xFSK'></a>6 拡張機能</h2>
-<p>　turnup には、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>があります。一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
+<p>　turnup には、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>があります。一般的な Markdown の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kyMp8IkRK8n'></a>6.1 文書タイトルとスタイルシートの指定</h3>
 <p>　データファイルの冒頭に以下のようなコメントを記述することで、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
 <pre>
@@ -546,7 +551,7 @@ Table. title of table
 <p>　この方法でタイトルをつけておけば、同じく<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の<a href='#iVFblGs7lu7'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
 <p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.3 インラインスタイル指定</h3>
-<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のいずれかの書法<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
+<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
 <pre>
  @{{STYLES}{CONTENTS}}
  @((STYLES)(CONTENTS))
@@ -590,7 +595,7 @@ Table. title of table
  &lt;!-- palette: 1 style="color: red;" --&gt;
 </pre>
 <p>　<code>&lt;!-- palette:</code>  に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code>--&gt;</code> で終了します。</p>
-<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
+<p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
 <pre>
   | title | count | price | 
   |:------|------:|------:|
@@ -675,12 +680,12 @@ Table. title of table
 <pre>
   &lt;!-- autolink: [TITLE](URL) --&gt;
 </pre>
-<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>。</p>
+<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
 <p>　この autolink コメントに記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。見出しや図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
-<p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
-<p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
+<p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば Markdown という用語は自動的にリンクされます。</p>
+<p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
 <h3><a name='f71ZNSHqufB'></a>6.12 フィルタ機能</h3>
-<p>　<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
+<p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
 <pre>
 ~~~diff
 diff --git a/main.cxx b/main.cxx
@@ -708,7 +713,7 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
@@ -720,23 +725,23 @@ index 16fc9f4..8387187 100644
 </ul>
 <p>　　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.13  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.13 外部フィルタの登録</h3>
-<p>　<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
+<p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
 <pre>
   &lt;!-- filter:foo = quux %in %out --&gt;
 </pre>
 <p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnup が都度決定します。</p>
-<p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された <a class='autolink' href='#5gzhqyKvbia'>preブロック</a>を見つけた場合に、以下の要領で処理を行ないます。</p>
+<p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された <a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を見つけた場合に、以下の要領で処理を行ないます。</p>
 <ul>
 <li>pre ブロックの中身を一時ファイルに保存する</li>
 <li>フィルタプログラムの定義に従い、 <code>quux %in %out</code> を実行する
 <ul>
-<li>この時、<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>の中身を保存した一時ファイル名で %in を置き換える</li>
+<li>この時、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>の中身を保存した一時ファイル名で %in を置き換える</li>
 <li>同様に、%out を別の一時ファイル名で置き換える</li>
 </ul>
 </li>
-<li>%out に指定した一時ファイルの内容を読み込み、<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>のフィルタ結果として出力する</li>
+<li>%out に指定した一時ファイルの内容を読み込み、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>のフィルタ結果として出力する</li>
 </ul>
-<p>　外部フィルタは turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、外部フィルタが優先されます。</p>
+<p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>が優先されます。</p>
 <h3><a name='fJ4r3VpDmqg'></a>6.14 テーブルの生成</h3>
 <p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの table が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
 <pre>
@@ -753,7 +758,7 @@ foo,bar,quux
 &lt;!-- i​nclude: table.csv --&gt;
 ~~~
 </pre>
-<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。</p>
+<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup>。</p>
 <pre>
 ~~~table
 delimiter=tab
@@ -813,7 +818,7 @@ foo	bar	quux
 <pre>
 &lt;!-- include: EXTERNAL_FILE --&gt;
 </pre>
-<p>　こうしておくと、 <code>EXTERNAL_FILE</code> で指定されたファイルの内容がそこに書いてあったかのように展開されます。この展開はファイルの読み込み時点で実行されるため、<a class='autolink' href='#5gzhqyKvbia'>preブロック</a>や<a href='#6LkDjrI3ASb'>raw_html ブロック</a> の内部に書くことだってできます。つまり、サンプルコードの中身を内部フィルタでコードハイライトさせたければ、以下のようにできるということです。</p>
+<p>　こうしておくと、 <code>EXTERNAL_FILE</code> で指定されたファイルの内容がそこに書いてあったかのように展開されます。この展開はファイルの読み込み時点で実行されるため、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>や<a href='#6LkDjrI3ASb'>raw_html ブロック</a> の内部に書くことだってできます。つまり、サンプルコードの中身を内部フィルタでコードハイライトさせたければ、以下のようにできるということです。</p>
 <pre>
 ```C
 &lt;!-- include: sample.01.c --&gt;
@@ -826,9 +831,9 @@ foo	bar	quux
 <pre>
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
-<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup></p>
+<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
 <h3><a name='hs1guSfsFGb'></a>6.17 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
+<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -929,7 +934,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p>　マクロ関数はあくまで変数展開の一部なので、複数行に渡るブロックに展開されるような使い方は意図していません。複数行のブロックを生成したい場合は、後述する<a href='#8d4GujOuk9v'>スニペット</a>を使用してください。</p>
 <h3><a name='8d4GujOuk9v'></a>6.21 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
-<p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
+<p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
 <pre>
 &lt;​!-- snippet: NAME
     （ここに繰り返し使いたい内容を記述する）
@@ -977,7 +982,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -1015,14 +1020,14 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
-<p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</p>
+<p>　入力となる Markdown ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</p>
 <h3><a name='9s47bTtYstx'></a>8.2 文字装飾やリンクの制約と継続行</h3>
 <p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</p>
 <h3><a name='9IN7afRR0hr'></a>8.3 内部的な処理順序</h3>
@@ -1046,6 +1051,71 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p>　turnup が標準で提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
 <h3><a name='8pNcG5W73uy'></a>8.6 領域の折り畳みについて</h3>
 <p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
+<h3><a name='7l2ZW620d5G'></a>8.7 外部フィルタにおける一時ファイル名について</h3>
+<p>　<a href='#18dTPnzNOgg'>外部フィルタの登録</a> では、入出力ファイル名として <code>%in</code> および <code>%out</code> というプレースホルダを使用します。実際に使用されるファイル名は、turnup が都度決定すると説明していましたが、ここではその詳細について説明します。</p>
+<p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の実行において使用する入出力ファイル名には、フィルタに渡すデータを元に作成したハッシュコードが使用されます。これにより、「同じデータであれば同じファイル名になる」ことが保証されます。このことを利用して、コストのかかる<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>実行についてはその出力をキャッシュしておく、といった措置が可能になります（具体的な方法については、<a href='#bCCDfsVD85P'>8.8.1  節</a>などを参照してください）。</p>
+<h3><a name='8qCsTwp3HZT'></a>8.8 作図まですべてテキストで実現する方法</h3>
+<p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
+<h4><a name='bCCDfsVD85P'></a>8.8.1 PlantUML</h4>
+<p>　UML を書きたければ、PlantUML<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。PlantUML の詳細については割愛しますが、PlantUML の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
+<pre>
+&lt;​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg &gt; %out --&gt;
+</pre>
+<p>　これで、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a> <code>plantuml</code> が使えるようになります。PlantUML 公式サイトの例を借りるなら、以下のように記述すれば、</p>
+<pre>
+```plantuml
+@startuml
+Bob -&gt; Alice : Request
+Alice -&gt; Bob : Response
+@enduml
+```
+</pre>
+<p>　以下のように埋め込みが行なわれます。図中のテキストも選択・コピーなどが可能であることにご注目。</p>
+<div align='center'>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="141px" preserveAspectRatio="none" style="width:136px;height:141px;background:#FFFFFF;" version="1.1" viewBox="0 0 136 141" width="136px" zoomAndPan="magnify"><defs/><g><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="25" x2="25" y1="34" y2="108"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="106.5" x2="106.5" y1="34" y2="108"/><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="24.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="126.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="24.3184">Alice</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="126.3184">Alice</text><polygon fill="#181818" points="95,59,105,63,95,67,99,63" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="25" x2="101" y1="63" y2="63"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49" x="32" y="59.4385">Request</text><polygon fill="#181818" points="36,86,26,90,36,94,32,90" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="30" x2="106" y1="90" y2="90"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="58" x="42" y="86.4385">Response</text><!--MD5=[8e7ee5d8b195a523e828eb5189ffa1bd]
+@startuml
+Bob -> Alice : Request
+Alice -> Bob : Response
+@enduml
+
+PlantUML version 1.2022.2(Sun Mar 06 01:30:19 JST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: ja
+Country: JP
+--></g></svg>
+</div>
+<p>　　</p>
+<p>　PlantUML のちょっとだけ残念な点は、Java ベースで動作が緩慢なことです。そのため、大量の UML ダイアグラムを含む文書を turnup にかける場合、無条件に全ダイアグラムを生成すると非常に時間がかかります。そこで、<a href='#7l2ZW620d5G'>一時ファイル名の規則</a>を利用して PlantUML の出力をキャッシュしましょう。以下のようなスクリプトを作成して、</p>
+<pre class='code'>
+<span class='comment'>#!bin/bash</span>
+
+IN=$1
+OUT=$2
+CACHE=.cache
+JAR=./plantuml.jar
+OPT=-Dfile.encoding=UTF-8
+
+<span class='keyword1'>if</span> [ ! -e ./$​{CACHE} ]; <span class='keyword1'>then</span>
+    mkdir $​{CACHE}
+<span class='keyword1'>fi</span>
+
+<span class='keyword1'>if</span> [ -e ./$​{CACHE}/$​{OUT}.svg ]; <span class='keyword1'>then</span>
+    touch ./$​{CACHE}/$​{OUT}.svg
+<span class='keyword1'>else</span>
+    cat $​{IN} | java $​{OPT} -jar $​{JAR} -pipe -tsvg &gt;&gt; ./$​{CACHE}/$​{OUT}.svg
+<span class='keyword1'>fi</span>
+
+<span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./$​{OUT}
+cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
+<span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./$​{OUT}
+</pre>
+<p><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義で使うようにします。これで、.cache というディレクトリに PlantUML の出力ファイルがキャッシュされるようになり、turnup の実行時間が改善されます。</p>
+<pre>
+&lt;!​-- filter:plantuml = bash ./plantuml.sh %in %out --&gt;
+</pre>
 <p>　　</p>
 <h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
 <h3><a name='95miNJcW6DM'></a>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
@@ -1361,21 +1431,24 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </ul>
 <hr>
 <p class='footnote'><a name='footnote1' href='#footnote_ref1'>1</a> : turnupという名前は、mark down を mark up にひっくり返す(turn upする)という意味で付けられました。</p>
-<p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> :  <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
-<p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
-<p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
-<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定も含め、複数の指定を同時にする場合、 <code>|N]M&gt;U^</code> の順序で指定してください。</p>
-<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、脚注の中での使用を可能にするために追加されました</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
-<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、autolink 導入にあわせて修正してあります。</p>
-<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
-<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
-<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : markdown 書法のコードハイライトに対応したエディタを使用していたり、そのエディタにプレビュー機能があったりすると、どちらかを選択する理由になるかもしれません（どっちかはわかりませんが）。</p>
-<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote2' href='#footnote_ref2'>2</a> : <a href='https://daringfireball.net/projects/markdown/'>https://daringfireball.net/projects/markdown/</a></p>
+<p class='footnote'><a name='footnote3' href='#footnote_ref3'>3</a> :  <code>GitHub Flavored Markdown</code> とか色々あるみたいで、何が標準なのか良くわかりませんが。</p>
+<p class='footnote'><a name='footnote4' href='#footnote_ref4'>4</a> : スペースまたはタブで始まる行を pre ブロックとする仕様は採用していません</p>
+<p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
+<p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定も含め、複数の指定を同時にする場合、 <code>|N]M&gt;U^</code> の順序で指定してください。</p>
+<p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、脚注の中での使用を可能にするために追加されました</p>
+<p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
+<p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、autolink 導入にあわせて修正してあります。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
+<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
+<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
+<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : markdown 書法のコードハイライトに対応したエディタを使用していたり、そのエディタにプレビュー機能があったりすると、どちらかを選択する理由になるかもしれません（どっちかはわかりませんが）。</p>
+<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote18' href='#footnote_ref18'>18</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
+<p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
 </body>
 </html>
