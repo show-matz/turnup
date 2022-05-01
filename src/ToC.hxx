@@ -34,11 +34,14 @@ namespace turnup {
 		bool RegisterHeader( uint32_t level, const TextSpan& title );
 		bool RegisterTable( const TextSpan& title );
 		bool RegisterFigure( const TextSpan& title );
+		bool RegisterLinkButton( bool bTop, const TextSpan& title );
 		const char* GetAnchorTag( EntryT type,
 								  const char* pTitle,
 								  const char* pTitleEnd = nullptr ) const;
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
 							 const char* pTitle, const char* pTitleEnd = nullptr ) const;
+	public:
+		void WriteTocLinkIfNeed( std::ostream& os ) const;
 	public:
 		void WriteTOC( std::ostream& os,
 					   DocumentInfo& docInfo, bool bFoldable,

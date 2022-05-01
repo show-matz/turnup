@@ -33,6 +33,11 @@ namespace turnup {
 		inline const char* End() const { return m_pEnd; }
 		inline char operator[]( uint32_t idx ) const { return m_pTop[idx]; }
 		inline bool IsAsciz() const { return m_pEnd && !*m_pEnd; }
+		inline bool IsQuoted() const {
+			return 2 <= (m_pEnd - m_pTop)
+					 && (m_pTop[0]  == 0x27 || m_pTop[0]  == 0x22)
+					 && (m_pEnd[-1] == 0x27 || m_pEnd[-1] == 0x22);
+		}
 	public:
 		bool IsEmpty() const;
 		TextSpan Trim() const;

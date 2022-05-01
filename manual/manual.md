@@ -15,6 +15,7 @@
 ## Table of contents
 
 <!-- embed:toc-x 2 4 -->
+<!-- toc-link: top 'Table of contents' -->
 
 ${BLANK_PARAGRAPH}
 
@@ -41,6 +42,8 @@ ${BLANK_PARAGRAPH}
 
 *[GFM]: GitHub Flavored Markdown というものの略語だそうです。${APPNAME} は可能な範囲で
 サポートするように心掛けています。
+
+*[Markdown]: マークダウンと読みます。
 
 *[HTML]: Hyper text markup language の略語です。
 
@@ -559,6 +562,68 @@ ${BLANK_PARAGRAPH}
 　このうち、スタイルシートの指定は設定の影響を受けます。詳細は
 [embed-stylesheet設定](#スタイルシートの埋め込み)を参照してください。
 
+### 目次へのリンクボタン表示
+
+　以下のような行をデータファイル内の任意の場所に記述しておくと、
+
+```
+  <!-- toc-link: top "Table of contents" -->
+```
+
+　生成された HTML ページの右上に以下のようなイメージが表示されます。これは画面をスクロールしても
+その位置に留まり、クリックすると目次にジャンプすることができます。
+
+```raw
+<div align="center"><a href='#0qJQvVjc3Xy'>
+<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox="0 0 200 200">
+<defs><g id="line">
+  <circle cx='45' cy='50' r='15' fill='white' stroke='none' stroke-width='1' />
+  <polyline fill='none' stroke='white' stroke-width='20' points=' 75.0,50.0 170.0,50.0' />
+</g></defs>
+<rect x='0' y='0' width='200' height='200' rx='30' ry='30' fill='lightgray' stroke='none' stroke-width='1' />
+<use xlink:href="#line" x='0' y='0' />
+<use xlink:href="#line" x='0' y='50' />
+<use xlink:href="#line" x='0' y='100' />
+</svg>
+</a></div>
+```
+
+　これは、実際には目次にジャンプしているわけではなく、指定された見出しへのリンクに過ぎません。
+そのため、この機能を使用する場合は目次の直前に見出しを置く必要があります。ジャンプ先の見出しは 
+`toc-link: top` に続けて指定してください（先の例であれば `"Table of contents"` という部分）。
+この機能を使用する場合、目次の周辺は以下のように記述されることになるでしょう。
+
+```
+​## Table of contents
+
+<​!-- embed:toc-x 2 4 -->
+<​!-- toc-link: top 'Table of contents' -->
+```
+
+　なお、以下のように `toc-link:` に続けて `top` でなく `bottom` と記述すると、イメージの表示
+される位置が画面の右上でなく右下になります。
+
+```
+  <!-- toc-link: bottom "Table of contents" -->
+```
+
+<!--
+<div class="toc_button_top"><a href='#0qJQvVjc3Xy'>
+<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox="0 0 200 200">
+	<defs>
+		<g id="line">
+			<circle cx='45' cy='50' r='15' fill='white' stroke='none' stroke-width='1' />
+			<polyline fill='none' stroke='white' stroke-width='20' points=' 75.0,50.0 170.0,50.0' />
+		</g>
+	</defs>
+	<rect x='0' y='0' width='200' height='200' rx='30' ry='30' fill='lightgray' stroke='none' stroke-width='1' />
+	<use xlink:href="#line" x='0' y='0' />
+	<use xlink:href="#line" x='0' y='50' />
+	<use xlink:href="#line" x='0' y='100' />
+</svg>
+</a></div>
+-->
+
 ### 図と表のタイトル
 
 　図と表には、専用のタイトルをつけることができます。図（大抵は画像を表示させるという意味ですが）の
@@ -1045,7 +1110,7 @@ ${BLANK_PARAGRAPH}
 
 　こうしておくと、 `EXTERNAL_FILE` で指定されたファイルの内容がそこに書いてあったかの
 ように展開されます。この展開はファイルの読み込み時点で実行されるため、preブロックや
-[raw_html ブロック](#生の HTML の出力) の内部に書くことだってできます。つまり、サンプル
+[rawフィルタ](#生の HTML の出力) の内部に書くことだってできます。つまり、サンプル
 コードの中身を内部フィルタでコードハイライトさせたければ、以下のようにできるということです。
 
 ~~~raw
@@ -1860,8 +1925,10 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : [リストの仕様が一般的な markdown と異なる](#【解決済】リストの仕様が一般的な markdown と異なる)問題の修正
 * __2022/04/24 - version 0.817__
 	* ENHANCE : [$$](#引用)ブロックの仕様をリスト同様に変更
-* __2022/05/?? - version 0.818__
+* __2022/05/01 - version 0.818__
 	* ENHANCE : [スニペット](#スニペット定義と展開)の仕様を拡張し、パラメータ展開をサポート
+	* DOCUMENT : 「[](#作図まですべてテキストで実現する方法)」 を追加
+	* ENHANCE : [$$](#目次へのリンクボタン表示)機能を追加
 
 --------------------------------------------------------------------------------
 

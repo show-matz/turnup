@@ -9,6 +9,7 @@
 #include "Operators.hxx"
 #include "PreProcessor.hxx"
 #include "Parameters.hxx"
+#include "ToC.hxx"
 
 #include <iostream>
 #include <iomanip>
@@ -108,9 +109,9 @@ int main( int argc, char* argv[] ) {
 	std::cout << "<html>" << std::endl;
 	docInfo.Get<HtmlHeader>().WriteTo( std::cout, docInfo.Get<Config>() );
 	std::cout << "<body>" << std::endl;
-	
-	Operators operators;
+	docInfo.Get<ToC>().WriteTocLinkIfNeed( std::cout );
 
+	Operators operators;
 	const TextSpan* pTop = pInData->Begin();
 	const TextSpan* pEnd = pInData->End();
 	while( pTop < pEnd ) {

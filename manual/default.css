@@ -16,6 +16,10 @@ body{
 	background:#fefefe;
 }
 
+/* floating toc link button */
+.toc_button_top    { position: fixed; top:    20px; right: -30px; padding: 6px 40px; }
+.toc_button_bottom { position: fixed; bottom: 20px; right: -30px; padding: 6px 40px; }
+
 a{ color: #0645ad; text-decoration:none;}
 a:visited{ color: #0b0080; }
 a:hover{ color: #06e; }

@@ -150,10 +150,13 @@ namespace turnup {
 		~Impl();
 	public:
 		bool RegisterImpl( ToC::EntryT type, uint32_t level, const TextSpan& title );
+		bool RegisterLinkButton( bool bTop, const TextSpan& title );
 		const char* GetAnchorTag( ToC::EntryT type,
 								  const char* pTitle, const char* pTitleEnd ) const;
 		bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
 							 const char* pTitle, const char* pTitleEnd ) const;
+	public:
+		void WriteTocLinkIfNeed( std::ostream& os ) const;
 	public:
 		void WriteTOC( std::ostream& os,
 					   DocumentInfo& docInfo,
@@ -170,6 +173,8 @@ namespace turnup {
 									  const TocEntry* pEntry, const Config& cfg ) const;
 	private:
 		std::vector<TocEntry>	m_entries;
+		TextSpan				m_linkTarget;
+		bool					m_bLinkTop;
 	};
 
 	//--------------------------------------------------------------------------
@@ -191,6 +196,9 @@ namespace turnup {
 	bool ToC::RegisterFigure( const TextSpan& title ) {
 		return m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, title );
 	}
+	bool ToC::RegisterLinkButton( bool bTop, const TextSpan& title ) {
+		return m_pImpl->RegisterLinkButton( bTop, title );
+	}
 	const char* ToC::GetAnchorTag( EntryT type,
 								   const char* pTitle,
 								   const char* pTitleEnd ) const {
@@ -199,6 +207,9 @@ namespace turnup {
 	bool ToC::GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
 							  const char* pTitle, const char* pTitleEnd ) const {
 		return m_pImpl->GetEntryNumber( pBuf, type, cfg, pTitle, pTitleEnd );
+	}
+	void ToC::WriteTocLinkIfNeed( std::ostream& os ) const {
+		return m_pImpl->WriteTocLinkIfNeed( os );
 	}
 	void ToC::WriteTOC( std::ostream& os,
 						DocumentInfo& docInfo, bool bFoldable,
@@ -269,7 +280,9 @@ namespace turnup {
 	// implementation of class ToC::Impl
 	//
 	//--------------------------------------------------------------------------
-	ToC::Impl::Impl() : m_entries() {
+	ToC::Impl::Impl() : m_entries(),
+						m_linkTarget(),
+						m_bLinkTop( false ) {
 	}
 
 	ToC::Impl::~Impl() {
@@ -297,6 +310,13 @@ namespace turnup {
 		return !bDuplicated;
 	}
 
+	bool ToC::Impl::RegisterLinkButton( bool bTop, const TextSpan& title ) {
+		bool ret = m_linkTarget.IsEmpty();
+		m_bLinkTop   = bTop;
+		m_linkTarget = title;
+		return ret;
+	}
+
 	const char* ToC::Impl::GetAnchorTag( ToC::EntryT type,
 										 const char* pTitle,
 										 const char* pTitleEnd ) const {
@@ -315,6 +335,27 @@ namespace turnup {
 		}
 		this->GetFigureAndTablePrefix( pBuf, pEntry, cfg );
 		return true;
+	}
+
+	void ToC::Impl::WriteTocLinkIfNeed( std::ostream& os ) const {
+		if( m_linkTarget.IsEmpty() )
+			return;
+		const char* pLinkClass = m_bLinkTop ? "toc_button_top" : "toc_button_bottom";
+		char linkTarget[12];
+		CRC64::Calc( GetCrcType( ToC::EntryT::HEADER ),
+					 m_linkTarget.Top(), m_linkTarget.End(), linkTarget );
+		os << "<div class='" << pLinkClass  << "'><a href='#" << linkTarget << "'>" << std::endl
+		   << "<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 200 200'>" << std::endl
+		   << "<defs><g id='line'>" << std::endl
+		   << "  <circle cx='45' cy='50' r='15' fill='white' stroke='none' stroke-width='1' />" << std::endl
+		   << "  <polyline fill='none' stroke='white' stroke-width='20' points=' 75.0,50.0 170.0,50.0' />" << std::endl
+		   << "</g></defs>" << std::endl
+		   << "<rect x='0' y='0' width='200' height='200' rx='30' ry='30' fill='lightgray' stroke='none' stroke-width='1' />" << std::endl
+		   << "<use xlink:href='#line' x='0' y='0' />" << std::endl
+		   << "<use xlink:href='#line' x='0' y='50' />" << std::endl
+		   << "<use xlink:href='#line' x='0' y='100' />" << std::endl
+		   << "</svg>" << std::endl
+		   << "</a></div>" << std::endl;
 	}
 
 	void ToC::Impl::WriteTOC( std::ostream& os,

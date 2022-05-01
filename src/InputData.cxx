@@ -287,6 +287,29 @@ namespace turnup {
 				}
 				line.Clear();
 			}
+			if( tmp.IsMatch( "<!-- toc-link:", item, " -->" ) ) {
+				//ToDo : 1Grw5djeUn8 : パラメータが３つ以上存在する場合をエラーとして検出できてない
+				item = item.Trim();
+				TextSpan cur = item.CutNextToken();
+				bool     bTop;
+				if( cur.IsEqual( "top" ) )
+					bTop = true;
+				else if( cur.IsEqual( "bottom" ) )
+					bTop = false;
+				else {
+					std::cerr << "ERROR : invalid toc-link format '";
+					std::cerr.write( tmp.Top(), tmp.ByteLength() );
+					std::cerr << "'." << std::endl;
+					continue;
+				}
+				item = item.Trim();
+				if( item.IsQuoted() )
+					item.Chomp( 1, 1 );
+				bool ret = toc.RegisterLinkButton( bTop, item );
+				if( !ret )
+					std::cerr << "WARNING : toc-link directive duplicated." << std::endl;
+				line.Clear();
+			}
 			if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {
 				auto& cfg = docInfo.Get<Config>();
 				if( item.IsEqual( "term-link-in-header" ) ) {
