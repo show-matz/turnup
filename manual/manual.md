@@ -1601,20 +1601,7 @@ Alice -> Bob : Response
 
 ```raw
 <div align='center'>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="141px" preserveAspectRatio="none" style="width:136px;height:141px;background:#FFFFFF;" version="1.1" viewBox="0 0 136 141" width="136px" zoomAndPan="magnify"><defs/><g><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="25" x2="25" y1="34" y2="108"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="106.5" x2="106.5" y1="34" y2="108"/><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="24.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="126.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="24.3184">Alice</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="126.3184">Alice</text><polygon fill="#181818" points="95,59,105,63,95,67,99,63" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="25" x2="101" y1="63" y2="63"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49" x="32" y="59.4385">Request</text><polygon fill="#181818" points="36,86,26,90,36,94,32,90" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="30" x2="106" y1="90" y2="90"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="58" x="42" y="86.4385">Response</text><!--MD5=[8e7ee5d8b195a523e828eb5189ffa1bd]
-@startuml
-Bob -> Alice : Request
-Alice -> Bob : Response
-@enduml
-
-PlantUML version 1.2022.2(Sun Mar 06 01:30:19 JST 2022)
-(GPL source distribution)
-Java Runtime: OpenJDK Runtime Environment
-JVM: OpenJDK 64-Bit Server VM
-Default Encoding: UTF-8
-Language: ja
-Country: JP
---></g></svg>
+<!-- include: plantuml.sample.svg -->
 </div>
 ```
 
@@ -1660,6 +1647,97 @@ echo "</div>"               >> ./$​{OUT}
 ```
 
 ${BLANK_PARAGRAPH}
+
+#### gnuplot
+
+　グラフを描画したければ、ひとまずは gnuplot が選択肢になります。[PlantUML の場合](#PlantUML)
+同様に出力をキャッシュする前提でスクリプトを置くならば、外部フィルタ定義は以下のようになるでしょう。
+
+```
+<!​-- filter:gnuplot = bash ./gnuplot.sh %in %out -->
+```
+
+　このスクリプトの内容は後回しにするとして、gnuplot はコマンドファイルとデータを個別に用意する
+必要があるので、以下のようにハイフンだけの行をセパレータにして両方記述するようにします。前半の
+コマンド部分では入出力ファイルを `in_file, out_file` としていますが、これはスクリプトでどうにか
+します。
+
+~~~
+```gnuplot
+set datafile separator ","
+set terminal svg size 500,300 fixed
+set output out_file
+plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle
+------------------------------------------------------------------------
+0,0,0
+1,32,1
+2,64,4
+   :
+   :
+38,1216,1444
+39,1248,1521
+40,1280,1600
+```
+~~~
+
+　これで、以下のような SVG 画像が埋め込まれます。
+
+<!-- MEMO :
+  このマニュアル自体は gnuplot が導入されていない環境でも生成できるように、
+  別途生成した SVG 形式画像を埋め込んでいます。
+-->
+
+```raw
+<div align='center'>
+<!-- include: gnuplot.sample.svg -->
+</div>
+```
+
+${BLANK_PARAGRAPH}
+
+　最後に、スクリプトの内容を以下に示します。セパレータ行の前後を一時ファイルに振り分けること、
+入出力ファイルをコマンドファイル冒頭に書き込むことなどがポイントです。なお、エラー処理などは
+いい加減な状態です。
+
+<!-- collapse:close -->
+**gnuplot.sh の内容はこちら**
+
+<!-- MEMO : $ と { の間で no width space U+200B を使ってるところがあるよ -->
+
+```sh
+#!/bin/bash
+
+IN=$1
+OUT=$2
+CACHE=.cache
+APP=gnuplot
+
+if [ ! -e ./$​{CACHE} ]; then
+    mkdir $​{CACHE}
+fi
+
+if [ -e ./$​{CACHE}/$​{OUT}.svg ]; then
+    touch ./$​{CACHE}/$​{OUT}.svg
+else
+    LINENUM=`grep -n '^-\+$' $​{IN} | perl -pe 's/^(\d):-+$/\1/'`
+    LINECNT=`cat $​{IN} | wc -l`
+    if [ ! -z "$​{LINENUM}" ]; then
+        echo "in_file=\"$​{IN}.dat\"" > $​{IN}.gp
+        echo "out_file=\"./$​{CACHE}/$​{OUT}.svg\"" >> $​{IN}.gp
+        head -$((LINENUM - 1)) $​{IN} >> $​{IN}.gp
+        tail -$((LINECNT - LINENUM)) $IN > $​{IN}.dat
+        $APP $​{IN}.gp
+        rm $​{IN}.gp
+        rm $​{IN}.dat
+    fi
+fi
+
+echo "<div align='center'>"  > ./$​{OUT}
+cat ./$​{CACHE}/$​{OUT}.svg   >> ./$​{OUT}
+echo "</div>"               >> ./$​{OUT}
+```
+
+<!-- collapse:end -->
 
 ## 既知の問題点
 
