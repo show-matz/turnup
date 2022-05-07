@@ -87,6 +87,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4Details.o			\
 		$(TARGETDIR)/Operator4EmbedFootnotes.o	\
 		$(TARGETDIR)/Operator4EmbedPageBreak.o	\
+		$(TARGETDIR)/Operator4EmbedIndex.o		\
 		$(TARGETDIR)/Operator4EmbedTOC.o		\
 		$(TARGETDIR)/Operator4EmptyLine.o		\
 		$(TARGETDIR)/Operator4Error.o			\

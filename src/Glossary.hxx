@@ -10,6 +10,8 @@
 
 namespace turnup {
 
+	class DocumentInfo;
+
 	typedef void WriteFunction( std::ostream&, const char*, const char* );
 
 	//--------------------------------------------------------------------------
@@ -29,6 +31,8 @@ namespace turnup {
 								  const char* pTermEnd = nullptr ) const;
 		void WriteWithTermLink( std::ostream& os, const char* pTop,
 								const char* pEnd, WriteFunction* pWriteFunc ) const;
+		void WriteIndex( std::ostream& os,
+						 DocumentInfo& docInfo, bool bFoldable ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;

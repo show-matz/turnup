@@ -121,8 +121,6 @@ namespace turnup {
 	static void WriteWithTermLink( std::ostream& os,
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink );
-	static void WriteWithEscape( std::ostream& os,
-								 const char* pTop, const char* pEnd );
 
 	//--------------------------------------------------------------------------
 	//
@@ -310,6 +308,44 @@ namespace turnup {
 	std::ostream& TextSpan::WriteSimple( std::ostream& os ) const {
 		WriteWithEscape( os, this->Top(), this->End() );
 		return os;
+	}
+
+	/*
+	 * < を &lt; に
+	 * > を &gt; に
+	 * & を &amp; に
+	 */
+	void TextSpan::WriteWithEscape( std::ostream& os,
+									const char* pTop, const char* pEnd ) {
+		auto i1 = std::find( pTop, pEnd, '&' );
+		auto i2 = std::find( pTop, pEnd, '<' );
+		auto i3 = std::find( pTop, pEnd, '>' );
+
+		while( pTop < pEnd ) {
+			auto top = min3( i1, i2, i3 );
+			if( top == pEnd ) {
+				os.write( pTop, pEnd - pTop );
+				pTop = pEnd;
+				break;
+			}
+			switch( *top ) {
+			case '&':	os.write( pTop, top - pTop );
+						os << "&amp;";
+						pTop = top + 1;
+						i1 = std::find( pTop, pEnd, '&' );
+						break;
+			case '<':	os.write( pTop, top - pTop );
+						os << "&lt;";
+						pTop = top + 1;
+						i2 = std::find( pTop, pEnd, '<' );
+						break;
+			case '>':	os.write( pTop, top - pTop );
+						os << "&gt;";
+						pTop = top + 1;
+						i3 = std::find( pTop, pEnd, '>' );
+						break;
+			}
+		}
 	}
 
 	void TextSpan::DestructureToken( TextSpan data,
@@ -556,7 +592,7 @@ namespace turnup {
 			os.write( pURL1, pURL2 - pURL1 );
 			os << "'>";
 			if( pLbl1 == pLbl2 )
-				WriteWithEscape( os, pURL1, pURL2 );
+				TextSpan::WriteWithEscape( os, pURL1, pURL2 );
 			else {
 				TextSpan tmp{ pLbl1, pLbl2 };
 				tmp.WriteTo( os, docInfo, false );
@@ -688,7 +724,7 @@ namespace turnup {
 		}
 		auto& styles = docInfo.Get<StyleStack>();
 		styles.WriteOpenTag( os, "code" );
-		WriteWithEscape( os, pTop + 1, p );	// code タグ内部ではネストさせないし用語の自動リンクもしない
+		TextSpan::WriteWithEscape( os, pTop + 1, p );	// code タグ内部ではネストさせないし用語の自動リンクもしない
 		os << "</code>";
 		return p + 1;
 	}
@@ -833,48 +869,10 @@ namespace turnup {
 								   const char* pTop, const char* pEnd,
 								   DocumentInfo& docInfo, bool bTermLink ) {
 		if( !bTermLink )
-			WriteWithEscape( os, pTop, pEnd );
+			TextSpan::WriteWithEscape( os, pTop, pEnd );
 		else {
 			auto& glossary = docInfo.Get<Glossary>();
-			glossary.WriteWithTermLink( os, pTop, pEnd, WriteWithEscape );
-		}
-	}
-
-	/*
-	 * < を &lt; に
-	 * > を &gt; に
-	 * & を &amp; に
-	 */
-	static void WriteWithEscape( std::ostream& os,
-								 const char* pTop, const char* pEnd ) {
-		auto i1 = std::find( pTop, pEnd, '&' );
-		auto i2 = std::find( pTop, pEnd, '<' );
-		auto i3 = std::find( pTop, pEnd, '>' );
-
-		while( pTop < pEnd ) {
-			auto top = min3( i1, i2, i3 );
-			if( top == pEnd ) {
-				os.write( pTop, pEnd - pTop );
-				pTop = pEnd;
-				break;
-			}
-			switch( *top ) {
-			case '&':	os.write( pTop, top - pTop );
-						os << "&amp;";
-						pTop = top + 1;
-						i1 = std::find( pTop, pEnd, '&' );
-						break;
-			case '<':	os.write( pTop, top - pTop );
-						os << "&lt;";
-						pTop = top + 1;
-						i2 = std::find( pTop, pEnd, '<' );
-						break;
-			case '>':	os.write( pTop, top - pTop );
-						os << "&gt;";
-						pTop = top + 1;
-						i3 = std::find( pTop, pEnd, '>' );
-						break;
-			}
+			glossary.WriteWithTermLink( os, pTop, pEnd, TextSpan::WriteWithEscape );
 		}
 	}
 

@@ -5,6 +5,9 @@
 //------------------------------------------------------------------------------
 #include "Glossary.hxx"
 
+#include "DocumentInfo.hxx"
+#include "StyleStack.hxx"
+#include "TextSpan.hxx"
 #include "CRC64.hxx"
 
 #include <string.h>
@@ -187,6 +190,8 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	class Glossary::Impl {
+	private:
+		typedef std::pair<char, const EntryBase*> IndexEntry;
 	public:
 		Impl();
 		~Impl();
@@ -200,8 +205,15 @@ namespace turnup {
 		void WriteWithTermLink( std::ostream& os,
 								const char* pTop, const char* pEnd,
 								uint32_t idx, WriteFunction* pWriteFunc ) const;
+		void WriteIndex( std::ostream& os, DocumentInfo& docInfo ) const;
+		void WriteIndex_X( std::ostream& os, DocumentInfo& docInfo ) const;
 	private:
 		bool CheckUniqueness( const char* pTop, const char* pEnd ) const;
+		void SetupIndexEntries( std::vector<IndexEntry>& container ) const;
+	private:
+		static IndexEntry CreateIndexEntry( const EntryBase* pEntry );
+		static bool CompareIndexEntry( const IndexEntry& e1, const IndexEntry& e2 );
+		static const char* GetIndexTag( char mark );
 	private:
 		std::vector<EntryBase*>	m_entries;
 		bool m_sorted;
@@ -234,6 +246,13 @@ namespace turnup {
 									  WriteFunction* pWriteFunc ) const {
 		m_pImpl->SortIfNeed();
 		m_pImpl->WriteWithTermLink( os, pTop, pEnd, 0, pWriteFunc );
+	}
+	void Glossary::WriteIndex( std::ostream& os,
+							   DocumentInfo& docInfo, bool bFoldable ) const {
+		if( !bFoldable )
+			m_pImpl->WriteIndex( os, docInfo );
+		else
+			m_pImpl->WriteIndex_X( os, docInfo );
 	}
 
 	//--------------------------------------------------------------------------
@@ -320,6 +339,72 @@ namespace turnup {
 		pWriteFunc( os, pTop, pEnd );
 	}
 
+	void Glossary::Impl::WriteIndex( std::ostream& os, DocumentInfo& docInfo ) const {
+
+		std::vector<IndexEntry> tmpEntries;
+		SetupIndexEntries( tmpEntries );
+
+		auto& styles = docInfo.Get<StyleStack>();
+		char mark = 0;
+		styles.WriteOpenTag( os, "ul" ) << std::endl;
+		for( const auto& entry : tmpEntries ) {
+			if( entry.first != mark ) {
+				if( !!mark )
+					os << "</ul>" << std::endl << "</li>" << std::endl;
+				styles.WriteOpenTag( os, "li" ) << GetIndexTag( entry.first ) << std::endl;
+				styles.WriteOpenTag( os, "ul" ) << std::endl;
+				mark = entry.first;
+			}
+			styles.WriteOpenTag( os, "li" );
+			entry.second->Write( os, TextSpan::WriteWithEscape );
+			os	<< "</li>" << std::endl;
+		}
+		if( !!mark )
+			os << "</ul>" << std::endl
+			   << "</li>" << std::endl;
+		os << "</ul>" << std::endl;
+	}
+
+	void Glossary::Impl::WriteIndex_X( std::ostream& os, DocumentInfo& docInfo ) const {
+
+		auto& styles = docInfo.Get<StyleStack>();
+		TextSpan listitm{ "li" };
+		TextSpan details{ "details" };
+		TextSpan summary{ "summary" };
+		TextSpan bkquote{ "blockquote" };
+		TextSpan clsidxx{ "class='idx_x'" };
+		styles.PushStyle( listitm, clsidxx );
+		styles.PushStyle( details, clsidxx );
+		styles.PushStyle( summary, clsidxx );
+		styles.PushStyle( bkquote, clsidxx );
+
+		std::vector<IndexEntry> tmpEntries;
+		SetupIndexEntries( tmpEntries );
+		char mark = 0;
+		for( const auto& entry : tmpEntries ) {
+			if( entry.first != mark ) {
+				if( !!mark )
+					os << "</blockquote>" << std::endl << "</details>" << std::endl;
+				styles.WriteOpenTag( os, "details", nullptr, " open>" ) << std::endl;
+				styles.WriteOpenTag( os, "summary" ) << GetIndexTag( entry.first )
+															 << "</summary>" << std::endl;
+				styles.WriteOpenTag( os, "blockquote" ) << std::endl;
+				mark = entry.first;
+			}
+			styles.WriteOpenTag( os, "li" );
+			entry.second->Write( os, TextSpan::WriteWithEscape );
+			os	<< "</li>" << std::endl;
+		}
+		if( !!mark )
+			os << "</blockquote>" << std::endl
+			   << "</details>" << std::endl;
+
+		styles.PopStyle( listitm );
+		styles.PopStyle( details );
+		styles.PopStyle( summary );
+		styles.PopStyle( bkquote );
+	}
+
 	bool Glossary::Impl::CheckUniqueness( const char* pTop, const char* pEnd ) const {
 		uint32_t len = pEnd - pTop;
 		for( uint32_t idx = 0; idx < m_entries.size(); ++idx ) {
@@ -330,6 +415,54 @@ namespace turnup {
 		}
 		return true;
 	}
+
+	void Glossary::Impl::SetupIndexEntries( std::vector<IndexEntry>& container ) const {
+		container.reserve( m_entries.size() );
+		std::transform( m_entries.begin(), m_entries.end(),
+						std::back_inserter( container ), CreateIndexEntry );
+		std::sort( container.begin(), container.end(), CompareIndexEntry );
+	}
+
+	#define MARK_SYMBOL	'!'	// 0x21
+	#define MARK_NUMBER	'0'	// 0x30
+	#define MARK_OTHERS	'~'	// 0x7E
+
+	Glossary::Impl::IndexEntry Glossary::Impl::CreateIndexEntry( const EntryBase* pEntry ) {
+		auto p = reinterpret_cast<const unsigned char*>( pEntry->GetTerm() );
+		char mark;
+			 if( 'a' <= *p && *p <= 'z' )	mark = 'A' + (*p - 'a');
+		else if( 'A' <= *p && *p <= 'Z' )	mark = *p;
+		else if( '0' <= *p && *p <= '9' )	mark = MARK_NUMBER;
+		else if( *p < 128 )					mark = MARK_SYMBOL;
+		else								mark = MARK_OTHERS;
+		return std::make_pair( mark, pEntry );
+	}
+
+	bool Glossary::Impl::CompareIndexEntry( const IndexEntry& e1, 
+											const IndexEntry& e2 ) {
+		if( e1.first < e2.first ) return true;
+		if( e1.first > e2.first ) return false;
+		auto p1 = e1.second->GetTerm();
+		auto p2 = e2.second->GetTerm();
+		return std::lexicographical_compare( p1, p1 + e1.second->GetLength(),
+											 p2, p2 + e2.second->GetLength() );
+	}
+
+	const char* Glossary::Impl::GetIndexTag( char mark ) {
+		static char buf[2] = { 0, 0 };
+		switch( mark ) {
+		case MARK_SYMBOL: return "Symbols";
+		case MARK_NUMBER: return "Numbers";
+		case MARK_OTHERS: return "Others";
+		default:
+			buf[0] = mark;
+			return buf;
+		}
+	}
+
+	#undef MARK_SYMBOL
+	#undef MARK_NUMBER
+	#undef MARK_OTHERS
 
 } // namespace turnup
 

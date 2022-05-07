@@ -10,6 +10,7 @@
 #include "Operator4Details.hxx"
 #include "Operator4EmbedFootnotes.hxx"
 #include "Operator4EmbedPageBreak.hxx"
+#include "Operator4EmbedIndex.hxx"
 #include "Operator4EmbedTOC.hxx"
 #include "Operator4EmptyLine.hxx"
 #include "Operator4Error.hxx"
@@ -55,6 +56,8 @@ namespace turnup {
 		Operator4EmbedTOC,
 		Operator4EmbedTableList,
 		Operator4EmbedFigureList,
+		Operator4EmbedIndex_X,
+		Operator4EmbedIndex,
 		Operator4EmbedFootnotes,
 		Operator4EmbedPageBreak,
 		Operator4StyleStack,

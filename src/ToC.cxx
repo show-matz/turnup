@@ -401,7 +401,7 @@ namespace turnup {
 			uint32_t lv = entry.GetLevel();
 			if( lv < minLevel || maxLevel < lv )
 				continue;
-			for( ; curLevel < lv; ++curLevel )
+		for( ; curLevel < lv; ++curLevel )
 				styles.WriteOpenTag( os, "ul" ) << std::endl;
 			for( ; lv < curLevel; --curLevel )
 				os << "</ul>" << std::endl;

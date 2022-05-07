@@ -62,6 +62,8 @@ namespace turnup {
 							   DocumentInfo& docInfo, bool bTermLink = true ) const;
 		std::ostream& WriteSimple( std::ostream& os ) const;
 	public:
+		static void WriteWithEscape( std::ostream& os,
+									 const char* pTop, const char* pEnd );
 		static void DestructureToken( TextSpan data,
 									  bool(*callback)(TextSpan, void*), void* pOpaque );
 	private:
