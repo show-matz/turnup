@@ -269,6 +269,15 @@ namespace turnup {
 				filters.RegistExternal( item.Trim(), command.Trim() );
 				line.Clear();
 			}
+			if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
+				item = item.Trim();
+				if( toc.RegisterAnchor( item ) == false ) {
+					std::cerr << "ERROR : anchor '";
+					std::cerr.write( item.Top(), item.ByteLength() );
+					std::cerr << "' is duplicated." << std::endl;
+				}
+				continue;
+			}
 			if( tmp.IsMatch( "<!-- autolink:", item, " -->" ) ) {
 				item = item.Trim();
 				TextSpan word;

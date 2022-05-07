@@ -90,8 +90,7 @@ namespace turnup {
 									DocumentInfo& docInfo, bool bTermLink );
 	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
 								  const char* pLbl1, const char* pLbl2,
-								  const char* pURL1, const char* pURL2,
-								  DocumentInfo& docInfo );
+								  const char* pURL1, const char* pURL2, DocumentInfo& docInfo );
 	static const char* FindLinkLabelPlaceHolder( const char* pLabelTop,
 												 const char* pLabelEnd );
 	// <br> 形式の（一部の許可された）HTMLタグを処理する
@@ -545,16 +544,14 @@ namespace turnup {
 			return p2 + 1;
 		}
 		// ページ内アンカー指定の場合
-		if( pURL1[0] == '#' )
-			OperateInnerLink( os, ToC::EntryT::HEADER,
-							  pLbl1, pLbl2, pURL1 + 1, pURL2, docInfo );
-		else if( (pURL1[0] == 'T' || pURL1[0] == 'F') && pURL1[1] == '#' )
-			OperateInnerLink( os,
-							  pURL1[0] == 'T' ? ToC::EntryT::TABLE
-											  : ToC::EntryT::FIGURE,
-							  pLbl1, pLbl2, pURL1 + 2, pURL2, docInfo );
+		ToC::EntryT tocType;
+		if( ToC::IsInternalLink( pURL1, tocType ) == true ) {
+			if( tocType == ToC::EntryT::HEADER )
+				OperateInnerLink( os, tocType, pLbl1, pLbl2, pURL1 + 1, pURL2, docInfo );
+			else
+				OperateInnerLink( os, tocType, pLbl1, pLbl2, pURL1 + 2, pURL2, docInfo );
 		// ページ内アンカー指定でない場合
-		else {
+		} else {
 			os << "<a href='";
 			os.write( pURL1, pURL2 - pURL1 );
 			os << "'>";
@@ -572,8 +569,7 @@ namespace turnup {
 
 	static void OperateInnerLink( std::ostream& os, ToC::EntryT type,
 								  const char* pLbl1, const char* pLbl2,
-								  const char* pURL1, const char* pURL2,
-								  DocumentInfo& docInfo ) {
+								  const char* pURL1, const char* pURL2, DocumentInfo& docInfo ) {
 		bool bEmptyLabel = (pLbl1 == pLbl2);
 		auto& toc = docInfo.Get<ToC>();
 		const char* pAnchor = toc.GetAnchorTag( type, pURL1, pURL2 );
@@ -588,13 +584,22 @@ namespace turnup {
 		}
 		os << "<a href='#" << pAnchor << "'>";
 		auto& cfg = docInfo.Get<Config>();
+		TextSpan entry{ pURL1, pURL2 };
 		char prefix[64];
+		// label 部分が空の場合
 		if( bEmptyLabel ) {
-			if( cfg.bNumberingHeader || type != ToC::EntryT::HEADER ) {
-				if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
-					os << prefix << ' ';
+			// header numbering または TABLE/FIGURE の場合は entry number 出力
+			if( cfg.bNumberingHeader || type == ToC::EntryT::TABLE || type == ToC::EntryT::FIGURE ) {
+				if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) ) {
+					os << prefix;
+					if( !!*prefix )
+						os << ' ';
+				}
 			}
-			TextSpan{ pURL1, pURL2 }.WriteTo( os, docInfo, false );
+			// url で指定された部分を出力
+			entry.WriteTo( os, docInfo, false );
+
+		// label 部分が空でない場合
 		} else {
 			while( pLbl1 < pLbl2 ) {
 				const char* pPivot = FindLinkLabelPlaceHolder( pLbl1, pLbl2 );
@@ -604,11 +609,16 @@ namespace turnup {
 				if( pLbl1 < pLbl2 ) {
 					switch( pLbl1[1] ) {
 					case '$':
-						TextSpan{ pURL1, pURL2 }.WriteTo( os, docInfo, false );
+						entry.WriteTo( os, docInfo, false );
 						break;
 					case '@':
-						if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) )
-							os << prefix;
+						if( toc.GetEntryNumber( prefix, type, cfg, pURL1, pURL2 ) ) {
+							if( !!*prefix )
+								os << prefix;
+							else
+								std::cerr << "WARNING : entry number for '"
+														  << entry << "' is void." << std::endl;
+						}
 						break;
 					}
 					pLbl1 += 2;

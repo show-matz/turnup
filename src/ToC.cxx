@@ -55,6 +55,7 @@ namespace turnup {
 		case ToC::EntryT::HEADER:	return 'H';
 		case ToC::EntryT::TABLE:	return 'T';
 		case ToC::EntryT::FIGURE:	return 'F';
+		case ToC::EntryT::ANCHOR:	return 'A';
 		}
 		return 'X';		// 'X' means 'something other else'.
 	}
@@ -196,6 +197,9 @@ namespace turnup {
 	bool ToC::RegisterFigure( const TextSpan& title ) {
 		return m_pImpl->RegisterImpl( ToC::EntryT::FIGURE, 0, title );
 	}
+	bool ToC::RegisterAnchor( const TextSpan& title ) {
+		return m_pImpl->RegisterImpl( ToC::EntryT::ANCHOR, 0, title );
+	}
 	bool ToC::RegisterLinkButton( bool bTop, const TextSpan& title ) {
 		return m_pImpl->RegisterLinkButton( bTop, title );
 	}
@@ -224,6 +228,21 @@ namespace turnup {
 	}
 	void ToC::WriteFigureList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::FIGURE, docInfo );
+	}
+
+	bool ToC::IsInternalLink( const char* pTop, EntryT& type ) {
+		if( pTop[0] == '#' ) {
+			type = ToC::EntryT::HEADER;
+			return true;
+		}
+		if( pTop[1] != '#' )
+			return false;
+		switch( pTop[0] ) {
+		case 'A':	type = ToC::EntryT::ANCHOR;	return true;
+		case 'F':	type = ToC::EntryT::FIGURE;	return true;
+		case 'T':	type = ToC::EntryT::TABLE;	return true;
+		default:	return false;
+		}
 	}
 
 	//--------------------------------------------------------------------------
@@ -329,12 +348,21 @@ namespace turnup {
 		auto pEntry = FindEntry( type, pTitle, pTitleEnd );
 		if( !pEntry )
 			return false;
-		if( type == ToC::EntryT::HEADER ) {
+		switch( type ) {
+		case ToC::EntryT::HEADER:
 			pEntry->GetChapterPrefix( cfg, pBuf );
 			return true;
+		case ToC::EntryT::TABLE:
+		case ToC::EntryT::FIGURE:
+			this->GetFigureAndTablePrefix( pBuf, pEntry, cfg );
+			return true;
+		case ToC::EntryT::ANCHOR:
+			*pBuf = 0;
+			return true;
+		default:
+			return false;
 		}
-		this->GetFigureAndTablePrefix( pBuf, pEntry, cfg );
-		return true;
+		
 	}
 
 	void ToC::Impl::WriteTocLinkIfNeed( std::ostream& os ) const {
