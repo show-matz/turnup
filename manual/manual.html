@@ -140,7 +140,7 @@
 <p>　　</p>
 <h2><a name='ii4jRxV2ffy'></a>2 turnup とは</h2>
 <p>　turnup は、<a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法で作成したテキストファイルから <a class='term' href='#ahN3t8jbawv'>HTML</a> を出力するツールです<sup><a name='footnote_ref1' href='#footnote1'>1</a></sup>。このマニュアル文書自体、turnup で作成されています。</p>
-<p>　turnup の目的は、 <strong>「マニュアルや技術文書、設計文書などをテキストベースで作成・管理できるようにすること」</strong> です。git のようなバージョン管理システムが普及した現在でも、これらの文書作成にバイナリ形式のファイルを使用している限り、文書の管理には困難が伴います。手軽にテキストで文書作成ができるツールとして markdown 書法がありますが、markdown に対応した従来のツールは本家<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup>を始めとして、全体的に機能不足でした。turnup はこの不足を埋めることを目的としているため、<a href='#9Dfk88hOKmk'>脚注</a>や<a href='#7maM1Z8DaEp'>目次</a>・<a href='#iVFblGs7lu7'>図表一覧</a>の生成、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>などの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>を用意しています。</p>
+<p>　turnup の目的は、 <strong>「マニュアルや技術文書、設計文書などをテキストベースで作成・管理できるようにすること」</strong> です。git のようなバージョン管理システムが普及した現在でも、これらの文書作成にバイナリ形式のファイルを使用している限り、文書の管理には困難が伴います。手軽にテキストで文書作成ができるツールとして <a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法がありますが、<a class='term' href='#b3GXdVHw3CE'>Markdown</a> に対応した従来のツールは本家<sup><a name='footnote_ref2' href='#footnote2'>2</a></sup>を始めとして、全体的に機能不足でした。turnup はこの不足を埋めることを目的としているため、<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>や<a href='#7maM1Z8DaEp'>目次</a>・<a href='#iVFblGs7lu7'>図表一覧</a>の生成、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>などの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>を用意しています。</p>
 <p>　turnup は、ワープロソフトそのものを置き換えようとしているわけではありません。最終的に印刷して頒布することが想定されるような文書では、ワープロソフトやもっと高品質な出力が可能な組版ソフトを使用した方が良いでしょう。</p>
 <h2><a name='dcPEbaWhYMa'></a>3 用語</h2>
 <dl>
@@ -168,7 +168,7 @@
 <h2><a name='8wGebtcPJwd'></a>5 記法</h2>
 <p>　turnup の入力書式は一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法と基本的に同じですが、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a><sup><a name='footnote_ref3' href='#footnote3'>3</a></sup>を備えています。</p>
 <h3><a name='7HkxqP1TWY5'></a>5.1 見出し</h3>
-<p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は見出し行になります。後続する文字列が見出しのタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
+<p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>行になります。後続する文字列が<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
 <pre>
  # header1
  ## header2
@@ -252,7 +252,7 @@ blah blah
 </p>
 <p>next paragraph : blah blah blah blah blah blah blah</p>
 </li>
-<li>list item with blockquote
+<li>list item with <a class='autolink' href='#2c4WKrG50Sg'>blockquote</a>
 <blockquote>
 <p>blah blah blah blah blah blah blah blah blah </p>
 </blockquote>
@@ -432,7 +432,7 @@ int main( void ) {
 <p>　　 </p>
 <p>　version 0.815 より、内部フィルタを使って CSV 形式などのデータから<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を生成できるようになりました。この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>については「<a href='#fJ4r3VpDmqg'>6.17  テーブルの生成</a>」を参照してください。</p>
 <h3><a name='2c4WKrG50Sg'></a>5.6 引用</h3>
-<p>　&gt; で始まる行は引用になります。連続する引用のブロックは <code>&lt;blockquote&gt;</code> タグで括られ、通常の各種書法に従って処理されます。これはネストさせることができます。</p>
+<p>　&gt; で始まる行は<a class='autolink' href='#2c4WKrG50Sg'>引用</a>になります。連続する<a class='autolink' href='#2c4WKrG50Sg'>引用</a>のブロックは <code>&lt;blockquote&gt;</code> タグで括られ、通常の各種書法に従って処理されます。これはネストさせることができます。</p>
 <pre>
 &gt;  blah blah blah blah blah blah 
 &gt; blah blah blah blah blah blah 
@@ -477,7 +477,7 @@ int main( void ) {
 </pre>
 </blockquote>
 <h3><a name='9PbJaRizVB7'></a>5.7 定義リスト</h3>
-<p>　以下のような記述により、定義リストを作成できます。turnup では、これによって定義された用語は<a href='#8mg4uLSAXaz'>自動リンク</a>の対象となります。</p>
+<p>　以下のような記述により、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>を作成できます。turnup では、これによって定義された用語は<a href='#8mg4uLSAXaz'>自動リンク</a>の対象となります。</p>
 <pre>
   *[用語]: 用語の定義をここに記述します。
   複数行に渡る定義も記述できます。空行で終わります。
@@ -490,7 +490,7 @@ int main( void ) {
 </dl>
 <p>　[ と ] に囲まれた用語は、前後のスペースは無視されますが、途中にあるスペースは用語の一部とみなされます。</p>
 <h3><a name='cPmXTXvPhJd'></a>5.8 コメント</h3>
-<p>　turnup は、以下のような <a class='term' href='#ahN3t8jbawv'>HTML</a> 形式のコメントをコメントとして扱います。つまり、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> の内容には含まれません。</p>
+<p>　turnup は、以下のような <a class='term' href='#ahN3t8jbawv'>HTML</a> 形式の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>として扱います。つまり、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> の内容には含まれません。</p>
 <pre>
   &lt;!-- comment --&gt;
 
@@ -523,7 +523,7 @@ int main( void ) {
   [テキスト](URL)
 </pre>
 <p>　たとえば、 <code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
-<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、ページ内の見出しや図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.8  節</a>を参照してください。</p>
+<p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、ページ内の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.8  節</a>を参照してください。</p>
 <h3><a name='2TegSYAerqJ'></a>5.14 コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、<a href='#8mg4uLSAXaz'>自動リンク</a>やその他の文字装飾は実行されません。</p>
 <pre>
@@ -549,7 +549,7 @@ int main( void ) {
 <h2><a name='i9uAZw3xFSK'></a>6 拡張機能</h2>
 <p>　turnup には、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>があります。一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kyMp8IkRK8n'></a>6.1 文書タイトルとスタイルシートの指定</h3>
-<p>　データファイルの冒頭に以下のようなコメントを記述することで、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
+<p>　データファイルの冒頭に以下のような<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
 <pre>
   &lt;!-- title:Document title --&gt;
   &lt;!-- style:./default.css --&gt;
@@ -573,7 +573,7 @@ int main( void ) {
 <use xlink:href="#line" x='0' y='100' />
 </svg>
 </a></div>
-<p>　これは、実際には目次にジャンプしているわけではなく、指定された見出しへのリンクに過ぎません。そのため、この機能を使用する場合は目次の直前に見出しを置く必要があります。ジャンプ先の見出しは <code>toc-link: top</code> に続けて指定してください（先の例であれば <code>"Table of contents"</code> という部分）。この機能を使用する場合、目次の周辺は以下のように記述されることになるでしょう。</p>
+<p>　これは、実際には目次にジャンプしているわけではなく、指定された<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクに過ぎません。そのため、この機能を使用する場合は目次の直前に<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>を置く必要があります。ジャンプ先の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>は <code>toc-link: top</code> に続けて指定してください（先の例であれば <code>"Table of contents"</code> という部分）。この機能を使用する場合、目次の周辺は以下のように記述されることになるでしょう。</p>
 <pre>
 ​## Table of contents
 
@@ -599,15 +599,15 @@ Table. title of table
 |    2    |    3    |
 </pre>
 <p>　この方法でタイトルをつけておけば、同じく<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の<a href='#iVFblGs7lu7'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
-<p>　見出しと同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
+<p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>と同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='4e8Wf4oSDqx'></a>6.4 アンカー</h3>
-<p>　以下の形式のコメントを記述することにより、リンク先となる<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を任意の場所に作成できます。</p>
+<p>　以下の形式の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することにより、リンク先となる<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を任意の場所に作成できます。</p>
 <pre>
 &lt;​!-- anchor: ANCHORNAME --&gt;
 </pre>
 <p>　この方法で作成した<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成する場合、<a href='#cjJv49XsD9d'>ページ内へのリンク</a>に記載した方法に従って、 <code>[LABEL](A#ANCHORNAME)</code> 形式のページ内リンクを記述してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.5 インラインスタイル指定</h3>
-<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、インラインスタイル指定が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
+<p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
 <pre>
  @{{STYLES}{CONTENTS}}
  @((STYLES)(CONTENTS))
@@ -615,7 +615,7 @@ Table. title of table
 <p>　上記は、 <code>&lt;span style='STYLES'&gt;CONTENTS&lt;/span&gt;</code> のように展開されます。たとえば、<code>@((background:red; color:white;)(赤地の白抜き))</code> が<span style='background:red; color:white;'>赤地の白抜き</span>になります。</p>
 <p>　範囲指定でタグ別にスタイルを指定したい場合、次に説明する「<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>」を利用してください。</p>
 <h3><a name='dOeJnU6OE95'></a>6.6 スタイルスタック</h3>
-<p>　<a href='#2Hh9eF0BTk3'>インラインスタイル指定</a> は文章の一部分にスタイルを指定するものでしたが、もっと広い範囲でスタイルを一時的に変更したい場合もあります。そのような場合には、 <strong>「<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>」</strong> が使用できます。これは、以下の要領で <a class='term' href='#ahN3t8jbawv'>HTML</a> タグと区間を指定し、class や style を設定するものです。</p>
+<p>　<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>は文章の一部分にスタイルを指定するものでしたが、もっと広い範囲でスタイルを一時的に変更したい場合もあります。そのような場合には、 <strong>「<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>」</strong> が使用できます。これは、以下の要領で <a class='term' href='#ahN3t8jbawv'>HTML</a> タグと区間を指定し、class や style を設定するものです。</p>
 <pre>
  &lt;!-- stack:push p style="color: red;" --&gt;
         :
@@ -674,31 +674,31 @@ Table. title of table
 </table>
 <h3><a name='cjJv49XsD9d'></a>6.8 ページ内へのリンク</h3>
 <p>　リンクの書法を拡張することで、ページ内の<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>、<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成することができます。</p>
-<p>　ページ内の見出しへのリンクを作成する場合、URL 部分を # に続けて見出しの名前にしてください。たとえば、 <code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた見出し名がリンクのテキストとなることに注意してください。つまり、 <code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
-<p>　<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成するには、（ちょっと無様ですが）以下のように F#, T# に続けてタイトルを記述します。それ以外のルールは見出しへのリンクと同じです。</p>
+<p>　ページ内の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクを作成する場合、URL 部分を # に続けて<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>の名前にしてください。たとえば、 <code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>名がリンクのテキストとなることに注意してください。つまり、 <code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
+<p>　<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成するには、（ちょっと無様ですが）以下のように F#, T# に続けてタイトルを記述します。それ以外のルールは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクと同じです。</p>
 <pre>
   [テキスト](F#図のタイトル)
   [テキスト](T#表のタイトル)
 </pre>
-<p>　<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成するには、（これも無様ですが）以下のように A# に続けてタイトルを記述します。それ以外のルールは見出しへのリンクと同じです。</p>
+<p>　<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成するには、（これも無様ですが）以下のように A# に続けてタイトルを記述します。それ以外のルールは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクと同じです。</p>
 <pre>
   [テキスト](A#アンカーのタイトル)
 </pre>
 <p>　さらに、テキスト部分では <code>$@</code> と <code>$$</code> を使うことができます。これらは、以下のように展開されます。</p>
 <ul>
 <li><code>$@</code> : 自動ナンバリングによって付与されるプレフィクス</li>
-<li><code>$$</code> : 見出しや図表タイトルの文字列</li>
+<li><code>$$</code> : <a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトルの文字列</li>
 </ul>
-<p>　ただし、<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>や自動ナンバリングの対象となっていない見出しレベルへのリンクでは <code>$@</code> は空文字列に展開されるので注意してください。</p>
+<p>　ただし、<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>や自動ナンバリングの対象となっていない<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルへのリンクでは <code>$@</code> は空文字列に展開されるので注意してください。</p>
 <h3><a name='8mg4uLSAXaz'></a>6.9 キーワードへの自動リンク</h3>
-<p>　以下のようなコメント記述により、キーワードへの自動リンクを設定することができます。</p>
+<p>　以下のような<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>記述により、キーワードへの自動リンクを設定することができます。</p>
 <pre>
   &lt;!-- autolink: [TITLE](URL) --&gt;
 </pre>
-<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記コメント記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
-<p>　この <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> コメントに記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。見出しや図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
+<p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
+<p>　この <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>に記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
-<p>　<code>autolink</code> コメントによる自動リンクと定義リストは、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
+<p>　<code>autolink</code> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>による自動リンクと<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>は、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
 <h3><a name='6LkDjrI3ASb'></a>6.10 生の HTML の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> をそのまま出力することができます。</p>
 <pre>
@@ -715,25 +715,25 @@ Table. title of table
   &lt;/raw_html&gt;
 </pre>
 <h3><a name='9Dfk88hOKmk'></a>6.11 脚注</h3>
-<p>　文章中に脚注を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
+<p>　文章中に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
 <pre>
   {{fn:これが脚注の内容です。}}
 </pre>
-<p>　脚注をまとめて表示するには、脚注を展開したい場所（通常は登場文書の末尾でしょう）に以下の行を記述します。これにより、その場所に文書内のすべての脚注が記載順で一覧されます。</p>
+<p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>をまとめて表示するには、<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を展開したい場所（通常は登場文書の末尾でしょう）に以下の行を記述します。これにより、その場所に文書内のすべての<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>が記載順で一覧されます。</p>
 <pre>
   &lt;!-- embed:footnotes --&gt;
 </pre>
-<p>　このマニュアル文書でも、いくつかの脚注を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
+<p>　このマニュアル文書でも、いくつかの<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
 <h3><a name='7maM1Z8DaEp'></a>6.12 目次の生成</h3>
-<p>　見出し情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
+<p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
 <pre>
   &lt;!-- embed:toc --&gt;
 </pre>
-<p>　上記の指定では、見出しレベルの１から６までが全て目次化の対象になります。この対象範囲を絞るには、以下のように記述します。</p>
+<p>　上記の指定では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの１から６までが全て目次化の対象になります。この対象範囲を絞るには、以下のように記述します。</p>
 <pre>
   &lt;!-- embed:toc 2 4 --&gt;
 </pre>
-<p>　この例では、見出しレベル２〜４までが目次化の対象となります。</p>
+<p>　この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４までが目次化の対象となります。</p>
 <p>　<code>embed:toc</code> のかわりに <code>embed:toc-x</code> を使うことで、折り畳み可能な目次を生成できます。このマニュアルの<a href='#0qJQvVjc3Xy'>冒頭にある目次</a>も <code>toc-x</code> を使用して生成されています。</p>
 <h3><a name='iVFblGs7lu7'></a>6.13 図表一覧の生成</h3>
 <p>　目次と同様、図と表の一覧を生成することができます。以下のように記述すると、その場所に図の一覧が作成されます。</p>
@@ -746,7 +746,7 @@ Table. title of table
 </pre>
 <p>　これによって生成される一覧でも、<a href='#gg7i7uPfLlo'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='2C50p0Hw1s1'></a>6.14 索引の生成</h3>
-<p>　定義リスト、およびキーワードへの自動リンクの定義から索引を自動生成することができます。以下の記述により、その場所に索引が生成されます。</p>
+<p>　<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>、およびキーワードへの自動リンクの定義から索引を自動生成することができます。以下の記述により、その場所に索引が生成されます。</p>
 <pre>
   &lt;!-- embed:index --&gt;
 </pre>
@@ -787,10 +787,10 @@ index 16fc9f4..8387187 100644
 <li>diff</li>
 <li>sh</li>
 <li>Common LISP</li>
-<li>raw （これは<a href='#6LkDjrI3ASb'>生の HTML を出力</a>するためのものです）</li>
-<li>table （これは<a href='#fJ4r3VpDmqg'>テーブルの作成を支援</a>するためのものです）</li>
+<li><a class='autolink' href='#6LkDjrI3ASb'>raw</a> （これは<a href='#6LkDjrI3ASb'>生の HTML を出力</a>するためのものです）</li>
+<li><a class='autolink' href='#fJ4r3VpDmqg'>table</a> （これは<a href='#fJ4r3VpDmqg'>テーブルの作成を支援</a>するためのものです）</li>
 </ul>
-<p>　　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.16  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
+<p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.16  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.16 外部フィルタの登録</h3>
 <p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
 <pre>
@@ -810,7 +810,7 @@ index 16fc9f4..8387187 100644
 </ul>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>が優先されます。</p>
 <h3><a name='fJ4r3VpDmqg'></a>6.17 テーブルの生成</h3>
-<p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの table が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
+<p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの <a class='autolink' href='#fJ4r3VpDmqg'>table</a> が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
 <pre>
 ~~~table
 foo,bar,quux
@@ -847,7 +847,7 @@ foo	bar	quux
 </li>
 </ul>
 <h3><a name='hMHXjTrWEnw'></a>6.18 領域の折り畳み</h3>
-<p>　以下のように 2 つのコメントで囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
+<p>　以下のように 2 つの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>で囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
 <pre>
   &lt;!-- collapse:open --&gt;
   TITLE_LINE
@@ -900,7 +900,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
 <h3><a name='hs1guSfsFGb'></a>6.20 改ページ指定</h3>
-<p>　以下のコメントを記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
+<p>　以下の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -926,7 +926,7 @@ turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
 turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <h4><a name='9Z7pya1EZOR'></a>6.21.3 システム変数</h4>
-<p>　システム変数は turnup によって自動的に設定される変数です。以下が用意されています。</p>
+<p>　<a class='autolink' href='#9Z7pya1EZOR'>システム変数</a>は turnup によって自動的に設定される変数です。以下が用意されています。</p>
 <table align='center'>
 <tr><th>name</th><th>description</th></tr>
 <tr><td align='left'><code>__APP_NAME</code></td><td align='left'>起動された turnup のプログラム名（パスは取り除かれます）</td></tr>
@@ -936,7 +936,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <tr><td align='left'><code>__TIME</code></td><td align='left'>turnup を実行した時刻（ <code>HH:MM:DD</code> 形式）</td></tr>
 </table>
 <h3><a name='8sNFPrNb9kM'></a>6.22 条件分岐</h3>
-<p>　簡単な論理式を使用した条件分岐ができます。以下のように、コメントを利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
+<p>　簡単な論理式を使用した<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>ができます。以下のように、<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
 <pre>
 &lt!-- if: EXPRESSION --&gt
       :
@@ -1039,17 +1039,17 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p>　　</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='0EKpSe2qrxR'></a>7.1 見出しにおける自動リンク</h3>
-<p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは見出し文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは見出し内にリンクを生成するとうるさくなることや、見出しに存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
-<p>　この挙動を変えたい場合、以下の行を文書内に記載してください。見出し文字列内でも自動リンクが行なわれるようになります。</p>
+<p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
+<p>　この挙動を変えたい場合、以下の行を文書内に記載してください。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列内でも自動リンクが行なわれるようになります。</p>
 <pre>
   &lt;!-- config:term-link-in-header --&gt;			
 </pre>
 <h3><a name='2M8QFQ2XeBn'></a>7.2 見出しの自動ナンバリング</h3>
-<p>　見出しに自動的に番号付けを行なうことができます。この機能を有効化するには、以下の設定を文書内に記載します。</p>
+<p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号付けを行なうことができます。この機能を有効化するには、以下の設定を文書内に記載します。</p>
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で見出しに自動的に番号が付与されます<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>。この番号を付与する見出しのレベルを限定したい場合、以下のように記載します。この例では、見出しレベル２〜４の合計３レベルで採番されます。この場合、見出しレベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号が付与されます<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>。この番号を付与する<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のレベルを限定したい場合、以下のように記載します。この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４の合計３レベルで採番されます。この場合、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -1059,12 +1059,12 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
   &lt;!-- config:entity-numbering-depth 1 --&gt;
 </pre>
 <p>　0 が指定された場合、図と表それぞれについて、文書全体を通して 1 から始まる連番が付与されます。つまり、図であれば Figure.1 xxxxx、Figure.2 yyyyy といった要領です（表の場合は Table.1 zzzzz）となります。</p>
-<p>　1 以上を指定した場合、「<a href='#2M8QFQ2XeBn'>7.2  見出しの自動ナンバリング</a>」で指定した番号付け対象の見出しのうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
+<p>　1 以上を指定した場合、「<a href='#2M8QFQ2XeBn'>7.2  見出しの自動ナンバリング</a>」で指定した番号付け対象の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
   &lt;!-- config:entity-numbering-depth 2 --&gt;
 </pre>
-<p>まず、ナンバリングをする見出しはレベル 2,3,4 です。そして、図表については見出しレベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの見出しレベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
+<p>まず、ナンバリングをする<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はレベル 2,3,4 です。そして、図表については<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
 <h3><a name='jkzhEyZU0ts'></a>7.4 スタイルシートの埋め込み</h3>
 <p>　<a href='#kyMp8IkRK8n'>スタイルシートの指定</a>は、デフォルトではスタイルシートの参照が出力されるだけですが、以下の設定が文書内に記述されていると、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> の内部にスタイルシートの内容を埋め込むようになります。</p>
 <pre>
@@ -1087,14 +1087,14 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルのコメントをそのまま出力するようになります。<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>をそのまま出力するようになります。<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
-<p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります。</p>
+<p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります（誤差程度でしょうけど）。</p>
 <h3><a name='9s47bTtYstx'></a>8.2 文字装飾やリンクの制約と継続行</h3>
 <p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</p>
 <h3><a name='9IN7afRR0hr'></a>8.3 内部的な処理順序</h3>
@@ -1102,8 +1102,8 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <table align='center'>
 <tr><th>step</th><th>action</th><th>description</th></tr>
 <tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
-<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、条件分岐の処理もこの時点で実施します。</td></tr>
-<tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、見出しや図表タイトル、用語定義などを解析して各種の<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の利用に備えます。</td></tr>
+<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>の処理もこの時点で実施します。</td></tr>
+<tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトル、用語定義などを解析して各種の<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の利用に備えます。</td></tr>
 <tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
 </table>
 <h3><a name='6lxsyJvfG4q'></a>8.4 一部の文字装飾における制約</h3>
@@ -1115,20 +1115,20 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><a href='#2TegSYAerqJ'>コード</a></li>
 </ul>
 <h3><a name='l3wNcsiymoY'></a>8.5 フィルタ機能について</h3>
-<p>　turnup が標準で提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜいコメントと文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
+<p>　turnup が標準で提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜい<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>と文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
 <h3><a name='8pNcG5W73uy'></a>8.6 領域の折り畳みについて</h3>
-<p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では脚注からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
+<p>　<a href='#hMHXjTrWEnw'>領域の折り畳み</a>を可能にする拡張は、スクリプトを使わず、&lt;details&gt; タグを使って実現しています。ひょっとしたら、古いブラウザでは動作しないかもしれません。あと、折り畳まれる対象の中で<a href='#9Dfk88hOKmk'>脚注</a>を使った場合、畳まれた状態では<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>からのリンクをクリックしてもジャンプしないことがわかっていますので注意してください。</p>
 <h3><a name='7l2ZW620d5G'></a>8.7 外部フィルタにおける一時ファイル名について</h3>
 <p>　<a href='#18dTPnzNOgg'>外部フィルタの登録</a> では、入出力ファイル名として <code>%in</code> および <code>%out</code> というプレースホルダを使用します。実際に使用されるファイル名は、turnup が都度決定すると説明していましたが、ここではその詳細について説明します。</p>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の実行において使用する入出力ファイル名には、フィルタに渡すデータを元に作成したハッシュコードが使用されます。これにより、「同じデータであれば同じファイル名になる」ことが保証されます。このことを利用して、コストのかかる<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>実行についてはその出力をキャッシュしておく、といった措置が可能になります（具体的な方法については、<a href='#bCCDfsVD85P'>8.8.1  節</a>などを参照してください）。</p>
 <h3><a name='8qCsTwp3HZT'></a>8.8 作図まですべてテキストで実現する方法</h3>
 <p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
 <h4><a name='bCCDfsVD85P'></a>8.8.1 PlantUML</h4>
-<p>　UML を書きたければ、PlantUML<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。PlantUML の詳細については割愛しますが、PlantUML の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
+<p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref20' href='#footnote20'>20</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
 <pre>
 &lt;​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg &gt; %out --&gt;
 </pre>
-<p>　これで、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a> <code>plantuml</code> が使えるようになります。PlantUML 公式サイトの例を借りるなら、以下のように記述すれば、</p>
+<p>　これで、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a> <code>plantuml</code> が使えるようになります。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> 公式サイトの例を借りるなら、以下のように記述すれば、</p>
 <pre>
 ```plantuml
 @startuml
@@ -1155,7 +1155,7 @@ Country: JP
 --></g></svg>
 </div>
 <p>　　</p>
-<p>　PlantUML のちょっとだけ残念な点は、Java ベースで動作が緩慢なことです。そのため、大量の UML ダイアグラムを含む文書を turnup にかける場合、無条件に全ダイアグラムを生成すると非常に時間がかかります。そこで、<a href='#7l2ZW620d5G'>一時ファイル名の規則</a>を利用して PlantUML の出力をキャッシュしましょう。以下のようなスクリプトを作成して、</p>
+<p>　<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> のちょっとだけ残念な点は、Java ベースで動作が緩慢なことです。そのため、大量の UML ダイアグラムを含む文書を turnup にかける場合、無条件に全ダイアグラムを生成すると非常に時間がかかります。そこで、<a href='#7l2ZW620d5G'>一時ファイル名の規則</a>を利用して <a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の出力をキャッシュしましょう。以下のようなスクリプトを作成して、</p>
 <pre class='code'>
 <span class='comment'>#!bin/bash</span>
 
@@ -1179,17 +1179,17 @@ OPT=-Dfile.encoding=UTF-8
 cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./$​{OUT}
 </pre>
-<p><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義で使うようにします。これで、.cache というディレクトリに PlantUML の出力ファイルがキャッシュされるようになり、turnup の実行時間が改善されます。</p>
+<p><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義で使うようにします。これで、.cache というディレクトリに <a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の出力ファイルがキャッシュされるようになり、turnup の実行時間が改善されます。</p>
 <pre>
 &lt;!​-- filter:plantuml = bash ./plantuml.sh %in %out --&gt;
 </pre>
 <p>　　</p>
 <h4><a name='8aJF91OqXMS'></a>8.8.2 gnuplot</h4>
-<p>　グラフを描画したければ、ひとまずは gnuplot が選択肢になります。<a href='#bCCDfsVD85P'>PlantUML の場合</a>同様に出力をキャッシュする前提でスクリプトを置くならば、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>定義は以下のようになるでしょう。</p>
+<p>　グラフを描画したければ、ひとまずは <a class='autolink' href='#8aJF91OqXMS'>gnuplot</a> が選択肢になります。<a href='#bCCDfsVD85P'>PlantUML の場合</a>同様に出力をキャッシュする前提でスクリプトを置くならば、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>定義は以下のようになるでしょう。</p>
 <pre>
 &lt;!​-- filter:gnuplot = bash ./gnuplot.sh %in %out --&gt;
 </pre>
-<p>　このスクリプトの内容は後回しにするとして、gnuplot はコマンドファイルとデータを個別に用意する必要があるので、以下のようにハイフンだけの行をセパレータにして両方記述するようにします。前半のコマンド部分では入出力ファイルを <code>in_file, out_file</code> としていますが、これはスクリプトでどうにかします。</p>
+<p>　このスクリプトの内容は後回しにするとして、<a class='autolink' href='#8aJF91OqXMS'>gnuplot</a> はコマンドファイルとデータを個別に用意する必要があるので、以下のようにハイフンだけの行をセパレータにして両方記述するようにします。前半のコマンド部分では入出力ファイルを <code>in_file, out_file</code> としていますが、これはスクリプトでどうにかします。</p>
 <pre>
 ```gnuplot
 set datafile separator ","
@@ -1381,9 +1381,9 @@ plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle
 
 </div>
 <p>　　</p>
-<p>　最後に、スクリプトの内容を以下に示します。セパレータ行の前後を一時ファイルに振り分けること、入出力ファイルをコマンドファイル冒頭に書き込むことなどがポイントです。なお、エラー処理などはいい加減な状態です。</p>
+<p>　最後に、スクリプトの内容を以下に示します。セパレータ行の前後を一時ファイルに振り分けること、入出力ファイルをコマンドファイル冒頭に書き込むことなどがポイントです。なお、エラー処理などは不十分な状態です。</p>
 <details>
-<summary><strong>gnuplot.sh の内容はこちら</strong></summary>
+<summary><a class='autolink' href='#8aJF91OqXMS'>gnuplot</a>.sh の内容はこちら</summary>
 <pre class='code'>
 <span class='comment'>#!/bin/bash</span>
 
@@ -1467,7 +1467,7 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
   &lt!-- include: foo.txt --&gt
 &lt!-- endif --&gt
 </pre>
-<p>　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、入力データのロード時点ではエラー終了とせず、include 箇所に <a href='#bs9N19eIT7w'>errorディレクティブ</a>を埋め込むようにしました。これにより、エラー処理が出力生成段階まで遅延されることになり、条件分岐で適切に括られていれば意図した動作をする（エラーが回避できる）ことになります。</p>
+<p>　この問題を解決するために、include の際のエラー出力方式変更を実施しました。具体的には、入力データのロード時点ではエラー終了とせず、include 箇所に <a href='#bs9N19eIT7w'>errorディレクティブ</a>を埋め込むようにしました。これにより、エラー処理が出力生成段階まで遅延されることになり、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>で適切に括られていれば意図した動作をする（エラーが回避できる）ことになります。</p>
 </details>
 <h3><a name='brtS2jyAYs6'></a>9.4 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない</h3>
 <details>
@@ -1541,7 +1541,7 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <ul>
 <li>BUGFIX : <a href='#f71ZNSHqufB'>コードハイライト</a>対象冒頭にキーワードがあると処理されない問題の修正</li>
 <li>BUGFIX : <a href='#g6xjP526KX7'>テーブル</a>ヘッダ行にも align が出力される問題の修正</li>
-<li>CSS : table header の背景色スタイルを変更</li>
+<li>CSS : <a class='autolink' href='#fJ4r3VpDmqg'>table</a> header の背景色スタイルを変更</li>
 <li>ENHANCE : <a href='#hs1guSfsFGb'>改ページ指定</a>の機能を追加</li>
 </ul>
 </li>
@@ -1558,8 +1558,8 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <li><strong>2021/08/18</strong>
 <ul>
 <li>BUGFIX : リンクラベル内部に定義用語があるとリンクがネストする問題の修正</li>
-<li>ENHANCE : 空行に加えてコメント行も段落の終了とみなすように変更</li>
-<li>BUGFIX : 各種タイトル（見出し、<a class='autolink' href='#g6xjP526KX7'>テーブル</a>、ヘッダ）、および用語が同名でも異なるリンク用ハッシュコードを生成するように修正</li>
+<li>ENHANCE : 空行に加えて<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>行も段落の終了とみなすように変更</li>
+<li>BUGFIX : 各種タイトル（<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>、<a class='autolink' href='#g6xjP526KX7'>テーブル</a>、ヘッダ）、および用語が同名でも異なるリンク用ハッシュコードを生成するように修正</li>
 </ul>
 </li>
 <li><strong>2021/08/19</strong>
@@ -1730,7 +1730,7 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a href='#bZZIHdLJ79G'>目次へのリンクボタン表示</a>機能を追加</li>
 </ul>
 </li>
-<li><strong>2022/05/?? - version 0.819</strong>
+<li><strong>2022/05/08 - version 0.819</strong>
 <ul>
 <li>ENHANCE : 任意の場所に<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を埋め込む機能を追加</li>
 <li>ENHANCE : <a class='autolink' href='#2C50p0Hw1s1'>索引の生成</a>機能を追加</li>
@@ -1741,28 +1741,85 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
 <p>　<a class='autolink' href='#2C50p0Hw1s1'>索引の生成</a>機能の使用サンプルを兼ねています。</p>
 <details class='idx_x' open>
+<summary class='idx_x'>Symbols</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#kW5fA3S8XIj'>-D オプション</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
 <summary class='idx_x'>A</summary>
 <blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#4e8Wf4oSDqx'>anchor</a></li>
 <li class='idx_x'><a class='autolink' href='#8mg4uLSAXaz'>autolink</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>B</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#2c4WKrG50Sg'>blockquote</a></li>
+<li class='idx_x'><a class='autolink' href='#akoPHkUM3jR'>brタグ</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>C</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#hMHXjTrWEnw'>collapse:</a></li>
+<li class='idx_x'><a class='autolink' href='#jkzhEyZU0ts'>config:embed-stylesheet</a></li>
+<li class='idx_x'><a class='autolink' href='#hJJbL4GzVpQ'>config:entity-numbering-depth</a></li>
+<li class='idx_x'><a class='autolink' href='#2M8QFQ2XeBn'>config:header-numbering</a></li>
+<li class='idx_x'><a class='autolink' href='#0EKpSe2qrxR'>config:term-link-in-header</a></li>
+<li class='idx_x'><a class='autolink' href='#8a3vnTcmVrk'>config:write-comment</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>D</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#2yDQLphjQX0'>define:</a></li>
+<li class='idx_x'><a class='autolink' href='#8pNcG5W73uy'>detailsタグ</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
 <summary class='idx_x'>E</summary>
 <blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#jkzhEyZU0ts'>embed-stylesheet</a></li>
+<li class='idx_x'><a class='autolink' href='#iVFblGs7lu7'>embed:figure-list</a></li>
+<li class='idx_x'><a class='autolink' href='#9Dfk88hOKmk'>embed:footnotes</a></li>
 <li class='idx_x'><a class='autolink' href='#2C50p0Hw1s1'>embed:index</a></li>
 <li class='idx_x'><a class='autolink' href='#2C50p0Hw1s1'>embed:index-x</a></li>
+<li class='idx_x'><a class='autolink' href='#hs1guSfsFGb'>embed:pagebreak</a></li>
+<li class='idx_x'><a class='autolink' href='#iVFblGs7lu7'>embed:table-list</a></li>
+<li class='idx_x'><a class='autolink' href='#7maM1Z8DaEp'>embed:toc</a></li>
+<li class='idx_x'><a class='autolink' href='#7maM1Z8DaEp'>embed:toc-x</a></li>
+<li class='idx_x'><a class='autolink' href='#hJJbL4GzVpQ'>entity-numbering-depth</a></li>
+<li class='idx_x'><a class='autolink' href='#bs9N19eIT7w'>error:</a></li>
+<li class='idx_x'><a class='autolink' href='#8d4GujOuk9v'>expand:</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>F</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#18dTPnzNOgg'>filter:</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
 <summary class='idx_x'>G</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='term' href='#fgvQnqibuC4'>GFM</a></li>
+<li class='idx_x'><a class='autolink' href='#8aJF91OqXMS'>gnuplot</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
 <summary class='idx_x'>H</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='term' href='#ahN3t8jbawv'>HTML</a></li>
+<li class='idx_x'><a class='autolink' href='#2M8QFQ2XeBn'>header-numbering</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>I</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#8sNFPrNb9kM'>if:</a></li>
+<li class='idx_x'><a class='autolink' href='#a2FYBDWqZUA'>include:</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
@@ -1774,22 +1831,64 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <details class='idx_x' open>
 <summary class='idx_x'>P</summary>
 <blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#bCCDfsVD85P'>PlantUML</a></li>
+<li class='idx_x'><a class='autolink' href='#hVp0EDLBsmJ'>pallete:</a></li>
 <li class='idx_x'><a class='autolink' href='#2HUs4TZfCPd'>preブロック</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>R</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#6LkDjrI3ASb'>raw</a></li>
+<li class='idx_x'><a class='autolink' href='#6LkDjrI3ASb'>raw_html</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>S</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#8d4GujOuk9v'>snippet:</a></li>
+<li class='idx_x'><a class='autolink' href='#dOeJnU6OE95'>stack:pop</a></li>
+<li class='idx_x'><a class='autolink' href='#dOeJnU6OE95'>stack:push</a></li>
+<li class='idx_x'><a class='autolink' href='#kyMp8IkRK8n'>style:</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>T</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#fJ4r3VpDmqg'>table</a></li>
+<li class='idx_x'><a class='autolink' href='#0EKpSe2qrxR'>term-link-in-header</a></li>
+<li class='idx_x'><a class='autolink' href='#kyMp8IkRK8n'>title:</a></li>
+<li class='idx_x'><a class='autolink' href='#bZZIHdLJ79G'>toc-link:</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>W</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#bs9N19eIT7w'>warning:</a></li>
+<li class='idx_x'><a class='autolink' href='#8a3vnTcmVrk'>write-comment</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
 <summary class='idx_x'>Others</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a></li>
+<li class='idx_x'><a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a></li>
+<li class='idx_x'><a class='autolink' href='#cPmXTXvPhJd'>コメント</a></li>
+<li class='idx_x'><a class='autolink' href='#9Z7pya1EZOR'>システム変数</a></li>
 <li class='idx_x'><a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a></li>
 <li class='idx_x'><a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a></li>
 <li class='idx_x'><a class='autolink' href='#g6xjP526KX7'>テーブル</a></li>
 <li class='idx_x'><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></li>
 <li class='idx_x'><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a></li>
+<li class='idx_x'><a class='autolink' href='#9PbJaRizVB7'>定義リスト</a></li>
+<li class='idx_x'><a class='autolink' href='#2c4WKrG50Sg'>引用</a></li>
 <li class='idx_x'><a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a></li>
 <li class='idx_x'><a class='autolink' href='#8tTIqHSNoTg'>既知の問題点</a></li>
+<li class='idx_x'><a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a></li>
 <li class='idx_x'><a class='term' href='#8sf6EgPf8j8'>空白類文字</a></li>
 <li class='idx_x'><a class='autolink' href='#2C50p0Hw1s1'>索引の生成</a></li>
+<li class='idx_x'><a class='autolink' href='#9Dfk88hOKmk'>脚注</a></li>
+<li class='idx_x'><a class='autolink' href='#7HkxqP1TWY5'>見出し</a></li>
 </blockquote>
 </details>
 <p>　　</p>
@@ -1801,10 +1900,10 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <p class='footnote'><a name='footnote5' href='#footnote_ref5'>5</a> : = と - を混在させた場合、従来通り nowrap ではないものとみなされます。</p>
 <p class='footnote'><a name='footnote6' href='#footnote_ref6'>6</a> : <a href='#hVp0EDLBsmJ'>スタイルパレット</a> の指定も含め、複数の指定を同時にする場合、 <code>|N]M&gt;U^</code> の順序で指定してください。</p>
 <p class='footnote'><a name='footnote7' href='#footnote_ref7'>7</a> : <a class='term' href='#fgvQnqibuC4'>GFM</a> だと URL を単純に書いただけでもリンクになるようですが、そこまではしてません。</p>
-<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、脚注の中での使用を可能にするために追加されました</p>
+<p class='footnote'><a name='footnote8' href='#footnote_ref8'>8</a> :  <code>@((STYLES)(CONTENTS))</code> 形式は、<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の中での使用を可能にするために追加されました</p>
 <p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
-<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが定義リストだけだった version 0.811 以前は、定義リストで用語を重複させてもエラーにならない問題がありましたが、<a class='autolink' href='#8mg4uLSAXaz'>autolink</a> 導入にあわせて修正してあります。</p>
+<p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>だけだった version 0.811 以前は、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>で用語を重複させてもエラーにならない問題がありましたが、<a class='autolink' href='#8mg4uLSAXaz'>autolink</a> 導入にあわせて修正してあります。</p>
 <p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
 <p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
 <p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
