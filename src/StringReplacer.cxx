@@ -66,7 +66,7 @@ namespace turnup {
 				index = p[1] - '1';
 				return p;
 			}
-			pTop = p;
+			pTop = p + 1;
 		}
 		return pEnd;
 	}
