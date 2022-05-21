@@ -365,6 +365,17 @@ namespace turnup {
 		
 	}
 
+/*
+(diagram (:w 200 :h 200)
+  (rectangle '(100 100) 200 200 :rx 30 :ry 30 :fill :lightgray :stroke :none)
+  (let ((line-stroke (make-stroke :color :white :width 20)))
+	(circle '(45  50) 15 :fill :white :stroke :none)
+	(line  '((75  50) (170  50)) :stroke line-stroke)
+	(circle '(45 100) 15 :fill :white :stroke :none)
+	(line  '((75 100) (170 100)) :stroke line-stroke)
+	(circle '(45 150) 15 :fill :white :stroke :none)
+	(line  '((75 150) (170 150)) :stroke line-stroke)))
+ */
 	void ToC::Impl::WriteTocLinkIfNeed( std::ostream& os ) const {
 		if( m_linkTarget.IsEmpty() )
 			return;
