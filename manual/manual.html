@@ -123,6 +123,7 @@
 <li class='tocx'><a href='#8aJF91OqXMS'>8.8.2 gnuplot</a></li>
 </blockquote>
 </details>
+<li class='tocx'><a href='#62CICfavwWM'>8.9 画像ファイルを HTML 内に取り込む方法</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -1159,6 +1160,10 @@ Country: JP
 <pre class='code'>
 <span class='comment'>#!bin/bash</span>
 
+<span class='comment'>#- CAUTION:</span>
+<span class='comment'>#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って</span>
+<span class='comment'>#- います。コピーして使用する際は no width space U+200B を削除して使ってください。</span>
+
 IN=$1
 OUT=$2
 CACHE=.cache
@@ -1387,6 +1392,10 @@ plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle
 <pre class='code'>
 <span class='comment'>#!/bin/bash</span>
 
+<span class='comment'>#- CAUTION:</span>
+<span class='comment'>#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って</span>
+<span class='comment'>#- います。コピーして使用する際は no width space U+200B を削除して使ってください。</span>
+
 IN=$1
 OUT=$2
 CACHE=.cache
@@ -1414,6 +1423,63 @@ APP=gnuplot
 
 <span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./$​{OUT}
 cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
+<span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./$​{OUT}
+</pre>
+</details>
+<h3><a name='62CICfavwWM'></a>8.9 画像ファイルを HTML 内に取り込む方法</h3>
+<p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref21' href='#footnote21'>21</a></sup>。</p>
+<p>　<a href='#8qCsTwp3HZT'>前節</a>と同じように、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>を定義します（内容については後述）。</p>
+<pre>
+&lt;!​-- filter:embed_image = bash ./embed_image.sh %in %out --&gt;
+</pre>
+<p>　この<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は以下のように使用します。つまり、埋め込みたいファイル名を指定します。</p>
+<pre>
+```embed_image
+./tmp.png
+```
+</pre>
+<p>　これによって、以下のような内容が埋め込まれます。</p>
+<pre>
+&lt;div align='center'&gt;
+  &lt;img src='data:image/png;base64,iVBORw0K...(omit)...K5CYII=' /&gt;
+&lt;/div&gt;
+</pre>
+<p>　　</p>
+<p>　最後に、スクリプトの内容を以下に示します。</p>
+<details>
+<summary>embed_image.sh の内容はこちら</summary>
+<p>　このスクリプトについては、以下の点に注意してください。</p>
+<ul>
+<li>MIME タイプの <code>image/</code> に後続する部分はファイルの拡張子から取っています。</li>
+<li>base64 を使うため、元の画像ファイルの 4/3 倍のサイズのテキストを埋め込むことになります。</li>
+</ul>
+<pre class='code'>
+<span class='comment'>#!/bin/bash</span>
+
+<span class='comment'>#- CAUTION:</span>
+<span class='comment'>#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って</span>
+<span class='comment'>#- います。コピーして使用する際は no width space U+200B を削除して使ってください。</span>
+
+IN=$1
+OUT=$2
+CACHE=.cache
+
+<span class='keyword1'>if</span> [ ! -e ./$​{CACHE} ]; <span class='keyword1'>then</span>
+    mkdir $​{CACHE}
+<span class='keyword1'>fi</span>
+
+<span class='keyword1'>if</span> [ -e ./$​{CACHE}/$​{OUT}.dat ]; <span class='keyword1'>then</span>
+    touch ./$​{CACHE}/$​{OUT}.dat
+<span class='keyword1'>else</span>
+    FILE=`cat <span class='literal'>"$​{IN}"</span>`
+    TYPE=`<span class='keyword3'>echo</span> $​{FILE} | perl -pe <span class='literal'>"s/^.+\.(.+)$/\1/"</span>`
+    <span class='keyword3'>echo</span> -n <span class='literal'>"&lt;img src='data:image/$​{TYPE};base64,"</span> &gt; ./$​{CACHE}/$​{OUT}.dat
+    base64 $​{FILE} &gt;&gt; ./$​{CACHE}/$​{OUT}.dat
+    <span class='keyword3'>echo</span> <span class='literal'>"' /&gt;"</span>  &gt;&gt; ./$​{CACHE}/$​{OUT}.dat
+<span class='keyword1'>fi</span>
+
+<span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./$​{OUT}
+cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./$​{OUT}
 </pre>
 </details>
@@ -1736,6 +1802,11 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a class='autolink' href='#2C50p0Hw1s1'>索引の生成</a>機能を追加</li>
 </ul>
 </li>
+<li><strong>2022/06/12 - version 0.820</strong>
+<ul>
+<li>DOCUMENT : 「<a href='#62CICfavwWM'>8.9  画像ファイルを HTML 内に取り込む方法</a>」 を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -1913,5 +1984,6 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 <p class='footnote'><a name='footnote18' href='#footnote_ref18'>18</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
 <p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
 <p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
+<p class='footnote'><a name='footnote21' href='#footnote_ref21'>21</a> : turnup が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などのバージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。</p>
 </body>
 </html>

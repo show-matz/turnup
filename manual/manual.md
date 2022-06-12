@@ -1658,6 +1658,10 @@ ${BLANK_PARAGRAPH}
 ```sh
 #!bin/bash
 
+#- CAUTION:
+#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- います。コピーして使用する際は no width space U+200B を削除して使ってください。
+
 IN=$1
 OUT=$2
 CACHE=.cache
@@ -1748,6 +1752,10 @@ gnuplot.sh の内容はこちら
 ```sh
 #!/bin/bash
 
+#- CAUTION:
+#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- います。コピーして使用する際は no width space U+200B を削除して使ってください。
+
 IN=$1
 OUT=$2
 CACHE=.cache
@@ -1775,6 +1783,82 @@ fi
 
 echo "<div align='center'>"  > ./$​{OUT}
 cat ./$​{CACHE}/$​{OUT}.svg   >> ./$​{OUT}
+echo "</div>"               >> ./$​{OUT}
+```
+
+<!-- collapse:end -->
+
+### 画像ファイルを HTML 内に取り込む方法
+
+　[前節](#作図まですべてテキストで実現する方法)ではテキストで作図をする方法をいくつか紹介
+しましたが、ここでは png 形式などの画像ファイルを出力 HTML ファイル内に埋め込む方法を
+紹介します{{fn:${APPNAME} が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などの \
+バージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。}}。
+
+　[前節](#作図まですべてテキストで実現する方法)と同じように、外部フィルタを定義します（内容
+については後述）。
+
+```
+<!​-- filter:embed_image = bash ./embed_image.sh %in %out -->
+```
+
+　この外部フィルタは以下のように使用します。つまり、埋め込みたいファイル名を指定します。
+
+~~~
+```embed_image
+./tmp.png
+```
+~~~
+
+　これによって、以下のような内容が埋め込まれます。
+
+```
+<div align='center'>
+  <img src='data:image/png;base64,iVBORw0K...(omit)...K5CYII=' />
+</div>
+```
+
+${BLANK_PARAGRAPH}
+
+　最後に、スクリプトの内容を以下に示します。
+
+<!-- collapse:close -->
+embed_image.sh の内容はこちら
+
+　このスクリプトについては、以下の点に注意してください。
+
+* MIME タイプの `image/` に後続する部分はファイルの拡張子から取っています。
+* base64 を使うため、元の画像ファイルの 4/3 倍のサイズのテキストを埋め込むことになります。
+
+<!-- MEMO : $ と { の間で no width space U+200B を使ってるところがあるよ -->
+
+```sh
+#!/bin/bash
+
+#- CAUTION:
+#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- います。コピーして使用する際は no width space U+200B を削除して使ってください。
+
+IN=$1
+OUT=$2
+CACHE=.cache
+
+if [ ! -e ./$​{CACHE} ]; then
+    mkdir $​{CACHE}
+fi
+
+if [ -e ./$​{CACHE}/$​{OUT}.dat ]; then
+    touch ./$​{CACHE}/$​{OUT}.dat
+else
+    FILE=`cat "$​{IN}"`
+    TYPE=`echo $​{FILE} | perl -pe "s/^.+\.(.+)$/\1/"`
+    echo -n "<img src='data:image/$​{TYPE};base64," > ./$​{CACHE}/$​{OUT}.dat
+    base64 $​{FILE} >> ./$​{CACHE}/$​{OUT}.dat
+    echo "' />"  >> ./$​{CACHE}/$​{OUT}.dat
+fi
+
+echo "<div align='center'>"  > ./$​{OUT}
+cat ./$​{CACHE}/$​{OUT}.dat   >> ./$​{OUT}
 echo "</div>"               >> ./$​{OUT}
 ```
 
@@ -2050,6 +2134,8 @@ ${BLANK_PARAGRAPH}
 * __2022/05/08 - version 0.819__
 	* ENHANCE : 任意の場所にアンカーを埋め込む機能を追加
 	* ENHANCE : 索引の生成機能を追加
+* __2022/06/12 - version 0.820__
+	* DOCUMENT : 「[](#画像ファイルを HTML 内に取り込む方法)」 を追加
 
 ${BLANK_PARAGRAPH}
 
