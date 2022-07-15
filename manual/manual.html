@@ -574,16 +574,26 @@ int main( void ) {
 <use xlink:href="#line" x='0' y='100' />
 </svg>
 </a></div>
-<p>　これは、実際には目次にジャンプしているわけではなく、指定された<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクに過ぎません。そのため、この機能を使用する場合は目次の直前に<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>を置く必要があります。ジャンプ先の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>は <code>toc-link: top</code> に続けて指定してください（先の例であれば <code>"Table of contents"</code> という部分）。この機能を使用する場合、目次の周辺は以下のように記述されることになるでしょう。</p>
+<p>　これは、実際には目次にジャンプしているわけではなく、指定されたターゲットへのリンクに過ぎません。そのため、この機能を使用する場合は目次の直前に<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>などを置く必要があります。ジャンプ先の指定は <code>toc-link: top</code> に続けて記述してください（先の例であれば <code>"Table of contents"</code> という部分）。この方法で指定する場合、目次の周辺は以下のように記述されることになるでしょう。</p>
 <pre>
 ​## Table of contents
 
 &lt;​!-- embed:toc-x 2 4 --&gt;
 &lt;​!-- toc-link: top 'Table of contents' --&gt;
 </pre>
-<p>　なお、以下のように <code>toc-link:</code> に続けて <code>top</code> でなく <code>bottom</code> と記述すると、イメージの表示される位置が画面の右上でなく右下になります。</p>
+<p>　以下のように <code>toc-link:</code> に続けて <code>top</code> でなく <code>bottom</code> と記述すると、イメージの表示される位置が画面の右上でなく右下になります。</p>
 <pre>
   &lt;!-- toc-link: bottom "Table of contents" --&gt;
+</pre>
+<p>　目次の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>を置くと、それ自体が目次に含まれてしまいます。これを避けたい場合は<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>ではなく<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を使うと良いでしょう。この場合、以下のように記述することになります（<a class='autolink' href='#6LkDjrI3ASb'>raw</a> フィルタで記述した <code>h2</code> タグによる<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はあってもなくてもかまいません）。リンク先の指定は <code>'A#toc-link-target'</code> となります。これはリンクの括弧内の記載と同じ方法になります。</p>
+<pre>
+&lt;​!-- anchor: toc-link-target --&gt;
+~~~raw
+​&lt;h2&gt;Table of contents&lt;/h2&gt;
+~~~
+
+&lt;​!-- embed:toc-x 2 4 --&gt;
+&lt;​!-- toc-link: top 'A#toc-link-target' --&gt;
 </pre>
 <h3><a name='gg7i7uPfLlo'></a>6.3 図と表のタイトル</h3>
 <p>　図と表には、専用のタイトルをつけることができます。図（大抵は画像を表示させるという意味ですが）の場合、以下のように行頭に <code>Figure.</code> を、それに続いてタイトルを書きます。</p>
@@ -1805,6 +1815,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2022/06/12 - version 0.820</strong>
 <ul>
 <li>DOCUMENT : 「<a href='#62CICfavwWM'>8.9  画像ファイルを HTML 内に取り込む方法</a>」 を追加</li>
+</ul>
+</li>
+<li><strong>2022/07/16 - version 0.821</strong>
+<ul>
+<li>ENHANCE : <a href='#bZZIHdLJ79G'>目次へのリンクボタン表示</a>機能を拡張</li>
 </ul>
 </li>
 </ul>

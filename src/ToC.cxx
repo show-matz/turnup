@@ -21,6 +21,7 @@ namespace turnup {
 	class TocEntry;
 	static bool CompareEntityPrefix( const TocEntry* p1,
 									 const TocEntry* p2, const Config& cfg ); 
+	const char* CheckCrcTypeOfTocLink( char& crcType, const TextSpan& linkTarget );
 
 
 	struct ChapterNumber {
@@ -381,8 +382,9 @@ namespace turnup {
 			return;
 		const char* pLinkClass = m_bLinkTop ? "toc_button_top" : "toc_button_bottom";
 		char linkTarget[12];
-		CRC64::Calc( GetCrcType( ToC::EntryT::HEADER ),
-					 m_linkTarget.Top(), m_linkTarget.End(), linkTarget );
+		char crcType = 0;
+		const char* pTop = CheckCrcTypeOfTocLink( crcType, m_linkTarget );
+		CRC64::Calc( crcType, pTop, m_linkTarget.End(), linkTarget );
 		os << "<div class='" << pLinkClass  << "'><a href='#" << linkTarget << "'>" << std::endl
 		   << "<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 200 200'>" << std::endl
 		   << "<defs><g id='line'>" << std::endl
@@ -547,6 +549,21 @@ namespace turnup {
 		return true;
 	}
 
+	const char* CheckCrcTypeOfTocLink( char& crcType, const TextSpan& linkTarget ) {
+		const char* pTop = linkTarget.Top();
+	//	const char* pEnd = linkTarget.End();
+		char top = *pTop;
+		if( top == '#' ) {
+			crcType = GetCrcType( ToC::EntryT::HEADER );
+			return pTop + 1;
+		}
+		if( (top == 'A' || top == 'F' || top == 'T') && pTop[1] == '#' ) {
+			crcType = *pTop;
+			return pTop + 2;
+		}
+		crcType = GetCrcType( ToC::EntryT::HEADER );
+		return pTop;
+	}
 
 } // namespace turnup
 
