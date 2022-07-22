@@ -925,6 +925,10 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 <pre>
 &lt;!-- define: VAR = ' a b c ' --&gt;
 </pre>
+<p>　version 0.822 より、以下のような記述で「<a href='#cjJv49XsD9d'>ページ内へのリンク</a>」に使用する<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>文字列を取得することができるようになりました。これは、<a href='#6LkDjrI3ASb'>rawフィルタ</a>や<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>内でページ内リンクを使用したい場合に使うことが想定されています。</p>
+<pre>
+&lt;!-- define: VAR = [](#HEADER-TITLE) --&gt;
+</pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには $​{FOO} または $​(FOO) という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <h4><a name='kW5fA3S8XIj'></a>6.21.2 起動オプションでの変数設定</h4>
@@ -1820,6 +1824,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2022/07/16 - version 0.821</strong>
 <ul>
 <li>ENHANCE : <a href='#bZZIHdLJ79G'>目次へのリンクボタン表示</a>機能を拡張</li>
+</ul>
+</li>
+<li><strong>2022/07/22 - version 0.822</strong>
+<ul>
+<li>ENHANCE : <a href='#4eSrElLWBcH'>変数定義</a>機能を拡張</li>
 </ul>
 </li>
 </ul>

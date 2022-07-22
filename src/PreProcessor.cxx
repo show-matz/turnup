@@ -7,6 +7,7 @@
 
 #include "TextSpan.hxx"
 #include "TextMaker.hxx"
+#include "CRC64.hxx"
 
 #include <sys/stat.h>	//ToDo : C標準ライブラリの範囲内で実現する必要がある。
 #include <algorithm>
@@ -28,6 +29,7 @@ namespace turnup {
 											 const char* pEnd, uint32_t& index );
 	static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd );
 	static bool IsDefineLine( const TextSpan* pLine, TextSpan& name, TextSpan& value );
+	static TextSpan GetLinkTarget( const TextSpan& value );
 	static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression );
 	static bool IsNextCondition( const TextSpan* pLine, TextSpan* pExprssion = nullptr );
 	static TextSpan* GetEndOfCondClause( TextSpan* pLine, TextSpan* pLineEnd );
@@ -407,8 +409,33 @@ namespace turnup {
 			tmp2 = tmp2.Chomp( 1, 1 );
 		}
 		name  = tmp1;
+		if( tmp2.IsMatch( "[](", tmp1, ")" ) )
+			tmp2 = GetLinkTarget( tmp1 );
 		value = tmp2;
 		return true;
+	}
+
+	// value が "[AFT]?#LINK-TARGET" 形式ならハッシュコードに変換する。
+	static TextSpan GetLinkTarget( const TextSpan& value ) {
+		auto pTop = value.Top();
+		auto pEnd = value.End();
+		// internal link でなければ value をそのまま返却
+		if( *pTop != '#' && pTop[1] != '#' )
+			return value;
+		//
+		char type = 'H';
+		if( *pTop == '#' )
+			++pTop;
+		else {
+			type = *pTop;
+			pTop += 2;
+		}
+		char buf[12];
+		CRC64::Calc( type, pTop, pEnd, buf );
+		buf[11] = 0;
+		TextMaker tm;
+		tm << "#" << buf;
+		return tm.GetSpan();
 	}
 
 	static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression ) {
