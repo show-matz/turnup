@@ -69,6 +69,12 @@ namespace turnup {
 		void AddErrorLine( std::vector<TextSpan>& lines,
 						   const char* msg, const TextSpan& fileName );
 	private:
+		typedef bool MuteBlockEndChecker( const TextSpan& );
+		static MuteBlockEndChecker* IsMuteBlockStart( const TextSpan& line );
+		static bool IsPreBlockFinished1( const TextSpan& line );
+		static bool IsPreBlockFinished2( const TextSpan& line );
+		static bool IsCommentBlockFinished( const TextSpan& line );
+	private:
 		std::vector<InputFile*>	m_inFiles;
 		std::vector<TextSpan>	m_lines;
 		FileFinder				m_fileFinder;
@@ -206,8 +212,22 @@ namespace turnup {
 		auto itr1 = m_lines.begin();
 		auto itr2 = m_lines.end();
 
+		MuteBlockEndChecker* chkMuteEnd = nullptr;
+
 		for( ; itr1 != itr2; ++itr1 ) {
 			TextSpan& line = *itr1;
+
+			if( !chkMuteEnd ) {
+				if( auto tmp = IsMuteBlockStart( line ) ) {
+					chkMuteEnd = tmp;
+					continue;
+				}
+			} else {
+				if( chkMuteEnd( line ) == true )
+					chkMuteEnd = nullptr;
+				continue;
+			}
+
 			//見出しであれば ToC に登録する
 			uint32_t lv = line.CountTopOf('#');
 			if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
@@ -433,6 +453,29 @@ namespace turnup {
 		TextMaker tm;
 		tm << "<!-- error: " << msg << fileName << " -->";
 		lines.push_back( tm.GetSpan() );
+	}
+
+	InputDataImpl::MuteBlockEndChecker* InputDataImpl::IsMuteBlockStart( const TextSpan& line ) {
+		if( line.BeginWith( "```" ) )
+			return IsPreBlockFinished1;
+		if( line.BeginWith( "~~~" ) )
+			return IsPreBlockFinished2;
+		TextSpan tmp = line.Trim();
+		if( tmp.BeginWith( "<!--" ) && !(tmp.EndWith( "-->" )) )
+			return IsCommentBlockFinished;
+		return nullptr;
+	}
+
+	bool InputDataImpl::IsPreBlockFinished1( const TextSpan& line ) {
+		return line.BeginWith( "```" );
+	}
+
+	bool InputDataImpl::IsPreBlockFinished2( const TextSpan& line ) {
+		return line.BeginWith( "~~~" );
+	}
+
+	bool InputDataImpl::IsCommentBlockFinished( const TextSpan& line ) {
+		return line.Trim().EndWith( "-->" );
 	}
 
 } // namespace turnup

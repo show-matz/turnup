@@ -134,6 +134,7 @@
 <li class='tocx'><a href='#78o6GpB2DHz'>9.3 【解決済】条件分岐でファイル存在チェックをしても include がエラーになる</a></li>
 <li class='tocx'><a href='#brtS2jyAYs6'>9.4 【解決済】C/C++ のコードハイライトで #if や #else が正しく処理されない</a></li>
 <li class='tocx'><a href='#dguaQPYtqQN'>9.5 【解決済】リストの仕様が一般的な markdown と異なる</a></li>
+<li class='tocx'><a href='#fFFr1hpcDFv'>9.6 【解決済】pre ブロックやコメントブロック内に # で始まる行があると見出し番号がズレる</a></li>
 </blockquote>
 </details>
 <li class='tocx'><a href='#dGdSPnvay5N'>10 更新履歴</a></li>
@@ -1580,7 +1581,19 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <summary>　この問題は version 0.816 で修正されました。</summary>
 <p>　一般的な markdown では、リストや番号付きリストの処理はかなり柔軟に行なわれますが、それと比較すると turnup のリスト処理は限定的でした。version 0.816 において、一般的な markdown の処理にあわせる対処を実施しました。</p>
 </details>
+<h3><a name='fFFr1hpcDFv'></a>9.6 【解決済】pre ブロックやコメントブロック内に # で始まる行があると見出し番号がズレる</h3>
+<details>
+<summary>　この問題は version 0.823 で修正されました。</summary>
+<p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトルは<a href='#9IN7afRR0hr'>予備スキャン</a>の段階で情報収集して<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の利用に備えるようになっていますが、この予備スキャンにおいて、pre ブロックや<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>ブロックの考慮がされていませんでした。つまり、pre ブロックなどの内部に<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトルと同じ記述の行があると、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表のナンバリングが乱れる結果となります。version 0.823 において、予備スキャンがこれらの「スキャン対象外ブロック」を認識するように修正されました。</p>
+</details>
 <p>　　</p>
+<pre class='code'>
+<span class='comment'>#!/bin/bash </span>
+
+<span class='comment'>## comment</span>
+ls -l
+
+</pre>
 <h2><a name='dGdSPnvay5N'></a>10 更新履歴</h2>
 <p>　更新履歴です。2021/09/26 以降バージョン番号の付与を開始しました。</p>
 <ul>
@@ -1795,7 +1808,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 </li>
 <li><strong>2022/04/24 - version 0.816</strong>
 <ul>
-<li>ENHANCE : <a href='#dguaQPYtqQN'>リストの仕様が一般的な markdown と異なる</a>問題の修正</li>
+<li>BUGFIX : <a href='#dguaQPYtqQN'>リストの仕様が一般的な markdown と異なる</a>問題の修正</li>
 </ul>
 </li>
 <li><strong>2022/04/24 - version 0.817</strong>
@@ -1829,6 +1842,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2022/07/22 - version 0.822</strong>
 <ul>
 <li>ENHANCE : <a href='#4eSrElLWBcH'>変数定義</a>機能を拡張</li>
+</ul>
+</li>
+<li><strong>2022/08/11 - version 0.823</strong>
+<ul>
+<li>BUGFIX : <a href='#fFFr1hpcDFv'>見出し番号がズレる</a>問題の修正</li>
 </ul>
 </li>
 </ul>
