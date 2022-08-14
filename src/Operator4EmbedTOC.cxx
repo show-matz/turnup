@@ -19,8 +19,11 @@ namespace turnup {
 										 const TextSpan* pEnd, DocumentInfo& docInfo );
 
 
-
-
+	//--------------------------------------------------------------------------
+	//
+	// external functions
+	//
+	//--------------------------------------------------------------------------
 	const TextSpan* Operator4EmbedTOC( const TextSpan* pTop,
 									   const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		return EmbedTocImpl( false, pTop, pEnd, docInfo );
@@ -29,6 +32,17 @@ namespace turnup {
 	const TextSpan* Operator4EmbedTOC_X( const TextSpan* pTop,
 										 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		return EmbedTocImpl( true, pTop, pEnd, docInfo );
+	}
+
+	const TextSpan* Operator4EmbedSubTOC( const TextSpan* pTop,
+										  const TextSpan* pEnd, DocumentInfo& docInfo ) {
+		(void)pEnd;
+		// 対象外の行であれば無視
+		if( pTop->Trim().IsEqual( "<!-- embed:sub-toc -->" ) == false )
+			return pTop;
+		auto& toc = docInfo.Get<ToC>();
+		toc.WriteSubTOC( std::cout, docInfo );
+		return pTop + 1;
 	}
 
 	const TextSpan* Operator4EmbedTableList( const TextSpan* pTop,
@@ -56,6 +70,11 @@ namespace turnup {
 
 
 
+	//--------------------------------------------------------------------------
+	//
+	// internal functions
+	//
+	//--------------------------------------------------------------------------
 	static const TextSpan* EmbedTocImpl( bool bFoldable, const TextSpan* pTop,
 										 const TextSpan* pEnd, DocumentInfo& docInfo ) {
 		(void)pEnd;
@@ -95,5 +114,6 @@ namespace turnup {
 		}
 		return pTop + 1;
 	}
+
 } // Namespace turnup
 

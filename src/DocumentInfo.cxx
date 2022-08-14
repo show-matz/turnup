@@ -31,6 +31,7 @@ namespace turnup {
 		Filters			m_filters;
 		StyleStack		m_styles;
 		StylePalette	m_palette;
+		const char*		m_pHeaderTag;
 	};
 
 	//--------------------------------------------------------------------------
@@ -39,10 +40,19 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	DocumentInfo::DocumentInfo() : m_pImpl( new Impl{} ) {
+		m_pImpl->m_pHeaderTag = nullptr;
 	}
 
 	DocumentInfo::~DocumentInfo() {
 		delete m_pImpl;
+	}
+
+	void DocumentInfo::SetCurrentHeader( const char* pTag ) {
+		m_pImpl->m_pHeaderTag = pTag;
+	}
+
+	const char* DocumentInfo::GetCurrentHeader() const {
+		return m_pImpl->m_pHeaderTag;
 	}
 
 	template <> HtmlHeader&   DocumentInfo::Get<HtmlHeader>()   { return m_pImpl->m_htmHeader; }

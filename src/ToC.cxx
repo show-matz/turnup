@@ -15,6 +15,7 @@
 #include <string.h>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 namespace turnup {
 
@@ -166,6 +167,7 @@ namespace turnup {
 		void WriteTOC_X( std::ostream& os,
 						 DocumentInfo& docInfo,
 						 uint32_t minLevel, uint32_t maxLevel ) const;
+		void WriteSubTOC( std::ostream& os, DocumentInfo& docInfo ) const;
 		void WriteTableFigureList( std::ostream& os,
 								   ToC::EntryT type, DocumentInfo& docInfo ) const;
 	private:
@@ -223,6 +225,9 @@ namespace turnup {
 			m_pImpl->WriteTOC( os, docInfo, minLevel, maxLevel );
 		else
 			m_pImpl->WriteTOC_X( os, docInfo, minLevel, maxLevel );
+	}
+	void ToC::WriteSubTOC( std::ostream& os, DocumentInfo& docInfo ) const {
+		m_pImpl->WriteSubTOC( os, docInfo );
 	}
 	void ToC::WriteTableList( std::ostream& os, DocumentInfo& docInfo ) const {
 		m_pImpl->WriteTableFigureList( os, ToC::EntryT::TABLE, docInfo );
@@ -465,6 +470,46 @@ namespace turnup {
 			styles.PopStyle( details );
 			styles.PopStyle( summary );
 			styles.PopStyle( bkquote );
+		}
+	}
+
+	void ToC::Impl::WriteSubTOC( std::ostream& os, DocumentInfo& docInfo ) const {
+		const char* pTagName = docInfo.GetCurrentHeader();
+		if( !pTagName )
+			return;
+		auto itr1 = std::find_if( m_entries.begin(), m_entries.end(),
+								 [&pTagName]( const TocEntry& e ) -> bool {
+									 return e.GetAnchorTag() == pTagName;
+								 } );
+		if( itr1 == m_entries.end() || itr1->GetType() != ToC::EntryT::HEADER )
+			return;
+		uint32_t lv = itr1->GetLevel();
+		auto itr2 = std::find_if( itr1 + 1, m_entries.end(),
+								 [&lv]( const TocEntry& e ) -> bool {
+									 return e.GetLevel() == lv;
+								 } );
+		if( itr1 != itr2 ) {
+			auto& cfg    = docInfo.Get<Config>();
+			auto& styles = docInfo.Get<StyleStack>();
+			uint32_t cnt = 0;
+			for( ; itr1 != itr2; ++itr1 ) {
+				const TocEntry& entry = *itr1;
+				if( entry.GetLevel() != lv + 1 )
+					continue;
+				if( ++cnt == 1 )
+					styles.WriteOpenTag( os, "ul" ) << std::endl;
+				styles.WriteOpenTag( os, "li" )
+								<< "<a href='#" << entry.GetAnchorTag() << "'>";
+				if( cfg.bNumberingHeader ) {
+					char chapter[32];
+					entry.GetChapterPrefix( cfg, chapter );
+					os << chapter;
+				}
+				TextSpan tmp{ entry.GetTitle() };
+				tmp.WriteTo( os, docInfo, false ) << "</a></li>" << std::endl;
+			}
+			if( 0 < cnt )
+				os << "</ul>" << std::endl;
 		}
 	}
 

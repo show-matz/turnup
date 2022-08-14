@@ -48,6 +48,7 @@ namespace turnup {
 		void WriteTOC( std::ostream& os,
 					   DocumentInfo& docInfo, bool bFoldable,
 					   uint32_t minLevel, uint32_t maxLevel ) const;
+		void WriteSubTOC( std::ostream& os, DocumentInfo& docInfo ) const;
 		void WriteTableList( std::ostream& os, DocumentInfo& docInfo ) const;
 		void WriteFigureList( std::ostream& os, DocumentInfo& docInfo ) const;
 	public:

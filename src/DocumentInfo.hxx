@@ -27,6 +27,9 @@ namespace turnup {
 		DocumentInfo();
 		~DocumentInfo();
 	public:
+		void SetCurrentHeader( const char* pTag );
+		const char* GetCurrentHeader() const;
+	public:
 		template <typename T> T& Get();
 		template <typename T> const T& Get() const;
 	private:

@@ -28,9 +28,10 @@ namespace turnup {
 		const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER, tmp.Top(), tmp.End() );
 		char tag[3] = { 'h', (char)('0'+level), 0 };
 		styles.WriteOpenTag( std::cout, tag );
-		if( pTag )
+		if( pTag ) {
 			std::cout << "<a name='" << pTag << "'></a>";
-		else {
+			docInfo.SetCurrentHeader( pTag );
+		} else {
 			//ToDo : error message...
 		}
 		auto& cfg = docInfo.Get<Config>();
