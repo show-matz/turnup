@@ -288,7 +288,7 @@ namespace turnup {
 			return false;
 		EntryBase* pEntry = nullptr;
 		const char* const p = pTargetTop;
-		if( *p == '#' || (p[1] == '#' && (*p == 'T' || *p == 'F')) )
+		if( *p == '#' || (p[1] == '#' && (*p == 'T' || *p == 'F' || *p == 'A')) )
 			pEntry = new InternalAutoLinkEntry( pTop, pEnd, pTargetTop, pTargetEnd );
 		else
 			pEntry = new ExternalAutoLinkEntry( pTop, pEnd, pTargetTop, pTargetEnd );
