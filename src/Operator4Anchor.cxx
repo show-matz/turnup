@@ -27,7 +27,7 @@ namespace turnup {
 		auto& toc    = docInfo.Get<ToC>();
 		const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, title.Top(), title.End() );
 		if( pTag )
-			std::cout << "<a name='" << pTag << "' />" << std::endl;
+			std::cout << "<a name='" << pTag << "'></a>" << std::endl;
 		else {
 			//ToDo : error message...
 		}
