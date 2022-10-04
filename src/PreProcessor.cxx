@@ -355,10 +355,15 @@ namespace turnup {
 		const char* pCur = pTop;
 		//与えられた範囲全体を走査
 		while( pCur < pEnd ) {
-			// ${ または $( を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
+			// $ を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
 			const char* p1 = std::find( pCur, pEnd, '$' );
-			if( p1 == pEnd || (p1[1] != '{' && p1[1] != '(') )
+			if( p1 == pEnd )
 				return TextSpan{};
+			// $ に後続するのが { でも ( でもなければループ継続
+			if( p1[1] != '{' && p1[1] != '(' ) {
+				pCur = p1 + 1;
+				continue;
+			}
 			char opener = p1[1];
 			char closer = (opener == '{' ? '}' : ')');
 			//見つかったのがマクロ展開でない場合
