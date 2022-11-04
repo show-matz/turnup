@@ -125,6 +125,7 @@
 </blockquote>
 </details>
 <li class='tocx'><a href='#62CICfavwWM'>8.9 画像ファイルを HTML 内に取り込む方法</a></li>
+<li class='tocx'><a href='#6cOilIw9D0i'>8.10 自動リンクと文字装飾の優先順位について</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -711,7 +712,7 @@ Table. title of table
 <p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
 <p>　この <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>に記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
-<p>　<code>autolink</code> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>による自動リンクと<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>は、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。</p>
+<p>　<code>autolink</code> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>による自動リンクと<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>は、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。<a href='#6cOilIw9D0i'>細かい話</a>も参照してください。</p>
 <h3><a name='6LkDjrI3ASb'></a>6.10 生の HTML の出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> をそのまま出力することができます。</p>
 <pre>
@@ -1505,6 +1506,12 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./$​{OUT}
 </pre>
 </details>
+<h3><a name='6cOilIw9D0i'></a>8.10 自動リンクと文字装飾の優先順位について</h3>
+<p>　基本的なルールは次の通りです。</p>
+<ul>
+<li><a href='#8mg4uLSAXaz'>自動リンク</a> は文字装飾がすべて処理された後に適用される</li>
+</ul>
+<p>　この仕様は、 <strong>「文書内の別の場所での自動リンク対象文字列の増減によって文字装飾の結果が変わってはならない」</strong>という原則からきています。このことは、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>や <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> のタイトルに文字装飾と判定されるような記述はできないことを意味しますので注意してください。</p>
 <h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
 <h3><a name='95miNJcW6DM'></a>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
 <details>
@@ -1862,6 +1869,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2022/10/04 - version 0.826</strong>
 <ul>
 <li>BUGFIX : 変数／マクロ関数が展開されない場合があるバグを改修</li>
+</ul>
+</li>
+<li><strong>2022/11/04 - version 0.827</strong>
+<ul>
+<li>BUGFIX : <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> が機能しない場合があるバグを修正</li>
 </ul>
 </li>
 </ul>
