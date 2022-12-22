@@ -2,3 +2,4 @@ src/debug
 src/release
 *~
 *.bak
+TAGS

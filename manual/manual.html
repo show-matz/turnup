@@ -939,7 +939,8 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 &lt;!-- define: VAR = [](#HEADER-TITLE) --&gt;
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
-<p>　設定した変数を参照（展開）するには $​{FOO} または $​(FOO) という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<p>　設定した変数を参照（展開）するには <code>$​{FOO}</code> または <code>$​(FOO)</code> という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<p>　version 0.828 より、 <code>$​{FOO}$</code> のような記述も単体の変数展開とみなすようになりました。これは、一部の markdown エディタにおいて $ から $ までを特定の書法として認識するため、 <code>$​{FOO}</code> のような turnup の変数展開によって表示が崩れる問題を回避するものです。ただし、 <code>$​{FOO}$​(BAR)</code> のように変数展開が連続する場合は <code>$​{FOO}$</code> 部分を単独の変数展開とはみなしません。</p>
 <h4><a name='kW5fA3S8XIj'></a>6.22.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre>
@@ -1021,7 +1022,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
  @((background:darkgray;color:white;)(この部分は反転される))
 </pre>
-<p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されます。</p>
+<p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されますし、変数展開同様に閉じ括弧に <code>$</code> を後続させることもできます。</p>
 <p>　マクロ関数はあくまで変数展開の一部なので、複数行に渡るブロックに展開されるような使い方は意図していません。複数行のブロックを生成したい場合は、後述する<a href='#8d4GujOuk9v'>スニペット</a>を使用してください。</p>
 <h3><a name='8d4GujOuk9v'></a>6.25 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
@@ -1874,6 +1875,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2022/11/04 - version 0.827</strong>
 <ul>
 <li>BUGFIX : <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> が機能しない場合があるバグを修正</li>
+</ul>
+</li>
+<li><strong>2022/12/?? - version 0.828</strong>
+<ul>
+<li>ENHANCE : <a href='#4eSrElLWBcH'>変数</a>／<a href='#anSuBAd7F3R'>マクロ関数</a>の展開において $ の後続を許可する変更</li>
 </ul>
 </li>
 </ul>

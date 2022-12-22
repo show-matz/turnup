@@ -28,6 +28,7 @@ namespace turnup {
 	static const char* FindMacroPlaceholder( const char* pTop, 
 											 const char* pEnd, uint32_t& index );
 	static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd );
+	static bool IsTrailDollerExist( const char* pTop, const char* pEnd );
 	static bool IsDefineLine( const TextSpan* pLine, TextSpan& name, TextSpan& value );
 	static TextSpan GetLinkTarget( const TextSpan& value );
 	static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression );
@@ -196,7 +197,7 @@ namespace turnup {
 
 	TextSpan PreProcessorImpl::FindVariable( const TextSpan& posRef ) const {
 		TextSpan name = posRef;
-		name = name.Chomp( 2, 1 );
+		name = name.Chomp( 2, 1 + (posRef.End()[-1] == '$') );
 		TextSpan value;
 		bool ret = FindVariableImpl( name, value );
 		if( !ret ) {
@@ -211,7 +212,7 @@ namespace turnup {
 		char opener[2] = { posRef[1], 0 };
 		char closer[2] = { (opener[0] == '{' ? '}' : ')'), 0 };
 		TextSpan data = posRef;
-		data.Chomp( 2, 1 );
+		data.Chomp( 2, 1 + (posRef.End()[-1] == '$') );
 		m_sequence.clear(); {
 			TextSpan tmp;
 			TextSpan rest;
@@ -373,8 +374,9 @@ namespace turnup {
 				if( p2 == pEnd )
 					return TextSpan{};
 				//${...}/$(...) の ... 部分が全て変数名構成文字ならその範囲を返却して終了
+				//ただし、${/$( でない $ が後続する場合はそれも範囲に含める
 				if( std::all_of( p1 + 2, p2, IsVarNameChar ) )
-					return TextSpan{ p1, p2 + 1 };
+					return TextSpan{ p1, p2 + 1 + IsTrailDollerExist( p2 + 1, pEnd ) };
 				//上記以外なら ${/$( の次に移動して続行
 				pCur = p1 + 2;
 			//見つかったのがマクロ展開の場合
@@ -389,14 +391,19 @@ namespace turnup {
 					//見つかれば ${{/$(( 後で最初の }/) も検索（同じものになる可能性もある）
 					auto p3 = std::find( p1 + 3, p2 + 1, closer );
 					//${{...}~~~}} の ... 部分が全て変数名構成文字ならその範囲を返却して終了
+					//ただし、${/$( でない $ が後続する場合はそれも範囲に含める
 					if( std::all_of( p1 + 3, p3, IsVarNameChar ) )
-						return TextSpan{ p1, p2 + 2 };
+						return TextSpan{ p1, p2 + 2 + IsTrailDollerExist( p2 + 2, pEnd ) };
 					//上記以外なら ${/$( の次に移動して続行
 					pCur = p1 + 3;
 				}
 			}
 		}
 		return TextSpan{};
+	}
+
+	static bool IsTrailDollerExist( const char* pTop, const char* pEnd ) {
+		return (pTop < pEnd) && (*pTop == '$') && (pTop[1] != '{') && (pTop[1] != '(');
 	}
 
 	// <!-- define: VAR_NAME = value --> 形式の行かを判定する
