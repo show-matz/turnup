@@ -92,9 +92,20 @@
 </blockquote>
 </details>
 <li class='tocx'><a href='#8sNFPrNb9kM'>6.23 条件分岐</a></li>
-<li class='tocx'><a href='#anSuBAd7F3R'>6.24 マクロ関数</a></li>
+<details class='tocx' open>
+<summary class='tocx'><a href='#anSuBAd7F3R'>6.24 マクロ関数</a></summary>
+<blockquote class='tocx'>
+<li class='tocx'><a href='#fzHpYhsZ8ub'>6.24.1 特殊なマクロ関数</a></li>
+</blockquote>
+</details>
 <li class='tocx'><a href='#8d4GujOuk9v'>6.25 スニペット定義と展開</a></li>
 <li class='tocx'><a href='#bs9N19eIT7w'>6.26 エラーと警告の出力</a></li>
+<details class='tocx' open>
+<summary class='tocx'><a href='#ln9al6BVnoP'>6.27 数式の生成</a></summary>
+<blockquote class='tocx'>
+<li class='tocx'><a href='#hoa6vrntxKM'>6.27.1 マクロ関数による数式の生成</a></li>
+</blockquote>
+</details>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -1024,6 +1035,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </pre>
 <p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されますし、変数展開同様に閉じ括弧に <code>$</code> を後続させることもできます。</p>
 <p>　マクロ関数はあくまで変数展開の一部なので、複数行に渡るブロックに展開されるような使い方は意図していません。複数行のブロックを生成したい場合は、後述する<a href='#8d4GujOuk9v'>スニペット</a>を使用してください。</p>
+<h4><a name='fzHpYhsZ8ub'></a>6.24.1 特殊なマクロ関数</h4>
+<p>　システムが用意するマクロ関数として、以下のものがあります。</p>
+<ul>
+<li><code>_MATH</code> : Unicode 文字を使用した簡易的な数式生成を行ないます。詳細は <a href='#hoa6vrntxKM'>6.27.1  節</a>を参照してください。</li>
+</ul>
 <h3><a name='8d4GujOuk9v'></a>6.25 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
 <p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
@@ -1062,6 +1078,156 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p><span style='background:pink; color:red;'>ERROR : CONDITION is not true</span></p>
 <p>　<code>error</code> と <code>warning</code> はともに上記のようなメッセージを出力しますが、 <code>error</code> は文書の生成プロセス全体を中止するのに対し、 <code>warning</code> は処理を続行する点が異なります。</p>
 <p>　　</p>
+<h3><a name='ln9al6BVnoP'></a>6.27 数式の生成</h3>
+<h4><a name='hoa6vrntxKM'></a>6.27.1 マクロ関数による数式の生成</h4>
+<p>　特殊なマクロ関数 <code>_MATH</code> を使用することで、Unicode 文字を使用した簡単な数式を生成することができます。これは結城浩さんの作成された <a href='https://textmath.hyuki.net/'>Text to Math Converter</a> の機能クローンで、マクロ関数のパラメータ部分に記述した ASCII テキストを変換するというものです。たとえば、 <code>${{_MATH}{ax^2 + bx + c = 0}}</code> が 𝑎𝑥² + 𝑏𝑥 + 𝑐 = 0 に変換されます。以下に記述方法を説明します。</p>
+<h5><a name='5jyqqsN3VbM'></a>◆ 英文字</h5>
+<p>　英文字は普通に記述するだけで Mathematical Italic に変換されます。</p>
+<ul>
+<li><code>abcdefghijklmnopqrstuvwxyz</code> が 𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧 になります。</li>
+<li><code>ABCDEFGHIJKLMNOPQRSTUVWXYZ</code> が 𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍 になります。</li>
+</ul>
+<h5><a name='a9MJQulwCSD'></a>◆ 上付き文字</h5>
+<p>　<code>^</code> に続けて数字や記号を記述することで指数などの上付き文字を出力できます。 <code>x^2</code> が 𝑥² になります。使用できるのは 0～9 の数字と、 <code>+ - = ( ) i n</code> です。</p>
+<p>　また、 <code>^{...}</code> という記述で連続する上付き文字を記述できます。 <code>x^{-3}</code> が 𝑥⁻³ になります。</p>
+<h5><a name='4cF0nKwRGgU'></a>◆ 下付き文字</h5>
+<p>　<code>_</code> に続けて数字や記号を記述することで数列の添字などの下付き文字を出力できます。 <code>n_3</code> が 𝑛₃ になります。使用できるのは 0～9 の数字と、 <code>+ - = ( ) n h k l m p s t</code> です。</p>
+<p>　また、 <code>_{...}</code> という記述で連続する下付き文字を記述できます。 <code>n_{k-2}</code> が 𝑛ₖ₋₂ になります。</p>
+<h5><a name='kqxAogEvio7'></a>◆ ギリシャ文字</h5>
+<p>　<code>\alpha</code> などの記述でギリシャ文字を記述できます。一覧を以下に示します。</p>
+<table align='center'>
+<tr><th>input</th><th>output</th><th></th><th>input</th><th>output</th><th></th><th>input</th><th>output</th></tr>
+<tr><td nowrap align='left'><code>\alpha</code></td><td align='center'>α</td><td nowrap align='left'></td><td nowrap align='left'><code>\iota</code></td><td align='center'>ι</td><td nowrap align='left'></td><td nowrap align='left'><code>\varrho</code></td><td align='center'>ϱ</td></tr>
+<tr><td nowrap align='left'><code>\beta</code></td><td align='center'>β</td><td nowrap align='left'></td><td nowrap align='left'><code>\kappa</code></td><td align='center'>κ</td><td nowrap align='left'></td><td nowrap align='left'><code>\sigma</code></td><td align='center'>σ</td></tr>
+<tr><td nowrap align='left'><code>\gamma</code></td><td align='center'>γ</td><td nowrap align='left'></td><td nowrap align='left'><code>\lambda</code></td><td align='center'>λ</td><td nowrap align='left'></td><td nowrap align='left'><code>\varsigma</code></td><td align='center'>ς</td></tr>
+<tr><td nowrap align='left'><code>\delta</code></td><td align='center'>δ</td><td nowrap align='left'></td><td nowrap align='left'><code>\mu</code></td><td align='center'>μ</td><td nowrap align='left'></td><td nowrap align='left'><code>\tau</code></td><td align='center'>τ</td></tr>
+<tr><td nowrap align='left'><code>\epsilon</code></td><td align='center'>ϵ</td><td nowrap align='left'></td><td nowrap align='left'><code>\nu</code></td><td align='center'>ν</td><td nowrap align='left'></td><td nowrap align='left'><code>\upsilon</code></td><td align='center'>υ</td></tr>
+<tr><td nowrap align='left'><code>\varepsilon</code></td><td align='center'>ε</td><td nowrap align='left'></td><td nowrap align='left'><code>\xi</code></td><td align='center'>ξ</td><td nowrap align='left'></td><td nowrap align='left'><code>\phi</code></td><td align='center'>φ</td></tr>
+<tr><td nowrap align='left'><code>\zeta</code></td><td align='center'>ζ</td><td nowrap align='left'></td><td nowrap align='left'><code>\o</code></td><td align='center'>𝑜</td><td nowrap align='left'></td><td nowrap align='left'><code>\varphi</code></td><td align='center'>ϕ</td></tr>
+<tr><td nowrap align='left'><code>\eta</code></td><td align='center'>η</td><td nowrap align='left'></td><td nowrap align='left'><code>\pi</code></td><td align='center'>π</td><td nowrap align='left'></td><td nowrap align='left'><code>\chi</code></td><td align='center'>χ</td></tr>
+<tr><td nowrap align='left'><code>\theta</code></td><td align='center'>θ</td><td nowrap align='left'></td><td nowrap align='left'><code>\varpi</code></td><td align='center'>ϖ</td><td nowrap align='left'></td><td nowrap align='left'><code>\psi</code></td><td align='center'>ψ</td></tr>
+<tr><td nowrap align='left'><code>\vartheta</code></td><td align='center'>ϑ</td><td nowrap align='left'></td><td nowrap align='left'><code>\rho</code></td><td align='center'>ρ</td><td nowrap align='left'></td><td nowrap align='left'><code>\omega</code></td><td align='center'>ω</td></tr>
+</table>
+<h5><a name='jEvWIQJ30wm'></a>◆ 数学関数</h5>
+<p>　英文字をそのまま入力すると Mathematical Italic に変換されますが、sin などの数学関数はそれでは不都合です。\ の後に記述することで通常の文字で出力します。以下が利用できます。</p>
+<table align='center'>
+<tr><th>input</th><th>output</th><th></th><th>input</th><th>output</th></tr>
+<tr><td nowrap align='left'><code>\sin</code></td><td align='center'>sin</td><td nowrap align='left'></td><td nowrap align='left'><code>\log</code></td><td align='center'>log</td></tr>
+<tr><td nowrap align='left'><code>\cos</code></td><td align='center'>cos</td><td nowrap align='left'></td><td nowrap align='left'><code>\inf</code></td><td align='center'>inf</td></tr>
+<tr><td nowrap align='left'><code>\tan</code></td><td align='center'>tan</td><td nowrap align='left'></td><td nowrap align='left'><code>\sup</code></td><td align='center'>sup</td></tr>
+<tr><td nowrap align='left'><code>\lim</code></td><td align='center'>lim</td><td nowrap align='left'></td><td nowrap align='left'><code>\mod</code></td><td align='center'>mod</td></tr>
+</table>
+<h5><a name='b5FU1nSA53M'></a>◆ 各種記号</h5>
+<table align='center'>
+<tr><th>input</th><th>output</th><th></th><th>input</th><th>output</th><th></th><th>input</th><th>output</th></tr>
+<tr><td nowrap align='left'><code>\equiv</code></td><td align='center'>≡</td><td nowrap align='left'></td><td nowrap align='left'><code>\ast</code></td><td align='center'>∗</td><td nowrap align='left'></td><td nowrap align='left'><code>\neq</code></td><td align='center'>≠</td></tr>
+<tr><td nowrap align='left'><code>\not\in</code></td><td align='center'>∉</td><td nowrap align='left'></td><td nowrap align='left'><code>\circ</code></td><td align='center'>∘</td><td nowrap align='left'></td><td nowrap align='left'><code>\leq</code></td><td align='center'>≤</td></tr>
+<tr><td nowrap align='left'><code>\in</code></td><td align='center'>∈</td><td nowrap align='left'></td><td nowrap align='left'><code>\cdot</code></td><td align='center'>∙</td><td nowrap align='left'></td><td nowrap align='left'><code>\geq</code></td><td align='center'>≥</td></tr>
+<tr><td nowrap align='left'><code>\emptyset</code></td><td align='center'>∅</td><td nowrap align='left'></td><td nowrap align='left'><code>\sqrt</code></td><td align='center'>√</td><td nowrap align='left'></td><td nowrap align='left'><code>\leqq</code></td><td align='center'>≦</td></tr>
+<tr><td nowrap align='left'><code>\forall</code></td><td align='center'>∀</td><td nowrap align='left'></td><td nowrap align='left'><code>\angle</code></td><td align='center'>∠</td><td nowrap align='left'></td><td nowrap align='left'><code>\geqq</code></td><td align='center'>≧</td></tr>
+<tr><td nowrap align='left'><code>\exists</code></td><td align='center'>∃</td><td nowrap align='left'></td><td nowrap align='left'><code>\land</code></td><td align='center'>∧</td><td nowrap align='left'></td><td nowrap align='left'><code>\subset</code></td><td align='center'>⊂</td></tr>
+<tr><td nowrap align='left'><code>\Leftarrow</code></td><td align='center'>⇐</td><td nowrap align='left'></td><td nowrap align='left'><code>\lor</code></td><td align='center'>∨</td><td nowrap align='left'></td><td nowrap align='left'><code>\supset</code></td><td align='center'>⊃</td></tr>
+<tr><td nowrap align='left'><code>\Rightarrow</code></td><td align='center'>⇒</td><td nowrap align='left'></td><td nowrap align='left'><code>\cap</code></td><td align='center'>∩</td><td nowrap align='left'></td><td nowrap align='left'><code>\subseteq</code></td><td align='center'>⊆</td></tr>
+<tr><td nowrap align='left'><code>\Leftrightarrow</code></td><td align='center'>⇔</td><td nowrap align='left'></td><td nowrap align='left'><code>\cup</code></td><td align='center'>∪</td><td nowrap align='left'></td><td nowrap align='left'><code>\supseteq</code></td><td align='center'>⊇</td></tr>
+<tr><td nowrap align='left'><code>\Pi</code></td><td align='center'>∏</td><td nowrap align='left'></td><td nowrap align='left'><code>\int</code></td><td align='center'>∫</td><td nowrap align='left'></td><td nowrap align='left'><code>\oplus</code></td><td align='center'>⊕</td></tr>
+<tr><td nowrap align='left'><code>\Sigma</code></td><td align='center'>∑</td><td nowrap align='left'></td><td nowrap align='left'><code>\therefore</code></td><td align='center'>∴</td><td nowrap align='left'></td><td nowrap align='left'><code>\ominus</code></td><td align='center'>⊖</td></tr>
+<tr><td nowrap align='left'><code>\infty</code></td><td align='center'>∞</td><td nowrap align='left'></td><td nowrap align='left'><code>\because</code></td><td align='center'>∵</td><td nowrap align='left'></td><td nowrap align='left'><code>\otimes</code></td><td align='center'>⊗</td></tr>
+<tr><td nowrap align='left'><code>\mp</code></td><td align='center'>∓</td><td nowrap align='left'></td><td nowrap align='left'><code>\times</code></td><td align='center'>×</td><td nowrap align='left'></td><td nowrap align='left'><code>\oslash</code></td><td align='center'>⊘</td></tr>
+<tr><td nowrap align='left'><code>\pm</code></td><td align='center'>±</td><td nowrap align='left'></td><td nowrap align='left'><code>\div</code></td><td align='center'>÷</td><td nowrap align='left'></td><td nowrap align='left'></td><td align='center'></td></tr>
+<tr><td nowrap align='left'><code>\setminus</code></td><td align='center'>∖</td><td nowrap align='left'></td><td nowrap align='left'><code>\sim</code></td><td align='center'>∼</td><td nowrap align='left'></td><td nowrap align='left'></td><td align='center'></td></tr>
+</table>
+<h5><a name='3fH1c5ORtb7'></a>◆ その他の英数字シンボル</h5>
+<table align='center'>
+<tr><th>input</th><th>output</th><th></th><th>input</th><th>output</th></tr>
+<tr><td nowrap align='left'><code>\mathbb C</code></td><td align='center'>ℂ</td><td nowrap align='left'></td><td nowrap align='left'><code>\mathbb Q</code></td><td align='center'>ℚ</td></tr>
+<tr><td nowrap align='left'><code>\mathbb H</code></td><td align='center'>ℍ</td><td nowrap align='left'></td><td nowrap align='left'><code>\mathbb R</code></td><td align='center'>ℝ</td></tr>
+<tr><td nowrap align='left'><code>\mathbb N</code></td><td align='center'>ℕ</td><td nowrap align='left'></td><td nowrap align='left'><code>\mathbb Z</code></td><td align='center'>ℤ</td></tr>
+<tr><td nowrap align='left'><code>\mathbb P</code></td><td align='center'>ℙ</td><td nowrap align='left'></td><td nowrap align='left'></td><td align='center'></td></tr>
+</table>
+<h5><a name='4YVgNVQ8BQc'></a>◆サンプル</h5>
+<p>　マクロ関数 <code>_MATH</code> の使用例を以下に示します。これは、元になっている <a href='https://textmath.hyuki.net/'>Text to Math Converter</a> に掲載されているものと（大体）同じものです。</p>
+<ul>
+<li><code>|a_m - a_n| &lt; d</code>
+<ul>
+<li>|𝑎ₘ - 𝑎ₙ| &lt; 𝑑</li>
+</ul>
+</li>
+<li><code>a_1,a_2,a_3,...,a_{n-1},a_n</code>
+<ul>
+<li>𝑎₁,𝑎₂,𝑎₃,...,𝑎ₙ₋₁,𝑎ₙ</li>
+</ul>
+</li>
+<li><code>ax^2 + bx + c = 0</code>
+<ul>
+<li>𝑎𝑥² + 𝑏𝑥 + 𝑐 = 0</li>
+</ul>
+</li>
+<li><code>a^2 + b^2 = c^2</code>
+<ul>
+<li>𝑎² + 𝑏² = 𝑐²</li>
+</ul>
+</li>
+<li><code>PAP^{-1} = B</code>
+<ul>
+<li>𝑃𝐴𝑃⁻¹ = 𝐵</li>
+</ul>
+</li>
+<li><code>aa^{-1} = a^{-1}a = e</code>
+<ul>
+<li>𝑎𝑎⁻¹ = 𝑎⁻¹𝑎 = 𝑒</li>
+</ul>
+</li>
+<li><code>e^2e^3 = e^{2+3}</code>
+<ul>
+<li>𝑒²𝑒³ = 𝑒²⁺³</li>
+</ul>
+</li>
+<li><code>\cos^2\theta + \sin^2\theta = 1</code>
+<ul>
+<li>cos²θ + sin²θ = 1</li>
+</ul>
+</li>
+<li><code>n \in \mathbb Z, r \not\in \mathbb N</code>
+<ul>
+<li>𝑛 ∈ ℤ, 𝑟 ∉ ℕ</li>
+</ul>
+</li>
+<li><code>7 \equiv 1 (\mod 3)</code>
+<ul>
+<li>7 ≡ 1 (mod 3)</li>
+</ul>
+</li>
+<li><code>A \cap B \subset A \cup B</code>
+<ul>
+<li>𝐴 ∩ 𝐵 ⊂ 𝐴 ∪ 𝐵</li>
+</ul>
+</li>
+<li><code>\log_{10} 1000 = \log_{10} 10^3 = 3</code>
+<ul>
+<li>log₁₀ 1000 = log₁₀ 10³ = 3</li>
+</ul>
+</li>
+<li><code>l = r\theta, v = r\omega, a = r\omega^2</code>
+<ul>
+<li>𝑙 = 𝑟θ, 𝑣 = 𝑟ω, 𝑎 = 𝑟ω²</li>
+</ul>
+</li>
+<li><code>\forall \varepsilon &gt;0;  \exists \delta &gt;0;  \forall x \in \mathbb R [ 0 &lt; |x - a| &lt; \delta \Rightarrow |f(x) - b| &lt; \varepsilon ]</code>
+<ul>
+<li>∀ ε &gt;0;  ∃ δ &gt;0;  ∀ 𝑥 ∈ ℝ [ 0 &lt; |𝑥 - 𝑎| &lt; δ ⇒ |𝑓(𝑥) - 𝑏| &lt; ε ]</li>
+</ul>
+</li>
+<li><code>\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta</code>
+<ul>
+<li>sin(α±β) = sinαcosβ ± cosαsinβ</li>
+</ul>
+</li>
+<li><code>\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta</code>
+<ul>
+<li>cos(α±β) = cosαcosβ ∓ sinαsinβ</li>
+</ul>
+</li>
+</ul>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='0EKpSe2qrxR'></a>7.1 見出しにおける自動リンク</h3>
 <p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
@@ -1882,6 +2048,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a href='#4eSrElLWBcH'>変数</a>／<a href='#anSuBAd7F3R'>マクロ関数</a>の展開において $ の後続を許可する変更</li>
 </ul>
 </li>
+<li><strong>2023/01/07</strong>
+<ul>
+<li>ENHANCE : <a href='#hoa6vrntxKM'>マクロ関数による数式の生成</a>機能を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -1890,6 +2061,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <summary class='idx_x'>Symbols</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='autolink' href='#kW5fA3S8XIj'>-D オプション</a></li>
+<li class='idx_x'><a class='autolink' href='#hoa6vrntxKM'>_MATH</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
@@ -2030,6 +2202,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li class='idx_x'><a class='autolink' href='#9PbJaRizVB7'>定義リスト</a></li>
 <li class='idx_x'><a class='autolink' href='#2c4WKrG50Sg'>引用</a></li>
 <li class='idx_x'><a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a></li>
+<li class='idx_x'><a class='autolink' href='#ln9al6BVnoP'>数式の生成</a></li>
 <li class='idx_x'><a class='autolink' href='#8tTIqHSNoTg'>既知の問題点</a></li>
 <li class='idx_x'><a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a></li>
 <li class='idx_x'><a class='term' href='#8sf6EgPf8j8'>空白類文字</a></li>

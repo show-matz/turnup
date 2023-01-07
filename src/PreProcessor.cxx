@@ -7,6 +7,7 @@
 
 #include "TextSpan.hxx"
 #include "TextMaker.hxx"
+#include "SimpleFormula.hxx"
 #include "CRC64.hxx"
 
 #include <sys/stat.h>	//ToDo : C標準ライブラリの範囲内で実現する必要がある。
@@ -227,6 +228,18 @@ namespace turnup {
 				return posRef;
 			}
 		}
+		// NAME == "_MATH" の場合は特別扱い
+		if( m_sequence[0].IsEqual( "_MATH" ) ) {
+			const TextSpan& data = m_sequence[1];
+			auto callback = []( const char* p, uint32_t len, void* dum ) -> void {
+				auto pTM = reinterpret_cast<TextMaker*>( dum );
+				(*pTM) << TextSpan{ p, p+len };
+			};
+			TextMaker tm;
+			SimpleFormula::Expand( data.Top(), data.End(), callback, &tm );
+			return tm.GetSpan();
+		}
+
 		// NAME に対応する define の定義文字列を取得する
 		TextSpan body;
 		if( FindVariableImpl( m_sequence[0], body ) == false ) {

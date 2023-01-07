@@ -1,4 +1,5 @@
 <!-- define: APPNAME = turnup -->
+<!-- define: DOLLER = $ -->
 <!-- define: BLANK_PARAGRAPH = '　　' -->
 
 <!-- title:${APPNAME} readme -->    
@@ -1388,6 +1389,13 @@ ${{INVERT}{この部分は反転される}}、となります。
 いません。複数行のブロックを生成したい場合は、後述する[スニペット](#スニペット定義と展開)を使用
 してください。
 
+#### 特殊なマクロ関数
+
+　システムが用意するマクロ関数として、以下のものがあります。
+
+* `_MATH` : Unicode 文字を使用した簡易的な数式生成を行ないます。詳細は [$@ 節](#マクロ関数による数式の生成)を \
+参照してください。
+
 ### スニペット定義と展開
 <!-- autolink: [snippet:](#スニペット定義と展開) -->
 <!-- autolink: [expand:](#スニペット定義と展開) -->
@@ -1463,6 +1471,146 @@ ${BLANK_PARAGRAPH}
 
 
 ${BLANK_PARAGRAPH}
+
+### 数式の生成
+<!-- autolink: [$$](#数式の生成) -->
+
+#### マクロ関数による数式の生成
+<!-- autolink: [_MATH](#マクロ関数による数式の生成) -->
+
+　特殊なマクロ関数 `_MATH` を使用することで、Unicode 文字を使用した簡単な数式を生成することが
+できます。これは結城浩さんの作成された [Text to Math Converter](https://textmath.hyuki.net/) の
+機能クローンで、マクロ関数のパラメータ部分に記述した ASCII テキストを変換するというものです。
+たとえば、 `${DOLLER}{{_MATH}{ax^2 + bx + c = 0}}` が ${{_MATH}{ax^2 + bx + c = 0}}$ に
+変換されます。以下に記述方法を説明します。
+
+##### ◆ 英文字
+
+　英文字は普通に記述するだけで Mathematical Italic に変換されます。
+
+* `abcdefghijklmnopqrstuvwxyz` が ${{_MATH}{abcdefghijklmnopqrstuvwxyz}}$ になります。
+* `ABCDEFGHIJKLMNOPQRSTUVWXYZ` が ${{_MATH}{ABCDEFGHIJKLMNOPQRSTUVWXYZ}}$ になります。
+
+##### ◆ 上付き文字
+
+　`^` に続けて数字や記号を記述することで指数などの上付き文字を出力できます。 `x^2` が ${{_MATH}{x^2}} に
+なります。使用できるのは 0～9 の数字と、 `+ - = ( ) i n` です。
+
+　また、 `^{...}` という記述で連続する上付き文字を記述できます。 `x^{-3}` が $((_MATH)(x^{-3}))$ になります。
+
+
+##### ◆ 下付き文字
+
+　`_` に続けて数字や記号を記述することで数列の添字などの下付き文字を出力できます。 `n_3` が ${{_MATH}{n_3}} に
+なります。使用できるのは 0～9 の数字と、 `+ - = ( ) n h k l m p s t` です。
+
+　また、 `_{...}` という記述で連続する下付き文字を記述できます。 `n_{k-2}` が $((_MATH)(n_{k-2}))$ になります。
+
+##### ◆ ギリシャ文字
+
+　`\alpha` などの記述でギリシャ文字を記述できます。一覧を以下に示します。
+
+| input         | output                  |  | input     | output              |  | input       | output                |
+|:==============|:-----------------------:|:-|:==========|:-------------------:|:-|:============|:---------------------:|
+| `\alpha`      | ${{_MATH}{\alpha}}      |  | `\iota`   | ${{_MATH}{\iota}}   |  | `\varrho`   | ${{_MATH}{\varrho}}   |
+| `\beta`       | ${{_MATH}{\beta}}       |  | `\kappa`  | ${{_MATH}{\kappa}}  |  | `\sigma`    | ${{_MATH}{\sigma}}    |
+| `\gamma`      | ${{_MATH}{\gamma}}      |  | `\lambda` | ${{_MATH}{\lambda}} |  | `\varsigma` | ${{_MATH}{\varsigma}} |
+| `\delta`      | ${{_MATH}{\delta}}      |  | `\mu`     | ${{_MATH}{\mu}}     |  | `\tau`      | ${{_MATH}{\tau}}      |
+| `\epsilon`    | ${{_MATH}{\epsilon}}    |  | `\nu`     | ${{_MATH}{\nu}}     |  | `\upsilon`  | ${{_MATH}{\upsilon}}  |
+| `\varepsilon` | ${{_MATH}{\varepsilon}} |  | `\xi`     | ${{_MATH}{\xi}}     |  | `\phi`      | ${{_MATH}{\phi}}      |
+| `\zeta`       | ${{_MATH}{\zeta}}       |  | `\o`      | ${{_MATH}{\o}}      |  | `\varphi`   | ${{_MATH}{\varphi}}   |
+| `\eta`        | ${{_MATH}{\eta}}        |  | `\pi`     | ${{_MATH}{\pi}}     |  | `\chi`      | ${{_MATH}{\chi}}      |
+| `\theta`      | ${{_MATH}{\theta}}      |  | `\varpi`  | ${{_MATH}{\varpi}}  |  | `\psi`      | ${{_MATH}{\psi}}      |
+| `\vartheta`   | ${{_MATH}{\vartheta}}   |  | `\rho`    | ${{_MATH}{\rho}}    |  | `\omega`    | ${{_MATH}{\omega}}    |
+
+##### ◆ 数学関数
+
+　英文字をそのまま入力すると Mathematical Italic に変換されますが、sin などの数学関数は
+それでは不都合です。\ の後に記述することで通常の文字で出力します。以下が利用できます。
+
+| input   | output            |  | input   | output            |
+|:========|:-----------------:|:-|:========|:-----------------:|
+| `\sin`  | ${{_MATH}{\sin}}$ |  | `\log`  | ${{_MATH}{\log}}$ |
+| `\cos`  | ${{_MATH}{\cos}}$ |  | `\inf`  | ${{_MATH}{\inf}}$ |
+| `\tan`  | ${{_MATH}{\tan}}$ |  | `\sup`  | ${{_MATH}{\sup}}$ |
+| `\lim`  | ${{_MATH}{\lim}}$ |  | `\mod`  | ${{_MATH}{\mod}}$ |
+
+##### ◆ 各種記号
+
+| input             | output                       |  | input        | output                  |  | input       | output                 |
+|:==================|:----------------------------:|:-|:=============|:-----------------------:|:-|:============|:----------------------:|
+| `\equiv`          | ${{_MATH}{\equiv}}$          |  | `\ast`       | ${{_MATH}{\ast}}$       |  | `\neq`      | ${{_MATH}{\neq}}$      |
+| `\not\in`         | ${{_MATH}{\not\in}}$         |  | `\circ`      | ${{_MATH}{\circ}}$      |  | `\leq`      | ${{_MATH}{\leq}}$      |
+| `\in`             | ${{_MATH}{\in}}$             |  | `\cdot`      | ${{_MATH}{\cdot}}$      |  | `\geq`      | ${{_MATH}{\geq}}$      |
+| `\emptyset`       | ${{_MATH}{\emptyset}}$       |  | `\sqrt`      | ${{_MATH}{\sqrt}}$      |  | `\leqq`     | ${{_MATH}{\leqq}}$     |
+| `\forall`         | ${{_MATH}{\forall}}$         |  | `\angle`     | ${{_MATH}{\angle}}$     |  | `\geqq`     | ${{_MATH}{\geqq}}$     |
+| `\exists`         | ${{_MATH}{\exists}}$         |  | `\land`      | ${{_MATH}{\land}}$      |  | `\subset`   | ${{_MATH}{\subset}}$   |
+| `\Leftarrow`      | ${{_MATH}{\Leftarrow}}$      |  | `\lor`       | ${{_MATH}{\lor}}$       |  | `\supset`   | ${{_MATH}{\supset}}$   |
+| `\Rightarrow`     | ${{_MATH}{\Rightarrow}}$     |  | `\cap`       | ${{_MATH}{\cap}}$       |  | `\subseteq` | ${{_MATH}{\subseteq}}$ |
+| `\Leftrightarrow` | ${{_MATH}{\Leftrightarrow}}$ |  | `\cup`       | ${{_MATH}{\cup}}$       |  | `\supseteq` | ${{_MATH}{\supseteq}}$ |
+| `\Pi`             | ${{_MATH}{\Pi}}$             |  | `\int`       | ${{_MATH}{\int}}$       |  | `\oplus`    | ${{_MATH}{\oplus}}$    |
+| `\Sigma`          | ${{_MATH}{\Sigma}}$          |  | `\therefore` | ${{_MATH}{\therefore}}$ |  | `\ominus`   | ${{_MATH}{\ominus}}$   |
+| `\infty`          | ${{_MATH}{\infty}}$          |  | `\because`   | ${{_MATH}{\because}}$   |  | `\otimes`   | ${{_MATH}{\otimes}}$   |
+| `\mp`             | ${{_MATH}{\mp}}$             |  | `\times`     | ${{_MATH}{\times}}$     |  | `\oslash`   | ${{_MATH}{\oslash}}$   |
+| `\pm`             | ${{_MATH}{\pm}}$             |  | `\div`       | ${{_MATH}{\div}}$       |  |             |                        |
+| `\setminus`       | ${{_MATH}{\setminus}}$       |  | `\sim`       | ${{_MATH}{\sim}}$       |  |             |                        |
+
+
+##### ◆ その他の英数字シンボル
+
+| input       | output |  | input       | output |
+|:============|:------:|:-|:============|:------:|
+| `\mathbb C` | ℂ      |  | `\mathbb Q` | ℚ      |
+| `\mathbb H` | ℍ      |  | `\mathbb R` | ℝ      |
+| `\mathbb N` | ℕ      |  | `\mathbb Z` | ℤ      |
+| `\mathbb P` | ℙ      |  |             |        |
+
+##### ◆サンプル
+
+　マクロ関数 `_MATH` の使用例を以下に示します。これは、元になっている 
+[Text to Math Converter](https://textmath.hyuki.net/) に掲載されているものと（大体）同じ
+ものです。
+
+
+* `|a_m - a_n| < d`
+    * ${{_MATH}{|a_m - a_n| < d}}$
+* `a_1,a_2,a_3,...,a_{n-1},a_n`
+    * $((_MATH)(a_1,a_2,a_3,...,a_{n-1},a_n))$
+* `ax^2 + bx + c = 0`
+    * ${{_MATH}{ax^2 + bx + c = 0}}$
+* `a^2 + b^2 = c^2`
+    * ${{_MATH}{a^2 + b^2 = c^2}}$
+* `PAP^{-1} = B`
+    * $((_MATH)(PAP^{-1} = B))$
+* `aa^{-1} = a^{-1}a = e`
+    * $((_MATH)(aa^{-1} = a^{-1}a = e))$
+* `e^2e^3 = e^{2+3}`
+    * $((_MATH)(e^2e^3 = e^{2+3}))$
+* `\cos^2\theta + \sin^2\theta = 1`
+    * ${{_MATH}{\cos^2\theta + \sin^2\theta = 1}}$
+* `n \in \mathbb Z, r \not\in \mathbb N`
+    * ${{_MATH}{n \in \mathbb Z, r \not\in \mathbb N}}$
+* `7 \equiv 1 (\mod 3)`
+    * ${{_MATH}{7 \equiv 1 (\mod 3)}}$
+* `A \cap B \subset A \cup B`
+    * ${{_MATH}{A \cap B \subset A \cup B}}$
+* `\log_{10} 1000 = \log_{10} 10^3 = 3`
+    * $((_MATH)(\log_{10} 1000 = \log_{10} 10^3 = 3))$
+* `l = r\theta, v = r\omega, a = r\omega^2`
+    * ${{_MATH}{l = r\theta, v = r\omega, a = r\omega^2}}$
+* `\forall \varepsilon >0;  \exists \delta >0;  \forall x \in \mathbb R [ 0 < |x - a| < \delta \Rightarrow |f(x) - b| < \varepsilon ]`
+    * ${{_MATH}{\forall \varepsilon >0;  \exists \delta >0;  \forall x \in \mathbb R [ 0 < |x - a| < \delta \Rightarrow |f(x) - b| < \varepsilon ]}}$
+* `\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta`
+    * ${{_MATH}{\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta}}$
+* `\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta`
+    * ${{_MATH}{\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta}}$
+
+<!--
+* `f^{-1}(x)`
+    * $((_MATH)(f^{-1}(x)))$
+* `F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)`
+    * $((_MATH)(F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)))$
+-->
 
 ## 設定
 ### 見出しにおける自動リンク
@@ -2218,6 +2366,8 @@ ${BLANK_PARAGRAPH}
 	* BUGFIX : autolink が機能しない場合があるバグを修正
 * __2022/12/22 - version 0.828__
 	* ENHANCE : [変数](#変数の定義と展開)／[$$](#マクロ関数)の展開において $ の後続を許可する変更
+* __2023/01/07__
+	* ENHANCE : [$$](#マクロ関数による数式の生成)機能を追加
 
 
 ${BLANK_PARAGRAPH}

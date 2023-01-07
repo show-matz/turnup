@@ -105,6 +105,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4Table.o			\
 		$(TARGETDIR)/Operator4TermDefine.o		\
 		$(TARGETDIR)/LineType.o					\
+		$(TARGETDIR)/SimpleFormula.o			\
 		$(TARGETDIR)/StyleStack.o				\
 		$(TARGETDIR)/StylePalette.o				\
 		$(TARGETDIR)/Utilities.o				\
