@@ -950,7 +950,7 @@ turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 &lt;!-- define: VAR = [](#HEADER-TITLE) --&gt;
 </pre>
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
-<p>　設定した変数を参照（展開）するには <code>$​{FOO}</code> または <code>$​(FOO)</code> という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
+<p>　設定した変数を参照（展開）するには <code>$​{FOO}</code> 、 <code>$​(FOO)</code> 、 <code>$​[FOO]</code> または <code>$​&lt;FOO&gt;</code> という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <p>　version 0.828 より、 <code>$​{FOO}$</code> のような記述も単体の変数展開とみなすようになりました。これは、一部の markdown エディタにおいて $ から $ までを特定の書法として認識するため、 <code>$​{FOO}</code> のような turnup の変数展開によって表示が崩れる問題を回避するものです。ただし、 <code>$​{FOO}$​(BAR)</code> のように変数展開が連続する場合は <code>$​{FOO}$</code> 部分を単独の変数展開とはみなしません。</p>
 <h4><a name='kW5fA3S8XIj'></a>6.22.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
@@ -1024,12 +1024,14 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
  &lt;!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' --&gt;
 </pre>
-<p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を {} または () で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
+<p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を括弧で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
 <pre>
- $​{{NAME}{PARAM1}{PARAM2}...}}
- $​((NAME)(PARAM1)(PARAM2)...))
+ $​{{NAME}{PARAM1}{PARAM2}...}
+ $​((NAME)(PARAM1)(PARAM2)...)
+ $​[[NAME][PARAM1][PARAM2]...]
+ $​&lt;&lt;NAME&gt;&lt;PARAM1&gt;&lt;PARAM2&gt;...&gt;
 </pre>
-<p>　ここで <code>NAME</code> はマクロ関数の名前、 <code>PARAM1</code> 以降は %1 〜 %9 のプレースホルダを置き換えるためのパラメータです。先程の <code>INVERT</code> マクロを使うのであれば、 <code>$​{{INVERT}{この部分は反転される}}</code> などと記述することになるでしょう。これは以下のように展開され、実際の表示は<span style='background:darkgray;color:white;'>この部分は反転される</span>、となります。</p>
+<p>　ここで <code>NAME</code> はマクロ関数の名前、 <code>PARAM1</code> 以降は %1 〜 %9 のプレースホルダを置き換えるためのパラメータです。括弧は<a href='#4eSrElLWBcH'>変数展開</a>と同じものを自由に使用できますが、パラメータの中でこれらの括弧を使う場合、それ以外の括弧を使用してください。先程の <code>INVERT</code> マクロを使うのであれば、 <code>$​{{INVERT}{この部分は反転される}}</code> などと記述することになるでしょう。これは以下のように展開され、実際の表示は <span style='background:darkgray;color:white;'>この部分は反転される</span>、となります。</p>
 <pre>
  @((background:darkgray;color:white;)(この部分は反転される))
 </pre>
@@ -1147,11 +1149,6 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <h5><a name='4YVgNVQ8BQc'></a>◆サンプル</h5>
 <p>　マクロ関数 <code>_MATH</code> の使用例を以下に示します。これは、元になっている <a href='https://textmath.hyuki.net/'>Text to Math Converter</a> に掲載されているものと（大体）同じものです。</p>
 <ul>
-<li><code>|a_m - a_n| &lt; d</code>
-<ul>
-<li>|𝑎ₘ - 𝑎ₙ| &lt; 𝑑</li>
-</ul>
-</li>
 <li><code>a_1,a_2,a_3,...,a_{n-1},a_n</code>
 <ul>
 <li>𝑎₁,𝑎₂,𝑎₃,...,𝑎ₙ₋₁,𝑎ₙ</li>
@@ -1160,6 +1157,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><code>ax^2 + bx + c = 0</code>
 <ul>
 <li>𝑎𝑥² + 𝑏𝑥 + 𝑐 = 0</li>
+</ul>
+</li>
+<li><code>|a_m - a_n| &lt; d</code>
+<ul>
+<li>|𝑎ₘ - 𝑎ₙ| &lt; 𝑑</li>
 </ul>
 </li>
 <li><code>a^2 + b^2 = c^2</code>
@@ -1180,6 +1182,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li><code>e^2e^3 = e^{2+3}</code>
 <ul>
 <li>𝑒²𝑒³ = 𝑒²⁺³</li>
+</ul>
+</li>
+<li><code>f^{-1}(x)</code>
+<ul>
+<li>𝑓⁻¹(𝑥)</li>
 </ul>
 </li>
 <li><code>\cos^2\theta + \sin^2\theta = 1</code>
@@ -1207,14 +1214,19 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <li>log₁₀ 1000 = log₁₀ 10³ = 3</li>
 </ul>
 </li>
+<li><code>\forall \varepsilon &gt;0;  \exists \delta &gt;0;  \forall x \in \mathbb R [ 0 &lt; |x - a| &lt; \delta \Rightarrow |f(x) - b| &lt; \varepsilon ]</code>
+<ul>
+<li>∀ ε &gt;0;  ∃ δ &gt;0;  ∀ 𝑥 ∈ ℝ [ 0 &lt; |𝑥 - 𝑎| &lt; δ ⇒ |𝑓(𝑥) - 𝑏| &lt; ε ]</li>
+</ul>
+</li>
 <li><code>l = r\theta, v = r\omega, a = r\omega^2</code>
 <ul>
 <li>𝑙 = 𝑟θ, 𝑣 = 𝑟ω, 𝑎 = 𝑟ω²</li>
 </ul>
 </li>
-<li><code>\forall \varepsilon &gt;0;  \exists \delta &gt;0;  \forall x \in \mathbb R [ 0 &lt; |x - a| &lt; \delta \Rightarrow |f(x) - b| &lt; \varepsilon ]</code>
+<li><code>F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)</code>
 <ul>
-<li>∀ ε &gt;0;  ∃ δ &gt;0;  ∀ 𝑥 ∈ ℝ [ 0 &lt; |𝑥 - 𝑎| &lt; δ ⇒ |𝑓(𝑥) - 𝑏| &lt; ε ]</li>
+<li>𝐹₀ = 0, 𝐹₁ = 1, 𝐹ₙ = 𝐹ₙ₋₁ + 𝐹ₙ₋₂ (𝑛 ≧ 2)</li>
 </ul>
 </li>
 <li><code>\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta</code>
@@ -2051,6 +2063,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2023/01/07</strong>
 <ul>
 <li>ENHANCE : <a href='#hoa6vrntxKM'>マクロ関数による数式の生成</a>機能を追加</li>
+<li>ENHANCE : <a href='#4eSrElLWBcH'>変数</a>／<a href='#anSuBAd7F3R'>マクロ関数</a>の展開において括弧に <code>[]</code> と <code>&lt;&gt;</code> も使用可能にする変更</li>
 </ul>
 </li>
 </ul>

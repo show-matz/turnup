@@ -66,6 +66,20 @@ namespace turnup {
 	static bool PredicateAsFileInfo( const TextSpan& v, bool (*pred)( mode_t, size_t ) );
 	static bool RetrieveFileStatus( const TextSpan& v, struct stat& st );
 
+	inline bool IsVariableRefOpener( char c ) {
+		return c == '{' || c == '(' || c == '[' || c == '<';
+	}
+	inline char GetVariableRefCloser( char c ) {
+		switch( c ) {
+		case '(':	return ')';
+		case '<':	return '>';
+		case '[':	return ']';
+		case '{':	return '}';
+		}
+		assert( false );
+		return 0;
+	}
+
 	//--------------------------------------------------------------------------
 	//
 	// class PreProcessorImpl
@@ -211,7 +225,7 @@ namespace turnup {
 	TextSpan PreProcessorImpl::ExpandMacro( const TextSpan& posRef ) const {
 		// ${{NAME}{param1}...} に含まれる NAME, param1... を作業用 vector に格納する
 		char opener[2] = { posRef[1], 0 };
-		char closer[2] = { (opener[0] == '{' ? '}' : ')'), 0 };
+		char closer[2] = { GetVariableRefCloser( opener[0] ), 0 };
 		TextSpan data = posRef;
 		data.Chomp( 2, 1 + (posRef.End()[-1] == '$') );
 		m_sequence.clear(); {
@@ -349,7 +363,9 @@ namespace turnup {
 
 	static bool IsMacroFunction( const TextSpan& posRef ) {
 		return	(posRef[1] == '{' && posRef[2] == '{') ||
-				(posRef[1] == '(' && posRef[2] == '(');
+				(posRef[1] == '(' && posRef[2] == '(') ||
+				(posRef[1] == '[' && posRef[2] == '[') ||
+				(posRef[1] == '<' && posRef[2] == '<');
 	}
 
 	static const char* FindMacroPlaceholder( const char* pTop, 
@@ -373,16 +389,16 @@ namespace turnup {
 			const char* p1 = std::find( pCur, pEnd, '$' );
 			if( p1 == pEnd )
 				return TextSpan{};
-			// $ に後続するのが { でも ( でもなければループ継続
-			if( p1[1] != '{' && p1[1] != '(' ) {
+			// $ に後続するのが展開開始括弧でなければループ継続
+			if( IsVariableRefOpener( p1[1] ) == false ) {
 				pCur = p1 + 1;
 				continue;
 			}
 			char opener = p1[1];
-			char closer = (opener == '{' ? '}' : ')');
+			char closer = GetVariableRefCloser( opener );
 			//見つかったのがマクロ展開でない場合
 			if( p1[2] != opener ) {
-				//終端の } または ) を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
+				//終端となる closer を検索 ⇒ 見つからなければ空 TextSpan 返却で終了
 				auto p2 = std::find( p1 + 2, pEnd, closer );
 				if( p2 == pEnd )
 					return TextSpan{};
@@ -394,7 +410,7 @@ namespace turnup {
 				pCur = p1 + 2;
 			//見つかったのがマクロ展開の場合
 			} else {
-				//終端の }} を検索
+				//終端となる２連 closer を検索
 				const char target2[3] = { closer, closer, 0 };
 				auto p2 = std::search( p1 + 3, pEnd, target2, target2 + 2 );
 				if( p2 == pEnd ) {
@@ -416,7 +432,7 @@ namespace turnup {
 	}
 
 	static bool IsTrailDollerExist( const char* pTop, const char* pEnd ) {
-		return (pTop < pEnd) && (*pTop == '$') && (pTop[1] != '{') && (pTop[1] != '(');
+		return (pTop < pEnd) && (*pTop == '$') && !IsVariableRefOpener( pTop[1] );
 	}
 
 	// <!-- define: VAR_NAME = value --> 形式の行かを判定する

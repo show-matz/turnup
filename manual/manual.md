@@ -1250,9 +1250,9 @@ ${APPNAME} -I../headers -I~/${APPNAME}/headers  DATA.md > OUTPUT.htm
 始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりま
 せんが、結果は未定義です。
 
-　設定した変数を参照（展開）するには `$​{FOO}` または `$​(FOO)` という要領で指定します。この変数展開
-は[プリプロセス段階](#内部的な処理順序)で実行されるため、バッククォートで括られた[$$](#コード)
-の内部でも展開されます。
+　設定した変数を参照（展開）するには `$​{FOO}` 、 `$​(FOO)` 、 `$​[FOO]` または `$​<FOO>` という
+要領で指定します。この変数展開は[プリプロセス段階](#内部的な処理順序)で実行されるため、バック
+クォートで括られた[$$](#コード)の内部でも展開されます。
 
 　version 0.828 より、 `$​{FOO}$` のような記述も単体の変数展開とみなすようになりました。これは、
 一部の markdown エディタにおいて $ から $ までを特定の書法として認識するため、 `$​{FOO}` のような 
@@ -1364,18 +1364,21 @@ ${APPNAME} '-DVAR= a b c '  DATA.md > OUTPUT.htm
 
 
 　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に
-続いて変数名を {} または () で括るだけでしたが、マクロ関数展開では以下のように記述します。
+続いて変数名を括弧で括るだけでしたが、マクロ関数展開では以下のように記述します。
 
 <!-- MEMO : $ と {{ の間で no width space U+200B を使ってるところがあるよ -->
 ~~~
- $​{{NAME}{PARAM1}{PARAM2}...}}
- $​((NAME)(PARAM1)(PARAM2)...))
+ $​{{NAME}{PARAM1}{PARAM2}...}
+ $​((NAME)(PARAM1)(PARAM2)...)
+ $​[[NAME][PARAM1][PARAM2]...]
+ $​<<NAME><PARAM1><PARAM2>...>
 ~~~
 
 　ここで `NAME` はマクロ関数の名前、 `PARAM1` 以降は %1 〜 %9 のプレースホルダを置き換える
-ためのパラメータです。先程の `INVERT` マクロを使うのであれば、 `$​{{INVERT}{この部分は反転される}}` 
-などと記述することになるでしょう。これは以下のように展開され、実際の表示は
-${{INVERT}{この部分は反転される}}、となります。
+ためのパラメータです。括弧は[変数展開](#変数の定義と展開)と同じものを自由に使用できますが、
+パラメータの中でこれらの括弧を使う場合、それ以外の括弧を使用してください。先程の `INVERT` マクロを
+使うのであれば、 `$​{{INVERT}{この部分は反転される}}` などと記述することになるでしょう。
+これは以下のように展開され、実際の表示は ${{INVERT}{この部分は反転される}}、となります。
 
 ~~~
  ${{INVERT}{この部分は反転される}}
@@ -1572,12 +1575,12 @@ ${BLANK_PARAGRAPH}
 ものです。
 
 
-* `|a_m - a_n| < d`
-    * ${{_MATH}{|a_m - a_n| < d}}$
 * `a_1,a_2,a_3,...,a_{n-1},a_n`
     * $((_MATH)(a_1,a_2,a_3,...,a_{n-1},a_n))$
 * `ax^2 + bx + c = 0`
     * ${{_MATH}{ax^2 + bx + c = 0}}$
+* `|a_m - a_n| < d`
+    * ${{_MATH}{|a_m - a_n| < d}}$
 * `a^2 + b^2 = c^2`
     * ${{_MATH}{a^2 + b^2 = c^2}}$
 * `PAP^{-1} = B`
@@ -1586,6 +1589,8 @@ ${BLANK_PARAGRAPH}
     * $((_MATH)(aa^{-1} = a^{-1}a = e))$
 * `e^2e^3 = e^{2+3}`
     * $((_MATH)(e^2e^3 = e^{2+3}))$
+* `f^{-1}(x)`
+    * $<<_MATH><f^{-1}(x)>>$
 * `\cos^2\theta + \sin^2\theta = 1`
     * ${{_MATH}{\cos^2\theta + \sin^2\theta = 1}}$
 * `n \in \mathbb Z, r \not\in \mathbb N`
@@ -1596,21 +1601,16 @@ ${BLANK_PARAGRAPH}
     * ${{_MATH}{A \cap B \subset A \cup B}}$
 * `\log_{10} 1000 = \log_{10} 10^3 = 3`
     * $((_MATH)(\log_{10} 1000 = \log_{10} 10^3 = 3))$
-* `l = r\theta, v = r\omega, a = r\omega^2`
-    * ${{_MATH}{l = r\theta, v = r\omega, a = r\omega^2}}$
 * `\forall \varepsilon >0;  \exists \delta >0;  \forall x \in \mathbb R [ 0 < |x - a| < \delta \Rightarrow |f(x) - b| < \varepsilon ]`
     * ${{_MATH}{\forall \varepsilon >0;  \exists \delta >0;  \forall x \in \mathbb R [ 0 < |x - a| < \delta \Rightarrow |f(x) - b| < \varepsilon ]}}$
+* `l = r\theta, v = r\omega, a = r\omega^2`
+    * ${{_MATH}{l = r\theta, v = r\omega, a = r\omega^2}}$
+* `F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)`
+    * $<<_MATH><F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)>>$
 * `\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta`
     * ${{_MATH}{\sin(\alpha\pm\beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta}}$
 * `\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta`
     * ${{_MATH}{\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta}}$
-
-<!--
-* `f^{-1}(x)`
-    * $((_MATH)(f^{-1}(x)))$
-* `F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)`
-    * $((_MATH)(F_0 = 0, F_1 = 1, F_n = F_{n-1} + F_{n-2} (n \geqq 2)))$
--->
 
 ## 設定
 ### 見出しにおける自動リンク
@@ -2368,6 +2368,7 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : [変数](#変数の定義と展開)／[$$](#マクロ関数)の展開において $ の後続を許可する変更
 * __2023/01/07__
 	* ENHANCE : [$$](#マクロ関数による数式の生成)機能を追加
+	* ENHANCE : [変数](#変数の定義と展開)／[$$](#マクロ関数)の展開において括弧に `[]` と `<>` も使用可能にする変更
 
 
 ${BLANK_PARAGRAPH}
