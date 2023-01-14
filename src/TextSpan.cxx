@@ -26,22 +26,6 @@ namespace turnup {
 		return std::min( t1, std::min( t2, t3 ) );
 	}
 
-	inline bool IsSpaceForward( const char* p ) {
-		if( *p == 0x20 || *p == 0x09 || !*p )
-			return true;
-		auto q = reinterpret_cast<const uint8_t*>( p );
-		if( q[0] == 0xE3 && q[1] == 0x80 && q[2] == 0x80 )
-			return true;
-		return false;
-	}
-	inline bool IsSpaceBackward( const char* p ) {
-		if( *p == 0x20 || *p == 0x09 || !*p )
-			return true;
-		auto q = reinterpret_cast<const uint8_t*>( p );
-		if( q[-2] == 0xE3 && q[-1] == 0x80 && q[0] == 0x80 )
-			return true;
-		return false;
-	}
 	inline bool IsTopOfSpaceRequiredOperator( const char* p1,
 											  const char* p2, const TextSpan& whole ) {
 		// 内側に空白類文字があれば該当しないと判断
@@ -116,6 +100,12 @@ namespace turnup {
 	static void OperateCode( std::ostream& os, const TextSpan& whole,
 							 const char* pTop, const char* pEnd,
 							 DocumentInfo& docInfo, bool bTermLink );
+	// $formula$ 形式を処理する
+	static const char* FindMathJaxPattern( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole );
+	static void OperateMathJax( std::ostream& os, const TextSpan& whole,
+								const char* pTop, const char* pEnd,
+								DocumentInfo& docInfo, bool bTermLink );
 	// ![alt](url) 形式を処理する
 	static const char* FindImagePattern( const char* pTop, const char* pEnd, 
 										 const char*& endPos, const TextSpan& whole );
@@ -192,6 +182,7 @@ namespace turnup {
 		{ FindEmphasis2Pattern2, OperateEmphasis2 },	// **emphasis**
 		{ FindEmphasis1Pattern2, OperateEmphasis1 },	// *emphasis*
 		{ FindCodePattern,       OperateCode },			// `code`
+		{ FindMathJaxPattern,    OperateMathJax },		// $formula$
 		{ FindFootnotePattern,   OperateFootnote },		// {{fn:footnote}}
 		{ FindStrikePattern,     OperateStrike },		// ~~strike~~
 	};
@@ -782,6 +773,25 @@ namespace turnup {
 		// code タグ内部ではネストさせないし用語の自動リンクもしない
 		TextSpan::WriteWithEscape( os, pTop + 1, pEnd - 1 );
 		os << "</code>";
+	}
+
+	// $formula$ 形式を処理する
+	static const char* FindMathJaxPattern( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole ) {
+		return FindSpaceRequiredPatternImpl( "$", 1, pTop, pEnd, endPos,  whole );
+	}
+	static void OperateMathJax( std::ostream& os, const TextSpan& whole,
+								const char* pTop, const char* pEnd,
+								DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
+		(void)docInfo;
+		(void)bTermLink;
+		assert( pTop[0] == '$' );
+		assert( pEnd[-1] == '$' );
+		os << "\\(";
+		// 内部ではネストさせないし用語の自動リンクもしない
+		TextSpan::WriteWithEscape( os, pTop + 1, pEnd - 1 );
+		os << "\\)";
 	}
 
 	// ![alt](url) 形式を処理する

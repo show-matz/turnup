@@ -8,6 +8,7 @@
 
 <!-- <!-- config:write-comment -->			
 <!-- config:header-numbering 2 4 -->			
+<!-- config:use-mathjax -->			
 
 # README - ${APPNAME}
 
@@ -1024,6 +1025,7 @@ index 16fc9f4..8387187 100644
 * Common LISP
 * raw （これは[生の HTML を出力](#生の HTML の出力)するためのものです）
 * table （これは[テーブルの作成を支援](#テーブルの生成)するためのものです）
+* math （これは[LaTeX 書式を用いた数式を生成](#LaTeX 書式を用いた数式の生成)するためのものです）
 
 
 　しかし、拡張機能として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、
@@ -1612,6 +1614,49 @@ ${BLANK_PARAGRAPH}
 * `\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta`
     * ${{_MATH}{\cos(\alpha\pm\beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta}}$
 
+#### LaTeX 書式を用いた数式の生成
+<!-- autolink: [LaTeX](#LaTeX 書式を用いた数式の生成) -->
+
+　GFM 同様、以下の書法によって MathJax による数式生成を行うことができます。これはインターネット上の
+MathJax スクリプトライブラリへの依存が発生するため、オフラインでは機能しないかもしれません。
+
+　MathJax の利用に必要な `<script>` タグは ${APPNAME} が自動的に出力 HTML のヘッダに挿入します。
+use-mathjax 設定も参照してください。
+
+##### ◆ インラインでの数式記述
+
+　LaTeX 書式を `$` で括ることで、MathJax による数式を生成できます。たとえば、 `$ax^{2}+bx+c=0$` が 
+$ax^{2}+bx+c=0$ になります。
+
+##### ◆ ブロックでの数式記述
+
+　`$$` で始まり、 `$$` で終わる行は全体が MathJax による数式生成の対象となります。以下の記述が、
+
+~~~
+$$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$
+~~~
+
+　以下になります。
+
+  $$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$  
+
+##### ◆ math フィルタの使用
+<!-- autolink: [math](#math フィルタの使用) -->
+
+　math フィルタを使用することで、MathJax による数式を生成できます。以下の記述が、
+
+~~~
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
+~~~
+
+　以下になります。
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
+
 ## 設定
 ### 見出しにおける自動リンク
 <!-- autolink: [config:term-link-in-header](#見出しにおける自動リンク) -->
@@ -1721,6 +1766,18 @@ ${BLANK_PARAGRAPH}
 
 ```
   <!-- config:write-comment -->			
+```
+
+### MathJax 利用の明示的宣言
+<!-- autolink: [config:use-mathjax](#MathJax 利用の明示的宣言) -->
+<!-- autolink: [use-mathjax](#MathJax 利用の明示的宣言) -->
+
+　${APPNAME} は基本的に MathJax の利用を自動的に検出して必要な `<script>` タグを出力 HTML のヘッダに挿入します
+が、これがうまく動作しない場合があります{{fn:実際には、実際には不要なのに必要と認識することの方が多そうですけど。}}。
+そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。
+
+```
+  <!-- config:use-mathjax -->			
 ```
 
 ${BLANK_PARAGRAPH}
@@ -1850,7 +1907,7 @@ ${BLANK_PARAGRAPH}
 #!bin/bash
 
 #- CAUTION:
-#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- ${APPNAME} の変数展開を回避するため、$ と { の間で no width space U+200B を使って
 #- います。コピーして使用する際は no width space U+200B を削除して使ってください。
 
 IN=$1
@@ -1944,7 +2001,7 @@ gnuplot.sh の内容はこちら
 #!/bin/bash
 
 #- CAUTION:
-#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- ${APPNAME} の変数展開を回避するため、$ と { の間で no width space U+200B を使って
 #- います。コピーして使用する際は no width space U+200B を削除して使ってください。
 
 IN=$1
@@ -2027,7 +2084,7 @@ embed_image.sh の内容はこちら
 #!/bin/bash
 
 #- CAUTION:
-#- turnup の変数展開を回避するため、$ と { の間で no width space U+200B を使って
+#- ${APPNAME} の変数展開を回避するため、$ と { の間で no width space U+200B を使って
 #- います。コピーして使用する際は no width space U+200B を削除して使ってください。
 
 IN=$1
@@ -2206,8 +2263,8 @@ int main( int argc, char* argv[] ) {
 　この問題は version 0.816 で修正されました。
 
 　一般的な markdown では、リストや番号付きリストの処理はかなり柔軟に行なわれますが、
-それと比較すると turnup のリスト処理は限定的でした。version 0.816 において、一般的
-な markdown の処理にあわせる対処を実施しました。
+それと比較すると ${APPNAME} のリスト処理は限定的でした。version 0.816 において、
+一般的な markdown の処理にあわせる対処を実施しました。
 
 <!-- collapse:end -->
 
@@ -2369,6 +2426,8 @@ ${BLANK_PARAGRAPH}
 * __2023/01/09 - version 0.829__
 	* ENHANCE : [$$](#マクロ関数による数式の生成)機能を追加
 	* ENHANCE : [変数](#変数の定義と展開)／[$$](#マクロ関数)の展開において括弧に `[]` と `<>` も使用可能にする変更
+* __2023/01/14 - version 0.830__
+	* ENHANCE : [$$](#LaTeX 書式を用いた数式の生成)機能を追加
 
 
 ${BLANK_PARAGRAPH}

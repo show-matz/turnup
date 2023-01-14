@@ -37,7 +37,7 @@ namespace turnup {
 	}
 
 	std::ostream& HtmlHeader::WriteTo( std::ostream& os, const Config& cfg ) const {
-		os << "<header>" << std::endl;
+		os << "<head>" << std::endl;
 		os << "	<meta http-equiv=\"Content-Type\""
 							" content=\"text/html; charset=utf-8\">" << std::endl;
 		os << "	<meta http-equiv=\"Content-Style-Type\""
@@ -56,7 +56,14 @@ namespace turnup {
 						  m_styleSheet.ByteLength() ) << "\">" << std::endl;
 			}
 		}
-		os << "</header>" << std::endl;
+		if( cfg.bUseMathJax ) {
+			os << "	<script type=\"text/javascript\" "
+				  "id=\"MathJax-script\" "
+				  "async "
+				  "src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\">"
+				  "</script>" << std::endl;
+		}
+		os << "</head>" << std::endl;
 		return os;
 	}
 

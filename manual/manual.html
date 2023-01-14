@@ -1,10 +1,11 @@
 <html>
-<header>
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="Content-Style-Type" content="text/css">
 	<title>turnup readme</title>
 	<link rel=stylesheet href="./default.css">
-</header>
+	<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
 <body>
 <div class='toc_button_top'><a href='#0qJQvVjc3Xy'>
 <svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 200 200'>
@@ -104,6 +105,7 @@
 <summary class='tocx'><a href='#ln9al6BVnoP'>6.27 数式の生成</a></summary>
 <blockquote class='tocx'>
 <li class='tocx'><a href='#hoa6vrntxKM'>6.27.1 マクロ関数による数式の生成</a></li>
+<li class='tocx'><a href='#30aeVqd2ldu'>6.27.2 LaTeX 書式を用いた数式の生成</a></li>
 </blockquote>
 </details>
 </blockquote>
@@ -116,6 +118,7 @@
 <li class='tocx'><a href='#hJJbL4GzVpQ'>7.3 図表のナンバリング単位</a></li>
 <li class='tocx'><a href='#jkzhEyZU0ts'>7.4 スタイルシートの埋め込み</a></li>
 <li class='tocx'><a href='#8a3vnTcmVrk'>7.5 コメントの出力</a></li>
+<li class='tocx'><a href='#gSChjoBbaKA'>7.6 MathJax 利用の明示的宣言</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -820,6 +823,7 @@ index 16fc9f4..8387187 100644
 <li>Common LISP</li>
 <li><a class='autolink' href='#6LkDjrI3ASb'>raw</a> （これは<a href='#6LkDjrI3ASb'>生の HTML を出力</a>するためのものです）</li>
 <li><a class='autolink' href='#fJ4r3VpDmqg'>table</a> （これは<a href='#fJ4r3VpDmqg'>テーブルの作成を支援</a>するためのものです）</li>
+<li><a class='autolink' href='#ekFxGsyfT6K'>math</a> （これは<a href='#30aeVqd2ldu'>LaTeX 書式を用いた数式を生成</a>するためのものです）</li>
 </ul>
 <p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.17  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.17 外部フィルタの登録</h3>
@@ -1240,6 +1244,31 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </ul>
 </li>
 </ul>
+<h4><a name='30aeVqd2ldu'></a>6.27.2 LaTeX 書式を用いた数式の生成</h4>
+<p>　<a class='term' href='#fgvQnqibuC4'>GFM</a> 同様、以下の書法によって MathJax による数式生成を行うことができます。これはインターネット上のMathJax スクリプトライブラリへの依存が発生するため、オフラインでは機能しないかもしれません。</p>
+<p>　MathJax の利用に必要な <code>&lt;script&gt;</code> タグは turnup が自動的に出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入します。<a class='autolink' href='#gSChjoBbaKA'>use-mathjax</a> 設定も参照してください。</p>
+<h5><a name='6l7ysCd26Lu'></a>◆ インラインでの数式記述</h5>
+<p>　<a class='autolink' href='#30aeVqd2ldu'>LaTeX</a> 書式を <code>$</code> で括ることで、MathJax による数式を生成できます。たとえば、 <code>$ax^{2}+bx+c=0$</code> が \(ax^{2}+bx+c=0\) になります。</p>
+<h5><a name='6KPsxvYdcC2'></a>◆ ブロックでの数式記述</h5>
+<p>　<code>$$</code> で始まり、 <code>$$</code> で終わる行は全体が MathJax による数式生成の対象となります。以下の記述が、</p>
+<pre>
+$$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$
+</pre>
+<p>　以下になります。</p>
+\[
+x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
+\]
+<h5><a name='6WcPLlKTZbF'></a>◆ math フィルタの使用</h5>
+<p>　<a class='autolink' href='#ekFxGsyfT6K'>math</a> フィルタを使用することで、MathJax による数式を生成できます。以下の記述が、</p>
+<pre>
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
+</pre>
+<p>　以下になります。</p>
+\[
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+\]
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='0EKpSe2qrxR'></a>7.1 見出しにおける自動リンク</h3>
 <p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
@@ -1294,6 +1323,11 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
+<h3><a name='gSChjoBbaKA'></a>7.6 MathJax 利用の明示的宣言</h3>
+<p>　turnup は基本的に MathJax の利用を自動的に検出して必要な <code>&lt;script&gt;</code> タグを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入しますが、これがうまく動作しない場合があります<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup>。そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。</p>
+<pre>
+  &lt;!-- config:use-mathjax --&gt;			
+</pre>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
@@ -1325,9 +1359,9 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <p>　<a href='#18dTPnzNOgg'>外部フィルタの登録</a> では、入出力ファイル名として <code>%in</code> および <code>%out</code> というプレースホルダを使用します。実際に使用されるファイル名は、turnup が都度決定すると説明していましたが、ここではその詳細について説明します。</p>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の実行において使用する入出力ファイル名には、フィルタに渡すデータを元に作成したハッシュコードが使用されます。これにより、「同じデータであれば同じファイル名になる」ことが保証されます。このことを利用して、コストのかかる<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>実行についてはその出力をキャッシュしておく、といった措置が可能になります（具体的な方法については、<a href='#bCCDfsVD85P'>8.8.1  節</a>などを参照してください）。</p>
 <h3><a name='8qCsTwp3HZT'></a>8.8 作図まですべてテキストで実現する方法</h3>
-<p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
+<p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
 <h4><a name='bCCDfsVD85P'></a>8.8.1 PlantUML</h4>
-<p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref20' href='#footnote20'>20</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
+<p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref21' href='#footnote21'>21</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
 <pre>
 &lt;​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg &gt; %out --&gt;
 </pre>
@@ -1629,7 +1663,7 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 </pre>
 </details>
 <h3><a name='62CICfavwWM'></a>8.9 画像ファイルを HTML 内に取り込む方法</h3>
-<p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref21' href='#footnote21'>21</a></sup>。</p>
+<p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref22' href='#footnote22'>22</a></sup>。</p>
 <p>　<a href='#8qCsTwp3HZT'>前節</a>と同じように、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>を定義します（内容については後述）。</p>
 <pre>
 &lt;!​-- filter:embed_image = bash ./embed_image.sh %in %out --&gt;
@@ -2066,6 +2100,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a href='#4eSrElLWBcH'>変数</a>／<a href='#anSuBAd7F3R'>マクロ関数</a>の展開において括弧に <code>[]</code> と <code>&lt;&gt;</code> も使用可能にする変更</li>
 </ul>
 </li>
+<li><strong>2023/01/14 - version 0.830</strong>
+<ul>
+<li>ENHANCE : <a href='#30aeVqd2ldu'>LaTeX 書式を用いた数式の生成</a>機能を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2099,6 +2138,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li class='idx_x'><a class='autolink' href='#hJJbL4GzVpQ'>config:entity-numbering-depth</a></li>
 <li class='idx_x'><a class='autolink' href='#2M8QFQ2XeBn'>config:header-numbering</a></li>
 <li class='idx_x'><a class='autolink' href='#0EKpSe2qrxR'>config:term-link-in-header</a></li>
+<li class='idx_x'><a class='autolink' href='#gSChjoBbaKA'>config:use-mathjax</a></li>
 <li class='idx_x'><a class='autolink' href='#8a3vnTcmVrk'>config:write-comment</a></li>
 </blockquote>
 </details>
@@ -2155,9 +2195,16 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 </blockquote>
 </details>
 <details class='idx_x' open>
+<summary class='idx_x'>L</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#30aeVqd2ldu'>LaTeX</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
 <summary class='idx_x'>M</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='term' href='#b3GXdVHw3CE'>Markdown</a></li>
+<li class='idx_x'><a class='autolink' href='#ekFxGsyfT6K'>math</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
@@ -2191,6 +2238,12 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li class='idx_x'><a class='autolink' href='#0EKpSe2qrxR'>term-link-in-header</a></li>
 <li class='idx_x'><a class='autolink' href='#kyMp8IkRK8n'>title:</a></li>
 <li class='idx_x'><a class='autolink' href='#bZZIHdLJ79G'>toc-link:</a></li>
+</blockquote>
+</details>
+<details class='idx_x' open>
+<summary class='idx_x'>U</summary>
+<blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#gSChjoBbaKA'>use-mathjax</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>
@@ -2244,8 +2297,9 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : markdown 書法のコードハイライトに対応したエディタを使用していたり、そのエディタにプレビュー機能があったりすると、どちらかを選択する理由になるかもしれません（どっちかはわかりませんが）。</p>
 <p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
 <p class='footnote'><a name='footnote18' href='#footnote_ref18'>18</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
-<p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
-<p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
-<p class='footnote'><a name='footnote21' href='#footnote_ref21'>21</a> : turnup が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などのバージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。</p>
+<p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : 実際には、実際には不要なのに必要と認識することの方が多そうですけど。</p>
+<p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
+<p class='footnote'><a name='footnote21' href='#footnote_ref21'>21</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
+<p class='footnote'><a name='footnote22' href='#footnote_ref22'>22</a> : turnup が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などのバージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。</p>
 </body>
 </html>

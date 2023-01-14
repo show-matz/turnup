@@ -24,6 +24,7 @@ namespace turnup {
 		bool	bEmbedStyleSheet;
 		bool	bWriteComment;
 		bool	bNumberingHeader;
+		bool	bUseMathJax;
 		uint8_t	minNumberingLv;
 		uint8_t	maxNumberingLv;
 		uint8_t	entityNumberingDepth;

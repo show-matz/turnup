@@ -11,6 +11,7 @@
 #include "InternalFilter4Shell.hxx"
 #include "InternalFilter4Raw.hxx"
 #include "InternalFilter4Table.hxx"
+#include "InternalFilter4MathJax.hxx"
 
 #include "TextSpan.hxx"
 
@@ -33,6 +34,7 @@ namespace turnup {
 		if( type.IsEqual( "diff" ) )	return InternalFilter4Diff;
 		if( type.IsEqual( "sh" ) )		return InternalFilter4Shell;
 		if( type.IsEqual( "lisp" ) )	return InternalFilter4CommonLISP;
+		if( type.IsEqual( "math" ) )	return InternalFilter4MathJax;
 		return nullptr;
 	}
 

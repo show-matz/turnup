@@ -9,7 +9,7 @@
 //#include "DataType.hxx"
 //#include "NumericCast.hxx"
 
-//#include <cstdint>
+#include <stdint.h>
 //#include <memory.h>
 //#include <iosfwd>
 //#include <type_traits>
@@ -25,6 +25,23 @@ namespace turnup {
 		return N; 
 	} 	
 	
+	inline bool IsSpaceForward( const char* p ) {
+		if( *p == 0x20 || *p == 0x09 || !*p )
+			return true;
+		auto q = reinterpret_cast<const uint8_t*>( p );
+		if( q[0] == 0xE3 && q[1] == 0x80 && q[2] == 0x80 )
+			return true;
+		return false;
+	}
+	inline bool IsSpaceBackward( const char* p ) {
+		if( *p == 0x20 || *p == 0x09 || !*p )
+			return true;
+		auto q = reinterpret_cast<const uint8_t*>( p );
+		if( q[-2] == 0xE3 && q[-1] == 0x80 && q[0] == 0x80 )
+			return true;
+		return false;
+	}
+
 	//--------------------------------------------------------------------------
 	//
 	// class Utilities

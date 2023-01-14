@@ -19,6 +19,7 @@
 #include "Operator4HorizontalLine.hxx"
 #include "Operator4Image.hxx"
 #include "Operator4List.hxx"
+#include "Operator4MathJaxLine.hxx"
 #include "Operator4Paragraph.hxx"
 #include "Operator4PreBlock.hxx"
 #include "Operator4Quote.hxx"
@@ -63,6 +64,7 @@ namespace turnup {
 		Operator4EmbedPageBreak,
 		Operator4StyleStack,
 		Operator4StylePalette,
+		Operator4MathJaxLine,
 		Operator4Error,
 		Operator4Comment,
 		Operator4HorizontalLine,

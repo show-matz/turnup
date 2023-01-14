@@ -78,6 +78,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/InternalFilter4Diff.o		\
 		$(TARGETDIR)/InternalFilter4CandCxx.o	\
 		$(TARGETDIR)/InternalFilter4CommonLISP.o	\
+		$(TARGETDIR)/InternalFilter4MathJax.o	\
 		$(TARGETDIR)/InternalFilter4Shell.o		\
 		$(TARGETDIR)/InternalFilter4Raw.o		\
 		$(TARGETDIR)/InternalFilter4Table.o		\
@@ -96,6 +97,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4HorizontalLine.o	\
 		$(TARGETDIR)/Operator4Image.o			\
 		$(TARGETDIR)/Operator4List.o			\
+		$(TARGETDIR)/Operator4MathJaxLine.o		\
 		$(TARGETDIR)/Operator4Paragraph.o		\
 		$(TARGETDIR)/Operator4PreBlock.o		\
 		$(TARGETDIR)/Operator4Quote.o			\

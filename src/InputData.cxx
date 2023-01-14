@@ -208,6 +208,7 @@ namespace turnup {
 		auto& toc      = docInfo.Get<ToC>();
 		auto& glossary = docInfo.Get<Glossary>();
 		auto& filters  = docInfo.Get<Filters>();
+		auto& cfg      = docInfo.Get<Config>();
 
 		auto itr1 = m_lines.begin();
 		auto itr2 = m_lines.end();
@@ -273,109 +274,136 @@ namespace turnup {
 				}
 				continue;
 			}
-			//コメントの場合
 			TextSpan tmp = line.TrimTail();
-			TextSpan item;
-			TextSpan command;
-			if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {
-				header.SetTitle( item.Trim() );
-				line.Clear();
-			}
-			if( tmp.IsMatch( "<!-- style:", item, " -->" ) ) {
-				header.SetStyleSheet( item.Trim() );
-				line.Clear();
-			}
-			if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
-				filters.RegistExternal( item.Trim(), command.Trim() );
-				line.Clear();
-			}
-			if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
-				item = item.Trim();
-				if( toc.RegisterAnchor( item ) == false ) {
-					std::cerr << "ERROR : anchor '";
-					std::cerr.write( item.Top(), item.ByteLength() );
-					std::cerr << "' is duplicated." << std::endl;
-				}
+			//MathJax 使用行の場合
+			if( tmp.IsEqual( "```math" ) || tmp.IsEqual( "~~~math" ) ||
+					(tmp.TrimHead().BeginWith( "$$" ) && tmp.TrimHead().EndWith( "$$" )) ) {
+				cfg.bUseMathJax = true;
 				continue;
 			}
-			if( tmp.IsMatch( "<!-- autolink:", item, " -->" ) ) {
-				item = item.Trim();
-				TextSpan word;
-				TextSpan url;
-				if( item.IsMatch( "[", word, "](", url, ")" ) == false ) {
-					std::cerr << "ERROR : invalid autolink format '";
-					std::cerr.write( tmp.Top(), tmp.ByteLength() );
-					std::cerr << "'." << std::endl;
-				} else {
-					if( word.IsEmpty() )
-						std::cerr << "ERROR : link keyword is empty." << std::endl;
-					else if( glossary.RegisterAutoLink( word.Top(), word.End(),
-														url.Top(), url.End() ) == false )
-						std::cerr << "ERROR : link keyword '"
-								  << word << "' is duplicated." << std::endl;
-				}
-				line.Clear();
-			}
-			if( tmp.IsMatch( "<!-- toc-link:", item, " -->" ) ) {
-				//ToDo : 1Grw5djeUn8 : パラメータが３つ以上存在する場合をエラーとして検出できてない
-				item = item.Trim();
-				TextSpan cur = item.CutNextToken();
-				bool     bTop;
-				if( cur.IsEqual( "top" ) )
-					bTop = true;
-				else if( cur.IsEqual( "bottom" ) )
-					bTop = false;
-				else {
-					std::cerr << "ERROR : invalid toc-link format '";
-					std::cerr.write( tmp.Top(), tmp.ByteLength() );
-					std::cerr << "'." << std::endl;
+			//コメントの場合
+			if( tmp.BeginWith( "<!-- " ) && tmp.EndWith( " -->" ) ) {
+				TextSpan item;
+				TextSpan command;
+				if( tmp.IsMatch( "<!-- title:", item, " -->" ) ) {
+					header.SetTitle( item.Trim() );
+					line.Clear();
 					continue;
 				}
-				item = item.Trim();
-				if( item.IsQuoted() )
-					item.Chomp( 1, 1 );
-				bool ret = toc.RegisterLinkButton( bTop, item );
-				if( !ret )
-					std::cerr << "WARNING : toc-link directive duplicated." << std::endl;
-				line.Clear();
-			}
-			if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {
-				auto& cfg = docInfo.Get<Config>();
-				if( item.IsEqual( "term-link-in-header" ) ) {
-					cfg.bTermLinkInHeader = true;
-				} else if( item.IsEqual( "embed-stylesheet" ) ) {
-					cfg.bEmbedStyleSheet = true;
-				} else if( item.IsEqual( "write-comment" ) ) {
-					cfg.bWriteComment = true;
-				} else if( item.BeginWith( "entity-numbering-depth" ) ) {
-					item = item.Chomp( 22, 0 ).Trim();
-					uint32_t depth = 0;
-					if( item.Convert( depth ) == false ) {
-						//ToDo : error message...
+				if( tmp.IsMatch( "<!-- style:", item, " -->" ) ) {
+					header.SetStyleSheet( item.Trim() );
+					line.Clear();
+					continue;
+				}
+				if( tmp.IsMatch( "<!-- filter:", item, "=", command, " -->" ) ) {
+					filters.RegistExternal( item.Trim(), command.Trim() );
+					line.Clear();
+					continue;
+				}
+				if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
+					item = item.Trim();
+					if( toc.RegisterAnchor( item ) == false ) {
+						std::cerr << "ERROR : anchor '";
+						std::cerr.write( item.Top(), item.ByteLength() );
+						std::cerr << "' is duplicated." << std::endl;
 					}
-					cfg.entityNumberingDepth = depth;
-				} else if( item.BeginWith( "header-numbering" ) ) {
-					item = item.Chomp( 16, 0 ).Trim();
-					uint32_t lvls[] = { 1, 6 };
-					for( uint32_t i = 0; i < 2; ++i ) {
-						if( item.IsEmpty() == false ) {
-							TextSpan token = item.CutNextToken( ' ' );
-							if( token.Convert( lvls[i] ) == false ) {
-								//ToDo : error message...
-							}
+					continue;
+				}
+				if( tmp.IsMatch( "<!-- autolink:", item, " -->" ) ) {
+					item = item.Trim();
+					TextSpan word;
+					TextSpan url;
+					if( item.IsMatch( "[", word, "](", url, ")" ) == false ) {
+						std::cerr << "ERROR : invalid autolink format '";
+						std::cerr.write( tmp.Top(), tmp.ByteLength() );
+						std::cerr << "'." << std::endl;
+					} else {
+						if( word.IsEmpty() )
+							std::cerr << "ERROR : link keyword is empty." << std::endl;
+						else if( glossary.RegisterAutoLink( word.Top(), word.End(),
+															url.Top(), url.End() ) == false )
+							std::cerr << "ERROR : link keyword '"
+									  << word << "' is duplicated." << std::endl;
+					}
+					line.Clear();
+					continue;
+				}
+				if( tmp.IsMatch( "<!-- toc-link:", item, " -->" ) ) {
+					//ToDo : 1Grw5djeUn8 : パラメータが３つ以上存在する場合をエラーとして検出できてない
+					item = item.Trim();
+					TextSpan cur = item.CutNextToken();
+					bool     bTop;
+					if( cur.IsEqual( "top" ) )
+						bTop = true;
+					else if( cur.IsEqual( "bottom" ) )
+						bTop = false;
+					else {
+						std::cerr << "ERROR : invalid toc-link format '";
+						std::cerr.write( tmp.Top(), tmp.ByteLength() );
+						std::cerr << "'." << std::endl;
+						continue;
+					}
+					item = item.Trim();
+					if( item.IsQuoted() )
+						item.Chomp( 1, 1 );
+					bool ret = toc.RegisterLinkButton( bTop, item );
+					if( !ret )
+						std::cerr << "WARNING : toc-link directive duplicated." << std::endl;
+					line.Clear();
+					continue;
+				}
+				if( tmp.IsMatch( "<!-- config:", item, " -->" ) ) {
+					if( item.IsEqual( "term-link-in-header" ) ) {
+						cfg.bTermLinkInHeader = true;
+					} else if( item.IsEqual( "embed-stylesheet" ) ) {
+						cfg.bEmbedStyleSheet = true;
+					} else if( item.IsEqual( "write-comment" ) ) {
+						cfg.bWriteComment = true;
+					} else if( item.IsEqual( "use-mathjax" ) ) {
+						cfg.bUseMathJax = true;
+					} else if( item.BeginWith( "entity-numbering-depth" ) ) {
+						item = item.Chomp( 22, 0 ).Trim();
+						uint32_t depth = 0;
+						if( item.Convert( depth ) == false ) {
+							//ToDo : error message...
 						}
-						item = item.Trim();
+						cfg.entityNumberingDepth = depth;
+					} else if( item.BeginWith( "header-numbering" ) ) {
+						item = item.Chomp( 16, 0 ).Trim();
+						uint32_t lvls[] = { 1, 6 };
+						for( uint32_t i = 0; i < 2; ++i ) {
+							if( item.IsEmpty() == false ) {
+								TextSpan token = item.CutNextToken( ' ' );
+								if( token.Convert( lvls[i] ) == false ) {
+									//ToDo : error message...
+								}
+							}
+							item = item.Trim();
+						}
+						if( lvls[0] < 1 || 6 < lvls[1] || lvls[1] < lvls[0] ) {
+							//ToDo : error message...
+						}
+						cfg.bNumberingHeader = true;
+						cfg.minNumberingLv   = lvls[0];
+						cfg.maxNumberingLv   = lvls[1];
+					} else {
+						//ToDo : error message...?
 					}
-					if( lvls[0] < 1 || 6 < lvls[1] || lvls[1] < lvls[0] ) {
-						//ToDo : error message...
-					}
-					cfg.bNumberingHeader = true;
-					cfg.minNumberingLv   = lvls[0];
-					cfg.maxNumberingLv   = lvls[1];
-				} else {
-					//ToDo : error message...?
+					continue;
 				}
 			}
+			//最後に $..$ 形式の MathJax 利用をチェックする
+			do {
+				auto top = tmp.Top();
+				auto end = tmp.End();
+				auto i1 = std::find( top, end, '$' );
+				if( i1 == end ) break;
+				if( !( i1 == top || IsSpaceBackward( i1 - 1 ) ) ) break;
+				auto i2 = std::find( i1 + 1, end, '$' );
+				if( i2 == end ) break;
+				if( !( (i2 + 1) == end || IsSpaceForward( i2 + 1 ) ) ) break;
+				cfg.bUseMathJax = true;
+			} while( false );
 		}
 	}
 

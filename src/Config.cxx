@@ -16,6 +16,7 @@ namespace turnup {
 					   bEmbedStyleSheet( false ),
 					   bWriteComment( false ),
 					   bNumberingHeader( false ),
+					   bUseMathJax( false ),
 					   minNumberingLv( 1 ),
 					   maxNumberingLv( 6 ),
 					   entityNumberingDepth( 0 ) {
