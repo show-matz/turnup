@@ -148,6 +148,12 @@ namespace turnup {
 	static void OperateFootnote( std::ostream& os, const TextSpan& whole,
 								 const char* pTop, const char* pEnd,
 								 DocumentInfo& docInfo, bool bTermLink );
+	// {{fn(TAG):string}} 形式の脚注を処理する
+	static const char* FindFootnotePattern2( const char* pTop, const char* pEnd, 
+											 const char*& endPos, const TextSpan& whole );
+	static void OperateFootnote2( std::ostream& os, const TextSpan& whole,
+								  const char* pTop, const char* pEnd,
+								  DocumentInfo& docInfo, bool bTermLink );
 
 
 	static const char* FindSpaceRequiredPatternImpl( const char* pPattern, uint32_t len,
@@ -184,6 +190,7 @@ namespace turnup {
 		{ FindCodePattern,       OperateCode },			// `code`
 		{ FindMathJaxPattern,    OperateMathJax },		// $formula$
 		{ FindFootnotePattern,   OperateFootnote },		// {{fn:footnote}}
+		{ FindFootnotePattern2,  OperateFootnote2 },	// {{fn(TAG):footnote}}
 		{ FindStrikePattern,     OperateStrike },		// ~~strike~~
 	};
 
@@ -939,6 +946,42 @@ namespace turnup {
 		   << "href='#footnote" << idx << "'>"
 		   << idx
 		   << "</a></sup>";
+	}
+
+	// {{fn(TAG):string}} 形式の脚注を処理する
+	static const char* FindFootnotePattern2( const char* pTop, const char* pEnd, 
+											 const char*& endPos, const TextSpan& whole ) {
+		(void)whole;
+		static const char* const PATTERN = "{{fn():}}";
+		const char* p1 = std::search( pTop, pEnd, PATTERN, PATTERN + 5 );
+		if( p1 == pEnd )
+			return pEnd;
+		const char* p2 = std::search( p1, pEnd, PATTERN + 5, PATTERN + 7 );
+		if( p2 == pEnd )
+			return pEnd;
+		const char* p3 = std::search( p1, pEnd, PATTERN + 7, PATTERN + 9 );
+		if( p3 == pEnd )
+			return pEnd;
+		endPos = p3 + 2;
+		return p1;
+	}
+	static void OperateFootnote2( std::ostream& os, const TextSpan& whole,
+								  const char* pTop, const char* pEnd,
+								  DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
+		(void)bTermLink;
+		TextSpan tmp{ pTop, pEnd };
+		TextSpan tag;
+		TextSpan note;
+		if( tmp.IsMatch( "{{fn(", tag, "):", note, "}}" ) ) {
+			uint32_t idx = docInfo.Get<Footnotes>().Register( tag, note );
+			auto& styles = docInfo.Get<StyleStack>();
+			styles.WriteOpenTag( os, "sup" )
+			   << "<a name='footnote_ref_" << tag << idx << "' "
+			   << "href='#footnote_" << tag << idx << "'>"
+			   << idx
+			   << "</a></sup>";
+		}
 	}
 
 	static const char* FindSpaceRequiredPatternImpl( const char* pPattern, uint32_t len,

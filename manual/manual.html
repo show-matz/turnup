@@ -743,13 +743,21 @@ Table. title of table
   &lt;/raw_html&gt;
 </pre>
 <h3><a name='9Dfk88hOKmk'></a>6.11 脚注</h3>
-<p>　文章中に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
+<p>　文書中に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
 <pre>
   {{fn:これが脚注の内容です。}}
 </pre>
 <p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>をまとめて表示するには、<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を展開したい場所（通常は登場文書の末尾でしょう）に以下の行を記述します。これにより、その場所に文書内のすべての<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>が記載順で一覧されます。</p>
 <pre>
   &lt;!-- embed:footnotes --&gt;
+</pre>
+<p>　上記の記法では、全ての<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>が一箇所にまとめて表示されます。これに対して、章や節などの単位で<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を分割したい場合、以下の記法が使用できます。</p>
+<pre>
+  {{fn(TAG):脚注の内容}}
+</pre>
+<p>　<code>TAG</code> という部分に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>のグループを識別する任意の文字列を入れます（たとえば章節番号など）。この文字列は <a class='term' href='#ahN3t8jbawv'>HTML</a> の ID（の一部）として使用されるので、使用する文字に注意してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。グループ化された<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の一覧を出力するには、以下のようにします。</p>
+<pre>
+  &lt;!-- embed:footnotes TAG --&gt;
 </pre>
 <p>　このマニュアル文書でも、いくつかの<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
 <h3><a name='7maM1Z8DaEp'></a>6.12 目次の生成</h3>
@@ -814,7 +822,7 @@ index 16fc9f4..8387187 100644
 
     return 0;
 </pre>
-<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。</p>
+<p>　現在、turnup が提供しているフィルタは以下の通りです。つまり、 <strong>まだちょっとしか実装されていません</strong><sup><a name='footnote_ref13' href='#footnote13'>13</a></sup>。</p>
 <ul>
 <li>C</li>
 <li>C++</li>
@@ -860,7 +868,7 @@ foo,bar,quux
 &lt;!-- i​nclude: table.csv --&gt;
 ~~~
 </pre>
-<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref13' href='#footnote13'>13</a></sup>。</p>
+<p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup>。</p>
 <pre>
 ~~~table
 delimiter=tab
@@ -933,9 +941,9 @@ foo	bar	quux
 <pre>
 turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
 </pre>
-<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup></p>
+<p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
 <h3><a name='hs1guSfsFGb'></a>6.21 改ページ指定</h3>
-<p>　以下の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
+<p>　以下の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup></p>
 <pre>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
@@ -1048,7 +1056,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </ul>
 <h3><a name='8d4GujOuk9v'></a>6.25 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
-<p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
+<p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
 <pre>
 &lt;​!-- snippet: NAME
     （ここに繰り返し使いたい内容を記述する）
@@ -1281,7 +1289,7 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <pre>
   &lt;!-- config:header-numbering --&gt;			
 </pre>
-<p>　これにより、1.1.1. 形式で<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号が付与されます<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>。この番号を付与する<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のレベルを限定したい場合、以下のように記載します。この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４の合計３レベルで採番されます。この場合、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル1、および 5 以降には番号付けは適用されません。</p>
+<p>　これにより、1.1.1. 形式で<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号が付与されます<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup>。この番号を付与する<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のレベルを限定したい場合、以下のように記載します。この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４の合計３レベルで採番されます。この場合、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
   &lt;!-- config:header-numbering 2 4 --&gt;			
 </pre>
@@ -1319,12 +1327,12 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 </pre>
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
-<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>をそのまま出力するようになります。<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup></p>
+<p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>をそのまま出力するようになります。<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup></p>
 <pre>
   &lt;!-- config:write-comment --&gt;			
 </pre>
 <h3><a name='gSChjoBbaKA'></a>7.6 MathJax 利用の明示的宣言</h3>
-<p>　turnup は基本的に MathJax の利用を自動的に検出して必要な <code>&lt;script&gt;</code> タグを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入しますが、これがうまく動作しない場合があります<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup>。そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。</p>
+<p>　turnup は基本的に MathJax の利用を自動的に検出して必要な <code>&lt;script&gt;</code> タグを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入しますが、これがうまく動作しない場合があります<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup>。そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。</p>
 <pre>
   &lt;!-- config:use-mathjax --&gt;			
 </pre>
@@ -1359,9 +1367,9 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <p>　<a href='#18dTPnzNOgg'>外部フィルタの登録</a> では、入出力ファイル名として <code>%in</code> および <code>%out</code> というプレースホルダを使用します。実際に使用されるファイル名は、turnup が都度決定すると説明していましたが、ここではその詳細について説明します。</p>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の実行において使用する入出力ファイル名には、フィルタに渡すデータを元に作成したハッシュコードが使用されます。これにより、「同じデータであれば同じファイル名になる」ことが保証されます。このことを利用して、コストのかかる<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>実行についてはその出力をキャッシュしておく、といった措置が可能になります（具体的な方法については、<a href='#bCCDfsVD85P'>8.8.1  節</a>などを参照してください）。</p>
 <h3><a name='8qCsTwp3HZT'></a>8.8 作図まですべてテキストで実現する方法</h3>
-<p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
+<p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref21' href='#footnote21'>21</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
 <h4><a name='bCCDfsVD85P'></a>8.8.1 PlantUML</h4>
-<p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref21' href='#footnote21'>21</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
+<p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref22' href='#footnote22'>22</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
 <pre>
 &lt;​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg &gt; %out --&gt;
 </pre>
@@ -1663,7 +1671,7 @@ cat ./$​{CACHE}/$​{OUT}.svg   &gt;&gt; ./$​{OUT}
 </pre>
 </details>
 <h3><a name='62CICfavwWM'></a>8.9 画像ファイルを HTML 内に取り込む方法</h3>
-<p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref22' href='#footnote22'>22</a></sup>。</p>
+<p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref23' href='#footnote23'>23</a></sup>。</p>
 <p>　<a href='#8qCsTwp3HZT'>前節</a>と同じように、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>を定義します（内容については後述）。</p>
 <pre>
 &lt;!​-- filter:embed_image = bash ./embed_image.sh %in %out --&gt;
@@ -2105,6 +2113,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a href='#30aeVqd2ldu'>LaTeX 書式を用いた数式の生成</a>機能を追加</li>
 </ul>
 </li>
+<li><strong>2023/01/22 - version 0.831</strong>
+<ul>
+<li>ENHANCE : <a href='#9Dfk88hOKmk'>脚注</a>の分割サポートを追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2290,16 +2303,17 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <p class='footnote'><a name='footnote9' href='#footnote_ref9'>9</a> : <a class='autolink' href='#g6xjP526KX7'>テーブル</a>以外でパレットが必要な書法は無いような気がしています。ひょっとしたら、リストでやるかもしれません。</p>
 <p class='footnote'><a name='footnote10' href='#footnote_ref10'>10</a> : この自動リンクにおいて、大文字小文字が異なる表記は対象になりません。この挙動を変更するオプションは今のところ、ありません。</p>
 <p class='footnote'><a name='footnote11' href='#footnote_ref11'>11</a> : 自動リンクが<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>だけだった version 0.811 以前は、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>で用語を重複させてもエラーにならない問題がありましたが、<a class='autolink' href='#8mg4uLSAXaz'>autolink</a> 導入にあわせて修正してあります。</p>
-<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
-<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
-<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
-<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
-<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : markdown 書法のコードハイライトに対応したエディタを使用していたり、そのエディタにプレビュー機能があったりすると、どちらかを選択する理由になるかもしれません（どっちかはわかりませんが）。</p>
-<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
-<p class='footnote'><a name='footnote18' href='#footnote_ref18'>18</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
-<p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : 実際には、実際には不要なのに必要と認識することの方が多そうですけど。</p>
-<p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
-<p class='footnote'><a name='footnote21' href='#footnote_ref21'>21</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
-<p class='footnote'><a name='footnote22' href='#footnote_ref22'>22</a> : turnup が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などのバージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。</p>
+<p class='footnote'><a name='footnote12' href='#footnote_ref12'>12</a> : 英数字、ハイフン、アンダースコアだけにしておけば大丈夫でしょう。</p>
+<p class='footnote'><a name='footnote13' href='#footnote_ref13'>13</a> : C/C++ のコードハイライト実装で基本的な仕組みはできているので、必要に応じて他も実装する予定です。</p>
+<p class='footnote'><a name='footnote14' href='#footnote_ref14'>14</a> :  <code>tab</code> 以外で２文字以上の文字列を指定した場合、警告を出力した上で先頭の文字列が使用されます</p>
+<p class='footnote'><a name='footnote15' href='#footnote_ref15'>15</a> : version 0.805 以前の実装では、「実行時のカレントディレクトリ」が最優先で検索される仕様でしたが、これは改められました。現在では、最優先されるのは常に「処理中のファイルがあるその場所」になります。</p>
+<p class='footnote'><a name='footnote16' href='#footnote_ref16'>16</a> : 実際には、これは <code>&lt;p class='pagebreak'&gt;&lt;/p&gt;</code> という一行を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に書き出すだけで、これが改ページとして機能するのは、CSS の設定によるものです。詳細は同梱の default.css に含まれる <code>p.pagebreak</code> という CSS エントリを参照してください。</p>
+<p class='footnote'><a name='footnote17' href='#footnote_ref17'>17</a> : markdown 書法のコードハイライトに対応したエディタを使用していたり、そのエディタにプレビュー機能があったりすると、どちらかを選択する理由になるかもしれません（どっちかはわかりませんが）。</p>
+<p class='footnote'><a name='footnote18' href='#footnote_ref18'>18</a> : 番号付けの書式は今のところこれだけで、選択はできません。</p>
+<p class='footnote'><a name='footnote19' href='#footnote_ref19'>19</a> : それの何が嬉しいのかわからないかもしれませんが、作者にも良くわからない機能なので気にしないでください。おそらく、どのような設定で turnup が動作したのかわかるように、とかだと思います。</p>
+<p class='footnote'><a name='footnote20' href='#footnote_ref20'>20</a> : 実際には、実際には不要なのに必要と認識することの方が多そうですけど。</p>
+<p class='footnote'><a name='footnote21' href='#footnote_ref21'>21</a> : アスキーアートと使うなと言ってるんじゃないですよ。</p>
+<p class='footnote'><a name='footnote22' href='#footnote_ref22'>22</a> : <a href='https://plantuml.com/'>https://plantuml.com/</a></p>
+<p class='footnote'><a name='footnote23' href='#footnote_ref23'>23</a> : turnup が「全部テキストで」なんとかしようとしているのには理由が２つあります。１つめは git などのバージョン管理システムでの管理を容易にすることで、２つめは「出力としてのドキュメントも単一にしたい」というものです。</p>
 </body>
 </html>

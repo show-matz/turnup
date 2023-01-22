@@ -12,6 +12,7 @@
 namespace turnup {
 
 	class DocumentInfo;
+	class TextSpan;
 
 	//--------------------------------------------------------------------------
 	//
@@ -24,8 +25,11 @@ namespace turnup {
 		~Footnotes();
 	public:
 		uint32_t Register( const char* pNote, const char* pNoteEnd );
+		uint32_t Register( const TextSpan& tag, const TextSpan& note );
 	public:
-		void WriteFootnotes( std::ostream& os, DocumentInfo& docInfo );
+		void WriteFootnotes( std::ostream& os, DocumentInfo& docInfo ) const;
+		void WriteFootnotes( const TextSpan& tag, 
+							 std::ostream& os, DocumentInfo& docInfo ) const;
 	private:
 		class Impl;
 		Impl* m_pImpl;
