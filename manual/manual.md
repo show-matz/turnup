@@ -1038,7 +1038,7 @@ index 16fc9f4..8387187 100644
 * C++
 * diff
 * sh
-* Common LISP
+* lisp
 * raw （これは[生の HTML を出力](#生の HTML の出力)するためのものです）
 * table （これは[テーブルの作成を支援](#テーブルの生成)するためのものです）
 * math （これは[LaTeX 書式を用いた数式を生成](#LaTeX 書式を用いた数式の生成)するためのものです）
@@ -1657,7 +1657,7 @@ $$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$
   $$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$  
 
 ##### ◆ math フィルタの使用
-<!-- autolink: [math](#math フィルタの使用) -->
+<!-- autolink: [math](#◆ math フィルタの使用) -->
 
 　math フィルタを使用することで、MathJax による数式を生成できます。以下の記述が、
 
