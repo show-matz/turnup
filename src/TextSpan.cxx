@@ -977,8 +977,8 @@ namespace turnup {
 			uint32_t idx = docInfo.Get<Footnotes>().Register( tag, note );
 			auto& styles = docInfo.Get<StyleStack>();
 			styles.WriteOpenTag( os, "sup" )
-			   << "<a name='footnote_ref_" << tag << idx << "' "
-			   << "href='#footnote_" << tag << idx << "'>"
+			   << "<a name='footnote_ref_" << tag << "_" << idx << "' "
+			   << "href='#footnote_" << tag << "_" << idx << "'>"
 			   << idx
 			   << "</a></sup>";
 		}

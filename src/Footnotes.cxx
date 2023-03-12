@@ -137,8 +137,8 @@ namespace turnup {
 				++idx;
 				const TextSpan& line = *itr1;
 				styles.WriteOpenTag( os, "p", " class='footnote'" );
-				os << "<a name='footnote_"      << tag << idx << "'"
-				   <<   " href='#footnote_ref_" << tag << idx << "'>" << idx << "</a> : ";
+				os << "<a name='footnote_"      << tag << "_" << idx << "'"
+				   <<   " href='#footnote_ref_" << tag << "_" << idx << "'>" << idx << "</a> : ";
 				line.WriteTo( os, docInfo );
 				os << "</p>" << std::endl;
 			}
