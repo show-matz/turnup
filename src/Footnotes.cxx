@@ -155,14 +155,15 @@ namespace turnup {
 
 	Footnotes::Impl::NoteList* Footnotes::Impl::GetNoteListFromTag( const TextSpan& tag ) const {
 		if( m_pTaggedNoteList && (0 < m_pTaggedNoteList->size()) ) {
-			// 多くの場合で最後のがヒットするはずなので先にチェック
-			TaggedNotes& last = m_pTaggedNoteList->back();
-			if( tag.IsEqual( last.first ) == true )
-				return last.second;
+			/* 多くの場合で最後のがヒットするはずなので先にチェック */ {
+				TaggedNotes& last = m_pTaggedNoteList->back();
+				if( tag.IsEqual( last.first ) == true )
+					return last.second;
+			}
 			// 上記がダメなら既存エントリを全てチェック
 			for( TaggedNotes& entry : *m_pTaggedNoteList ) {
 				if( tag.IsEqual( entry.first ) == true )
-					return last.second;
+					return entry.second;
 			}
 		}
 		return nullptr;
