@@ -154,6 +154,17 @@ namespace turnup {
 	static void OperateFootnote2( std::ostream& os, const TextSpan& whole,
 								  const char* pTop, const char* pEnd,
 								  DocumentInfo& docInfo, bool bTermLink );
+	// #((ANCHOR)) 形式を処理する
+	static const char* FindAnchorPatternImpl( const char* pPattern,
+											  const char* pTop, const char* pEnd, 
+											  const char*& endPos, const TextSpan& whole );
+	static const char* FindAnchorPattern1( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole );
+	static const char* FindAnchorPattern2( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole );
+	static void OperateAnchor( std::ostream& os, const TextSpan& whole,
+							   const char* pTop, const char* pEnd,
+							   DocumentInfo& docInfo, bool bTermLink );
 
 
 	static const char* FindSpaceRequiredPatternImpl( const char* pPattern, uint32_t len,
@@ -181,6 +192,8 @@ namespace turnup {
 		{ FindMarkPattern,       OperateMark },			// ==mark==
 		{ FindStylesPattern1,    OperateStyles },		// @{{styles}{contents}}
 		{ FindStylesPattern2,    OperateStyles },		// @((styles)(contents))
+		{ FindAnchorPattern1,    OperateAnchor },		// #((anchor))
+		{ FindAnchorPattern2,    OperateAnchor },		// #{{anchor}}
 		{ FindLinkPattern,       OperateLink },			// [label](url)
 		{ FindSupPattern,        OperateSup },			// ^sup^
 		{ FindSubPattern,        OperateSub },			// ~sub~
@@ -981,6 +994,45 @@ namespace turnup {
 			   << "href='#footnote_" << tag << "_" << idx << "'>"
 			   << idx
 			   << "</a></sup>";
+		}
+	}
+
+	// #((ANCHOR)) 形式を処理する
+	static const char* FindAnchorPatternImpl( const char* pPattern,
+											  const char* pTop, const char* pEnd, 
+											  const char*& endPos, const TextSpan& whole ) {
+		(void)whole;
+		const char* p1 = std::search( pTop, pEnd, pPattern, pPattern + 3 );
+		if( p1 == pEnd )
+			return pEnd;
+		const char* p2 = std::search( p1 + 3, pEnd, pPattern + 3, pPattern + 5 );
+		if( p2 == pEnd )
+			return pEnd;
+		endPos = p2 + 2;
+		return p1;
+	}
+	static const char* FindAnchorPattern1( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole ) {
+		return FindAnchorPatternImpl( "#(())", pTop, pEnd, endPos, whole );
+	}
+	static const char* FindAnchorPattern2( const char* pTop, const char* pEnd, 
+										   const char*& endPos, const TextSpan& whole ) {
+		return FindAnchorPatternImpl( "#{{}}", pTop, pEnd, endPos, whole );
+	}
+	static void OperateAnchor( std::ostream& os, const TextSpan& whole,
+							   const char* pTop, const char* pEnd,
+							   DocumentInfo& docInfo, bool bTermLink ) {
+		(void)whole;
+		(void)docInfo;
+		(void)bTermLink;
+		assert( pTop[0] == '#' && (pTop[1] == '{' || pTop[1] == '(') && pTop[1] == pTop[2] );
+		assert( (pEnd[-1] == '}' || pEnd[-1] == ')') && pEnd[-1] == pEnd[-2] );
+		auto& toc    = docInfo.Get<ToC>();
+		const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, pTop + 3, pEnd - 2 );
+		if( pTag )
+			os << "<a name='" << pTag << "' />";
+		else {
+			//ToDo : error message...
 		}
 	}
 

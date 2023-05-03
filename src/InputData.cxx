@@ -392,6 +392,32 @@ namespace turnup {
 					continue;
 				}
 			}
+			/* インラインアンカーの使用をチェックする */ {
+				auto top = tmp.Top();
+				auto end = tmp.End();
+				while( top < end ) {
+					auto i1 = std::find( top, end, '#' );
+					if( i1 == end ) break;
+					if( (i1[1] != '(' && i1[1] != '{') || i1[1] != i1[2] ) {
+						top = i1 + 1;
+						continue;
+					}	
+					char par[2];
+					par[0] = par [1] = (i1[1] == '(') ? ')' : '}';
+					auto i2 = std::search( i1 + 3, end, par, par + 2 );
+					if( i2 == end )  {
+						top = i1 + 3;
+						continue;
+					}
+					TextSpan name{ i1 + 3, i2 };
+					if( toc.RegisterAnchor( name ) == false ) {
+						std::cerr << "ERROR : anchor '";
+						std::cerr.write( name.Top(), name.ByteLength() );
+						std::cerr << "' is duplicated." << std::endl;
+					}
+					top = i2 + 2;
+				}
+			}
 			//最後に $..$ 形式の MathJax 利用をチェックする
 			do {
 				auto top = tmp.Top();

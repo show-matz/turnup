@@ -1,3 +1,4 @@
+ERROR : anchor 'ANCHORNAME' is duplicated.
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -633,7 +634,8 @@ Table. title of table
 <pre>
 &lt;​!-- anchor: ANCHORNAME --&gt;
 </pre>
-<p>　この方法で作成した<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成する場合、<a href='#cjJv49XsD9d'>ページ内へのリンク</a>に記載した方法に従って、 <code>[LABEL](A#ANCHORNAME)</code> 形式のページ内リンクを記述してください。</p>
+<p>　version 0.833 より、 <code>#((ANCHORNAME))</code> または <code>#{{ANCHORNAME}}</code> の形式でインライン<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を記述できるようになりました。</p>
+<p>　これらの方法で作成した<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成する場合、<a href='#cjJv49XsD9d'>ページ内へのリンク</a>に記載した方法に従って、 <code>[LABEL](A#ANCHORNAME)</code> 形式のページ内リンクを記述してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.5 インラインスタイル指定</h3>
 <p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
 <pre>
@@ -2116,6 +2118,17 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2023/01/22 - version 0.831</strong>
 <ul>
 <li>ENHANCE : <a href='#9Dfk88hOKmk'>脚注</a>の分割サポートを追加</li>
+</ul>
+</li>
+<li><strong>2023/03/12 - version 0.832</strong>
+<ul>
+<li>BUGFIX : <a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の分割におけるバグを修正</li>
+</ul>
+</li>
+<li><strong>2023/05/03 - version 0.833</strong>
+<ul>
+<li>BUGFIX : <a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の分割におけるバグを修正</li>
+<li>ENHANCE : <a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>をインラインで記述する機能を追加</li>
 </ul>
 </li>
 </ul>
