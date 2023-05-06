@@ -18,6 +18,7 @@
 #include "Utilities.hxx"
 #include "PreProcessor.hxx"
 #include "Snippet.hxx"
+#include "Footnotes.hxx"
 
 #include <vector>
 #include <algorithm>
@@ -386,6 +387,21 @@ namespace turnup {
 						cfg.bNumberingHeader = true;
 						cfg.minNumberingLv   = lvls[0];
 						cfg.maxNumberingLv   = lvls[1];
+					} else if( item.BeginWith( "footnote-prefix" ) ) {
+						item = item.Chomp( 15, 0 ).Trim();
+						std::vector<TextSpan> prms;
+						TextSpan::DestructureToken( item,
+													[]( TextSpan itm, void* p ) -> bool {
+														((std::vector<TextSpan>*)p)->push_back( itm );
+														return true; }, &prms );
+						if( prms.size() < 2 ) {
+							//ToDo : error message...
+						} else {
+							auto& fn = docInfo.Get<Footnotes>();
+							if( fn.RegisterPrefix( prms[0], prms[1] ) == false ) {
+								//ToDo : error message...
+							}
+						}
 					} else {
 						//ToDo : error message...?
 					}

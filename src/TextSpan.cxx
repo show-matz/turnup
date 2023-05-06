@@ -459,7 +459,9 @@ namespace turnup {
 	}
 
 	std::ostream& operator<<( std::ostream& os, const TextSpan& txt ) {
-		os.write( txt.Top(), txt.ByteLength() );
+		auto len = txt.ByteLength();
+		if( 0 < len )
+			os.write( txt.Top(), len );
 		return os;
 	}
 	//--------------------------------------------------------------------------
@@ -987,12 +989,15 @@ namespace turnup {
 		TextSpan tag;
 		TextSpan note;
 		if( tmp.IsMatch( "{{fn(", tag, "):", note, "}}" ) ) {
-			uint32_t idx = docInfo.Get<Footnotes>().Register( tag, note );
+			auto& fn = docInfo.Get<Footnotes>();
+			TextSpan prefix;
+			fn.GetPrefix( tag, prefix ); 
+			uint32_t idx = fn.Register( tag, note );
 			auto& styles = docInfo.Get<StyleStack>();
 			styles.WriteOpenTag( os, "sup" )
 			   << "<a name='footnote_ref_" << tag << "_" << idx << "' "
 			   << "href='#footnote_" << tag << "_" << idx << "'>"
-			   << idx
+			   << prefix << idx
 			   << "</a></sup>";
 		}
 	}

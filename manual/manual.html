@@ -1,4 +1,3 @@
-ERROR : anchor 'ANCHORNAME' is duplicated.
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -120,6 +119,7 @@ ERROR : anchor 'ANCHORNAME' is duplicated.
 <li class='tocx'><a href='#jkzhEyZU0ts'>7.4 スタイルシートの埋め込み</a></li>
 <li class='tocx'><a href='#8a3vnTcmVrk'>7.5 コメントの出力</a></li>
 <li class='tocx'><a href='#gSChjoBbaKA'>7.6 MathJax 利用の明示的宣言</a></li>
+<li class='tocx'><a href='#5xO3F2FIOq7'>7.7 脚注のプレフィクス設定</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -634,7 +634,7 @@ Table. title of table
 <pre>
 &lt;​!-- anchor: ANCHORNAME --&gt;
 </pre>
-<p>　version 0.833 より、 <code>#((ANCHORNAME))</code> または <code>#{{ANCHORNAME}}</code> の形式でインライン<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を記述できるようになりました。</p>
+<p>　version 0.833 より、 <code>#​((ANCHORNAME))</code> または <code>#​{{ANCHORNAME}}</code> の形式でインライン<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を記述できるようになりました。</p>
 <p>　これらの方法で作成した<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成する場合、<a href='#cjJv49XsD9d'>ページ内へのリンク</a>に記載した方法に従って、 <code>[LABEL](A#ANCHORNAME)</code> 形式のページ内リンクを記述してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.5 インラインスタイル指定</h3>
 <p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
@@ -757,10 +757,11 @@ Table. title of table
 <pre>
   {{fn(TAG):脚注の内容}}
 </pre>
-<p>　<code>TAG</code> という部分に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>のグループを識別する任意の文字列を入れます（たとえば章節番号など）。この文字列は <a class='term' href='#ahN3t8jbawv'>HTML</a> の ID（の一部）として使用されるので、使用する文字に注意してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。グループ化された<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の一覧を出力するには、以下のようにします。</p>
+<p>　<code>TAG</code> という部分に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>のグループを識別する任意の文字列を入れます（たとえば章節番号など）。これを「タグ」と呼びます。この文字列は <a class='term' href='#ahN3t8jbawv'>HTML</a> の ID（の一部）として使用されるので、使用する文字に注意してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。グループ化された<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の一覧を出力するには、以下のようにします。</p>
 <pre>
   &lt;!-- embed:footnotes TAG --&gt;
 </pre>
+<p>　タグを伴う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>では、リンクにプレフィクスを指定することができます。詳細は <a href='#5xO3F2FIOq7'>7.7  節</a>を参照してください。</p>
 <p>　このマニュアル文書でも、いくつかの<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
 <h3><a name='7maM1Z8DaEp'></a>6.12 目次の生成</h3>
 <p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
@@ -1338,6 +1339,12 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <pre>
   &lt;!-- config:use-mathjax --&gt;			
 </pre>
+<h3><a name='5xO3F2FIOq7'></a>7.7 脚注のプレフィクス設定</h3>
+<p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>で使用されるリンクは通常 1 から始まる連番で表示されますが、<a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定を使用することによってリンクに任意のプレフィクスを表示させることができます。たとえば以下のようにすることで、</p>
+<pre>
+  &lt;!-- config:footnote-prefix  JP  '訳注 ' --&gt;
+</pre>
+<p>タグ <code>JP</code> を使う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>（つまり <code>{{fn(JP):...}}</code> という形式）で表示されるリンクが <code>訳注 1</code> といった文字列になります。この <a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定は複数のタグに対して指定することができます。</p>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
@@ -2131,6 +2138,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>をインラインで記述する機能を追加</li>
 </ul>
 </li>
+<li><strong>2023/05/06 - version 0.834</strong>
+<ul>
+<li>ENHANCE : <a class='autolink' href='#5xO3F2FIOq7'>config:footnote-prefix</a> による<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>へのプレフィクス設定機能を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2162,6 +2174,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li class='idx_x'><a class='autolink' href='#hMHXjTrWEnw'>collapse:</a></li>
 <li class='idx_x'><a class='autolink' href='#jkzhEyZU0ts'>config:embed-stylesheet</a></li>
 <li class='idx_x'><a class='autolink' href='#hJJbL4GzVpQ'>config:entity-numbering-depth</a></li>
+<li class='idx_x'><a class='autolink' href='#5xO3F2FIOq7'>config:footnote-prefix</a></li>
 <li class='idx_x'><a class='autolink' href='#2M8QFQ2XeBn'>config:header-numbering</a></li>
 <li class='idx_x'><a class='autolink' href='#0EKpSe2qrxR'>config:term-link-in-header</a></li>
 <li class='idx_x'><a class='autolink' href='#gSChjoBbaKA'>config:use-mathjax</a></li>
@@ -2197,6 +2210,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <summary class='idx_x'>F</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='autolink' href='#18dTPnzNOgg'>filter:</a></li>
+<li class='idx_x'><a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a></li>
 </blockquote>
 </details>
 <details class='idx_x' open>

@@ -27,6 +27,9 @@ namespace turnup {
 		uint32_t Register( const char* pNote, const char* pNoteEnd );
 		uint32_t Register( const TextSpan& tag, const TextSpan& note );
 	public:
+		bool RegisterPrefix( const TextSpan& tag, const TextSpan& prefix );
+		void GetPrefix( const TextSpan& tag, TextSpan& prefix ) const;
+	public:
 		void WriteFootnotes( std::ostream& os, DocumentInfo& docInfo ) const;
 		void WriteFootnotes( const TextSpan& tag, 
 							 std::ostream& os, DocumentInfo& docInfo ) const;

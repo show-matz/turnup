@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <ostream>
+#include <algorithm>
 
 namespace turnup {
 
@@ -28,19 +29,24 @@ namespace turnup {
 	public:
 		uint32_t Register( const char* pNote, const char* pNoteEnd );
 		uint32_t Register( const TextSpan& tag, const TextSpan& note );
+		bool RegisterPrefix( const TextSpan& tag, const TextSpan& prefix );
+		void GetPrefix( const TextSpan& tag, TextSpan& prefix ) const;
 		void WriteFootnotes( std::ostream& os, DocumentInfo& docInfo ) const;
 		void WriteFootnotes( const TextSpan& tag, 
 							 std::ostream& os, DocumentInfo& docInfo ) const;
 	private:
 		typedef std::vector<TextSpan>			NoteList;
 		typedef std::pair<TextSpan, NoteList*>	TaggedNotes;
+		typedef std::pair<TextSpan, TextSpan>	PrefixInfo;
 		typedef std::vector<TaggedNotes>		TaggedNoteList;
+		typedef std::vector<PrefixInfo>			PrefixList;
 	private:
 		NoteList* AddTaggedNoteList( const TextSpan& tag );
 		NoteList* GetNoteListFromTag( const TextSpan& tag ) const;
 	private:
 		NoteList*		m_pNotes;
 		TaggedNoteList*	m_pTaggedNoteList;
+		PrefixList*		m_pPrefixList;
 	};
 
 	//--------------------------------------------------------------------------
@@ -63,6 +69,15 @@ namespace turnup {
 			m_pImpl = new Impl{};
 		return m_pImpl->Register( tag, note );
 	}
+	bool Footnotes::RegisterPrefix( const TextSpan& tag, const TextSpan& prefix ) {
+		if( !m_pImpl )
+			m_pImpl = new Impl{};
+		return m_pImpl->RegisterPrefix( tag, prefix );
+	}
+	void Footnotes::GetPrefix( const TextSpan& tag, TextSpan& prefix ) const {
+		if( !!m_pImpl )
+			return m_pImpl->GetPrefix( tag, prefix );
+	}
 	void Footnotes::WriteFootnotes( std::ostream& os, DocumentInfo& docInfo ) const {
 		if( m_pImpl )
 			m_pImpl->WriteFootnotes( os, docInfo );
@@ -79,7 +94,8 @@ namespace turnup {
 	//
 	//--------------------------------------------------------------------------
 	Footnotes::Impl::Impl() : m_pNotes( nullptr ),
-							  m_pTaggedNoteList( nullptr ) {
+							  m_pTaggedNoteList( nullptr ),
+							  m_pPrefixList( nullptr ) {
 	}
 
 	Footnotes::Impl::~Impl() {
@@ -92,6 +108,8 @@ namespace turnup {
 			}
 			delete m_pTaggedNoteList;
 		}
+		if( m_pPrefixList )
+			delete m_pPrefixList;
 	}
 
 	uint32_t Footnotes::Impl::Register( const char* pNote, const char* pNoteEnd ) {
@@ -107,6 +125,30 @@ namespace turnup {
 			pNotes = AddTaggedNoteList( tag );
 		pNotes->emplace_back( note.Top(), note.End() );
 		return pNotes->size();
+	}
+
+	bool Footnotes::Impl::RegisterPrefix( const TextSpan& tag, const TextSpan& prefix ) {
+		if( !m_pPrefixList )
+			m_pPrefixList = new PrefixList{};
+		auto itr = std::find_if( m_pPrefixList->begin(), m_pPrefixList->end(),
+								 [&tag]( const PrefixInfo& info ) -> bool {
+									 return tag.IsEqual( info.first );
+								 } );
+		if( itr != m_pPrefixList->end() )
+			return false;
+		m_pPrefixList->emplace_back( tag, prefix );
+		return true;
+	}
+
+	void Footnotes::Impl::GetPrefix( const TextSpan& tag, TextSpan& prefix ) const {
+		auto itr = std::find_if( m_pPrefixList->begin(), m_pPrefixList->end(),
+								 [&tag]( const PrefixInfo& info ) -> bool {
+									 return tag.IsEqual( info.first );
+								 } );
+		if( itr != m_pPrefixList->end() )
+			prefix = itr->second;
+		else
+			prefix.Clear();
 	}
 
 	void Footnotes::Impl::WriteFootnotes( std::ostream& os,
@@ -128,6 +170,9 @@ namespace turnup {
 	void Footnotes::Impl::WriteFootnotes( const TextSpan& tag, 
 										  std::ostream& os,
 										  DocumentInfo& docInfo ) const {
+		TextSpan prefix{};
+		this->GetPrefix( tag, prefix );
+
 		NoteList* pNotes = GetNoteListFromTag( tag );
 		if( pNotes ) {
 			auto& styles = docInfo.Get<StyleStack>();
@@ -138,7 +183,8 @@ namespace turnup {
 				const TextSpan& line = *itr1;
 				styles.WriteOpenTag( os, "p", " class='footnote'" );
 				os << "<a name='footnote_"      << tag << "_" << idx << "'"
-				   <<   " href='#footnote_ref_" << tag << "_" << idx << "'>" << idx << "</a> : ";
+				   <<   " href='#footnote_ref_" << tag << "_" << idx << "'>"
+				   << prefix << idx << "</a> : ";
 				line.WriteTo( os, docInfo );
 				os << "</p>" << std::endl;
 			}
