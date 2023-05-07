@@ -141,6 +141,10 @@ namespace turnup {
 	}
 
 	void Footnotes::Impl::GetPrefix( const TextSpan& tag, TextSpan& prefix ) const {
+		if( !m_pPrefixList ) {
+			prefix.Clear();
+			return;
+		}
 		auto itr = std::find_if( m_pPrefixList->begin(), m_pPrefixList->end(),
 								 [&tag]( const PrefixInfo& info ) -> bool {
 									 return tag.IsEqual( info.first );
