@@ -1746,6 +1746,10 @@ $$x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}$$
 するものについて 1 から連番で番号付けをし、これらの見出しレベルが変化するとまた 1 からナンバリングが
 始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。
 
+　version 0.835 より、この設定において数値の他に `off` が指定可能になりました。 `off` を指定すると、
+図表の自動ナンバリングが無効化されます。これは、図表タイトルに図表番号含めることで手動での番号付けを
+行ないたい場合に対応するものです。
+
 ### スタイルシートの埋め込み
 <!-- autolink: [config:embed-stylesheet](#スタイルシートの埋め込み) -->
 <!-- autolink: [embed-stylesheet](#スタイルシートの埋め込み) -->
@@ -2475,6 +2479,8 @@ ${BLANK_PARAGRAPH}
 	* ENHANCE : アンカーをインラインで記述する機能を追加
 * __2023/05/06 - version 0.834__
 	* ENHANCE : config:footnote-prefix による脚注へのプレフィクス設定機能を追加
+* __2023/07/27 - version 0.835__
+	* ENHANCE : config:entity-numbering-depth に off を指定可能とする機能追加
 
 
 ${BLANK_PARAGRAPH}

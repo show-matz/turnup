@@ -364,11 +364,17 @@ namespace turnup {
 						cfg.bUseMathJax = true;
 					} else if( item.BeginWith( "entity-numbering-depth" ) ) {
 						item = item.Chomp( 22, 0 ).Trim();
-						uint32_t depth = 0;
-						if( item.Convert( depth ) == false ) {
-							//ToDo : error message...
+						if( item.IsEqual( "off" ) ) {
+							cfg.bEntityNumbering = false;
+							cfg.entityNumberingDepth = 0;
+						} else {
+							uint32_t depth = 0;
+							if( item.Convert( depth ) == false ) {
+								//ToDo : error message...
+							}
+							cfg.bEntityNumbering = true;
+							cfg.entityNumberingDepth = depth;
 						}
-						cfg.entityNumberingDepth = depth;
 					} else if( item.BeginWith( "header-numbering" ) ) {
 						item = item.Chomp( 16, 0 ).Trim();
 						uint32_t lvls[] = { 1, 6 };

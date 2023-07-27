@@ -25,6 +25,7 @@ namespace turnup {
 		bool	bWriteComment;
 		bool	bNumberingHeader;
 		bool	bUseMathJax;
+		bool	bEntityNumbering;
 		uint8_t	minNumberingLv;
 		uint8_t	maxNumberingLv;
 		uint8_t	entityNumberingDepth;

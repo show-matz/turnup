@@ -1308,6 +1308,7 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
   &lt;!-- config:entity-numbering-depth 2 --&gt;
 </pre>
 <p>まず、ナンバリングをする<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はレベル 2,3,4 です。そして、図表については<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
+<p>　version 0.835 より、この設定において数値の他に <code>off</code> が指定可能になりました。 <code>off</code> を指定すると、図表の自動ナンバリングが無効化されます。これは、図表タイトルに図表番号含めることで手動での番号付けを行ないたい場合に対応するものです。</p>
 <h3><a name='jkzhEyZU0ts'></a>7.4 スタイルシートの埋め込み</h3>
 <p>　<a href='#kyMp8IkRK8n'>スタイルシートの指定</a>は、デフォルトではスタイルシートの参照が出力されるだけですが、以下の設定が文書内に記述されていると、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> の内部にスタイルシートの内容を埋め込むようになります。</p>
 <pre>
@@ -2141,6 +2142,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2023/05/06 - version 0.834</strong>
 <ul>
 <li>ENHANCE : <a class='autolink' href='#5xO3F2FIOq7'>config:footnote-prefix</a> による<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>へのプレフィクス設定機能を追加</li>
+</ul>
+</li>
+<li><strong>2023/07/27 - version 0.835</strong>
+<ul>
+<li>ENHANCE : <a class='autolink' href='#hJJbL4GzVpQ'>config:entity-numbering-depth</a> に off を指定可能とする機能追加</li>
 </ul>
 </li>
 </ul>

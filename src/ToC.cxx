@@ -560,19 +560,21 @@ namespace turnup {
 		}
 		const char* const tags[] = { "", "Table", "Figure" };
 		const char* pTag = tags[static_cast<uint32_t>( type )];
-		if( cfg.entityNumberingDepth == 0 ) {
-			::strcpy( pBuf, pTag );
-			pBuf += ::strlen( pTag );
-			::sprintf( pBuf, ".%u", cnt );
+		::strcpy( pBuf, pTag );
+		pBuf += ::strlen( pTag );
+		if( cfg.bEntityNumbering == false ) {
+			::sprintf( pBuf, "." );
 		} else {
-			const uint8_t* pNumbers = pEntry->GetChapterNumber().numbers;
-			::strcpy( pBuf, pTag );
-			pBuf += ::strlen( pTag );
-			for( uint32_t i = 0; i < cfg.entityNumberingDepth; ++i ) {
-				::sprintf( pBuf, ".%u", pNumbers[cfg.minNumberingLv - 1 + i] );
-				pBuf += ::strlen( pBuf );
+			if( cfg.entityNumberingDepth == 0 ) {
+				::sprintf( pBuf, ".%u", cnt );
+			} else {
+				const uint8_t* pNumbers = pEntry->GetChapterNumber().numbers;
+				for( uint32_t i = 0; i < cfg.entityNumberingDepth; ++i ) {
+					::sprintf( pBuf, ".%u", pNumbers[cfg.minNumberingLv - 1 + i] );
+					pBuf += ::strlen( pBuf );
+				}
+				::sprintf( pBuf, "-%u", cnt );
 			}
-			::sprintf( pBuf, "-%u", cnt );
 		}
 	}
 
