@@ -10,6 +10,7 @@
 #include "PreProcessor.hxx"
 #include "Parameters.hxx"
 #include "ToC.hxx"
+#include "CRC64.hxx"
 
 #include <iostream>
 #include <iomanip>
@@ -66,6 +67,8 @@ int main( int argc, char* argv[] ) {
 		ShowVersion();
 		return 0;
 	}
+	if( params.GetCrcSalt() != 0 )
+		CRC64::RegisterSalt( params.GetCrcSalt() );
 
 	SysVars sysVars;
 

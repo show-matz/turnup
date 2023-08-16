@@ -17,6 +17,7 @@ namespace turnup {
 	//--------------------------------------------------------------------------
 	class CRC64 {
 	public:
+		static void RegisterSalt( const char* pSalt );
 		static uint64_t Calc( char type, const char* pTop,
 							  const char* pEnd, char* pTagBuf = nullptr );
 	};

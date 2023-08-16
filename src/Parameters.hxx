@@ -30,6 +30,7 @@ namespace turnup {
 		bool Definition( uint32_t idx, TextSpan& ref ) const;
 		const TextSpan* IncludePathTop() const;
 		const TextSpan* IncludePathEnd() const;
+		const char* GetCrcSalt() const;
 	private:
 		class Impl;
 		Impl*	m_pImpl;

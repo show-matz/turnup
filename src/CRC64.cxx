@@ -10,6 +10,8 @@
 namespace turnup {
 
 	static uint64_t	s_crc64Table[256]	= { 0 };
+	static const char* s_pCrcSalt       = 0;
+	static uint32_t    s_crcSaltLength  = 0;
 
 	static void InitializeCRC64Table( void );
 	static void GenerateTag( uint64_t crc, char* pBuf );
@@ -19,6 +21,11 @@ namespace turnup {
 	// implementation of class utility CRC64
 	//
 	//--------------------------------------------------------------------------
+	void CRC64::RegisterSalt( const char* pSalt ) {
+		s_pCrcSalt      = pSalt;
+		s_crcSaltLength = ::strlen( pSalt );
+	}
+
 	uint64_t CRC64::Calc( char type,
 						  const char* pTop, const char* pEnd, char* pTagBuf ) {
 
@@ -33,6 +40,10 @@ namespace turnup {
 
 		const uint8_t* pBuf = reinterpret_cast<const uint8_t*>( pTop );
 		uint64_t crc = 0xFFFFFFFFFFFFFFFFULL;
+		if( s_pCrcSalt ) {
+			for( uint64_t i = 0; i < s_crcSaltLength; ++i )
+				crc = CRC64( crc, s_pCrcSalt[i] );
+		}
 		crc = CRC64( crc, type );
 		for( uint64_t x = 0; x < length; ++x )
 			crc = CRC64( crc, pBuf[x] );

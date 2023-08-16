@@ -30,6 +30,7 @@ namespace turnup {
 		bool Definition( uint32_t idx, TextSpan& ref ) const;
 		const TextSpan* IncludePathTop() const;
 		const TextSpan* IncludePathEnd() const;
+		const char* GetCrcSalt() const;
 	private:
 		typedef std::vector<TextSpan> Definitions;
 		typedef std::vector<TextSpan> IncludePaths;
@@ -38,6 +39,7 @@ namespace turnup {
 		bool		m_versionMode;
 		Definitions	m_definitions;
 		IncludePaths	m_includePaths;
+		const char*	m_pCrcSalt;
 	};
 
 	//--------------------------------------------------------------------------
@@ -71,6 +73,9 @@ namespace turnup {
 	const TextSpan* Parameters::IncludePathEnd() const {
 		return m_pImpl->IncludePathEnd();
 	}
+	const char* Parameters::GetCrcSalt() const {
+		return m_pImpl->GetCrcSalt();
+	}
 
 	//--------------------------------------------------------------------------
 	//
@@ -80,7 +85,8 @@ namespace turnup {
 	Parameters::Impl::Impl() : m_inputFile(),
 							   m_versionMode( false ),
 							   m_definitions(),
-							   m_includePaths() {
+							   m_includePaths(),
+							   m_pCrcSalt( 0 ) {
 	}
 
 	Parameters::Impl::~Impl() {
@@ -98,6 +104,8 @@ namespace turnup {
 				m_definitions.emplace_back( p, p + ::strlen( p ) );
 			} else if( !::strncmp( p, "-I", 2 ) ) {
 				m_includePaths.emplace_back( p + 2, p + ::strlen( p ) );
+			} else if( !::strncmp( p, "--salt=", 7 ) ) {
+				m_pCrcSalt = p + 7;
 			} else {
 				break;
 			}
@@ -144,6 +152,9 @@ namespace turnup {
 			return nullptr;
 		else
 			return &(m_includePaths[0]) + m_includePaths.size();
+	}
+	const char* Parameters::Impl::GetCrcSalt() const {
+		return m_pCrcSalt;
 	}
 
 } // namespace turnup

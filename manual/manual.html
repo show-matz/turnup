@@ -120,6 +120,7 @@
 <li class='tocx'><a href='#8a3vnTcmVrk'>7.5 コメントの出力</a></li>
 <li class='tocx'><a href='#gSChjoBbaKA'>7.6 MathJax 利用の明示的宣言</a></li>
 <li class='tocx'><a href='#5xO3F2FIOq7'>7.7 脚注のプレフィクス設定</a></li>
+<li class='tocx'><a href='#4eavleCRdA9'>7.8 ハッシュ値生成に対する salt 指定</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -1346,6 +1347,12 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
   &lt;!-- config:footnote-prefix  JP  '訳注 ' --&gt;
 </pre>
 <p>タグ <code>JP</code> を使う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>（つまり <code>{{fn(JP):...}}</code> という形式）で表示されるリンクが <code>訳注 1</code> といった文字列になります。この <a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定は複数のタグに対して指定することができます。</p>
+<h3><a name='4eavleCRdA9'></a>7.8 ハッシュ値生成に対する salt 指定</h3>
+<p>　turnup では、主にページ内リンクのための<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>にハッシュ値を生成して使用しています。起動パラメータ --salt を使用することにより、このハッシュ値生成にソルトを指定することができます。以下の要領で、 <code>--salt=</code> に続けて任意の文字列を指定してください。</p>
+<pre>
+ turnup  --salt=VWXYZ  input.md  &gt; output.html
+</pre>
+<p>　turnup におけるハッシュ値生成は<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>の生成だけが目的のため、ここで指定するソルトはセキュリティとは何の関係もありません。このオプションは、「その出力ファイルがどのソルト指定によって作成されたかを識別するため」に使用することを想定しています。</p>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
@@ -2149,6 +2156,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a class='autolink' href='#hJJbL4GzVpQ'>config:entity-numbering-depth</a> に off を指定可能とする機能追加</li>
 </ul>
 </li>
+<li><strong>2023/08/17 - version 0.836</strong>
+<ul>
+<li>ENHANCE : 起動パラメータに <a class='autolink' href='#4eavleCRdA9'>--salt オプション</a> を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2156,7 +2168,9 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <details class='idx_x' open>
 <summary class='idx_x'>Symbols</summary>
 <blockquote class='idx_x'>
+<li class='idx_x'><a class='autolink' href='#4eavleCRdA9'>--salt オプション</a></li>
 <li class='idx_x'><a class='autolink' href='#kW5fA3S8XIj'>-D オプション</a></li>
+<li class='idx_x'><a class='autolink' href='#7dx1C8sPEB4'>-I オプション</a></li>
 <li class='idx_x'><a class='autolink' href='#hoa6vrntxKM'>_MATH</a></li>
 </blockquote>
 </details>
