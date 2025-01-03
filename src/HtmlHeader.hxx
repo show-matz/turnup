@@ -13,27 +13,27 @@
 
 namespace turnup {
 
-	class Config;
+    class Config;
 
-	//--------------------------------------------------------------------------
-	//
-	// class HtmlHeader
-	//
-	//--------------------------------------------------------------------------
-	class HtmlHeader {
-	public:
-		HtmlHeader();
-		HtmlHeader( const HtmlHeader& ) = delete;
-		~HtmlHeader();
-		HtmlHeader& operator=( const HtmlHeader& ) = delete;
-	public:
-		void SetTitle( const TextSpan& title );
-		void SetStyleSheet( const TextSpan& styleSheet );
-		std::ostream& WriteTo( std::ostream& os, const Config& cfg ) const;
-	private:
-		TextSpan m_title;
-		TextSpan m_styleSheet;
-	};
+    //--------------------------------------------------------------------------
+    //
+    // class HtmlHeader
+    //
+    //--------------------------------------------------------------------------
+    class HtmlHeader {
+    public:
+        HtmlHeader();
+        HtmlHeader( const HtmlHeader& ) = delete;
+        ~HtmlHeader();
+        HtmlHeader& operator=( const HtmlHeader& ) = delete;
+    public:
+        void SetTitle( const TextSpan& title );
+        void SetStyleSheet( const TextSpan& styleSheet );
+        std::ostream& WriteTo( std::ostream& os, const Config& cfg ) const;
+    private:
+        TextSpan m_title;
+        TextSpan m_styleSheet;
+    };
 
 } // namespace turnup
 

@@ -8,29 +8,29 @@
 
 namespace turnup {
 
-	class TextSpan;
+    class TextSpan;
 
-	//--------------------------------------------------------------------------
-	//
-	// class TextMaker
-	//
-	//--------------------------------------------------------------------------
-	class TextMaker {
-		friend TextMaker& operator<<( TextMaker& tm, const char* p );
-		friend TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
-	public:
-		class Param;
-	public:
-		TextMaker();
-		~TextMaker();
-	public:
-		TextSpan GetSpan() const;
-	private:
-		Param* m_pLast;
-	};
+    //--------------------------------------------------------------------------
+    //
+    // class TextMaker
+    //
+    //--------------------------------------------------------------------------
+    class TextMaker {
+        friend TextMaker& operator<<( TextMaker& tm, const char* p );
+        friend TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
+    public:
+        class Param;
+    public:
+        TextMaker();
+        ~TextMaker();
+    public:
+        TextSpan GetSpan() const;
+    private:
+        Param* m_pLast;
+    };
 
-	TextMaker& operator<<( TextMaker& tm, const char* p );
-	TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
+    TextMaker& operator<<( TextMaker& tm, const char* p );
+    TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
 
 
 } // namespace turnup

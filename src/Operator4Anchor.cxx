@@ -14,25 +14,25 @@
 
 namespace turnup {
 
-	const TextSpan* Operator4Anchor( const TextSpan* pTop,
-									 const TextSpan* pEnd, DocumentInfo& docInfo ) {
-		(void)pEnd;
+    const TextSpan* Operator4Anchor( const TextSpan* pTop,
+                                     const TextSpan* pEnd, DocumentInfo& docInfo ) {
+        (void)pEnd;
 
-		TextSpan line = pTop->Trim();
-		TextSpan title;
-		if( line.IsMatch( "<!-- anchor:", title, " -->" ) == false )
-			return pTop;
+        TextSpan line = pTop->Trim();
+        TextSpan title;
+        if( line.IsMatch( "<!-- anchor:", title, " -->" ) == false )
+            return pTop;
 
-		title = title.Trim();
-		auto& toc    = docInfo.Get<ToC>();
-		const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, title.Top(), title.End() );
-		if( pTag )
-			std::cout << "<a name='" << pTag << "'></a>" << std::endl;
-		else {
-			//ToDo : error message...
-		}
-		return pTop + 1;
-	}
+        title = title.Trim();
+        auto& toc    = docInfo.Get<ToC>();
+        const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, title.Top(), title.End() );
+        if( pTag )
+            std::cout << "<a name='" << pTag << "'></a>" << std::endl;
+        else {
+            //ToDo : error message...
+        }
+        return pTop + 1;
+    }
 
 } // namespace turnup
 

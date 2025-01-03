@@ -10,8 +10,8 @@
 
 namespace turnup {
 
-	bool InternalFilter4Table( std::ostream& os, DocumentInfo& docInfo,
-							   const TextSpan* pTop, const TextSpan* pEnd );
+    bool InternalFilter4Table( std::ostream& os, DocumentInfo& docInfo,
+                               const TextSpan* pTop, const TextSpan* pEnd );
 
 } // namespace turnup
 

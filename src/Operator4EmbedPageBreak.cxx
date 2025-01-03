@@ -12,16 +12,16 @@
 
 namespace turnup {
 
-	const TextSpan* Operator4EmbedPageBreak( const TextSpan* pTop,
-											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
-		(void)pEnd;
-		(void)docInfo;
-		// 対象外の行であれば無視
-		if( pTop->Trim().IsEqual( "<!-- embed:pagebreak -->" ) == false )
-			return pTop;
-		std::cout << "<p class='pagebreak'></p>" << std::endl;	//MEMO : ignore StyleStack
-		return pTop + 1;
-	}
+    const TextSpan* Operator4EmbedPageBreak( const TextSpan* pTop,
+                                             const TextSpan* pEnd, DocumentInfo& docInfo ) {
+        (void)pEnd;
+        (void)docInfo;
+        // 対象外の行であれば無視
+        if( pTop->Trim().IsEqual( "<!-- embed:pagebreak -->" ) == false )
+            return pTop;
+        std::cout << "<p class='pagebreak'></p>" << std::endl;    //MEMO : ignore StyleStack
+        return pTop + 1;
+    }
 
 } // namespace turnup
 

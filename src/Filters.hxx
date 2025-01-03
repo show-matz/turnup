@@ -10,28 +10,28 @@
 
 namespace turnup {
 
-	class DocumentInfo;
-	class TextSpan;
+    class DocumentInfo;
+    class TextSpan;
 
-	//--------------------------------------------------------------------------
-	//
-	// class Filters
-	//
-	//--------------------------------------------------------------------------
-	class Filters {
-	public:
-		Filters();
-		~Filters();
-	public:
-		void RegistExternal( const TextSpan& label, const TextSpan& command );
-		bool ExecuteFilter( std::ostream& os,
-							DocumentInfo& docInfo,
-							const TextSpan& type,
-							const TextSpan* pTop, const TextSpan* pEnd );
-	private:
-		class Impl;
-		Impl* m_pImpl;
-	};
+    //--------------------------------------------------------------------------
+    //
+    // class Filters
+    //
+    //--------------------------------------------------------------------------
+    class Filters {
+    public:
+        Filters();
+        ~Filters();
+    public:
+        void RegistExternal( const TextSpan& label, const TextSpan& command );
+        bool ExecuteFilter( std::ostream& os,
+                            DocumentInfo& docInfo,
+                            const TextSpan& type,
+                            const TextSpan* pTop, const TextSpan* pEnd );
+    private:
+        class Impl;
+        Impl* m_pImpl;
+    };
 
 } // namespace turnup
 

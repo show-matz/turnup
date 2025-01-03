@@ -11,15 +11,15 @@
 
 namespace turnup {
 
-	//--------------------------------------------------------------------------
-	//
-	// class Snippet
-	//
-	//--------------------------------------------------------------------------
-	class Snippet {
-	public:
-		static void Expand( std::vector<TextSpan>& lines );
-	};
+    //--------------------------------------------------------------------------
+    //
+    // class Snippet
+    //
+    //--------------------------------------------------------------------------
+    class Snippet {
+    public:
+        static void Expand( std::vector<TextSpan>& lines );
+    };
 
 
 } // namespace turnup

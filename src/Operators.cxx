@@ -35,68 +35,68 @@
 
 namespace turnup {
 
-	//--------------------------------------------------------------------------
-	//
-	// implementation of class Operators
-	//
-	//--------------------------------------------------------------------------
-	static OperatorType* const s_operators[] = {
-		Operator4EmptyLine,
-		Operator4Header,
-		Operator4RawHTML,
-		Operator4List,
-		Operator4PreBlock,
-		Operator4Table,
-		Operator4Quote,
-		Operator4Image,
-		Operator4TermDefine,
-		Operator4FigureAndTable,
-		Operator4Anchor,
-		Operator4Details,
-		Operator4EmbedTOC_X,
-		Operator4EmbedTOC,
-		Operator4EmbedSubTOC,
-		Operator4EmbedTableList,
-		Operator4EmbedFigureList,
-		Operator4EmbedIndex_X,
-		Operator4EmbedIndex,
-		Operator4EmbedFootnotes,
-		Operator4EmbedPageBreak,
-		Operator4StyleStack,
-		Operator4StylePalette,
-		Operator4MathJaxLine,
-		Operator4Error,
-		Operator4Comment,
-		Operator4HorizontalLine,
-		Operator4Paragraph
-	};
+    //--------------------------------------------------------------------------
+    //
+    // implementation of class Operators
+    //
+    //--------------------------------------------------------------------------
+    static OperatorType* const s_operators[] = {
+        Operator4EmptyLine,
+        Operator4Header,
+        Operator4RawHTML,
+        Operator4List,
+        Operator4PreBlock,
+        Operator4Table,
+        Operator4Quote,
+        Operator4Image,
+        Operator4TermDefine,
+        Operator4FigureAndTable,
+        Operator4Anchor,
+        Operator4Details,
+        Operator4EmbedTOC_X,
+        Operator4EmbedTOC,
+        Operator4EmbedSubTOC,
+        Operator4EmbedTableList,
+        Operator4EmbedFigureList,
+        Operator4EmbedIndex_X,
+        Operator4EmbedIndex,
+        Operator4EmbedFootnotes,
+        Operator4EmbedPageBreak,
+        Operator4StyleStack,
+        Operator4StylePalette,
+        Operator4MathJaxLine,
+        Operator4Error,
+        Operator4Comment,
+        Operator4HorizontalLine,
+        Operator4Paragraph
+    };
    
-	//--------------------------------------------------------------------------
-	//
-	// implementation of class Operators
-	//
-	//--------------------------------------------------------------------------
-	Operators::Operators() {
-	}
+    //--------------------------------------------------------------------------
+    //
+    // implementation of class Operators
+    //
+    //--------------------------------------------------------------------------
+    Operators::Operators() {
+    }
 
-	Operators::~Operators() {
-	}
+    Operators::~Operators() {
+    }
 
-	const TextSpan* Operators::OperateLines( const TextSpan* pTop,
-											 const TextSpan* pEnd, DocumentInfo& docInfo ) {
-		for( uint32_t i = 0; i < count_of(s_operators); ++i ) {
-			const TextSpan* pRet = s_operators[i]( pTop, pEnd, docInfo );
-			if( !pRet || pTop < pRet )	// null means 'abort by error'
-				return pRet;
-		}
-		//ToDo : implement... output error message ?
-		return pEnd;
-	}
+    const TextSpan* Operators::OperateLines( const TextSpan* pTop,
+                                             const TextSpan* pEnd, DocumentInfo& docInfo ) {
+        for( uint32_t i = 0; i < count_of(s_operators); ++i ) {
+            const TextSpan* pRet = s_operators[i]( pTop, pEnd, docInfo );
+            if( !pRet || pTop < pRet )    // null means 'abort by error'
+                return pRet;
+        }
+        //ToDo : implement... output error message ?
+        return pEnd;
+    }
 
-	//--------------------------------------------------------------------------
-	//
-	// local functions
-	//
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    // local functions
+    //
+    //--------------------------------------------------------------------------
 
 } // namespace turnup

@@ -8,13 +8,13 @@
 
 namespace turnup {
 
-	class TextSpan;
-	class DocumentInfo;
+    class TextSpan;
+    class DocumentInfo;
 
-	const TextSpan* Operator4EmbedIndex( const TextSpan* pTop,
-										 const TextSpan* pEnd, DocumentInfo& docInfo );
-	const TextSpan* Operator4EmbedIndex_X( const TextSpan* pTop,
-										   const TextSpan* pEnd, DocumentInfo& docInfo );
+    const TextSpan* Operator4EmbedIndex( const TextSpan* pTop,
+                                         const TextSpan* pEnd, DocumentInfo& docInfo );
+    const TextSpan* Operator4EmbedIndex_X( const TextSpan* pTop,
+                                           const TextSpan* pEnd, DocumentInfo& docInfo );
 
 } // namespace turnup
 

@@ -8,11 +8,11 @@
 
 namespace turnup {
 
-	class TextSpan;
-	class DocumentInfo;
+    class TextSpan;
+    class DocumentInfo;
 
-	const TextSpan* Operator4StylePalette( const TextSpan* pTop,
-										   const TextSpan* pEnd, DocumentInfo& docInfo );
+    const TextSpan* Operator4StylePalette( const TextSpan* pTop,
+                                           const TextSpan* pEnd, DocumentInfo& docInfo );
 
 } // namespace turnup
 

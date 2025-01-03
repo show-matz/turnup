@@ -10,17 +10,17 @@
 
 namespace turnup {
 
-	//--------------------------------------------------------------------------
-	//
-	// class utility CRC64
-	//
-	//--------------------------------------------------------------------------
-	class CRC64 {
-	public:
-		static void RegisterSalt( const char* pSalt );
-		static uint64_t Calc( char type, const char* pTop,
-							  const char* pEnd, char* pTagBuf = nullptr );
-	};
+    //--------------------------------------------------------------------------
+    //
+    // class utility CRC64
+    //
+    //--------------------------------------------------------------------------
+    class CRC64 {
+    public:
+        static void RegisterSalt( const char* pSalt );
+        static uint64_t Calc( char type, const char* pTop,
+                              const char* pEnd, char* pTagBuf = nullptr );
+    };
 
 } // namespace turnup
 

@@ -11,29 +11,29 @@
 
 namespace turnup {
 
-	bool InternalFilter4Diff( std::ostream& os, DocumentInfo& docInfo,
-							  const TextSpan* pTop, const TextSpan* pEnd ) {
-		(void)docInfo;
-		os << "<pre class='diff'>" << std::endl;
-		for( ; pTop < pEnd; ++pTop ) {
-			if( pTop->BeginWith( "---" ) || pTop->BeginWith( "+++" ) ) {
-				os << "<span class='diff_head'>";
-				pTop->WriteSimple( os ) << "</span>" << std::endl;
-			} else if( pTop->BeginWith( "@@" )  ) {
-				os << "<span class='diff_line'>";
-				pTop->WriteSimple( os ) << "</span>" << std::endl;
-			} else if( pTop->BeginWith( "-" ) ) {
-				os << "<span class='diff_del'>";
-				pTop->WriteSimple( os ) << "</span>" << std::endl;
-			} else if( pTop->BeginWith( "+" ) ) {
-				os << "<span class='diff_add'>";
-				pTop->WriteSimple( os ) << "</span>" << std::endl;
-			} else {
-				pTop->WriteSimple( os ) << std::endl;
-			}
-		}
-		os << "</pre>" << std::endl;
-		return true;
-	}
+    bool InternalFilter4Diff( std::ostream& os, DocumentInfo& docInfo,
+                              const TextSpan* pTop, const TextSpan* pEnd ) {
+        (void)docInfo;
+        os << "<pre class='diff'>" << std::endl;
+        for( ; pTop < pEnd; ++pTop ) {
+            if( pTop->BeginWith( "---" ) || pTop->BeginWith( "+++" ) ) {
+                os << "<span class='diff_head'>";
+                pTop->WriteSimple( os ) << "</span>" << std::endl;
+            } else if( pTop->BeginWith( "@@" )  ) {
+                os << "<span class='diff_line'>";
+                pTop->WriteSimple( os ) << "</span>" << std::endl;
+            } else if( pTop->BeginWith( "-" ) ) {
+                os << "<span class='diff_del'>";
+                pTop->WriteSimple( os ) << "</span>" << std::endl;
+            } else if( pTop->BeginWith( "+" ) ) {
+                os << "<span class='diff_add'>";
+                pTop->WriteSimple( os ) << "</span>" << std::endl;
+            } else {
+                pTop->WriteSimple( os ) << std::endl;
+            }
+        }
+        os << "</pre>" << std::endl;
+        return true;
+    }
 
 } // namespace turnup

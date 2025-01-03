@@ -8,13 +8,13 @@
 
 namespace turnup {
 
-	class TextSpan;
-	class DocumentInfo;
+    class TextSpan;
+    class DocumentInfo;
 
-	bool IsTermDefine( const TextSpan& line,
-					   const char*& pTop, const char*& pEnd );
-	const TextSpan* Operator4TermDefine( const TextSpan* pTop,
-										 const TextSpan* pEnd, DocumentInfo& docInfo );
+    bool IsTermDefine( const TextSpan& line,
+                       const char*& pTop, const char*& pEnd );
+    const TextSpan* Operator4TermDefine( const TextSpan* pTop,
+                                         const TextSpan* pEnd, DocumentInfo& docInfo );
 
 } // namespace turnup
 
