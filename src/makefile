@@ -181,6 +181,8 @@ clean-imp:
 	rm -f $(TARGETDIR)/$(TARGET)$(TARGET_SUFFIX)
 	rm -f *~
 
-
+# for flymake
+check-syntax:
+	$(COMPILE.cc) -std=c++11 -Wall -Wextra -pedantic $(OPTINC) $(EXT_INCS) -fsyntax-only $(CHK_SOURCES)
 
 # DO NOT DELETE
