@@ -1,10 +1,10 @@
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta http-equiv="Content-Style-Type" content="text/css">
-	<title>turnup readme</title>
-	<link rel=stylesheet href="./default.css">
-	<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>turnup readme</title>
+    <link rel=stylesheet href="./default.css">
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head>
 <body>
 <div class='toc_button_top'><a href='#0qJQvVjc3Xy'>
@@ -177,7 +177,7 @@
 </dl>
 <dl>
 <dt><a name='8sf6EgPf8j8'></a>空白類文字</dt>
-<dd>スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。</dd>
+<dd>スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。また、version 0.837 からはゼロ幅スペース（Unicode の U+200B）も<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>の判定に含まれるようになりました。</dd>
 </dl>
 <h2><a name='h1vILBov6aJ'></a>4 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
@@ -369,10 +369,10 @@ int main( void ) {
 <h3><a name='g6xjP526KX7'></a>5.5 テーブル</h3>
 <p>　以下のような記述で<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を作成できます。この場合、１行目は常にヘッダ行（th タグ）であり、２行目以降がデータ行（td タグ）になります。</p>
 <pre>
-| header A | header B | header C |	
-|     0    |     1    |    2     |	
-|     3    |     4    |    5     |	
-|     6    |     7    |    8     |	
+| header A | header B | header C |
+|     0    |     1    |    2     |
+|     3    |     4    |    5     |
+|     6    |     7    |    8     |
 </pre>
 <p>　上記は、以下のようになります。この場合、各列のデータはすべて左寄せになります。</p>
 <table align='center'>
@@ -383,11 +383,11 @@ int main( void ) {
 </table>
 <p>　列毎に中央揃え、右寄せなどのアライメント指定を指定をしたい場合には、２行目に :---: や ---: を記述します。</p>
 <pre>
-| header A | header B | header C |	
-| :------- | :------: | -------: |	
-|     0    |     1    |    2     |	
-|     3    |     4    |    5     |	
-|     6    |     7    |    8     |	
+| header A | header B | header C |
+| :------- | :------: | -------: |
+|     0    |     1    |    2     |
+|     3    |     4    |    5     |
+|     6    |     7    |    8     |
 </pre>
 <p>　上記は、以下のように出力されます（表はデフォルトでセンタリングされます）。</p>
 <table align='center'>
@@ -399,12 +399,12 @@ int main( void ) {
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、<strong>「自動的な折り返しを禁止」</strong> することができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。</p>
 <p>　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に渡るヘッダ行を記述することができます。以下のように。</p>
 <pre>
-|     A    |     B    |    C     |	
-|   Alpha  |   Bravo  |  Charlie |	
-| :------- | :------: | -------: |	
-|     0    |     1    |    2     |	
-|     3    |     4    |    5     |	
-|     6    |     7    |    8     |	
+|     A    |     B    |    C     |
+|   Alpha  |   Bravo  |  Charlie |
+| :------- | :------: | -------: |
+|     0    |     1    |    2     |
+|     3    |     4    |    5     |
+|     6    |     7    |    8     |
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
@@ -416,12 +416,12 @@ int main( void ) {
 </table>
 <p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup>。以下に例を示します。</p>
 <pre>
-|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |	
+|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |
 |   Alpha  |   Bravo  |
-| :------- | :------: | -------: |	
-|     0    |     1    |    2     |	
-|     3    |     4    |    5     |	
-|     6    |     7    |    8     |	
+| :------- | :------: | -------: |
+|     0    |     1    |    2     |
+|     3    |     4    |    5     |
+|     6    |     7    |    8     |
 </pre>
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
@@ -1286,16 +1286,16 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
 <p>　この挙動を変えたい場合、以下の行を文書内に記載してください。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列内でも自動リンクが行なわれるようになります。</p>
 <pre>
-  &lt;!-- config:term-link-in-header --&gt;			
+  &lt;!-- config:term-link-in-header --&gt;
 </pre>
 <h3><a name='2M8QFQ2XeBn'></a>7.2 見出しの自動ナンバリング</h3>
 <p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号付けを行なうことができます。この機能を有効化するには、以下の設定を文書内に記載します。</p>
 <pre>
-  &lt;!-- config:header-numbering --&gt;			
+  &lt;!-- config:header-numbering --&gt;
 </pre>
 <p>　これにより、1.1.1. 形式で<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号が付与されます<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup>。この番号を付与する<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のレベルを限定したい場合、以下のように記載します。この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４の合計３レベルで採番されます。この場合、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル1、および 5 以降には番号付けは適用されません。</p>
 <pre>
-  &lt;!-- config:header-numbering 2 4 --&gt;			
+  &lt;!-- config:header-numbering 2 4 --&gt;
 </pre>
 <h3><a name='hJJbL4GzVpQ'></a>7.3 図表のナンバリング単位</h3>
 <p>　<a href='#gg7i7uPfLlo'>図表タイトル</a>、および<a href='#iVFblGs7lu7'>図表一覧生成</a>に適用される番号付けの規則を設定することができます。これには、以下のように記述します。この設定を省略した場合のデフォルト値は 0 です。</p>
@@ -1305,7 +1305,7 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <p>　0 が指定された場合、図と表それぞれについて、文書全体を通して 1 から始まる連番が付与されます。つまり、図であれば Figure.1 xxxxx、Figure.2 yyyyy といった要領です（表の場合は Table.1 zzzzz）となります。</p>
 <p>　1 以上を指定した場合、「<a href='#2M8QFQ2XeBn'>7.2  見出しの自動ナンバリング</a>」で指定した番号付け対象の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
 <pre>
-  &lt;!-- config:header-numbering 2 4 --&gt;			
+  &lt;!-- config:header-numbering 2 4 --&gt;
   &lt;!-- config:entity-numbering-depth 2 --&gt;
 </pre>
 <p>まず、ナンバリングをする<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はレベル 2,3,4 です。そして、図表については<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
@@ -1313,7 +1313,7 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <h3><a name='jkzhEyZU0ts'></a>7.4 スタイルシートの埋め込み</h3>
 <p>　<a href='#kyMp8IkRK8n'>スタイルシートの指定</a>は、デフォルトではスタイルシートの参照が出力されるだけですが、以下の設定が文書内に記述されていると、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> の内部にスタイルシートの内容を埋め込むようになります。</p>
 <pre>
-  &lt;!-- config:embed-stylesheet --&gt;			
+  &lt;!-- config:embed-stylesheet --&gt;
 </pre>
 <p>　これによって、以下のように埋め込みが行なわれます。</p>
 <pre>
@@ -1334,12 +1334,12 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
 <p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>をそのまま出力するようになります。<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup></p>
 <pre>
-  &lt;!-- config:write-comment --&gt;			
+  &lt;!-- config:write-comment --&gt;
 </pre>
 <h3><a name='gSChjoBbaKA'></a>7.6 MathJax 利用の明示的宣言</h3>
 <p>　turnup は基本的に MathJax の利用を自動的に検出して必要な <code>&lt;script&gt;</code> タグを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入しますが、これがうまく動作しない場合があります<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup>。そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。</p>
 <pre>
-  &lt;!-- config:use-mathjax --&gt;			
+  &lt;!-- config:use-mathjax --&gt;
 </pre>
 <h3><a name='5xO3F2FIOq7'></a>7.7 脚注のプレフィクス設定</h3>
 <p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>で使用されるリンクは通常 1 から始まる連番で表示されますが、<a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定を使用することによってリンクに任意のプレフィクスを表示させることができます。たとえば以下のようにすることで、</p>
@@ -2159,6 +2159,12 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li><strong>2023/08/17 - version 0.836</strong>
 <ul>
 <li>ENHANCE : 起動パラメータに <a class='autolink' href='#4eavleCRdA9'>--salt オプション</a> を追加</li>
+</ul>
+</li>
+<li><strong>2025/11/19 - version 0.837</strong>
+<ul>
+<li>ENHANCE : ゼロ幅スペース（Unicode の U+200B）も<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>の判定に含まれるように変更</li>
+<li>BUGFIX : 内部フィルタでのコードハイライトにおける望ましくない挙動を改善</li>
 </ul>
 </li>
 </ul>

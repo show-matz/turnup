@@ -49,7 +49,10 @@ ${BLANK_PARAGRAPH}
 
 *[HTML]: Hyper text markup language の略語です。
 
-*[空白類文字]: スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。
+*[空白類文字]: スペース文字、タブ文字を意味します。いわゆる全角スペース文字も含みます。また、
+version 0.837 からはゼロ幅スペース（Unicode の U+200B）も空白類文字の判定に含まれるように
+なりました。
+
 
 ## 使い方
 
@@ -2501,6 +2504,9 @@ ${BLANK_PARAGRAPH}
     * ENHANCE : config:entity-numbering-depth に off を指定可能とする機能追加
 * __2023/08/17 - version 0.836__
     * ENHANCE : 起動パラメータに --salt オプション を追加
+* __2025/11/19 - version 0.837__
+    * ENHANCE : ゼロ幅スペース（Unicode の U+200B）も空白類文字の判定に含まれるように変更
+    * BUGFIX : 内部フィルタでのコードハイライトにおける望ましくない挙動を改善
 
 
 ${BLANK_PARAGRAPH}

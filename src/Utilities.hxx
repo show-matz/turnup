@@ -19,7 +19,9 @@ namespace turnup {
         if( *p == 0x20 || *p == 0x09 || !*p )
             return true;
         auto q = reinterpret_cast<const uint8_t*>( p );
-        if( q[0] == 0xE3 && q[1] == 0x80 && q[2] == 0x80 )
+        if( q[0] == 0xE3 && q[1] == 0x80 && q[2] == 0x80 )    // full-width space
+            return true;
+        if( q[0] == 0xE2 && q[1] == 0x80 && q[2] == 0x8B )    // no-width space
             return true;
         return false;
     }
@@ -27,7 +29,9 @@ namespace turnup {
         if( *p == 0x20 || *p == 0x09 || !*p )
             return true;
         auto q = reinterpret_cast<const uint8_t*>( p );
-        if( q[-2] == 0xE3 && q[-1] == 0x80 && q[0] == 0x80 )
+        if( q[-2] == 0xE3 && q[-1] == 0x80 && q[0] == 0x80 )    // full-width space
+            return true;
+        if( q[-2] == 0xE2 && q[-1] == 0x80 && q[0] == 0x8B )    // no-width space
             return true;
         return false;
     }

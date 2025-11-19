@@ -19,9 +19,12 @@ namespace turnup {
                               TextSpan& result, const char*& className );
 
     struct RangeFinderUnit {
+	public:
         RangeFinder* finder;
         const char*  target;
         const char*  className;
+	public:
+        inline bool IsEmpty() const { return !this->finder; }
     };
 
     //--------------------------------------------------------------------------
@@ -32,10 +35,9 @@ namespace turnup {
     class InternalFilter {
     public:
         static InternalFilterFunc* FindFilter( const TextSpan& type );
-        static void ExecRecursive( std::ostream& os,
-                                   const TextSpan& span,
-                                   const RangeFinderUnit* pUnit );
-
+        static void Execute( std::ostream& os,
+                             const TextSpan& span,
+                             const RangeFinderUnit* pUnit );
     };
 
 } // namespace turnup

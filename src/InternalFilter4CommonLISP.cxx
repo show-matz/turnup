@@ -135,7 +135,7 @@ namespace turnup {
         FilterBuffer buf{ pTop, pEnd };
         TextSpan span = buf.GetBuffer();
         os << "<pre class='code'>" << std::endl;
-        InternalFilter::ExecRecursive( os, span, s_units4CL + 0 );
+        InternalFilter::Execute( os, span, s_units4CL + 0 );
         os << "</pre>" << std::endl;
         return true;
 
@@ -150,7 +150,6 @@ namespace turnup {
                                     TextSpan& result, const char*& className ) {
         (void)className;
         //MEMO : #| ... |# 形式のコメント
-        //MEMO : 文字列中の |# とかを回避するのは現状では諦めてる．．．
         pTarget = "#|";
         auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
         if( p1 == span.End() )
@@ -256,49 +255,65 @@ namespace turnup {
     static bool GensymFinder( const TextSpan& span, const char* pTarget,
                               TextSpan& result, const char*& className ) {
         (void)className;
-        // #:gensym 形式のキーワードシンボルを探すためにまずは "#:" を検索
         pTarget = "#:";
-        auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
-        if( p1 == span.End() )
-            return false;
+        auto pTop = span.Top();
+        auto pEnd = span.End();
+        while( pTop < pEnd ) {
+            // #:gensym 形式のキーワードシンボルを探すためにまずは "#:" を検索
+            auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
+            if( p1 == span.End() )
+                return false;    // 見つからなければ false で終了
 
-        // その手前にシンボル構成文字があれば対象外
-        if( span.Top() < p1 && !!::strchr( SYMBOL_CHAR, p1[-1] ) )
-            return false;
-        // その直後にシンボル構成文字がなければ対象外
-        if( p1 == span.End() || !::strchr( SYMBOL_CHAR, p1[2] ) )
-            return false;
-
-        auto p2 = std::find_if( p1 + 2, span.End(),
-                                []( char c ) -> bool {
-                                    return !::strchr( SYMBOL_CHAR, c ); } );
-        result.Top() = p1;
-        result.End() = p2;
-        return true;
+            // その手前にシンボル構成文字があればそれより後ろを探す
+            if( span.Top() < p1 && !!::strchr( SYMBOL_CHAR, p1[-1] ) ) {
+                pTop = p1 + 1;
+                continue;
+            }
+            // その直後にシンボル構成文字がなければそれより後ろを探す
+            if( p1 == span.End() || !::strchr( SYMBOL_CHAR, p1[2] ) ) {
+                pTop = p1 + 1;
+                continue;
+            }
+            auto p2 = std::find_if( p1 + 2, span.End(),
+                                    []( char c ) -> bool {
+                                        return !::strchr( SYMBOL_CHAR, c ); } );
+            result.Top() = p1;
+            result.End() = p2;
+            return true;
+        }
+        return false;    // 見つからなければ false で終了
     }
 
     static bool KeywordSymbolFinder( const TextSpan& span, const char* pTarget,
                                      TextSpan& result, const char*& className ) {
         (void)pTarget;
         (void)className;
-        // :keyword 形式のキーワードシンボルを探すためにまずは ':' を検索
-        auto p1 = std::find( span.Top(), span.End(), ':' );
-        if( p1 == span.End() )
-            return false;
+        auto pTop = span.Top();
+        auto pEnd = span.End();
+        while( pTop < pEnd ) {
+            // :keyword 形式のキーワードシンボルを探すためにまずは ':' を検索
+            auto p1 = std::find( pTop, pEnd, ':' );
+            if( p1 == span.End() )
+                return false;    // 見つからなければ false で終了
 
-        // その手前にシンボル構成文字があれば対象外
-        if( span.Top() < p1 && !!::strchr( SYMBOL_CHAR, p1[-1] ) )
-            return false;
-        // その直後にシンボル構成文字がなければ対象外
-        if( p1 == span.End() || !::strchr( SYMBOL_CHAR, p1[1] ) )
-            return false;
-
-        auto p2 = std::find_if( p1 + 1, span.End(),
-                                []( char c ) -> bool {
-                                    return !::strchr( SYMBOL_CHAR, c ); } );
-        result.Top() = p1;
-        result.End() = p2;
-        return true;
+            // その手前にシンボル構成文字があればそれより後ろを探す
+            if( span.Top() < p1 && !!::strchr( SYMBOL_CHAR, p1[-1] ) ) {
+                pTop = p1 + 1;
+                continue;
+            }
+            // その直後にシンボル構成文字がなければそれより後ろを探す
+            if( p1 == span.End() || !::strchr( SYMBOL_CHAR, p1[1] ) ) {
+                pTop = p1 + 1;
+                continue;
+            }
+            auto p2 = std::find_if( p1 + 1, span.End(),
+                                    []( char c ) -> bool {
+                                        return !::strchr( SYMBOL_CHAR, c ); } );
+            result.Top() = p1;
+            result.End() = p2;
+            return true;
+        }
+        return false;    // 見つからなければ false で終了
     }
 
     static bool KeywordFinder( const TextSpan& span, const char* pTarget,

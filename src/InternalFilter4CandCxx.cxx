@@ -248,7 +248,7 @@ namespace turnup {
         FilterBuffer buf{ pTop, pEnd };
         TextSpan span = buf.GetBuffer();
         os << "<pre class='code'>" << std::endl;
-        InternalFilter::ExecRecursive( os, span, s_units4C + 0 );
+        InternalFilter::Execute( os, span, s_units4C + 0 );
         os << "</pre>" << std::endl;
         return true;
 
@@ -260,7 +260,7 @@ namespace turnup {
         FilterBuffer buf{ pTop, pEnd };
         TextSpan span = buf.GetBuffer();
         os << "<pre class='code'>" << std::endl;
-        InternalFilter::ExecRecursive( os, span, s_units4Cxx + 0 );
+        InternalFilter::Execute( os, span, s_units4Cxx + 0 );
         os << "</pre>" << std::endl;
         return true;
 
@@ -274,7 +274,6 @@ namespace turnup {
     static bool RangeCommentFinder( const TextSpan& span, const char* pTarget,
                                     TextSpan& result, const char*& className ) {
         (void)className;
-        //MEMO : 文字列中の /* とかを回避するのは現状では諦めてる．．．
         pTarget = "/*";
         auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
         if( p1 == span.End() )
@@ -291,7 +290,6 @@ namespace turnup {
     static bool LineCommentFinder( const TextSpan& span, const char* pTarget,
                                    TextSpan& result, const char*& className ) {
         (void)className;
-        //MEMO : 文字列中の // とかを回避するのは現状では諦めてる．．．
         pTarget = "//";
         auto p1 = std::search( span.Top(), span.End(), pTarget, pTarget + 2 );
         if( p1 == span.End() )
