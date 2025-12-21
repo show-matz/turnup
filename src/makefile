@@ -1,4 +1,4 @@
-# make MAJOR_VER=0 MINOR_VER=837 DRAFT_LV=0 clean release-build
+# make MAJOR_VER=0 MINOR_VER=838 DRAFT_LV=0 clean release-build
 
 DEFINES = 
 
@@ -75,6 +75,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/DocumentInfo.o				\
 		$(TARGETDIR)/PreProcessor.o				\
 		$(TARGETDIR)/InternalFilter.o			\
+		$(TARGETDIR)/InternalFilter4Default.o	\
 		$(TARGETDIR)/InternalFilter4Diff.o		\
 		$(TARGETDIR)/InternalFilter4CandCxx.o	\
 		$(TARGETDIR)/InternalFilter4CommonLISP.o	\

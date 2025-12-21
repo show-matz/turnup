@@ -26,6 +26,7 @@ namespace turnup {
     public:
         bool GetTargetFile( TextSpan& ref ) const;
         bool VersionMode() const;    // --version
+        bool SafeMode() const;       // --safe
         uint32_t DefinitionCount() const;
         bool Definition( uint32_t idx, TextSpan& ref ) const;
         const TextSpan* IncludePathTop() const;
@@ -37,6 +38,7 @@ namespace turnup {
     public:
         TextSpan     m_inputFile;
         bool         m_versionMode;
+        bool         m_safeMode;
         Definitions  m_definitions;
         IncludePaths m_includePaths;
         const char*  m_pCrcSalt;
@@ -61,6 +63,9 @@ namespace turnup {
     bool Parameters::VersionMode() const {
         return m_pImpl->VersionMode();
     }
+    bool Parameters::SafeMode() const {
+        return m_pImpl->SafeMode();
+    }
     uint32_t Parameters::DefinitionCount() const {
         return m_pImpl->DefinitionCount();
     }
@@ -84,6 +89,7 @@ namespace turnup {
     //--------------------------------------------------------------------------
     Parameters::Impl::Impl() : m_inputFile(),
                                m_versionMode( false ),
+                               m_safeMode( false ),
                                m_definitions(),
                                m_includePaths(),
                                m_pCrcSalt( 0 ) {
@@ -100,6 +106,8 @@ namespace turnup {
             const char* p = argv[i];
             if( !::strcmp( p, "--version" ) ) {
                 m_versionMode = true;
+            } else if( !::strcmp( p, "--safe" ) ) {
+                m_safeMode = true;
             } else if( !::strncmp( p, "-D", 2 ) ) {
                 m_definitions.emplace_back( p, p + ::strlen( p ) );
             } else if( !::strncmp( p, "-I", 2 ) ) {
@@ -128,6 +136,10 @@ namespace turnup {
 
     bool Parameters::Impl::VersionMode() const {
         return m_versionMode;
+    }
+
+    bool Parameters::Impl::SafeMode() const {
+        return m_safeMode;
     }
 
     uint32_t Parameters::Impl::DefinitionCount() const {

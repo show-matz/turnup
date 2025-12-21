@@ -9,6 +9,7 @@
 #include "StyleStack.hxx"
 #include "TextSpan.hxx"
 #include "InternalFilter.hxx"
+#include "InternalFilter4Default.hxx"
 
 //-------------------
 #include "CRC64.hxx"
@@ -25,9 +26,6 @@
 
 namespace turnup {
 
-    static void DefaultFilter( std::ostream& os, 
-                               const DocumentInfo& docInfo,
-                               const TextSpan* pTop, const TextSpan* pEnd );
     static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
                                const TextSpan* pTop, const TextSpan* pEnd );
 
@@ -93,7 +91,7 @@ namespace turnup {
                                        const TextSpan* pTop, const TextSpan* pEnd ) {
         // type 指定がなければデフォルトの <pre> 出力で終了
         if( type.IsEmpty() ) {
-            DefaultFilter( os, docInfo, pTop, pEnd );
+            InternalFilter4Default( os, docInfo, pTop, pEnd );
             return true;
         }
         /* 外部フィルタを優先して検索 */ {
@@ -113,7 +111,7 @@ namespace turnup {
             }
         }
         // 指定された名前のフィルタが見つからない場合はデフォルトの <pre> 出力で false 復帰
-        DefaultFilter( os, docInfo, pTop, pEnd );
+        InternalFilter4Default( os, docInfo, pTop, pEnd );
         return false;
     }
 
@@ -122,17 +120,6 @@ namespace turnup {
     // local functions
     //
     //--------------------------------------------------------------------------
-    static void DefaultFilter( std::ostream& os,
-                               const DocumentInfo& docInfo,
-                               const TextSpan* pTop, const TextSpan* pEnd ) {
-        auto& styles = docInfo.Get<StyleStack>();
-        styles.WriteOpenTag( std::cout, "pre" ) << std::endl;
-        for( ; pTop < pEnd; ++pTop ) {
-            pTop->WriteSimple( os ) << std::endl;
-        }
-        os << "</pre>" << std::endl;
-    }
-
     static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
                                const TextSpan* pTop, const TextSpan* pEnd ) {
         char inFile[16];

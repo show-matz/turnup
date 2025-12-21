@@ -77,6 +77,18 @@ namespace turnup {
     static void OperateStyles( std::ostream& os, const TextSpan& whole,
                                const char* pTop, const char* pEnd,
                                DocumentInfo& docInfo, bool bTermLink );
+    // @_H_RAWHTML_ 形式を処理する（ _ は no-width space）
+    static const char* FindRawHtmlPattern( const char* pTop, const char* pEnd, 
+                                           const char*& endPos, const TextSpan& whole );
+    static void OperateRawHtml( std::ostream& os, const TextSpan& whole,
+                                const char* pTop, const char* pEnd,
+                                DocumentInfo& docInfo, bool bTermLink );
+    // @_R_STRING_RUBY_ 形式を処理する（ _ は no-width space）
+    static const char* FindRubyPattern( const char* pTop, const char* pEnd, 
+                                        const char*& endPos, const TextSpan& whole );
+    static void OperateRuby( std::ostream& os, const TextSpan& whole,
+                             const char* pTop, const char* pEnd,
+                             DocumentInfo& docInfo, bool bTermLink );
     // [label](URL) 形式のリンクを処理する
     static const char* FindLinkPattern( const char* pTop, const char* pEnd, 
                                         const char*& endPos, const TextSpan& whole );
@@ -192,6 +204,8 @@ namespace turnup {
         { FindMarkPattern,       OperateMark },         // ==mark==
         { FindStylesPattern1,    OperateStyles },       // @{{styles}{contents}}
         { FindStylesPattern2,    OperateStyles },       // @((styles)(contents))
+        { FindRawHtmlPattern,    OperateRawHtml },      // @_H_rawhtml_     ( _ is no-width space)
+        { FindRubyPattern,       OperateRuby },         // @_R_string_ruby_ ( _ is no-width space)
         { FindAnchorPattern1,    OperateAnchor },       // #((anchor))
         { FindAnchorPattern2,    OperateAnchor },       // #{{anchor}}
         { FindLinkPattern,       OperateLink },         // [label](url)
@@ -619,6 +633,70 @@ namespace turnup {
         os << "'>";
         os.write( delim + 2, (pEnd - 2) - (delim + 2) );
         os << "</span>";
+    }
+
+    // @_H_RAWHTML_ 形式を処理する（ _ は no-width space）
+    static const char* FindRawHtmlPattern( const char* pTop, const char* pEnd, 
+                                           const char*& endPos, const TextSpan& whole ) {
+        (void)whole;
+        const char* pPattern = "@​H​​";    // @[-]H[-][-] ( [-] is no-width space )
+        const char* p1 = std::search( pTop, pEnd, pPattern, pPattern + 8 );
+        if( p1 == pEnd )
+            return pEnd;
+        const char* p2 = std::search( p1 + 8, pEnd, pPattern + 8, pPattern + 11 );
+        if( p2 == pEnd )
+            return pEnd;
+        endPos = p2 + 3;
+        return p1;
+    }
+    static void OperateRawHtml( std::ostream& os, const TextSpan& whole,
+                                const char* pTop, const char* pEnd,
+                                DocumentInfo& docInfo, bool bTermLink ) {
+        (void)whole;
+        (void)docInfo;
+        (void)bTermLink;
+        assert( pTop[0] == '@' && pTop[4] == 'H' );
+        if( docInfo.IsSafeMode() == false )
+            os.write( pTop + 8, (pEnd - 3) - (pTop + 8) );
+        else {
+            TextSpan::WriteWithEscape( os, pTop + 8, pEnd - 3 );
+            // safe-mode で _HTML マクロ関数が使用されたので警告を出しておく
+            std::cerr << "WARNING : _HTML macro is used in safe-mode." << std::endl;
+        }
+    }
+
+    // @_R_STRING_RUBY_ 形式を処理する（ _ は no-width space）
+    static const char* FindRubyPattern( const char* pTop, const char* pEnd, 
+                                        const char*& endPos, const TextSpan& whole ) {
+        (void)whole;
+        const char* pPattern = "@​R​​​";    // @[-]R[-][-][-] ( [-] is no-width space )
+        const char* p1 = std::search( pTop, pEnd, pPattern, pPattern + 8 );
+        if( p1 == pEnd )
+            return pEnd;
+        const char* p2 = std::search( p1 + 8, pEnd, pPattern + 8, pPattern + 11 );
+        if( p2 == pEnd )
+            return pEnd;
+        const char* p3 = std::search( p2 + 3, pEnd, pPattern + 11, pPattern + 14 );
+        if( p3 == pEnd )
+            return pEnd;
+        endPos = p3 + 3;
+        return p1;
+    }
+    static void OperateRuby( std::ostream& os, const TextSpan& whole,
+                             const char* pTop, const char* pEnd,
+                             DocumentInfo& docInfo, bool bTermLink ) {
+        (void)whole;
+        (void)docInfo;
+        (void)bTermLink;
+        assert( pTop[0] == '@' && pTop[4] == 'R' );
+        const char* target = "​";    // no-width space
+        const char* delim = std::search( pTop + 8, pEnd, target, target + 3 );
+        assert( delim < pEnd );
+        os << "<ruby>";
+        os.write( pTop + 8, delim - (pTop + 8) );
+        os << "<rt>";
+        os.write( delim + 3, (pEnd - 3) - (delim + 3) );
+        os << "</rt></ruby>";
     }
 
     // [label](URL) 形式のリンクを処理する

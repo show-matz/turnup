@@ -135,6 +135,8 @@ namespace turnup {
     //
     //--------------------------------------------------------------------------
     PreProcessorImpl::PreProcessorImpl() : m_variables() {
+        this->RegisterVariable( TextSpan{"_HTML"}, TextSpan{"@​H​%1​"} );
+        this->RegisterVariable( TextSpan{"_RUBY"}, TextSpan{"@​R​%1​%2​"} );
     }
 
     PreProcessorImpl::~PreProcessorImpl() {
