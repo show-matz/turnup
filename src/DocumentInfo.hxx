@@ -16,6 +16,7 @@ namespace turnup {
     class Filters;
     class StyleStack;
     class StylePalette;
+    class ImageModeStack;
 
     //--------------------------------------------------------------------------
     //

@@ -26,6 +26,7 @@
 #include "Operator4RawHTML.hxx"
 #include "Operator4StylePalette.hxx"
 #include "Operator4StyleStack.hxx"
+#include "Operator4ImageModeStack.hxx"
 #include "Operator4Table.hxx"
 #include "Operator4TermDefine.hxx"
 #include "Utilities.hxx"
@@ -64,6 +65,7 @@ namespace turnup {
         Operator4EmbedPageBreak,
         Operator4StyleStack,
         Operator4StylePalette,
+        Operator4ImageModeStack,
         Operator4MathJaxLine,
         Operator4Error,
         Operator4Comment,

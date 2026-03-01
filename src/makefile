@@ -1,4 +1,4 @@
-# make MAJOR_VER=0 MINOR_VER=838 DRAFT_LV=0 clean release-build
+# make MAJOR_VER=0 MINOR_VER=839 DRAFT_LV=0 clean release-build
 
 DEFINES = 
 
@@ -58,6 +58,7 @@ OBJS =
 .SUFFIXES: .cxx .o .hxx .h
 
 OBJS +=	$(TARGETDIR)/CRC64.o					\
+		$(TARGETDIR)/Base64.o					\
 		$(TARGETDIR)/File.o						\
 		$(TARGETDIR)/Filters.o					\
 		$(TARGETDIR)/FilterBuffer.o				\
@@ -105,12 +106,14 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4RawHTML.o			\
 		$(TARGETDIR)/Operator4StylePalette.o	\
 		$(TARGETDIR)/Operator4StyleStack.o		\
+		$(TARGETDIR)/Operator4ImageModeStack.o	\
 		$(TARGETDIR)/Operator4Table.o			\
 		$(TARGETDIR)/Operator4TermDefine.o		\
 		$(TARGETDIR)/LineType.o					\
 		$(TARGETDIR)/SimpleFormula.o			\
 		$(TARGETDIR)/StyleStack.o				\
 		$(TARGETDIR)/StylePalette.o				\
+		$(TARGETDIR)/ImageModeStack.o			\
 		$(TARGETDIR)/Utilities.o				\
 		$(TARGETDIR)/Parameters.o				\
 		$(TARGETDIR)/main.o						\

@@ -13,6 +13,7 @@
 #include "Filters.hxx"
 #include "StyleStack.hxx"
 #include "StylePalette.hxx"
+#include "ImageModeStack.hxx"
 
 namespace turnup {
 
@@ -31,6 +32,7 @@ namespace turnup {
         Filters         m_filters;
         StyleStack      m_styles;
         StylePalette    m_palette;
+        ImageModeStack  m_imageMode;
         const char*     m_pHeaderTag;
     };
 
@@ -64,6 +66,7 @@ namespace turnup {
     template <> Filters&      DocumentInfo::Get<Filters>()      { return m_pImpl->m_filters;   }
     template <> StyleStack&   DocumentInfo::Get<StyleStack>()   { return m_pImpl->m_styles;    }
     template <> StylePalette& DocumentInfo::Get<StylePalette>() { return m_pImpl->m_palette;   }
+    template <> ImageModeStack& DocumentInfo::Get<ImageModeStack>() { return m_pImpl->m_imageMode;   }
 
     template <> const HtmlHeader&   DocumentInfo::Get<HtmlHeader>() const   { return m_pImpl->m_htmHeader; }
     template <> const Config&       DocumentInfo::Get<Config>() const       { return m_pImpl->m_config;    }
@@ -73,5 +76,6 @@ namespace turnup {
     template <> const Filters&      DocumentInfo::Get<Filters>() const      { return m_pImpl->m_filters;   }
     template <> const StyleStack&   DocumentInfo::Get<StyleStack>() const   { return m_pImpl->m_styles;    }
     template <> const StylePalette& DocumentInfo::Get<StylePalette>() const { return m_pImpl->m_palette;   }
+    template <> const ImageModeStack& DocumentInfo::Get<ImageModeStack>() const { return m_pImpl->m_imageMode;   }
 
 } // namespace turnup

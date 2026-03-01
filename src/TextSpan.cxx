@@ -7,11 +7,14 @@
 
 #include "DocumentInfo.hxx"
 #include "StyleStack.hxx"
+#include "ImageModeStack.hxx"
 #include "Config.hxx"
 #include "ToC.hxx"
 #include "Footnotes.hxx"
 #include "Glossary.hxx"
 #include "Utilities.hxx"
+#include "Base64.hxx"
+#include "File.hxx"
 
 #include <assert.h>
 #include <string.h>
@@ -458,12 +461,14 @@ namespace turnup {
             const char* p    = nullptr;
             switch( *pTop ) {
             case 0x22:    /* double-quote */
+                // fall through.
             case 0x27:    /* single-quote */
                 p = std::find( pTop + 1, pEnd, *pTop );
                 if( p < pEnd ) {
                     callback( TextSpan{ pTop + 1, p }, pOpaque );
                     data.Chomp( p - pTop + 1, 0 );
                 } else {
+                // fall through.
             default:
                     callback( data.CutNextToken(), pOpaque );
                 }
@@ -923,8 +928,22 @@ namespace turnup {
             assert( false );
         }
         auto& styles = docInfo.Get<StyleStack>();
+        auto& mode   = docInfo.Get<ImageModeStack>();
+        if( mode.GetCurrentMode() == ImageMode::EMBED ) {
+            if( File::IsExist( url ) == false ) {
+                //ファイルの実在チェックをする - NG なら終了
+                std::cerr << "ERROR : file " << url << " is not exist." << std::endl;
+                return;
+            }
+        }
         styles.WriteOpenTag( os, "img", nullptr, " src='" );
-        os.write( url.Top(), url.ByteLength() );
+        if( mode.GetCurrentMode() == ImageMode::LINK ) {
+            os.write( url.Top(), url.ByteLength() );
+        } else {
+            os << "data:" << Base64::GetMimeType( url ) << ";base64,";
+            Base64::EncodeFile( os, url );
+            //ToDo : implement...  <img src='data:image/png;base64,iVBORw0K...U5ErkJggg==' />
+        }
         os << "' ";
         if( alt.IsEmpty() == false ) {
             os << "alt='";
