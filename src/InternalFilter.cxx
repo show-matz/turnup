@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 #include "InternalFilter.hxx"
 
+#include "InternalFilter4Attach.hxx"
 #include "InternalFilter4CandCxx.hxx"
 #include "InternalFilter4CommonLISP.hxx"
 #include "InternalFilter4Diff.hxx"
@@ -93,6 +94,7 @@ namespace turnup {
         if( type.IsEqual( "sh" ) )      return InternalFilter4Shell;
         if( type.IsEqual( "lisp" ) )    return InternalFilter4CommonLISP;
         if( type.IsEqual( "math" ) )    return InternalFilter4MathJax;
+        if( type.IsEqual( "attach" ) )  return InternalFilter4Attach;
         return nullptr;
     }
 

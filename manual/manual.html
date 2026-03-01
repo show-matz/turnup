@@ -111,6 +111,7 @@
 <li class='tocx'><a href='#30aeVqd2ldu'>6.30.2 LaTeX 書式を用いた数式の生成</a></li>
 </blockquote>
 </details>
+<li class='tocx'><a href='#cvixMbJNIbN'>6.31 ファイルの埋め込み</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -861,6 +862,7 @@ index 16fc9f4..8387187 100644
 <li><a class='autolink' href='#izIXv5I5ark'>raw</a> （これは<a href='#izIXv5I5ark'>生の HTML を出力</a>するためのものです）</li>
 <li><a class='autolink' href='#fJ4r3VpDmqg'>table</a> （これは<a href='#fJ4r3VpDmqg'>テーブルの作成を支援</a>するためのものです）</li>
 <li><a class='autolink' href='#6WcPLlKTZbF'>math</a> （これは<a href='#30aeVqd2ldu'>LaTeX 書式を用いた数式を生成</a>するためのものです）</li>
+<li><a class='autolink' href='#cvixMbJNIbN'>attach</a> （これは<a class='autolink' href='#cvixMbJNIbN'>ファイルの埋め込み</a>を実現するためのものです）</li>
 </ul>
 <p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.18  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.18 外部フィルタの登録</h3>
@@ -1327,6 +1329,16 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 \[
 \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
 \]
+<h3><a name='cvixMbJNIbN'></a>6.31 ファイルの埋め込み</h3>
+<p>　<a class='autolink' href='#cvixMbJNIbN'>attach</a> フィルタを使用することで、ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> 内部に埋め込み、ダウンロードリンクとして提示することができます。以下の要領で記述指定ください。</p>
+<pre>
+~~~attach
+foo.zip
+bar.data
+quux.png
+~~~
+</pre>
+<p>　指定されたファイルは base64 エンコーディングされ、上記の記述をした場所にダウンロードリンクのリストとして提示されます。当然ですが、turnup が動作する時点で該当ファイルにアクセスできなければなりません。</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='0EKpSe2qrxR'></a>7.1 見出しにおける自動リンク</h3>
 <p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
@@ -2230,6 +2242,11 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li>ENHANCE : <a href='#jj2RDRZoMS1'>画像のリンクと埋め込みを切換える拡張機能</a>を追加</li>
 </ul>
 </li>
+<li><strong>2026/03/02 - version 0.840</strong>
+<ul>
+<li>ENHANCE : <a href='#cvixMbJNIbN'>添付ファイルを埋め込む拡張機能</a>を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2250,6 +2267,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <summary class='idx_x'>A</summary>
 <blockquote class='idx_x'>
 <li class='idx_x'><a class='autolink' href='#4e8Wf4oSDqx'>anchor</a></li>
+<li class='idx_x'><a class='autolink' href='#cvixMbJNIbN'>attach</a></li>
 <li class='idx_x'><a class='autolink' href='#8mg4uLSAXaz'>autolink</a></li>
 </blockquote>
 </details>
@@ -2395,6 +2413,7 @@ cat ./$​{CACHE}/$​{OUT}.dat   &gt;&gt; ./$​{OUT}
 <li class='idx_x'><a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a></li>
 <li class='idx_x'><a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a></li>
 <li class='idx_x'><a class='autolink' href='#g6xjP526KX7'>テーブル</a></li>
+<li class='idx_x'><a class='autolink' href='#cvixMbJNIbN'>ファイルの埋め込み</a></li>
 <li class='idx_x'><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></li>
 <li class='idx_x'><a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a></li>
 <li class='idx_x'><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a></li>
