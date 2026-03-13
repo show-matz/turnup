@@ -30,6 +30,8 @@ namespace turnup {
                                              const char* pEnd, uint32_t& index );
     static TextSpan GetNextVariableRef( const char* pTop, const char* pEnd );
     static bool IsTrailDollerExist( const char* pTop, const char* pEnd );
+    static bool IsExpandVarPush( const TextSpan* pLine, bool& bEnable );
+    static bool IsExpandVarPop( const TextSpan* pLine );
     static bool IsDefineLine( const TextSpan* pLine, TextSpan& name, TextSpan& value );
     static TextSpan GetLinkTarget( const TextSpan& value );
     static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression );
@@ -100,8 +102,13 @@ namespace turnup {
         TextSpan ExpandVariablesImpl( const char* pTop, const char* pEnd, TextSpan posRef );
         bool SplitExpressionForm( TextSpan (&expr)[4], uint32_t& length );
     private:
+        bool VariableExpandMode() const;
+        void PushVariableExpandMode( bool bEnable );
+        void PopVariableExpandMode();
+    private:
         typedef std::pair<TextSpan, TextSpan> Variable;
         std::vector<Variable>         m_variables;
+        std::vector<uint32_t>         m_varExpandStack;
         mutable std::vector<TextSpan> m_sequence;    // temporary buffer
     private:
         static bool CompareVariable( const Variable& v1, const Variable& v2 );
@@ -134,7 +141,8 @@ namespace turnup {
     // implemenation of class PreProcessorImpl
     //
     //--------------------------------------------------------------------------
-    PreProcessorImpl::PreProcessorImpl() : m_variables() {
+    PreProcessorImpl::PreProcessorImpl() : m_variables(),
+                                           m_varExpandStack() {
         this->RegisterVariable( TextSpan{"_HTML"}, TextSpan{"@​H​%1​"} );
         this->RegisterVariable( TextSpan{"_RUBY"}, TextSpan{"@​R​%1​%2​"} );
     }
@@ -146,8 +154,20 @@ namespace turnup {
     bool PreProcessorImpl::Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) {
         //与えられた行シーケンスを反復して処理
         for( TextSpan* pLine = pLineTop; pLine < pLineEnd; ++pLine ) {
-            //行内に存在する変数参照を展開
-            this->ExpandVariables( *pLine );
+            //変数展開が有効なら、行内に存在する変数参照を展開
+            if( this->VariableExpandMode() == true )
+                this->ExpandVariables( *pLine );
+            //変数展開制御指示行の場合
+            {
+                bool tmp = false;
+                if( IsExpandVarPush( pLine, tmp ) == true ) {
+                    this->PushVariableExpandMode( tmp );
+                    continue;
+                } else if( IsExpandVarPop( pLine ) == true ) {
+                    this->PopVariableExpandMode();
+                    continue;
+                }
+            }
             //define 行の場合、変数を登録／更新
             TextSpan name, value;
             if( IsDefineLine( pLine, name, value ) ) {
@@ -353,6 +373,21 @@ namespace turnup {
         return std::lexicographical_compare( name1.Top(), name1.End(), name2.Top(), name2.End() );
     }
 
+    bool PreProcessorImpl::VariableExpandMode() const {
+        if( m_varExpandStack.empty() )
+            return true;
+        return m_varExpandStack.back() == 1;
+    }
+
+    void PreProcessorImpl::PushVariableExpandMode( bool bEnable ) {
+        m_varExpandStack.push_back( bEnable ? 1 : 0 );
+    }
+
+    void PreProcessorImpl::PopVariableExpandMode() {
+        if( m_varExpandStack.empty() == false )
+            m_varExpandStack.pop_back();
+    }
+
     //--------------------------------------------------------------------------
     //
     // local functions
@@ -435,6 +470,27 @@ namespace turnup {
 
     static bool IsTrailDollerExist( const char* pTop, const char* pEnd ) {
         return (pTop < pEnd) && (*pTop == '$') && !IsVariableRefOpener( pTop[1] );
+    }
+
+    static bool IsExpandVarPush( const TextSpan* pLine, bool& bEnable ) {
+        TextSpan line = pLine->Trim();
+        TextSpan tmp;
+        if( line.IsMatch( "<!-- expand-variable:push", tmp, " -->" ) == false )
+            return false;
+        tmp = tmp.Trim();
+        if( tmp.IsEqual( "enable" ) ) {
+            bEnable = true;
+            return true;
+        } else if( tmp.IsEqual( "disable" ) ) {
+            bEnable = false;
+            return true;
+        }
+        return false;
+    }
+
+    static bool IsExpandVarPop( const TextSpan* pLine ) {
+        TextSpan line = pLine->Trim();
+        return line.IsEqual( "<!-- expand-variable:pop -->" );
     }
 
     // <!-- define: VAR_NAME = value --> 形式の行かを判定する
