@@ -1,4 +1,4 @@
-# make MAJOR_VER=0 MINOR_VER=841 DRAFT_LV=0 clean release-build
+# make MAJOR_VER=0 MINOR_VER=842 DRAFT_LV=0 clean release-build
 
 DEFINES = 
 

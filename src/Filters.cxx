@@ -124,7 +124,7 @@ namespace turnup {
                                const TextSpan* pTop, const TextSpan* pEnd ) {
         char inFile[16];
         char outFile[16];
-        CRC64::Calc( 'X', pTop->Top(), pEnd->Top(), inFile ); // X means 'something other else'.
+        CRC64::Calc( 'X', pTop->Top(), pEnd[-1].End(), inFile ); // X means 'something other else'.
         ::strcpy( outFile, inFile );
         ::strcat( inFile,  ".in" );
         ::strcat( outFile, ".out" );
