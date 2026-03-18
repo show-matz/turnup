@@ -27,6 +27,8 @@
 
 namespace turnup {
 
+    static uint64_t CalcRangeCRC( const TextSpan* pTop,
+                                  const TextSpan* pEnd, char* pTagBuf );
     static bool ExecExtFilter( std::ostream& os,
                                const TextSpan& type, const TextSpan& cmd,
                                const TextSpan* pTop, const TextSpan* pEnd );
@@ -135,12 +137,39 @@ namespace turnup {
     // local functions
     //
     //--------------------------------------------------------------------------
+    static uint64_t CalcRangeCRC( const TextSpan* pTop,
+                                  const TextSpan* pEnd, char* pTagBuf ) {
+        // [ pTop->Top(), pEnd->Top() ) が include でつぎはぎされた領域の場合、メモリ上で
+        // 連続している保証がない。そのため、ある程度頑張ってあげる必要がある。
+        struct Data {
+            const TextSpan* pTS1;
+            const TextSpan* pTS2;
+            const char*     pCur;
+        } data{ pTop, pEnd, pTop->Top() };
+        auto callback = []( void* pOpaque ) -> const uint8_t* {
+            Data* p = reinterpret_cast<Data*>( pOpaque );
+            if( p->pTS1 == p->pTS2 )
+                return nullptr;
+            while( true ) {
+                if( p->pCur < p->pTS1->End() )
+                    break;
+                p->pTS1 += 1;
+                if( p->pTS1 == p->pTS2 )
+                    return nullptr;
+                p->pCur = p->pTS1->Top();
+            }
+            auto pRet = reinterpret_cast<const uint8_t*>( p->pCur );
+            p->pCur += 1;
+            return pRet;
+        };
+        return CRC64::Calc( 'X', callback, &data, pTagBuf ); // X means 'something other else'.
+    }    
     static bool ExecExtFilter( std::ostream& os,
                                const TextSpan& type, const TextSpan& cmd,
                                const TextSpan* pTop, const TextSpan* pEnd ) {
         char inFile[16];
         char outFile[16];
-        CRC64::Calc( 'X', pTop->Top(), pEnd[-1].End(), inFile ); // X means 'something other else'.
+        CalcRangeCRC( pTop, pEnd, inFile );
         ::strcpy( outFile, inFile );
         ::strcat( inFile,  ".in" );
         ::strcat( outFile, ".out" );

@@ -2669,10 +2669,9 @@ ${BLANK_PARAGRAPH}
     * ENHANCE : [変数展開の制御スタック](#変数展開の制御)を追加
 * __2026/03/17 - version 0.842__
     * BUGFIX : 外部フィルタ適用対象ブロックの内容を include で注入した場合に発生するバグを修正
-* __2026/03/?? - version 0.843__
+* __2026/03/18 - version 0.843__
+    * BUGFIX : version 0.842 でカバーしきれないレアケースに対処
     * ENHANCE : デフォルトフィルタ機能を追加
-
-
 
 
 ${BLANK_PARAGRAPH}

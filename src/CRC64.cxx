@@ -27,9 +27,8 @@ namespace turnup {
     }
 
     uint64_t CRC64::Calc( char type,
-                          const char* pTop, const char* pEnd, char* pTagBuf ) {
-
-        uint32_t length = ( pEnd ? pEnd - pTop : ::strlen( pTop ) );
+                          const uint8_t* (*next)(void*),
+                          void* pOpaque, char* pTagBuf ) {
 
         auto CRC64 = []( uint64_t a, uint64_t b ) -> uint64_t {
             uint64_t prev = ( a >> 8 ) & 0x00FFFFFFFFFFFFFFULL;
@@ -38,18 +37,39 @@ namespace turnup {
         };
         InitializeCRC64Table( );
 
-        const uint8_t* pBuf = reinterpret_cast<const uint8_t*>( pTop );
         uint64_t crc = 0xFFFFFFFFFFFFFFFFULL;
         if( s_pCrcSalt ) {
             for( uint64_t i = 0; i < s_crcSaltLength; ++i )
                 crc = CRC64( crc, s_pCrcSalt[i] );
         }
         crc = CRC64( crc, type );
-        for( uint64_t x = 0; x < length; ++x )
-            crc = CRC64( crc, pBuf[x] );
+        
+        const uint8_t* p = next( pOpaque );
+        while( !!p ) {
+            crc = CRC64( crc, *p );
+            p = next( pOpaque );
+        }
         if( !!pTagBuf )
             GenerateTag( crc, pTagBuf );
         return crc;
+    }
+
+    uint64_t CRC64::Calc( char type,
+                          const char* pTop, const char* pEnd, char* pTagBuf ) {
+        struct Data {
+            const char* p1;
+            const char* p2;
+        } data{ pTop, pEnd };
+        auto callback = []( void* pOpaque ) -> const uint8_t* {
+            Data* p = reinterpret_cast<Data*>( pOpaque );
+            const uint8_t* pRet = nullptr;
+            if( p->p1 < p->p2 ) {
+                pRet = reinterpret_cast<const uint8_t*>( p->p1 );
+                p->p1 += 1;
+            }
+            return pRet;
+        };
+        return Calc( type, callback, &data, pTagBuf );
     }
 
 
