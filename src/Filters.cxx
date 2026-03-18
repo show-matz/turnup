@@ -8,6 +8,7 @@
 #include "DocumentInfo.hxx"
 #include "StyleStack.hxx"
 #include "TextSpan.hxx"
+#include "TextMaker.hxx"
 #include "InternalFilter.hxx"
 #include "InternalFilter4Default.hxx"
 
@@ -26,7 +27,8 @@
 
 namespace turnup {
 
-    static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
+    static bool ExecExtFilter( std::ostream& os,
+                               const TextSpan& type, const TextSpan& cmd,
                                const TextSpan* pTop, const TextSpan* pEnd );
 
     //--------------------------------------------------------------------------
@@ -43,12 +45,14 @@ namespace turnup {
         ~Impl();
     public:
         void RegistExternal( const TextSpan& label, const TextSpan& command );
+        void RegistDefault( const TextSpan& command );
         bool ExecuteFilter( std::ostream& os, 
                             DocumentInfo& docInfo,
                             const TextSpan& type,
                             const TextSpan* pTop, const TextSpan* pEnd );
     private:
         ExtFilterList m_externals;
+        TextSpan      m_defaultFilter;
     };
 
 
@@ -65,6 +69,9 @@ namespace turnup {
     void Filters::RegistExternal( const TextSpan& label, const TextSpan& command ) {
         return m_pImpl->RegistExternal( label, command );
     }
+    void Filters::RegistDefault( const TextSpan& command ) {
+        return m_pImpl->RegistDefault( command );
+    }
     bool Filters::ExecuteFilter( std::ostream& os,
                                  DocumentInfo& docInfo,
                                  const TextSpan& type,
@@ -77,10 +84,14 @@ namespace turnup {
     // implementation of class Filters::Impl
     //
     //--------------------------------------------------------------------------
-    Filters::Impl::Impl() : m_externals( {} ) {
+    Filters::Impl::Impl() : m_externals( {} ),
+                            m_defaultFilter() {
     }
     Filters::Impl::~Impl() {
         m_externals.clear();
+    }
+    void Filters::Impl::RegistDefault( const TextSpan& command ) {
+        m_defaultFilter = command;
     }
     void Filters::Impl::RegistExternal( const TextSpan& label, const TextSpan& command ) {
         m_externals.emplace_back( label, command );
@@ -101,7 +112,7 @@ namespace turnup {
                                      } );
             // 該当する外部フィルタが見つかれば実行して終了
             if( itr != m_externals.end() )
-                return ExecExtFilter( os, itr->second, pTop, pEnd );
+                return ExecExtFilter( os, type, itr->second, pTop, pEnd );
         }
         /* 該当する外部フィルタがなければ次に内部フィルタを検索 */ {
             auto pFilter = InternalFilter::FindFilter( type );
@@ -110,7 +121,11 @@ namespace turnup {
                 return pFilter( os, docInfo, pTop, pEnd );
             }
         }
-        // 指定された名前のフィルタが見つからない場合はデフォルトの <pre> 出力で false 復帰
+        // デフォルトフィルタの指定があればそれを実行
+        if( m_defaultFilter.IsEmpty() == false )
+            return ExecExtFilter( os, type, m_defaultFilter, pTop, pEnd );
+
+        // 上記以外の場合、デフォルトの <pre> 出力で false 復帰
         InternalFilter4Default( os, docInfo, pTop, pEnd );
         return false;
     }
@@ -120,7 +135,8 @@ namespace turnup {
     // local functions
     //
     //--------------------------------------------------------------------------
-    static bool ExecExtFilter( std::ostream& os, const TextSpan& command,
+    static bool ExecExtFilter( std::ostream& os,
+                               const TextSpan& type, const TextSpan& cmd,
                                const TextSpan* pTop, const TextSpan* pEnd ) {
         char inFile[16];
         char outFile[16];
@@ -133,41 +149,34 @@ namespace turnup {
             ofs.write( pTop->Top(), pTop->End() - pTop->Top() );
             ofs << std::endl;
         }
-        const char* pCmdTop = command.Top();
-        const char* pCmdEnd = command.End();
-        const char* inTag  = "%in";
-        const char* outTag = "%out";
-        const char* pIn  = std::search( pCmdTop, pCmdEnd,  inTag,  inTag + 3 );
-        const char* pOut = std::search( pCmdTop, pCmdEnd, outTag, outTag + 4 );
-        if( pIn == pCmdEnd || pOut == pCmdEnd )
-            return false;
+        const char* pCmdTop = cmd.Top();
+        const char* pCmdEnd = cmd.End();
 
-        char cmdBuf[1024];
-        char* pBuf = cmdBuf;
-        if( pIn < pOut ) {
-            pBuf = std::copy( pCmdTop, pIn, pBuf );
-            ::strcpy( pBuf, inFile );
-            pBuf   += ::strlen( pBuf );
-            pCmdTop = pIn + 3;
-            pBuf = std::copy( pCmdTop, pOut, pBuf );
-            ::strcpy( pBuf, outFile );
-            pBuf   += ::strlen( pBuf );
-            pCmdTop = pOut + 4;
-            pBuf = std::copy( pCmdTop, pCmdEnd, pBuf );
-            *pBuf = 0;
-        } else {
-            pBuf = std::copy( pCmdTop, pOut, pBuf );
-            ::strcpy( pBuf, outFile );
-            pBuf   += ::strlen( pBuf );
-            pCmdTop = pOut + 4;
-            pBuf = std::copy( pCmdTop, pIn, pBuf );
-            ::strcpy( pBuf, inFile );
-            pBuf   += ::strlen( pBuf );
-            pCmdTop = pIn + 3;
-            pBuf = std::copy( pCmdTop, pCmdEnd, pBuf );
-            *pBuf = 0;
+        TextMaker tm{};
+        while( pCmdTop < pCmdEnd ) {
+            const char* p = std::find( pCmdTop, pCmdEnd, '%' );
+            if( p == pCmdEnd ) {
+                tm << TextSpan{ pCmdTop, pCmdEnd };
+                pCmdTop = pCmdEnd;
+            } else {
+                if( pCmdTop < p )
+                    tm << TextSpan{ pCmdTop, p };
+                if( !::strncmp( p, "%in", 3 ) ) {
+                    tm << inFile;
+                    pCmdTop = p + 3;
+                } else if( !::strncmp( p, "%out", 4 ) ) {
+                    tm << outFile;
+                    pCmdTop = p + 4;
+                } else if( !::strncmp( p, "%type", 5 ) ) {
+                    tm << type;
+                    pCmdTop = p + 5;
+                } else {
+                    tm << TextSpan{ p, p+1 };
+                    pCmdTop += 1;
+                }
+            }
         }
-        ::system( cmdBuf );
+        ::system( tm.GetSpan().Top() );
 
         WholeFile* pSVG = File::LoadWhole( outFile );
         os << pSVG->GetBuffer<char>() << std::endl;

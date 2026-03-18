@@ -24,6 +24,7 @@ namespace turnup {
         ~Filters();
     public:
         void RegistExternal( const TextSpan& label, const TextSpan& command );
+        void RegistDefault( const TextSpan& command );
         bool ExecuteFilter( std::ostream& os,
                             DocumentInfo& docInfo,
                             const TextSpan& type,

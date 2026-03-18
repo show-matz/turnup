@@ -1137,7 +1137,7 @@ index 16fc9f4..8387187 100644
 <pre>
   &lt;!-- filter:foo = quux %in %out --&gt;
 </pre>
-<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。%in と %out は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnup が都度決定します。</p>
+<p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。 <code>%in</code> と <code>%out</code> は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnup が都度決定します。この他にフィルタ名（上記では <code>foo</code> ）に展開されるプレースホルダとして <code>%type</code> も利用できます。</p>
 <p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された <a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を見つけた場合に、以下の要領で処理を行ないます。</p>
 <ul>
 <li>pre ブロックの中身を一時ファイルに保存する</li>
@@ -1150,6 +1150,10 @@ index 16fc9f4..8387187 100644
 <li>%out に指定した一時ファイルの内容を読み込み、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>のフィルタ結果として出力する</li>
 </ul>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>が優先されます。</p>
+<p> 　version 0.843 以降では、<a class='autolink' href='#18dTPnzNOgg'>デフォルトフィルタ</a>を定義することができるようになりました。これは、従来の<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>にも内部フィルタにも該当しなかった場合に実行されるフィルタを定義するものです。以下の要領で記述します。</p>
+<pre>
+  &lt;!-- filter-default:foobar.sh %type %in %out --&gt;
+</pre>
 <h3><a name='fJ4r3VpDmqg'></a>6.19 テーブルの生成</h3>
 <p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの <a class='autolink' href='#fJ4r3VpDmqg'>table</a> が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
 <pre>
@@ -2524,6 +2528,11 @@ cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
 <li>BUGFIX : <a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>適用対象ブロックの内容を include で注入した場合に発生するバグを修正</li>
 </ul>
 </li>
+<li><strong>2026/03/?? - version 0.843</strong>
+<ul>
+<li>ENHANCE : <a class='autolink' href='#18dTPnzNOgg'>デフォルトフィルタ</a>機能を追加</li>
+</ul>
+</li>
 </ul>
 <p>　　</p>
 <h2><a name='1ewHzjI62xn'></a>11 索引</h2>
@@ -2692,6 +2701,7 @@ cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
 <li class='idx_x'><a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a></li>
 <li class='idx_x'><a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a></li>
 <li class='idx_x'><a class='autolink' href='#g6xjP526KX7'>テーブル</a></li>
+<li class='idx_x'><a class='autolink' href='#18dTPnzNOgg'>デフォルトフィルタ</a></li>
 <li class='idx_x'><a class='autolink' href='#cvixMbJNIbN'>ファイルの埋め込み</a></li>
 <li class='idx_x'><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></li>
 <li class='idx_x'><a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a></li>

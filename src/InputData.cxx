@@ -301,6 +301,11 @@ namespace turnup {
                     line.Clear();
                     continue;
                 }
+                if( tmp.IsMatch( "<!-- filter-default:", command, " -->" ) ) {
+                    filters.RegistDefault( command.Trim() );
+                    line.Clear();
+                    continue;
+                }
                 if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
                     item = item.Trim();
                     if( toc.RegisterAnchor( item ) == false ) {
