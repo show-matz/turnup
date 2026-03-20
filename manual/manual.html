@@ -92,7 +92,7 @@ code { color: #000;
 pre {
     background:     #eee;
     color:          #000;
-    font-size:      0.98em;
+    font-size:      12px;
     border:         1px solid #ccc;
     border-radius:  8px;
     margin-left:    2em;
@@ -137,7 +137,7 @@ td { vertical-align: top; padding: 3px; border: 1px solid black;}
 pre.diff {
     background:     #334;
     color:          #fff;
-    font-size:      14px;
+    font-size:      12px;
     border:         1px solid #000;
     border-radius:  8px;
     margin-left:    2em;
@@ -152,7 +152,7 @@ span.diff_del  { color: #FBDCDC; background: #550000; font-weight: bold; }
 pre.code {
     background:     #334;
     color:          #fff;
-    font-size:      14px;
+    font-size:      12px;
     border:         1px solid #000;
     border-radius:  8px;
     margin-left:    2em;
@@ -168,6 +168,28 @@ span.keyword5 { color: skyblue; }
 span.keyword6 { color: lightgray; }
 span.literal  { color: pink; }
 
+
+/* for highlight */
+pre.hl	{ color:#000000; background-color:#e0eaee; font-size:11pt; font-family:'Courier New',monospace; white-space: pre-wrap; }
+.hl.num { color:#b07e00; }
+.hl.esc { color:#ff00ff; }
+.hl.sng { color:#bf0303; }
+.hl.pps { color:#818100; }
+.hl.slc { color:#838183; font-style:italic; }
+.hl.com { color:#838183; font-style:italic; }
+.hl.ppc { color:#008200; }
+.hl.opt { color:#000000; }
+.hl.ipl { color:#0057ae; }
+.hl.lin { color:#555555; user-select: none; }
+.hl.hvr { cursor:help; }
+.hl.erm { color:#ff0000; font-weight:bold; border:solid 1px red; margin-left: 3em; }
+.hl.err { color:#ff0000; font-weight:bold; }
+.hl.kwa { color:#000000; font-weight:bold; }
+.hl.kwb { color:#0057ae; }
+.hl.kwc { color:#000000; }
+.hl.kwd { color:#010181; }
+.hl.kwe { color:#0d5bc3; }
+.hl.kwf { color:#750dc3; }
 
 /* for collapse */
 details {
@@ -453,15 +475,16 @@ body{font-size:16px;}
 </dl>
 <h2><a name='h1vILBov6aJ'></a>4 使い方</h2>
 <p>　入力となるファイルの名前をパラメータとして起動してください。生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> は標準出力に書き出されるので、必要に応じてリダイレクトしてください。</p>
-<pre>
-  turnup  input.md  &gt;  output.html
+<pre class='hl'>
+  turnup  input.md  <span class="hl opt">&gt;</span>  output.html
 </pre>
+
 <p>　入出力ファイルのエンコーディングは utf-8 で固定となっています。それ以外のエンコーディングへの対応は現状では予定されていません。<a href='#4e69JBVCRLW'>細かい話</a>も参照してください。</p>
 <h2><a name='8wGebtcPJwd'></a>5 記法</h2>
 <p>　turnup の入力書式は一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> 書法と基本的に同じですが、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a><sup><a name='footnote_ref3' href='#footnote3'>3</a></sup>を備えています。</p>
 <h3><a name='7HkxqP1TWY5'></a>5.1 見出し</h3>
 <p>　行頭から１〜６個の # を記述し、続けて（半角）スペースをひとつ書いた行は<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>行になります。後続する文字列が<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のタイトルとなります。# の数に応じて h1 〜 h6 になります。</p>
-<pre>
+<pre class='hl'>
  # header1
  ## header2
  ### header3
@@ -469,19 +492,21 @@ body{font-size:16px;}
  ##### header5
  ###### header6
 </pre>
+
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>により、<a href='#2M8QFQ2XeBn'>見出しに番号を自動付与</a>したり、<a href='#7maM1Z8DaEp'>見出しから目次を生成</a>したりできます。</p>
 <h3><a name='jGghWL1I5CM'></a>5.2 箇条書きリスト</h3>
 <p>　-（ハイフン）、+（プラス）、または *（アスタリスク）にスペース（またはタブ）を後続させると、箇条書きリストになります。ネストさせたい場合は、行頭にタブ文字または（4文字までの）スペースを使用してください。</p>
-<pre>
-- List A
+<pre class='hl'>
+<span class="hl kwd">-</span> List A
 + List B
-    * List B - 1
-    - List B - 2
-        + List B - 2 - 1
-        * List B - 2 - 2
-    + List B - 3
-- List C
+    <span class="hl kwd">*</span> List B - <span class="hl num">1</span>
+    <span class="hl kwd">-</span> List B - <span class="hl num">2</span>
+        + List B - <span class="hl num">2</span> - <span class="hl num">1</span>
+        <span class="hl kwd">*</span> List B - <span class="hl num">2</span> - <span class="hl num">2</span>
+    + List B - <span class="hl num">3</span>
+<span class="hl kwd">-</span> List C
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <ul>
 <li>List A</li>
@@ -501,37 +526,38 @@ body{font-size:16px;}
 </ul>
 <h4><a name='5cVofWIxtWQ'></a>5.2.1 リスト要素における改行</h4>
 <p>　一般的な markdown 書法同様、リストの要素は改行を利用して多くの情報をぶらさげることができます。（正直面倒なので）細かい説明は省略しますが、以下に例を示します。</p>
-<pre>
--   blah blah 
+<pre class='hl'>
+<span class="hl kwd">-</span>   blah blah 
     blah blah 
     blah blah 
-- blah blah 
+<span class="hl kwd">-</span> blah blah 
 blah blah 
 
   next paragraph : blah blah 
 blah blah blah blah blah
 
-- list item with blockquote
-    &gt; blah blah blah 
-    &gt; blah blah blah 
-    &gt; blah blah blah 
-- list item with code
-    - c code
-        ```c
-          int main( void ) {
-              return 0;
-          }
-        ```
-    - lisp code
-        ```lisp
-          (defun factorial (n)
-            (labels ((impl (x acc)
-                       (if (&lt;= x 1)
-                           acc
-                           (impl (1- x) (* acc x)))))
-              (impl n 1)))
-        ```
+<span class="hl kwd">-</span> list item with blockquote
+    <span class="hl kwd">&gt;</span> blah blah blah 
+    <span class="hl kwd">&gt;</span> blah blah blah 
+    <span class="hl kwd">&gt;</span> blah blah blah 
+<span class="hl kwd">-</span> list item with code
+    <span class="hl kwd">-</span> c code
+        <span class="hl sng">```C</span>
+<span class="hl sng">          int main( void ) {</span>
+<span class="hl sng">              return 0;</span>
+<span class="hl sng">          }</span>
+<span class="hl sng">        ```</span>
+    <span class="hl kwd">-</span> lisp code
+        <span class="hl sng">```lisp</span>
+<span class="hl sng">          (defun factorial (n)</span>
+<span class="hl sng">            (labels ((impl (x acc)</span>
+<span class="hl sng">                       (if (&lt;= x 1)</span>
+<span class="hl sng">                           acc</span>
+<span class="hl sng">                           (impl (1- x) (* acc x)))))</span>
+<span class="hl sng">              (impl n 1)))</span>
+<span class="hl sng">        ```</span>
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <ul>
 <li><p>blah blah 
@@ -552,11 +578,12 @@ blah blah
 <li>list item with code
 <ul>
 <li>c code
-<pre class='code'>
-  <span class='keyword2'>int</span> main( <span class='keyword2'>void</span> ) {
-      <span class='keyword1'>return</span> 0;
-  }
+<pre class='hl'>
+  <span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span> <span class="hl kwb">void</span> <span class="hl opt">) {</span>
+      <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+  <span class="hl opt">}</span>
 </pre>
+
 </li>
 <li>lisp code
 <pre class='code'>
@@ -573,13 +600,14 @@ blah blah
 </ul>
 <h4><a name='04sRz8Off9s'></a>5.2.2 チェックボックス付きのリスト</h4>
 <p>　また、- などの先頭記号とスペースに続けて [ ] や [X] を記述すると、チェックボックス付きリストになります。実際には X だけでなく、O や V、それらの小文字でも大丈夫です。</p>
-<pre>
-- Task list
-    - [X] completed task
-        * point 1
-        * point 2
-    - [ ] not completed task
+<pre class='hl'>
+<span class="hl kwd">-</span> Task list
+    <span class="hl kwd">-</span> [X] completed task
+        <span class="hl kwd">*</span> point <span class="hl num">1</span>
+        <span class="hl kwd">*</span> point <span class="hl num">2</span>
+    <span class="hl kwd">-</span> [ ] not completed task
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <ul>
 <li>Task list
@@ -597,14 +625,15 @@ blah blah
 <p>　このチェックボックス付きリストについては１点だけ注意点があります。それはチェックボックスを使う場合、<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>が適用されなくなるということです。</p>
 <h3><a name='iYSlVZhYmRM'></a>5.3 番号付きリスト</h3>
 <p>　数字にピリオドとスペースを後続させると、番号付きリストになります。ネストさせたい場合は、行頭にタブ文字または（4文字までの）スペースを使用してください。</p>
-<pre>
-1. List A
-1. List B
-    1. List B - 1
-    1. List B - 2
-        1. List B - 2 - 1
-1. List C
+<pre class='hl'>
+<span class="hl num">1</span>. List A
+<span class="hl num">1</span>. List B
+    <span class="hl num">1</span>. List B - <span class="hl num">1</span>
+    <span class="hl num">1</span>. List B - <span class="hl num">2</span>
+        <span class="hl num">1</span>. List B - <span class="hl num">2</span> - <span class="hl num">1</span>
+<span class="hl num">1</span>. List C
 </pre>
+
 <p>　上記は、以下のように出力されます。改行を使用してリスト要素に情報をぶらさげられるのは箇条書きリストと同様です。ただし、番号付きリストではチェックボックスの利用はできません。</p>
 <ol>
 <li>List A</li>
@@ -640,12 +669,13 @@ int main( void ) {
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをする機能もあります。これについての詳細は<a href='#f71ZNSHqufB'>6.17  フィルタ機能</a>を参照してください。</p>
 <h3><a name='g6xjP526KX7'></a>5.5 テーブル</h3>
 <p>　以下のような記述で<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を作成できます。この場合、１行目は常にヘッダ行（th タグ）であり、２行目以降がデータ行（td タグ）になります。</p>
-<pre>
+<pre class='hl'>
 | header A | header B | header C |
-|     0    |     1    |    2     |
-|     3    |     4    |    5     |
-|     6    |     7    |    8     |
+|     <span class="hl num">0</span>    |     <span class="hl num">1</span>    |    <span class="hl num">2</span>     |
+|     <span class="hl num">3</span>    |     <span class="hl num">4</span>    |    <span class="hl num">5</span>     |
+|     <span class="hl num">6</span>    |     <span class="hl num">7</span>    |    <span class="hl num">8</span>     |
 </pre>
+
 <p>　上記は、以下のようになります。この場合、各列のデータはすべて左寄せになります。</p>
 <table align='center'>
 <tr><th>header A</th><th>header B</th><th>header C</th></tr>
@@ -654,13 +684,14 @@ int main( void ) {
 <tr><td align='left'>6</td><td align='left'>7</td><td align='left'>8</td></tr>
 </table>
 <p>　列毎に中央揃え、右寄せなどのアライメント指定を指定をしたい場合には、２行目に :---: や ---: を記述します。</p>
-<pre>
+<pre class='hl'>
 | header A | header B | header C |
 | :------- | :------: | -------: |
-|     0    |     1    |    2     |
-|     3    |     4    |    5     |
-|     6    |     7    |    8     |
+|     <span class="hl num">0</span>    |     <span class="hl num">1</span>    |    <span class="hl num">2</span>     |
+|     <span class="hl num">3</span>    |     <span class="hl num">4</span>    |    <span class="hl num">5</span>     |
+|     <span class="hl num">6</span>    |     <span class="hl num">7</span>    |    <span class="hl num">8</span>     |
 </pre>
+
 <p>　上記は、以下のように出力されます（表はデフォルトでセンタリングされます）。</p>
 <table align='center'>
 <tr><th>header A</th><th>header B</th><th>header C</th></tr>
@@ -670,14 +701,15 @@ int main( void ) {
 </table>
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、２行目に記述する :---: や ---: では、- のかわりに = を使用することができます。 <code>:====:</code> などとした場合、その列は nowrap 指定が追加され、<strong>「自動的な折り返しを禁止」</strong> することができます<sup><a name='footnote_ref5' href='#footnote5'>5</a></sup>。</p>
 <p>　さらに、:---: や ---: の行は２行目よりも後ろに書くことができます。それにより、複数行に渡るヘッダ行を記述することができます。以下のように。</p>
-<pre>
+<pre class='hl'>
 |     A    |     B    |    C     |
 |   Alpha  |   Bravo  |  Charlie |
 | :------- | :------: | -------: |
-|     0    |     1    |    2     |
-|     3    |     4    |    5     |
-|     6    |     7    |    8     |
+|     <span class="hl num">0</span>    |     <span class="hl num">1</span>    |    <span class="hl num">2</span>     |
+|     <span class="hl num">3</span>    |     <span class="hl num">4</span>    |    <span class="hl num">5</span>     |
+|     <span class="hl num">6</span>    |     <span class="hl num">7</span>    |    <span class="hl num">8</span>     |
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th>A</th><th>B</th><th>C</th></tr>
@@ -687,14 +719,15 @@ int main( void ) {
 <tr><td align='left'>6</td><td align='center'>7</td><td align='right'>8</td></tr>
 </table>
 <p>　別の拡張として、セル結合がサポートされています。セルを開始する | の直後に N&gt; （ここで N は数値）を指定することで、セルを横方向に N 列結合させることができます。同様に、N^ とすることでセルを縦方向に N 列結合させることができます<sup><a name='footnote_ref6' href='#footnote6'>6</a></sup>。以下に例を示します。</p>
-<pre>
-|2&gt;      A &amp; B        |2^ C&lt;br&gt;Charlie |
+<pre class='hl'>
+|<span class="hl num">2</span>&gt;      A &amp; B        |<span class="hl num">2</span>^ C&lt;br&gt;Charlie |
 |   Alpha  |   Bravo  |
 | :------- | :------: | -------: |
-|     0    |     1    |    2     |
-|     3    |     4    |    5     |
-|     6    |     7    |    8     |
+|     <span class="hl num">0</span>    |     <span class="hl num">1</span>    |    <span class="hl num">2</span>     |
+|     <span class="hl num">3</span>    |     <span class="hl num">4</span>    |    <span class="hl num">5</span>     |
+|     <span class="hl num">6</span>    |     <span class="hl num">7</span>    |    <span class="hl num">8</span>     |
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <table align='center'>
 <tr><th colspan='2'>A &amp; B</th><th rowspan='2'>C<br>Charlie</th></tr>
@@ -705,15 +738,16 @@ int main( void ) {
 </table>
 <p>　　</p>
 <p>　アライメント指定行は複数記述できるようになりました。最初のアライメント指定行がヘッダとデータの境界となるのは従来通りで、アライメント指定は次のアライメント指定行が登場するまでの間有効となります。これにより、<a href='#kjPiZRKvp7P'>セル結合とアライメント指定を併用した場合の問題</a>に対処することができます。以下に例を示します。</p>
-<pre>
+<pre class='hl'>
 | column A | column B | column C |
 |:---------|:--------:|---------:|
 |left      |center    |right     |
 |:--------------------|---------:|
-|2&gt; left              |right?    |
+|<span class="hl num">2</span>&gt; left              |right?    |
 |:---------|:--------:|---------:|
 |left      |center    |right     |
 </pre>
+
 <p>　上記は、以下のようになります。</p>
 <table align='center'>
 <tr><th>column A</th><th>column B</th><th>column C</th></tr>
@@ -725,27 +759,28 @@ int main( void ) {
 <p>　version 0.815 より、内部フィルタを使って CSV 形式などのデータから<a class='autolink' href='#g6xjP526KX7'>テーブル</a>を生成できるようになりました。この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>については「<a href='#fJ4r3VpDmqg'>6.19  テーブルの生成</a>」を参照してください。</p>
 <h3><a name='2c4WKrG50Sg'></a>5.6 引用</h3>
 <p>　&gt; で始まる行は<a class='autolink' href='#2c4WKrG50Sg'>引用</a>になります。連続する<a class='autolink' href='#2c4WKrG50Sg'>引用</a>のブロックは <code>&lt;blockquote&gt;</code> タグで括られ、通常の各種書法に従って処理されます。これはネストさせることができます。</p>
-<pre>
-&gt;  blah blah blah blah blah blah 
-&gt; blah blah blah blah blah blah 
-&gt;
-&gt; * foo
-&gt;     * bar
-&gt;     * quux
-&gt;
-&gt;&gt; blah blah blah blah blah blah 
-&gt;&gt; blah blah blah blah blah blah 
-&gt;
-&gt; block-quoted code
-&gt;
-&gt; ```C++
-&gt;   int main( void ){
-&gt;       std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
-&gt;       return 0;
-&gt;   }
-&gt; ```
-&gt;
+<pre class='hl'>
+<span class="hl kwd">&gt;</span>  blah blah blah blah blah blah 
+<span class="hl kwd">&gt;</span> blah blah blah blah blah blah 
+<span class="hl kwd">&gt;</span>
+<span class="hl kwd">&gt;</span> * foo
+<span class="hl kwd">&gt;</span>     * bar
+<span class="hl kwd">&gt;</span>     * quux
+<span class="hl kwd">&gt;</span>
+<span class="hl kwd">&gt;</span>&gt; blah blah blah blah blah blah 
+<span class="hl kwd">&gt;</span>&gt; blah blah blah blah blah blah 
+<span class="hl kwd">&gt;</span>
+<span class="hl kwd">&gt;</span> block-quoted code
+<span class="hl kwd">&gt;</span>
+<span class="hl kwd">&gt;</span> <span class="hl sng">```C++</span>
+<span class="hl sng">&gt;   int main( void ){</span>
+<span class="hl sng">&gt;       std::cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; std::endl;</span>
+<span class="hl sng">&gt;       return 0;</span>
+<span class="hl sng">&gt;   }</span>
+<span class="hl sng">&gt; ```</span>
+<span class="hl kwd">&gt;</span>
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
 <blockquote>
 <p> blah blah blah blah blah blah blah blah blah blah blah blah </p>
@@ -761,25 +796,30 @@ int main( void ) {
 <p>blah blah blah blah blah blah blah blah blah blah blah blah </p>
 </blockquote>
 <p>block-quoted code</p>
-<pre class='code'>
-  <span class='keyword2'>int</span> main( <span class='keyword2'>void</span> ){
-      std::cout &lt;&lt; <span class='literal'>"hello world."</span> &lt;&lt; std::endl;
-      <span class='keyword1'>return</span> 0;
-  }
+<pre class='hl'>
+  <span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span> <span class="hl kwb">void</span> <span class="hl opt">){</span>
+      <span class="hl kwe">std</span><span class="hl opt">::</span>cout <span class="hl opt">&lt;&lt;</span> <span class="hl sng">&quot;hello world.&quot;</span> <span class="hl opt">&lt;&lt;</span> <span class="hl kwe">std</span><span class="hl opt">::</span>endl<span class="hl opt">;</span>
+      <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+  <span class="hl opt">}</span>
 </pre>
+
 </blockquote>
 <h3><a name='9PbJaRizVB7'></a>5.7 定義リスト</h3>
 <p>　以下のような記述により、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>を作成できます。turnup では、これによって定義された用語は<a href='#8mg4uLSAXaz'>自動リンク</a>の対象となります。</p>
-<pre>
-  *[用語]: 用語の定義をここに記述します。
+<pre class='hl'>
+  <span class="hl kwd">*</span>[用語]: 用語の定義をここに記述します。
   複数行に渡る定義も記述できます。空行で終わります。
 
 </pre>
+
 <p>　上記は、以下のように出力されます。</p>
-<dl>
-  <dt>用語</dt>
-  <dd>用語の定義をここに記述します。複数行に渡る定義も記述できます。空行で終わります。</dd>
-</dl>
+<pre class='hl'>
+<span class="hl kwa">&lt;dl&gt;</span>
+  <span class="hl kwa">&lt;dt&gt;</span>用語<span class="hl kwa">&lt;/dt&gt;</span>
+  <span class="hl kwa">&lt;dd&gt;</span>用語の定義をここに記述します。複数行に渡る定義も記述できます。空行で終わります。<span class="hl kwa">&lt;/dd&gt;</span>
+<span class="hl kwa">&lt;/dl&gt;</span>
+</pre>
+
 <p>　[ と ] に囲まれた用語は、前後のスペースは無視されますが、途中にあるスペースは用語の一部とみなされます。</p>
 <h3><a name='cPmXTXvPhJd'></a>5.8 コメント</h3>
 <p>　turnup は、以下のような <a class='term' href='#ahN3t8jbawv'>HTML</a> 形式の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>として扱います。つまり、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> の内容には含まれません。</p>
@@ -811,28 +851,32 @@ int main( void ) {
 <p>　単一の ^ および ~ で括ると、文字列を上付きと下付きにできます。たとえば <code>H~2~O</code> は H<sub>2</sub>O に、 <code>2^10^ = 1024</code> は 2<sup>10</sup> = 1024 になります。</p>
 <h3><a name='fbLcMRTVXac'></a>5.13 リンク</h3>
 <p>　文章中で以下のような書き方をすることで、URL へのリンクを貼ることができます。<sup><a name='footnote_ref7' href='#footnote7'>7</a></sup></p>
-<pre>
+<pre class='hl'>
   [テキスト](URL)
 </pre>
+
 <p>　たとえば、 <code>[Google](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>Google</a> となります。テキスト部分を省略すると、URL がそのまま表示されます。つまり、<code>[](https://www.google.co.jp/)</code> は <a href='https://www.google.co.jp/'>https://www.google.co.jp/</a> となります。</p>
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として、ページ内の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトルへのリンクを作成することもできます。<a href='#cjJv49XsD9d'>6.9  節</a>を参照してください。</p>
 <h3><a name='2TegSYAerqJ'></a>5.14 コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、<a href='#8mg4uLSAXaz'>自動リンク</a>やその他の文字装飾は実行されません。</p>
-<pre>
-  `code`
+<pre class='hl'>
+  <span class="hl sng">`code`</span>
 </pre>
+
 <p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
 <h3><a name='ba5hSrekAxp'></a>5.15 水平線</h3>
 <p>　行頭からハイフン、等号、アンダースコア、アスタリスクを３個以上を記述すると水平線として出力されます。文字種は混在させないでください。</p>
 <h3><a name='hpQu1WK1Nkr'></a>5.16 画像の挿入</h3>
 <p>　画像を表示させるには、以下のように記述します。独立した行として記述することもできますし、文章中にインラインで挿入させることもできます。</p>
-<pre>
+<pre class='hl'>
   ![代替テキスト](画像URL)
 </pre>
+
 <p>　上記は、以下のように展開されます。なお、代替テキストは省略できます。</p>
-<pre>
-  &lt;img src='画像URL' alt='代替テキスト' /&gt;
+<pre class='hl'>
+  <span class="hl kwa">&lt;img</span> src=&#39;画像URL&#39; alt=&#39;代替テキスト&#39; <span class="hl kwa">/&gt;</span>
 </pre>
+
 <p>　　</p>
 <p>　version 0.839 以降では、<a class='autolink' href='#jj2RDRZoMS1'>画像モード</a>の指定によって出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> 内に画像を埋め込むことができるようになりました。 詳細は <a href='#jj2RDRZoMS1'>6.8  節</a>を参照してください。</p>
 <h3><a name='akoPHkUM3jR'></a>5.17 改行の挿入</h3>
@@ -844,16 +888,18 @@ int main( void ) {
 <p>　turnup には、いくつかの<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>があります。一般的な <a class='term' href='#b3GXdVHw3CE'>Markdown</a> の書法からは逸脱しますが、文書作成に必要と判断して追加しているものです。</p>
 <h3><a name='kyMp8IkRK8n'></a>6.1 文書タイトルとスタイルシートの指定</h3>
 <p>　データファイルの冒頭に以下のような<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、出力される <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイルのヘッダに設定するタイトルとスタイルシートを指定することができます。</p>
-<pre>
-  &lt;!-- title:Document title --&gt;
-  &lt;!-- style:./default.css --&gt;
+<pre class='hl'>
+  <span class="hl com">&lt;!-- title:Document title --&gt;</span>
+  <span class="hl com">&lt;!-- style:./default.css --&gt;</span>
 </pre>
+
 <p>　このうち、スタイルシートの指定は設定の影響を受けます。詳細は<a href='#jkzhEyZU0ts'>embed-stylesheet設定</a>を参照してください。</p>
 <h3><a name='bZZIHdLJ79G'></a>6.2 目次へのリンクボタン表示</h3>
 <p>　以下のような行をデータファイル内の任意の場所に記述しておくと、</p>
-<pre>
-  &lt;!-- toc-link: top "Table of contents" --&gt;
+<pre class='hl'>
+  <span class="hl com">&lt;!-- toc-link: top &quot;Table of contents&quot; --&gt;</span>
 </pre>
+
 <p>　生成された <a class='term' href='#ahN3t8jbawv'>HTML</a> ページの右上に以下のようなイメージが表示されます。これは画面をスクロールしてもその位置に留まり、クリックすると目次にジャンプすることができます。</p>
 <div align="center"><a href='#0qJQvVjc3Xy'>
 <svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox="0 0 200 200">
@@ -868,78 +914,87 @@ int main( void ) {
 </svg>
 </a></div>
 <p>　これは、実際には目次にジャンプしているわけではなく、指定されたターゲットへのリンクに過ぎません。そのため、この機能を使用する場合は目次の直前に<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>などを置く必要があります。ジャンプ先の指定は <code>toc-link: top</code> に続けて記述してください（先の例であれば <code>"Table of contents"</code> という部分）。この方法で指定する場合、目次の周辺は以下のように記述されることになるでしょう。</p>
-<pre>
+<pre class='hl'>
 ​## Table of contents
 
-&lt;​!-- embed:toc-x 2 4 --&gt;
-&lt;​!-- toc-link: top 'Table of contents' --&gt;
+&lt;​!-- embed:toc-x <span class="hl num">2 4</span> --&gt;
+&lt;​!-- toc-link: top &#39;Table of contents&#39; --&gt;
 </pre>
+
 <p>　以下のように <code>toc-link:</code> に続けて <code>top</code> でなく <code>bottom</code> と記述すると、イメージの表示される位置が画面の右上でなく右下になります。</p>
-<pre>
-  &lt;!-- toc-link: bottom "Table of contents" --&gt;
+<pre class='hl'>
+  &lt;!-- toc-link: bottom &quot;Table of contents&quot; --&gt;
 </pre>
+
 <p>　目次の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>を置くと、それ自体が目次に含まれてしまいます。これを避けたい場合は<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>ではなく<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を使うと良いでしょう。この場合、以下のように記述することになります（<a class='autolink' href='#izIXv5I5ark'>raw</a> フィルタで記述した <code>h2</code> タグによる<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はあってもなくてもかまいません）。リンク先の指定は <code>'A#toc-link-target'</code> となります。これはリンクの括弧内の記載と同じ方法になります。</p>
-<pre>
+<pre class='hl'>
 &lt;​!-- anchor: toc-link-target --&gt;
 ~~~raw
 ​&lt;h2&gt;Table of contents&lt;/h2&gt;
 ~~~
 
-&lt;​!-- embed:toc-x 2 4 --&gt;
-&lt;​!-- toc-link: top 'A#toc-link-target' --&gt;
+&lt;​!-- embed:toc-x <span class="hl num">2 4</span> --&gt;
+&lt;​!-- toc-link: top &#39;A#toc-link-target&#39; --&gt;
 </pre>
+
 <h3><a name='gg7i7uPfLlo'></a>6.3 図と表のタイトル</h3>
 <p>　図と表には、専用のタイトルをつけることができます。図（大抵は画像を表示させるという意味ですが）の場合、以下のように行頭に <code>Figure.</code> を、それに続いてタイトルを書きます。</p>
-<pre>
+<pre class='hl'>
 ![](some-figure.png)
 Figure. title of figure
 </pre>
+
 <p>　表の場合は行頭に <code>Table.</code> を、それに続いてタイトルを書きます。</p>
-<pre>
+<pre class='hl'>
 Table. title of table
 | header1 | header2 |
 | :------ | :-----: |
-|    0    |    1    |
-|    2    |    3    |
+|    <span class="hl num">0</span>    |    <span class="hl num">1</span>    |
+|    <span class="hl num">2</span>    |    <span class="hl num">3</span>    |
 </pre>
+
 <p>　この方法でタイトルをつけておけば、同じく<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の<a href='#iVFblGs7lu7'>図表一覧の生成</a>機能で一覧を生成することができます。</p>
 <p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>と同様に、図表のタイトルには自動的に番号付けを行なうことができます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='4e8Wf4oSDqx'></a>6.4 アンカー</h3>
 <p>　以下の形式の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することにより、リンク先となる<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を任意の場所に作成できます。</p>
-<pre>
+<pre class='hl'>
 &lt;​!-- anchor: ANCHORNAME --&gt;
 </pre>
+
 <p>　version 0.833 より、 <code>#​((ANCHORNAME))</code> または <code>#​{{ANCHORNAME}}</code> の形式でインライン<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>を記述できるようになりました。</p>
 <p>　これらの方法で作成した<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成する場合、<a href='#cjJv49XsD9d'>ページ内へのリンク</a>に記載した方法に従って、 <code>[LABEL](A#ANCHORNAME)</code> 形式のページ内リンクを記述してください。</p>
 <h3><a name='2Hh9eF0BTk3'></a>6.5 インラインスタイル指定</h3>
 <p>　文章中などで部分的に文字色やその他のスタイルを指定したい場合、<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>が使用できます。以下のいずれかの書法<sup><a name='footnote_ref8' href='#footnote8'>8</a></sup>で、 <code>STYLES</code> 部分には <a class='term' href='#ahN3t8jbawv'>HTML</a> の style に指定する内容をそのまま記述します。</p>
-<pre>
- @{{STYLES}{CONTENTS}}
- @((STYLES)(CONTENTS))
+<pre class='hl'>
+ &#64;{{STYLES}{CONTENTS}}
+ &#64;((STYLES)(CONTENTS))
 </pre>
+
 <p>　上記は、 <code>&lt;span style='STYLES'&gt;CONTENTS&lt;/span&gt;</code> のように展開されます。たとえば、<code>@((background:red; color:white;)(赤地の白抜き))</code> が<span style='background:red; color:white;'>赤地の白抜き</span>になります。</p>
 <p>　範囲指定でタグ別にスタイルを指定したい場合、次に説明する「<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>」を利用してください。</p>
 <h3><a name='dOeJnU6OE95'></a>6.6 スタイルスタック</h3>
 <p>　<a class='autolink' href='#2Hh9eF0BTk3'>インラインスタイル指定</a>は文章の一部分にスタイルを指定するものでしたが、もっと広い範囲でスタイルを一時的に変更したい場合もあります。そのような場合には、 <strong>「<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>」</strong> が使用できます。これは、以下の要領で <a class='term' href='#ahN3t8jbawv'>HTML</a> タグと区間を指定し、class や style を設定するものです。</p>
-<pre>
- &lt;!-- stack:push p style="color: red;" --&gt;
+<pre class='hl'>
+ &lt;!-- stack:push p style=&quot;color: red;&quot; --&gt;
         :
         :
  &lt;!-- stack:pop p --&gt;
 </pre>
+
 <p>　上記の例では、 <code>stack:push</code> として p タグに style を設定しています。この行以降、<code>stack:pop p</code> されるまでの間に turnup が生成する全ての p タグには、 <code>style="color: red;"</code>が設定されるようになります。</p>
 <p>　名前の通り、この設定はスタックのように振舞います。 <code>stack:push</code> で指定する各種のタグそれぞれについて、最後に <code>stack:push</code> した内容が有効であり、 <code>stack:pop</code> すると設定前の状態に戻ります。以下に例を示します。</p>
-<pre>
+<pre class='hl'>
  ここは範囲外です。
- &lt;!-- stack:push p style="color: red;" --&gt;
+ &lt;!-- stack:push p style=&quot;color: red;&quot; --&gt;
  ここは赤字になるはず。
- &lt;!-- stack:push p style="background: blue; color: white;" --&gt;
+ &lt;!-- stack:push p style=&quot;background: blue; color: white;&quot; --&gt;
  ここは青地に白い字になるはず。
  &lt;!-- stack:pop p --&gt;
  ここは赤字のはず。
  &lt;!-- stack:pop p --&gt;
  ここも範囲外です。
 </pre>
+
 <details>
 <summary>◆結果はこちら。</summary>
 <p>ここは範囲外です。</p>
@@ -951,20 +1006,22 @@ Table. title of table
 <p>　<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>の効果は、<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>が生成する出力には及びません。また、その他にも<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>が影響しないタグが存在します。</p>
 <h3><a name='hVp0EDLBsmJ'></a>6.7 スタイルパレット</h3>
 <p>　<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>は便利なものですが、<a class='autolink' href='#g6xjP526KX7'>テーブル</a>の特定の行やセルにスタイルを設定したい場合には役に立ちません。そのような場合には、 <strong>「<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>」</strong> が使用できます。これは、以下の要領でスタイルに番号付けをして登録できるものです。</p>
-<pre>
- &lt;!-- palette: 0 style="background: #f4f4f4;" --&gt;
- &lt;!-- palette: 1 style="color: red;" --&gt;
+<pre class='hl'>
+ &lt;!-- palette: <span class="hl num">0</span> style=&quot;background: #f4f4f4;&quot; --&gt;
+ &lt;!-- palette: <span class="hl num">1</span> style=&quot;color: red;&quot; --&gt;
 </pre>
+
 <p>　<code>&lt;!-- palette:</code>  に続く数字がインデックスで、これには 0 〜 9 までの 10種類が使用できます。それに続けてスタイルなど任意の <a class='term' href='#ahN3t8jbawv'>HTML</a> 属性を記述し、最後に <code>--&gt;</code> で終了します。</p>
 <p>　パレットに登録したスタイルを使うには、インデックスを指定します。現状では<a class='autolink' href='#g6xjP526KX7'>テーブル</a>しか<a class='autolink' href='#hVp0EDLBsmJ'>スタイルパレット</a>に対応していない<sup><a name='footnote_ref9' href='#footnote9'>9</a></sup>ため、ここでは<a class='autolink' href='#g6xjP526KX7'>テーブル</a>での利用方法を説明します。以下に例を示します。</p>
-<pre>
+<pre class='hl'>
   | title | count | price | 
   |:------|------:|------:|
-  | foo   |     1 |   666 |
-[0| bar   |     2 |1] -99 |
-  | baz   |     3 |1]  -8 |
-[0| quux  |     4 |   123 |
+  | foo   |     <span class="hl num">1</span> |   <span class="hl num">666</span> |
+[<span class="hl num">0</span>| bar   |     <span class="hl num">2</span> |<span class="hl num">1</span>] -<span class="hl num">99</span> |
+  | baz   |     <span class="hl num">3</span> |<span class="hl num">1</span>]  -<span class="hl num">8</span> |
+[<span class="hl num">0</span>| quux  |     <span class="hl num">4</span> |   <span class="hl num">123</span> |
 </pre>
+
 <ul>
 <li>行全体にスタイルを適用したい場合、行頭の | の手前に <code>[N</code> を記述</li>
 <li>セル単独でスタイルを適用したい場合は、セルを開始する | に続けて <code>N]</code> を記述</li>
@@ -979,34 +1036,38 @@ Table. title of table
 </table>
 <h3><a name='jj2RDRZoMS1'></a>6.8 画像モード</h3>
 <p>　<a class='autolink' href='#jj2RDRZoMS1'>画像モード</a>の設定によって、 <code>![](URL)</code> という従来からの画像の挿入記法で対象画像を出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> 内に埋め込むことができます。この設定には、以下のように <code>image-mode:push</code> のパラメータとして <code>embed</code> を指定します。これによって、 <code>image-mode:pop</code> までの<a href='#hpQu1WK1Nkr'>画像の挿入</a>がすべて埋め込みになります。</p>
-<pre>
+<pre class='hl'>
  &lt;!-- image-mode:push embed --&gt;
         :
     （この間の画像挿入はすべて埋め込みになる）
         :
  &lt;!-- image-mode:pop --&gt;
 </pre>
+
 <p>　上記の書法からもわかる通り、これは<a class='autolink' href='#dOeJnU6OE95'>スタイルスタック</a>と同じスタック方式での設定になります（つまりネストできます）。通常の（埋め込みでない） <code>&lt;img...&gt;</code> タグになることを確実に指定したい場合は以下のように <code>embed</code> でなく <code>link</code> を指定してください。</p>
-<pre>
+<pre class='hl'>
  &lt;!-- image-mode:push link --&gt;
         :
     （この間の画像挿入はすべてリンクになる）
         :
  &lt;!-- image-mode:pop --&gt;
 </pre>
+
 <p>　<code>embed</code> の指定で埋め込みをする場合、turnup が動作する時点でそのファイルにアクセス可能である必要があります。</p>
 <h3><a name='cjJv49XsD9d'></a>6.9 ページ内へのリンク</h3>
 <p>　リンクの書法を拡張することで、ページ内の<a href='#7HkxqP1TWY5'>見出し</a>や<a href='#gg7i7uPfLlo'>図表タイトル</a>、<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成することができます。</p>
 <p>　ページ内の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクを作成する場合、URL 部分を # に続けて<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>の名前にしてください。たとえば、 <code>[目次](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>目次</a>となります。テキスト部分を省略した場合のルールは標準的な URL リンクと同じですが、<a href='#2M8QFQ2XeBn'>見出しの自動ナンバリング</a>を設定している場合、番号付けされた<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>名がリンクのテキストとなることに注意してください。つまり、 <code>[](#Table of contents)</code> は<a href='#0qJQvVjc3Xy'>1  Table of contents</a>となります。</p>
 <p>　<a href='#gg7i7uPfLlo'>図表タイトル</a>へのリンクを作成するには、（ちょっと無様ですが）以下のように F#, T# に続けてタイトルを記述します。それ以外のルールは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクと同じです。</p>
-<pre>
+<pre class='hl'>
   [テキスト](F#図のタイトル)
   [テキスト](T#表のタイトル)
 </pre>
+
 <p>　<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>へのリンクを作成するには、（これも無様ですが）以下のように A# に続けてタイトルを記述します。それ以外のルールは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>へのリンクと同じです。</p>
-<pre>
+<pre class='hl'>
   [テキスト](A#アンカーのタイトル)
 </pre>
+
 <p>　さらに、テキスト部分では <code>$@</code> と <code>$$</code> を使うことができます。これらは、以下のように展開されます。</p>
 <ul>
 <li><code>$@</code> : 自動ナンバリングによって付与されるプレフィクス</li>
@@ -1015,97 +1076,111 @@ Table. title of table
 <p>　ただし、<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>や自動ナンバリングの対象となっていない<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルへのリンクでは <code>$@</code> は空文字列に展開されるので注意してください。</p>
 <h3><a name='8mg4uLSAXaz'></a>6.10 キーワードへの自動リンク</h3>
 <p>　以下のような<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>記述により、キーワードへの自動リンクを設定することができます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- autolink: [TITLE](URL) --&gt;
 </pre>
+
 <p>　上記において、 <code>[TITLE](URL)</code> という部分は<a href='#fbLcMRTVXac'>リンク</a>および<a href='#cjJv49XsD9d'>ページ内へのリンク</a>の書法に従います。これによって、 <code>TITLE</code> という文字列が登場すると、自動的に <code>URL</code> へのリンクが作成されます。これは、上記<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>記述をした位置に関係なく、 <strong>文書全体において</strong> 適用されます<sup><a name='footnote_ref10' href='#footnote10'>10</a></sup>。</p>
 <p>　この <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>に記載するリンクは、通常のリンクとは異なり、 <code>TITLE</code> を空文字列にすることはできません。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表のタイトルの文字列をそのまま使用したい場合は <code>$$</code> を使用してください。</p>
 <p>　<a href='#9PbJaRizVB7'>定義リスト</a>を使った用語定義も、同様に自動リンクになります。この場合、自動リンクのリンク先は定義箇所になります。このマニュアル文書では、「<a href='#dcPEbaWhYMa'>3  用語</a>」というセクションで（サンプルを兼ねて）いくつかの用語を定義しているので、たとえば <a class='term' href='#b3GXdVHw3CE'>Markdown</a> という用語は自動的にリンクされます。</p>
 <p>　<code>autolink</code> <a class='autolink' href='#cPmXTXvPhJd'>コメント</a>による自動リンクと<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>は、定義の仕方は異なりますが同様に適用されるため、同じキーワードや用語を重複させることはできません（エラーになります<sup><a name='footnote_ref11' href='#footnote11'>11</a></sup>）。また、この<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>に関与する設定として、<a href='#0EKpSe2qrxR'>見出しにおける自動リンク</a>があります。<a href='#6cOilIw9D0i'>細かい話</a>も参照してください。</p>
 <h3><a name='izIXv5I5ark'></a>6.11 生の HTML ブロックの出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> ブロックをそのまま出力することができます。</p>
-<pre>
-```raw
-    :
-    :
-```
+<pre class='hl'>
+<span class="hl sng">```raw</span>
+<span class="hl sng">    :</span>
+<span class="hl sng">    :</span>
+<span class="hl sng">```</span>
 </pre>
+
 <p>　これは、後述する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>を利用しています。以前のバージョンでは以下のように <code>&lt;raw_html&gt;</code> タグで囲むことになっていましたが、これは非推奨となりました。まだ使用することはできますが、警告が表示されます。</p>
-<pre>
+<pre class='hl'>
   &lt;raw_html&gt;
       :
       :
   &lt;/raw_html&gt;
 </pre>
+
 <p>　この機能は、起動パラメータで <a class='autolink' href='#cbWPeXQzpuZ'>--safe オプション</a>を指定することで抑止することができます。入力データを直接制御することができない局面では、 <a class='autolink' href='#cbWPeXQzpuZ'>--safe オプション</a>を使用した方がよいでしょう。</p>
 <h3><a name='9Dfk88hOKmk'></a>6.12 脚注</h3>
 <p>　文書中に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を設定し、一箇所にまとめて表示させることができます。開始を示す <code>{{fn:</code> と終了を示す <code>}}</code> は同一の行に記述する必要があることに注意してください。</p>
-<pre>
+<pre class='hl'>
   {{fn:これが脚注の内容です。}}
 </pre>
+
 <p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>をまとめて表示するには、<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を展開したい場所（通常は登場文書の末尾でしょう）に以下の行を記述します。これにより、その場所に文書内のすべての<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>が記載順で一覧されます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:footnotes --&gt;
 </pre>
+
 <p>　上記の記法では、全ての<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>が一箇所にまとめて表示されます。これに対して、章や節などの単位で<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を分割したい場合、以下の記法が使用できます。</p>
-<pre>
+<pre class='hl'>
   {{fn(TAG):脚注の内容}}
 </pre>
+
 <p>　<code>TAG</code> という部分に<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>のグループを識別する任意の文字列を入れます（たとえば章節番号など）。これを「タグ」と呼びます。この文字列は <a class='term' href='#ahN3t8jbawv'>HTML</a> の ID（の一部）として使用されるので、使用する文字に注意してください<sup><a name='footnote_ref12' href='#footnote12'>12</a></sup>。グループ化された<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>の一覧を出力するには、以下のようにします。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:footnotes TAG --&gt;
 </pre>
+
 <p>　タグを伴う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>では、リンクにプレフィクスを指定することができます。詳細は <a href='#5xO3F2FIOq7'>7.7  節</a>を参照してください。</p>
 <p>　このマニュアル文書でも、いくつかの<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>を（サンプルを兼ねて）使用しています。文書末尾を参照してください。</p>
 <h3><a name='7maM1Z8DaEp'></a>6.13 目次の生成</h3>
 <p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>情報から目次を生成することができます。以下のように記述すると、その場所に階層化されたリストの形式で目次が作成されます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:toc --&gt;
 </pre>
+
 <p>　上記の指定では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの１から６までが全て目次化の対象になります。この対象範囲を絞るには、以下のように記述します。</p>
-<pre>
-  &lt;!-- embed:toc 2 4 --&gt;
+<pre class='hl'>
+  &lt;!-- embed:toc <span class="hl num">2 4</span> --&gt;
 </pre>
+
 <p>　この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４までが目次化の対象となります。</p>
 <p>　<code>embed:toc</code> のかわりに <code>embed:toc-x</code> を使うことで、折り畳み可能な目次を生成できます。このマニュアルの<a href='#0qJQvVjc3Xy'>冒頭にある目次</a>も <code>toc-x</code> を使用して生成されています。</p>
 <h3><a name='biXOjhH7BWs'></a>6.14 配下見出し一覧の生成</h3>
 <p>　以下の記述により、「現在の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>直下の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>群へのリンク一覧」をリスト形式で出力させることができます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:sub-toc --&gt;
 </pre>
+
 <p>　上記の場所からみた「現在の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>」とは「<a href='#biXOjhH7BWs'>6.14  配下見出し一覧の生成</a>」であり、その「直下の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>群」とは、同じレベルの次の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>である「<a href='#iVFblGs7lu7'>6.15  図表一覧の生成</a>」までに存在する、「一段下位の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>」のことを指します（この場合はその条件を満たす<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はありません）。</p>
 <h3><a name='iVFblGs7lu7'></a>6.15 図表一覧の生成</h3>
 <p>　目次と同様、図と表の一覧を生成することができます。以下のように記述すると、その場所に図の一覧が作成されます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:figure-list --&gt;
 </pre>
+
 <p>　表の一覧の場合は以下です。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:table-list --&gt;
 </pre>
+
 <p>　これによって生成される一覧でも、<a href='#gg7i7uPfLlo'>図表タイトル</a>と同じ設定でナンバリングが行なわれます。詳細は「<a href='#hJJbL4GzVpQ'>7.3  図表のナンバリング単位</a>」を参照してください。</p>
 <h3><a name='2C50p0Hw1s1'></a>6.16 索引の生成</h3>
 <p>　<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>、およびキーワードへの自動リンクの定義から索引を自動生成することができます。以下の記述により、その場所に索引が生成されます。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- embed:index --&gt;
 </pre>
+
 <p>　<code>embed:index</code> のかわりに <code>embed:index-x</code> を使うことで、折り畳み可能な索引を生成できます。このマニュアルの<a href='#1ewHzjI62xn'>末尾にある索引</a>も <code>index-x</code> を使用して生成されています。</p>
 <h3><a name='f71ZNSHqufB'></a>6.17 フィルタ機能</h3>
 <p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
-<pre>
+<pre class='hl'>
 ~~~diff
 diff --git a/main.cxx b/main.cxx
 index 16fc9f4..8387187 100644
 --- a/main.cxx
 +++ b/main.cxx
-@@ -3,5 +3,5 @@ int main( void ) {
+&#64;&#64; -3,5 +3,5 &#64;&#64; int main( void ) {
  
--    printf( "hello world.\n" );
-+    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
+-    printf( &quot;hello world.\n&quot; );
++    std::cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; std::endl;
 
     return 0;
 ~~~
 </pre>
+
 <p>　これは以下のように表示されます。</p>
 <pre class='diff'>
 diff --git a/main.cxx b/main.cxx
@@ -1134,9 +1209,10 @@ index 16fc9f4..8387187 100644
 <p>　しかし、<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>として外部プログラムを用いたフィルタリングが可能となっています。詳しくは、<a href='#18dTPnzNOgg'>6.18  外部フィルタの登録</a>を参照してください。また内蔵の<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>によるコードハイライトについては<a href='#4e69JBVCRLW'>細かい話</a>があります。</p>
 <h3><a name='18dTPnzNOgg'></a>6.18 外部フィルタの登録</h3>
 <p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>で指定するフィルタとして、外部プログラムを追加することができます。たとえば、foo というフィルタを指定した場合に quux プログラムを通した結果を表示させたければ以下のように指定します。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- filter:foo = quux %in %out --&gt;
 </pre>
+
 <p>　ここで <code>&lt;!-- filter:</code> の直後から <code>=</code> まで（ここでは <code>foo</code> ）がフィルタ名、 <code>=</code> から 最後の <code>--&gt;</code> の手前まで（ここでは <code>quux %in %out</code> ）が実行するフィルタプログラムです。 <code>%in</code> と <code>%out</code> は入力ファイル名と出力ファイル名のプレースホルダで、実際に使用されるファイル名は turnup が都度決定します。この他にフィルタ名（上記では <code>foo</code> ）に展開されるプレースホルダとして <code>%type</code> も利用できます。</p>
 <p>　上記のように定義されていると、turnup はフィルタ名として foo が指定された <a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を見つけた場合に、以下の要領で処理を行ないます。</p>
 <ul>
@@ -1151,35 +1227,39 @@ index 16fc9f4..8387187 100644
 </ul>
 <p>　<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は turnup が提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>よりも優先度が高いことに注意してください。同じ名前のフィルタがある場合、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>が優先されます。</p>
 <p> 　version 0.843 以降では、<a class='autolink' href='#18dTPnzNOgg'>デフォルトフィルタ</a>を定義することができるようになりました。これは、従来の<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>にも内部フィルタにも該当しなかった場合に実行されるフィルタを定義するものです。以下の要領で記述します。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- filter-default:foobar.sh %type %in %out --&gt;
 </pre>
+
 <h3><a name='fJ4r3VpDmqg'></a>6.19 テーブルの生成</h3>
 <p>　markdown 書法での<a class='autolink' href='#g6xjP526KX7'>テーブル</a>作成は <a class='term' href='#ahN3t8jbawv'>HTML</a> 直書きよりは簡単ですが、楽しい作業ではありません。特に、頻繁に更新される外部データを毎回変換するような作業の場合は面倒です。そのような場合、内部フィルタの <a class='autolink' href='#fJ4r3VpDmqg'>table</a> が便利かもしれません。以下のようにすれば、CSV形式のデータを<a class='autolink' href='#g6xjP526KX7'>テーブル</a>に変換することができます。</p>
-<pre>
+<pre class='hl'>
 ~~~table
 foo,bar,quux
-10,20,30
-40,50,60
-70,80,90
+<span class="hl num">10</span>,<span class="hl num">20</span>,<span class="hl num">30</span>
+<span class="hl num">40</span>,<span class="hl num">50</span>,<span class="hl num">60</span>
+<span class="hl num">70</span>,<span class="hl num">80</span>,<span class="hl num">90</span>
 ~~~
 </pre>
+
 <p>　外部ファイルからデータをコピーしてくるのが面倒なら、以下のように <code>include</code> で取り込んでしまえば良いでしょう。</p>
-<pre>
+<pre class='hl'>
 ~~~table
 &lt;!-- i​nclude: table.csv --&gt;
 ~~~
 </pre>
+
 <p>　区切り文字はデフォルトでカンマですが、先頭行で指定すれば変更することができます。タブ文字にしたければ以下のようになります。タブ以外の場合は <code>delimiter=</code> に続けて１文字を指定してください<sup><a name='footnote_ref14' href='#footnote14'>14</a></sup>。</p>
-<pre>
+<pre class='hl'>
 ~~~table
 delimiter=tab
 foo	bar	quux
-10	20	30
-40	50	60
-70	80	90
+<span class="hl num">10	20	30</span>
+<span class="hl num">40	50	60</span>
+<span class="hl num">70	80	90</span>
 ~~~
 </pre>
+
 <p>　この <code>table</code> フィルタは内部的には「行頭と行末に | を付加し、区切り文字を | に変換」した上で通常の<a class='autolink' href='#g6xjP526KX7'>テーブル</a>として処理する、という方法を取っています。そのため、以下のメリット／デメリットがあります。</p>
 <ul>
 <li>アライメント指定行が使用できます</li>
@@ -1193,7 +1273,7 @@ foo	bar	quux
 </ul>
 <h3><a name='hMHXjTrWEnw'></a>6.20 領域の折り畳み</h3>
 <p>　以下のように 2 つの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>で囲まれた部分は、折り畳み可能な領域になります。その最初の行は常に表示されるタイトルで、クリックするたびに表示状態を切り替えることができます。２行目以降は折り畳まれる部分です。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- collapse:open --&gt;
   TITLE_LINE
       :
@@ -1201,20 +1281,22 @@ foo	bar	quux
       :
   &lt;!-- collapse:end --&gt;
 </pre>
+
 <p>　　</p>
 <p>　最初の <code>collapse:</code> に続く <code>open</code> は「初期状態で折り畳まない」という意味で、 <code>close</code> にすると初期状態で折り畳んでおくことができます。また、以前のバージョンとの互換性を保つため、<code>collapse:begin</code> という記述も引き続き有効です。これは <code>collapse:close</code> と同じ意味になります。</p>
 <p>　以下に例を示します。以下のように記述すると、</p>
-<pre>
+<pre class='hl'>
 &lt;!-- collapse:close --&gt;
-タイトル行は@{{color: red;}{文字修飾}}可能。 __クリック__ するたびに状態をトグルできます。
+タイトル行は&#64;{{color: red;}{文字修飾}}可能。 __クリック__ するたびに状態をトグルできます。
 ２行目以降は折り畳まれる中身です。通常通り、様々な記述をすることができます。
 
-* contents1
-* contents2
-* contents3
+<span class="hl kwd">*</span> contents1
+<span class="hl kwd">*</span> contents2
+<span class="hl kwd">*</span> contents3
 
 &lt;!-- collapse:end --&gt;
 </pre>
+
 <p>　以下のように表示されます。あと、<a href='#4e69JBVCRLW'>細かい話</a>にも注意事項が書いてありますので参照してください。</p>
 <details>
 <summary>タイトル行は<span style='color: red;'>文字修飾</span>可能。 <strong>クリック</strong> するたびに状態をトグルできます。</summary>
@@ -1240,41 +1322,48 @@ foo	bar	quux
 <p>　include は便利な機能ですが、ひとつ残念な制約があります。include は<a href='#9IN7afRR0hr'>プリプロセス</a>よりも先に実行されるため、 <strong>ファイル名を格納した変数を include のパラメータ部分で展開することはできません。</strong></p>
 <h4><a name='7dx1C8sPEB4'></a>6.21.1 起動オプションでの検索パス追加</h4>
 <p>　include するファイルは turnup 実行時のカレントディレクトリから検索されますが、起動オプションを指定することで複数のディレクトリを検索パスとして追加することができます。以下のように <code>-IPATH</code> の形式で指定してください。</p>
-<pre>
-turnup -I../headers -I~/turnup/headers  DATA.md &gt; OUTPUT.htm
+<pre class='hl'>
+turnup <span class="hl kwb">-I</span>..<span class="hl opt">/</span>headers <span class="hl kwb">-I</span>~<span class="hl opt">/</span>turnup<span class="hl opt">/</span>headers  DATA.md <span class="hl opt">&gt;</span> OUTPUT.htm
 </pre>
+
 <p>　include で指定された名前のファイルが複数の検索パスに存在する場合、もっとも優先されるのは「処理中のファイルのあるディレクトリ」にあるファイルで、それに続いて起動オプションで指定された順番になります。<sup><a name='footnote_ref15' href='#footnote15'>15</a></sup></p>
 <h3><a name='hs1guSfsFGb'></a>6.22 改ページ指定</h3>
 <p>　以下の<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を記述することで、印刷時にその位置で改ページをすることができます。<sup><a name='footnote_ref16' href='#footnote16'>16</a></sup></p>
-<pre>
+<pre class='hl'>
 &lt;!-- embed:pagebreak --&gt;
 </pre>
+
 <h3><a name='4eSrElLWBcH'></a>6.23 変数の定義と展開</h3>
 <h4><a name='2yDQLphjQX0'></a>6.23.1 データ内での設定と展開</h4>
 <p>　変数に値を設定し、任意の場所でその値を展開することができます。変数の定義は以下の要領で記述します。ここでは、変数 FOO に値として 777 を設定しています。</p>
-<pre>
-&lt;!-- define: FOO = 777 --&gt;
+<pre class='hl'>
+&lt;!-- define: FOO = <span class="hl num">777</span> --&gt;
 </pre>
+
 <p>　<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を（特に値の前後端に）含む値を変数に設定したい場合、以下のように値にシングルクォートまたはダブルクォートで括ることができます（この場合クォート文字は値に含まれません）。</p>
-<pre>
-&lt;!-- define: VAR = ' a b c ' --&gt;
+<pre class='hl'>
+&lt;!-- define: VAR = &#39; a b c &#39; --&gt;
 </pre>
+
 <p>　version 0.822 より、以下のような記述で「<a href='#cjJv49XsD9d'>ページ内へのリンク</a>」に使用する<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>文字列を取得することができるようになりました。これは、<a href='#izIXv5I5ark'>rawフィルタ</a>や外部フィルタ内でページ内リンクを使用したい場合に使うことが想定されています。</p>
-<pre>
+<pre class='hl'>
 &lt;!-- define: VAR = [](#HEADER-TITLE) --&gt;
 </pre>
+
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには <code>${FOO}</code> 、 <code>$(FOO)</code> 、 <code>$[FOO]</code> または <code>$&lt;FOO&gt;</code> という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <p>　version 0.828 より、 <code>${FOO}$</code> のような記述も単体の変数展開とみなすようになりました。これは、一部の markdown エディタにおいて $ から $ までを特定の書法として認識するため、 <code>${FOO}</code> のような変数展開によって表示が崩れる問題を回避するものです。ただし、 <code>${FOO}$(BAR)</code> のように変数展開が連続する場合は <code>${FOO}$</code> 部分を単独の変数展開とはみなしません。</p>
 <h4><a name='kW5fA3S8XIj'></a>6.23.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
-<pre>
-turnup -DFOO=777  DATA.md &gt; OUTPUT.htm
+<pre class='hl'>
+turnup <span class="hl kwb">-DFOO</span><span class="hl opt">=</span><span class="hl num">777</span>  DATA.md <span class="hl opt">&gt;</span> OUTPUT.htm
 </pre>
+
 <p>　この場合、<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を含めたい場合は以下のようにします。</p>
-<pre>
-turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
+<pre class='hl'>
+turnup <span class="hl sng">&#39;-DVAR= a b c &#39;</span>  DATA.md <span class="hl opt">&gt;</span> OUTPUT.htm
 </pre>
+
 <h4><a name='9Z7pya1EZOR'></a>6.23.3 システム変数</h4>
 <p>　<a class='autolink' href='#9Z7pya1EZOR'>システム変数</a>は turnup によって自動的に設定される変数です。以下が用意されています。</p>
 <table align='center'>
@@ -1287,7 +1376,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 </table>
 <h4><a name='j9BjIcbmRZz'></a>6.23.4 変数展開の制御</h4>
 <p>　変数展開を抑止したい局面もあるかもしれません。たとえば、シェルスクリプトのコードを提示する場合には、コード内の変数展開部分は turnup が処理する時点ではそのままにしておきたいでしょう。このような場合、以下のようにすることができます。</p>
-<pre>
+<pre class='hl'>
 &lt;!-- expand-variable:push disable --&gt;
         :
         :
@@ -1296,6 +1385,7 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
         :
 &lt;!-- expand-variable:pop --&gt;
 </pre>
+
 <p>　上記では、 <code>expand-variable:push</code> で <code>disable</code> を指定しています。これにより、<code>expand-variable:pop</code> が登場するまでの間は変数展開が抑止されます。 <code>disable</code> でなく <code>enable</code> を指定すれば、以降 <code>expand-variable:pop</code> の登場まで変数展開が行なわれます。書法からもわかる通り、これはスタック方式で機能します（つまりネストできます）。</p>
 <h3><a name='8sNFPrNb9kM'></a>6.24 条件分岐</h3>
 <p>　簡単な論理式を使用した<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>ができます。以下のように、<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>を利用して <code>if, elif, else, endif</code> を記述することができます。 <code>elif, else</code> についてはオプションです。 <code>EXPRESSION</code> で与える条件式が成立した部分だけが出力されます。</p>
@@ -1347,20 +1437,23 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <h3><a name='anSuBAd7F3R'></a>6.25 マクロ関数</h3>
 <p>　<a href='#4eSrElLWBcH'>変数定義</a>機能の拡張として、マクロ関数を利用することができます。これは変数定義において %1 〜 %9 のプレースホルダを埋め込んでおき、変数展開時にパラメータを与えることでこのプレースホルダを置き換えるというものです。</p>
 <p>　例として、文字列の色と背景色を反転させてみましょう。マクロ <code>INVERT</code> の定義は以下のようになります。</p>
-<pre>
- &lt;!-- define: INVERT = '@((background:darkgray;color:white;)(%1))' --&gt;
+<pre class='hl'>
+ &lt;!-- define: INVERT = &#39;&#64;((background:darkgray;color:white;)(%<span class="hl num">1</span>))&#39; --&gt;
 </pre>
+
 <p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を括弧で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
-<pre>
+<pre class='hl'>
  ${{NAME}{PARAM1}{PARAM2}...}
  $((NAME)(PARAM1)(PARAM2)...)
  $[[NAME][PARAM1][PARAM2]...]
  $&lt;&lt;NAME&gt;&lt;PARAM1&gt;&lt;PARAM2&gt;...&gt;
 </pre>
+
 <p>　ここで <code>NAME</code> はマクロ関数の名前、 <code>PARAM1</code> 以降は %1 〜 %9 のプレースホルダを置き換えるためのパラメータです。括弧は<a href='#4eSrElLWBcH'>変数展開</a>と同じものを自由に使用できますが、パラメータの中でこれらの括弧を使う場合、それ以外の括弧を使用してください。先程の <code>INVERT</code> マクロを使うのであれば、 <code>$​{{INVERT}{この部分は反転される}}</code> などと記述することになるでしょう。これは以下のように展開され、実際の表示は <span style='background:darkgray;color:white;'>この部分は反転される</span>、となります。</p>
-<pre>
- @((background:darkgray;color:white;)(この部分は反転される))
+<pre class='hl'>
+ &#64;((background:darkgray;color:white;)(この部分は反転される))
 </pre>
+
 <p>　変数とマクロ関数は、定義上では区別はありません。つまり、マクロ関数は「プレースホルダを含む変数」に過ぎないのです。そのため、通常の変数展開の方法で <code>$​{INVERT}</code> とすればプレースホルダを含んだまま（<span style='background:darkgray;color:white;'>%1</span> に）展開されますし、変数展開同様に閉じ括弧に <code>$</code> を後続させることもできます。</p>
 <p>　マクロ関数はあくまで変数展開の一部なので、複数行に渡るブロックに展開されるような使い方は意図していません。複数行のブロックを生成したい場合は、後述する<a href='#8d4GujOuk9v'>スニペット</a>を使用してください。</p>
 <h4><a name='fzHpYhsZ8ub'></a>6.25.1 特殊なマクロ関数</h4>
@@ -1379,23 +1472,26 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <h3><a name='8d4GujOuk9v'></a>6.26 スニペット定義と展開</h3>
 <p>　<a href='#a2FYBDWqZUA'>include</a> は便利な機能ですが、別ファイルにする理由がない場合は煩雑に感じるかもしれません。一度だけ定義して、繰り返し使いたいパターンがあるだけの場合は、ファイル内で完結する方がよいでしょう。そのような場合には、snippet と expand という<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>が使用できます。</p>
 <p>　スニペットの定義は以下のいずれか<sup><a name='footnote_ref17' href='#footnote17'>17</a></sup>の要領で記述します。 <code>NAME</code> 部分には任意の名前を指定してください。</p>
-<pre>
+<pre class='hl'>
 &lt;​!-- snippet: NAME
     （ここに繰り返し使いたい内容を記述する）
--​-&gt;
+<span class="hl kwd">-</span>​-&gt;
 
 &lt;​!-- snippet: NAME --&gt;
     （ここに繰り返し使いたい内容を記述する）
 &lt;​!-- end snippet -​-&gt;
 </pre>
+
 <p>　そして、定義したスニペットは名前を指定して expand を使うことでその場所に展開できます。以下のように。</p>
-<pre>
+<pre class='hl'>
 &lt;​!-- expand: NAME --&gt;
 </pre>
+
 <p>　さらに、<a href='#anSuBAd7F3R'>マクロ関数</a>と同様に %1 〜 %9 のプレースホルダをパラメータで置き換えることができます。これを利用して、expand のたびに異なる出力を生成することができます。パラメータは、スニペット名に続けてスペース（またはタブ）で区切って並べてください。スペースやタブを含むパラメータを指定する場合、シングルクォートまたはダブルクォートで括ります。これらのパラメータは、左から順に %1 %2 %3... と置き換えられます。</p>
-<pre>
-&lt;​!-- expand: NAME  param1  'param include space'  --&gt;
+<pre class='hl'>
+&lt;​!-- expand: NAME  param1  &#39;param include space&#39;  --&gt;
 </pre>
+
 <p>　　</p>
 <p>　現在の実装では、スニペットの定義に関していくつかの制約があります。</p>
 <ul>
@@ -1420,13 +1516,15 @@ turnup '-DVAR= a b c '  DATA.md &gt; OUTPUT.htm
 <h3><a name='fr8UKwZ0LzR'></a>6.29 ルビの生成</h3>
 <p>　特殊なマクロ関数 <code>_RUBY</code> を使用することで、<a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a>をつけることができます。たとえば、<ruby>漢字<rt>かんじ</rt></ruby> としたい場合には <code>${{_RUBY}{漢字}{かんじ}}</code> と書きます。</p>
 <p>　このマクロ関数はデフォルトで用意されているものですが、必要に応じて上書きすることができます。たとえば以下のようにすることで、先ほどの例は 漢字（かんじ） に変換されます。</p>
-<pre>
- &lt;!-- define: _RUBY = '%1（%2）' --&gt;
+<pre class='hl'>
+ &lt;!-- define: _RUBY = &#39;%<span class="hl num">1</span>（%<span class="hl num">2</span>）&#39; --&gt;
 </pre>
+
 <p>　以下のようにすれば、文章を投稿する Web サービス向けの<a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a>書式になるでしょう。つまり、[[rb:漢字 &gt; かんじ]] に変換されます。</p>
-<pre>
- &lt;!-- define: _RUBY = '[[rb:%1 &gt; %2]]' --&gt;
+<pre class='hl'>
+ &lt;!-- define: _RUBY = &#39;[[rb:%<span class="hl num">1</span> &gt; %<span class="hl num">2</span>]]&#39; --&gt;
 </pre>
+
 <h3><a name='ln9al6BVnoP'></a>6.30 数式の生成</h3>
 <h4><a name='hoa6vrntxKM'></a>6.30.1 マクロ関数による数式の生成</h4>
 <p>　特殊なマクロ関数 <code>_MATH</code> を使用することで、Unicode 文字を使用した簡単な数式を生成することができます。これは結城浩さんの作成された <a href='https://textmath.hyuki.net/'>Text to Math Converter</a> の機能クローンで、マクロ関数のパラメータ部分に記述した ASCII テキストを変換するというものです。たとえば、 <code>${{_MATH}{ax^2 + bx + c = 0}}</code> が 𝑎𝑥² + 𝑏𝑥 + 𝑐 = 0 に変換されます。以下に記述方法を説明します。</p>
@@ -1614,91 +1712,105 @@ x = \frac{-b\pm\sqrt{b^{2}-4ac}}{2a}
 \]
 <h3><a name='cvixMbJNIbN'></a>6.31 ファイルの埋め込み</h3>
 <p>　<a class='autolink' href='#cvixMbJNIbN'>attach</a> フィルタを使用することで、ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> 内部に埋め込み、ダウンロードリンクとして提示することができます。以下の要領で記述指定ください。</p>
-<pre>
+<pre class='hl'>
 ~~~attach
 foo.zip
 bar.data
 quux.png
 ~~~
 </pre>
+
 <p>　指定されたファイルは base64 エンコーディングされ、上記の記述をした場所にダウンロードリンクのリストとして提示されます。当然ですが、turnup が動作する時点で該当ファイルにアクセスできなければなりません。</p>
 <h2><a name='cNngUDCfTMJ'></a>7 設定</h2>
 <h3><a name='0EKpSe2qrxR'></a>7.1 見出しにおける自動リンク</h3>
 <p>　<a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a>機能は、デフォルトでは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列（正確には<a href='#7HkxqP1TWY5'>見出し</a>および<a href='#gg7i7uPfLlo'>図と表のタイトル</a>）には適用されません。これは<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>内にリンクを生成するとうるさくなることや、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に存在する文字列は通常そのセクションの本文にも存在することが理由です。</p>
 <p>　この挙動を変えたい場合、以下の行を文書内に記載してください。<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>文字列内でも自動リンクが行なわれるようになります。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- config:term-link-in-header --&gt;
 </pre>
+
 <h3><a name='2M8QFQ2XeBn'></a>7.2 見出しの自動ナンバリング</h3>
 <p>　<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号付けを行なうことができます。この機能を有効化するには、以下の設定を文書内に記載します。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- config:header-numbering --&gt;
 </pre>
+
 <p>　これにより、1.1.1. 形式で<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>に自動的に番号が付与されます<sup><a name='footnote_ref18' href='#footnote18'>18</a></sup>。この番号を付与する<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のレベルを限定したい場合、以下のように記載します。この例では、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル２〜４の合計３レベルで採番されます。この場合、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベル1、および 5 以降には番号付けは適用されません。</p>
-<pre>
-  &lt;!-- config:header-numbering 2 4 --&gt;
+<pre class='hl'>
+  &lt;!-- config:header-numbering <span class="hl num">2 4</span> --&gt;
 </pre>
+
 <h3><a name='hJJbL4GzVpQ'></a>7.3 図表のナンバリング単位</h3>
 <p>　<a href='#gg7i7uPfLlo'>図表タイトル</a>、および<a href='#iVFblGs7lu7'>図表一覧生成</a>に適用される番号付けの規則を設定することができます。これには、以下のように記述します。この設定を省略した場合のデフォルト値は 0 です。</p>
-<pre>
-  &lt;!-- config:entity-numbering-depth 1 --&gt;
+<pre class='hl'>
+  &lt;!-- config:entity-numbering-depth <span class="hl num">1</span> --&gt;
 </pre>
+
 <p>　0 が指定された場合、図と表それぞれについて、文書全体を通して 1 から始まる連番が付与されます。つまり、図であれば Figure.1 xxxxx、Figure.2 yyyyy といった要領です（表の場合は Table.1 zzzzz）となります。</p>
 <p>　1 以上を指定した場合、「<a href='#2M8QFQ2XeBn'>7.2  見出しの自動ナンバリング</a>」で指定した番号付け対象の<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>のうち、先頭から指定した数のレベルを単位として 1 から始まる番号付けを行ないます。こう書くとわかりにくいですが、たとえば以下のようにした場合、</p>
-<pre>
-  &lt;!-- config:header-numbering 2 4 --&gt;
-  &lt;!-- config:entity-numbering-depth 2 --&gt;
+<pre class='hl'>
+  &lt;!-- config:header-numbering <span class="hl num">2 4</span> --&gt;
+  &lt;!-- config:entity-numbering-depth <span class="hl num">2</span> --&gt;
 </pre>
+
 <p>まず、ナンバリングをする<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>はレベル 2,3,4 です。そして、図表については<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルの 2,3 が一致するものについて 1 から連番で番号付けをし、これらの<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>レベルが変化するとまた 1 からナンバリングが始まります。なお、この場合は図であれば Figure.1.2-1 xxxxxx といった書式になります。</p>
 <p>　version 0.835 より、この設定において数値の他に <code>off</code> が指定可能になりました。 <code>off</code> を指定すると、図表の自動ナンバリングが無効化されます。これは、図表タイトルに図表番号含めることで手動での番号付けを行ないたい場合に対応するものです。</p>
 <h3><a name='jkzhEyZU0ts'></a>7.4 スタイルシートの埋め込み</h3>
 <p>　<a href='#kyMp8IkRK8n'>スタイルシートの指定</a>は、デフォルトではスタイルシートの参照が出力されるだけですが、以下の設定が文書内に記述されていると、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> の内部にスタイルシートの内容を埋め込むようになります。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- config:embed-stylesheet --&gt;
 </pre>
+
 <p>　これによって、以下のように埋め込みが行なわれます。</p>
-<pre>
-&lt;html&gt;
-&lt;header&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
-    &lt;meta http-equiv="Content-Style-Type" content="text/css"&gt;
-    &lt;title&gt;document title&lt;/title&gt;
-  &lt;style&gt;
-  &lt;!--
-    :
-    :
-  --&gt;
-  &lt;/style&gt;
-&lt;/header&gt;
+<pre class='hl'>
+<span class="hl kwa">&lt;html&gt;</span>
+<span class="hl kwa">&lt;header&gt;</span>
+    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl sng">&quot;Content-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl sng">&quot;text/html; charset=utf-8&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl sng">&quot;Content-Style-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl sng">&quot;text/css&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;title&gt;</span>document title<span class="hl kwa">&lt;/title&gt;</span>
+  <span class="hl kwa">&lt;style&gt;</span>
+  <span class="hl opt">&lt;!--</span>
+    <span class="hl opt">:</span>
+    <span class="hl opt">:</span> （この部分に CSS が埋め込まれる）
+    <span class="hl opt">:</span>
+  <span class="hl opt">--&gt;</span>
+  <span class="hl kwa">&lt;/style&gt;</span>
+<span class="hl kwa">&lt;/header&gt;</span>
 </pre>
+
 <p>　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。</p>
 <h3><a name='8a3vnTcmVrk'></a>7.5 コメントの出力</h3>
 <p>　<a href='#cPmXTXvPhJd'>コメント</a>は記述しても <a class='term' href='#ahN3t8jbawv'>HTML</a> には出力されませんが、以下の設定を文書内に記述することで、この挙動を変えることができます。具体的には、<a class='term' href='#ahN3t8jbawv'>HTML</a> スタイルの<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>をそのまま出力するようになります。<sup><a name='footnote_ref19' href='#footnote19'>19</a></sup></p>
-<pre>
+<pre class='hl'>
   &lt;!-- config:write-comment --&gt;
 </pre>
+
 <h3><a name='gSChjoBbaKA'></a>7.6 MathJax 利用の明示的宣言</h3>
 <p>　turnup は基本的に MathJax の利用を自動的に検出して必要な <code>&lt;script&gt;</code> タグを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> のヘッダに挿入しますが、これがうまく動作しない場合があります<sup><a name='footnote_ref20' href='#footnote20'>20</a></sup>。そのような場合、以下の設定を記述してください。強制的に MathJax スクリプトへの参照を挿入します。</p>
-<pre>
+<pre class='hl'>
   &lt;!-- config:use-mathjax --&gt;
 </pre>
+
 <h3><a name='5xO3F2FIOq7'></a>7.7 脚注のプレフィクス設定</h3>
 <p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>で使用されるリンクは通常 1 から始まる連番で表示されますが、<a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定を使用することによってリンクに任意のプレフィクスを表示させることができます。たとえば以下のようにすることで、</p>
-<pre>
-  &lt;!-- config:footnote-prefix  JP  '訳注 ' --&gt;
+<pre class='hl'>
+  &lt;!-- config:footnote-prefix  JP  &#39;訳注 &#39; --&gt;
 </pre>
+
 <p>タグ <code>JP</code> を使う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>（つまり <code>{{fn(JP):...}}</code> という形式）で表示されるリンクが <code>訳注 1</code> といった文字列になります。この <a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定は複数のタグに対して指定することができます。</p>
 <h3><a name='cbWPeXQzpuZ'></a>7.8 HTML の直接出力抑止</h3>
 <p>　入力となる markdown データの内容を直接制御できない場合、 <a class='autolink' href='#bgMf2ByrmS1'>_HTML</a> マクロ関数や <a class='autolink' href='#izIXv5I5ark'>raw</a> フィルタの使用を許可するのは危険かもしれません。そのような場合、<a class='autolink' href='#cbWPeXQzpuZ'>--safe オプション</a>を使用するとよいでしょう。</p>
-<pre>
- turnup  --safe  input.md  &gt; output.html
+<pre class='hl'>
+ turnup  <span class="hl kwb">--safe</span>  input.md  <span class="hl opt">&gt;</span> output.html
 </pre>
+
 <p>　<a class='autolink' href='#cbWPeXQzpuZ'>--safe オプション</a>をつけて turnup を起動すると、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を直接指定する機能は効力を失います。つまり、<a class='autolink' href='#izIXv5I5ark'>raw</a> フィルタは単純な pre ブロックとなり、<a class='autolink' href='#bgMf2ByrmS1'>_HTML</a> マクロ関数はその内容に含まれるタグを全てエスケープして出力します。</p>
 <h3><a name='4eavleCRdA9'></a>7.9 ハッシュ値生成に対する salt 指定</h3>
 <p>　turnup では、主にページ内リンクのための<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>にハッシュ値を生成して使用しています。起動パラメータ --salt を使用することにより、このハッシュ値生成にソルトを指定することができます。以下の要領で、 <code>--salt=</code> に続けて任意の文字列を指定してください。</p>
-<pre>
- turnup  --salt=VWXYZ  input.md  &gt; output.html
+<pre class='hl'>
+ turnup  <span class="hl kwb">--salt</span><span class="hl opt">=</span>VWXYZ  input.md  <span class="hl opt">&gt;</span> output.html
 </pre>
+
 <p>　turnup におけるハッシュ値生成は<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>の生成だけが目的のため、ここで指定するソルトはセキュリティとは何の関係もありません。このオプションは、「その出力ファイルがどのソルト指定によって作成されたかを識別するため」に使用することを想定しています。</p>
 <p>　　</p>
 <h2><a name='4e69JBVCRLW'></a>8 細かい話</h2>
@@ -1734,18 +1846,20 @@ quux.png
 <p>　文書のテキスト管理を徹底しようとすると、ダイアグラムやグラフなどの視覚的な要素が問題になります。アスキーアートは誰もが好きなわけではありませんし、メンテナンスし易いわけでもありません<sup><a name='footnote_ref21' href='#footnote21'>21</a></sup>。他の方法で作図をし、画像ファイルに変換して<a href='#hpQu1WK1Nkr'>貼り付ける</a>こともできますが、それをやった時点で図はテキスト管理から漏れ出してしまいます。ここでは、作図まで全てテキストで頑張るための方法を紹介します。</p>
 <h4><a name='bCCDfsVD85P'></a>8.8.1 PlantUML</h4>
 <p>　UML を書きたければ、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a><sup><a name='footnote_ref22' href='#footnote22'>22</a></sup> が現実的な選択肢になります。ダイアグラムの定義はテキストで書くことができますし、出力として SVG 形式を選択すればテキスト形式で turnup の出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> に埋め込むことができます。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の詳細については割愛しますが、<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の jar が turnup のデータディレクトリと同じ場所にあるなら、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義は以下のようになるでしょう。</p>
-<pre>
+<pre class='hl'>
 &lt;​!-- filter:plantuml = cat %in | java -jar ./plantuml.jar -pipe -tsvg &gt; %out --&gt;
 </pre>
+
 <p>　これで、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a> <code>plantuml</code> が使えるようになります。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> 公式サイトの例を借りるなら、以下のように記述すれば、</p>
-<pre>
-```plantuml
-@startuml
-Bob -&gt; Alice : Request
-Alice -&gt; Bob : Response
-@enduml
-```
+<pre class='hl'>
+<span class="hl sng">```plantuml</span>
+<span class="hl sng">&#64;startuml</span>
+<span class="hl sng">Bob -&gt; Alice : Request</span>
+<span class="hl sng">Alice -&gt; Bob : Response</span>
+<span class="hl sng">&#64;enduml</span>
+<span class="hl sng">```</span>
 </pre>
+
 <p>　以下のように埋め込みが行なわれます。図中のテキストも選択・コピーなどが可能であることにご注目。</p>
 <div align='center'>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="141px" preserveAspectRatio="none" style="width:136px;height:141px;background:#FFFFFF;" version="1.1" viewBox="0 0 136 141" width="136px" zoomAndPan="magnify"><defs/><g><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="25" x2="25" y1="34" y2="108"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="106.5" x2="106.5" y1="34" y2="108"/><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="24.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="40" x="5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26" x="12" y="126.3184">Bob</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="24.3184">Alice</text><rect fill="#E2E2F0" height="28" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="47" x="83.5" y="107"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="90.5" y="126.3184">Alice</text><polygon fill="#181818" points="95,59,105,63,95,67,99,63" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="25" x2="101" y1="63" y2="63"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49" x="32" y="59.4385">Request</text><polygon fill="#181818" points="36,86,26,90,36,94,32,90" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="30" x2="106" y1="90" y2="90"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="58" x="42" y="86.4385">Response</text><!--MD5=[8e7ee5d8b195a523e828eb5189ffa1bd]
@@ -1765,57 +1879,61 @@ Country: JP
 </div>
 <p>　　</p>
 <p>　<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> のちょっとだけ残念な点は、Java ベースで動作が緩慢なことです。そのため、大量の UML ダイアグラムを含む文書を turnup にかける場合、無条件に全ダイアグラムを生成すると非常に時間がかかります。そこで、<a href='#7l2ZW620d5G'>一時ファイル名の規則</a>を利用して <a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の出力をキャッシュしましょう。以下のようなスクリプトを作成して、</p>
-<pre class='code'>
-<span class='comment'>#!bin/bash</span>
+<pre class='hl'>
+<span class="hl slc">#!bin/bash</span>
 
-IN=$1
-OUT=$2
-CACHE=.cache
-JAR=./plantuml.jar
-OPT=-Dfile.encoding=UTF-8
+IN<span class="hl opt">=</span><span class="hl kwd">$1</span>
+OUT<span class="hl opt">=</span><span class="hl kwd">$2</span>
+CACHE<span class="hl opt">=</span>.cache
+JAR<span class="hl opt">=</span>.<span class="hl opt">/</span>plantuml.jar
+OPT<span class="hl opt">=</span><span class="hl kwb">-Dfile</span>.encoding<span class="hl opt">=</span>UTF<span class="hl kwb">-8</span>
 
-<span class='keyword1'>if</span> [ ! -e ./${CACHE} ]; <span class='keyword1'>then</span>
-    mkdir ${CACHE}
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+<span class="hl kwa">fi</span>
 
-<span class='keyword1'>if</span> [ -e ./${CACHE}/${OUT}.svg ]; <span class='keyword1'>then</span>
-    touch ./${CACHE}/${OUT}.svg
-<span class='keyword1'>else</span>
-    cat ${IN} | java ${OPT} -jar ${JAR} -pipe -tsvg &gt;&gt; ./${CACHE}/${OUT}.svg
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
+<span class="hl kwa">else</span>
+    <span class="hl kwc">cat</span> <span class="hl kwd">${IN}</span> <span class="hl opt">|</span> java <span class="hl kwd">${OPT}</span> <span class="hl kwb">-jar</span> <span class="hl kwd">${JAR}</span> <span class="hl kwb">-pipe -tsvg</span> <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
+<span class="hl kwa">fi</span>
 
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./${OUT}
-cat ./${CACHE}/${OUT}.svg   &gt;&gt; ./${OUT}
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./${OUT}
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
 </pre>
+
 <p><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義で使うようにします。これで、.cache というディレクトリに <a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の出力ファイルがキャッシュされるようになり、turnup の実行時間が改善されます。</p>
-<pre>
+<pre class='hl'>
 &lt;!​-- filter:plantuml = bash ./plantuml.sh %in %out --&gt;
 </pre>
+
 <p>　　</p>
 <h4><a name='8aJF91OqXMS'></a>8.8.2 gnuplot</h4>
 <p>　グラフを描画したければ、ひとまずは <a class='autolink' href='#8aJF91OqXMS'>gnuplot</a> が選択肢になります。<a href='#bCCDfsVD85P'>PlantUML の場合</a>同様に出力をキャッシュする前提でスクリプトを置くならば、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>定義は以下のようになるでしょう。</p>
-<pre>
+<pre class='hl'>
 &lt;!​-- filter:gnuplot = bash ./gnuplot.sh %in %out --&gt;
 </pre>
+
 <p>　このスクリプトの内容は後回しにするとして、<a class='autolink' href='#8aJF91OqXMS'>gnuplot</a> はコマンドファイルとデータを個別に用意する必要があるので、以下のようにハイフンだけの行をセパレータにして両方記述するようにします。前半のコマンド部分では入出力ファイルを <code>in_file, out_file</code> としていますが、これはスクリプトでどうにかします。</p>
-<pre>
-```gnuplot
-set datafile separator ","
-set terminal svg size 500,300 fixed
-set output out_file
-plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle
-------------------------------------------------------------------------
-0,0,0
-1,32,1
-2,64,4
-   :
-   :
-38,1216,1444
-39,1248,1521
-40,1280,1600
-```
+<pre class='hl'>
+<span class="hl sng">```gnuplot</span>
+<span class="hl sng">set datafile separator &quot;,&quot;</span>
+<span class="hl sng">set terminal svg size 500,300 fixed</span>
+<span class="hl sng">set output out_file</span>
+<span class="hl sng">plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle</span>
+<span class="hl sng">------------------------------------------------------------------------</span>
+<span class="hl sng">0,0,0</span>
+<span class="hl sng">1,32,1</span>
+<span class="hl sng">2,64,4</span>
+<span class="hl sng">   :</span>
+<span class="hl sng">   :</span>
+<span class="hl sng">38,1216,1444</span>
+<span class="hl sng">39,1248,1521</span>
+<span class="hl sng">40,1280,1600</span>
+<span class="hl sng">```</span>
 </pre>
+
 <p>　これで、以下のような SVG 画像が埋め込まれます。</p>
 <div align='center'>
 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
@@ -1993,90 +2111,95 @@ plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle
 <p>　最後に、スクリプトの内容を以下に示します。セパレータ行の前後を一時ファイルに振り分けること、入出力ファイルをコマンドファイル冒頭に書き込むことなどがポイントです。なお、エラー処理などは不十分な状態です。</p>
 <details>
 <summary><a class='autolink' href='#8aJF91OqXMS'>gnuplot</a>.sh の内容はこちら</summary>
-<pre class='code'>
-<span class='comment'>#!/bin/bash</span>
+<pre class='hl'>
+<span class="hl slc">#!/bin/bash</span>
 
-IN=$1
-OUT=$2
-CACHE=.cache
-APP=gnuplot
+IN<span class="hl opt">=</span><span class="hl kwd">$1</span>
+OUT<span class="hl opt">=</span><span class="hl kwd">$2</span>
+CACHE<span class="hl opt">=</span>.cache
+APP<span class="hl opt">=</span>gnuplot
 
-<span class='keyword1'>if</span> [ ! -e ./${CACHE} ]; <span class='keyword1'>then</span>
-    mkdir ${CACHE}
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+<span class="hl kwa">fi</span>
 
-<span class='keyword1'>if</span> [ -e ./${CACHE}/${OUT}.svg ]; <span class='keyword1'>then</span>
-    touch ./${CACHE}/${OUT}.svg
-<span class='keyword1'>else</span>
-    LINENUM=`grep -n <span class='literal'>'^-\+$'</span> ${IN} | perl -pe <span class='literal'>'s/^(\d):-+$/\1/'</span>`
-    LINECNT=`cat ${IN} | wc -l`
-    <span class='keyword1'>if</span> [ ! -z <span class='literal'>"${LINENUM}"</span> ]; <span class='keyword1'>then</span>
-        <span class='keyword3'>echo</span> <span class='literal'>"in_file=\"${IN}.dat\""</span> &gt; ${IN}.gp
-        <span class='keyword3'>echo</span> <span class='literal'>"out_file=\"./${CACHE}/${OUT}.svg\""</span> &gt;&gt; ${IN}.gp
-        head -$((LINENUM - 1)) ${IN} &gt;&gt; ${IN}.gp
-        tail -$((LINECNT - LINENUM)) $IN &gt; ${IN}.dat
-        $APP ${IN}.gp
-        rm ${IN}.gp
-        rm ${IN}.dat
-    <span class='keyword1'>fi</span>
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
+<span class="hl kwa">else</span>
+    LINENUM<span class="hl opt">=</span><span class="hl sng">`grep -n &#39;^-\+$&#39;</span> <span class="hl ipl">${IN}</span> <span class="hl sng">| perl -pe &#39;s/^(\d):-+$/\1/&#39;`</span>
+    LINECNT<span class="hl opt">=</span><span class="hl sng">`cat</span> <span class="hl ipl">${IN}</span> <span class="hl sng">| wc -l`</span>
+    <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-z</span> <span class="hl sng">&quot;</span><span class="hl ipl">${LINENUM}</span><span class="hl sng">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+        <span class="hl kwb">echo</span> <span class="hl sng">&quot;in_file=</span><span class="hl esc">\&quot;</span><span class="hl sng"></span><span class="hl ipl">${IN}</span><span class="hl sng">.dat</span><span class="hl esc">\&quot;</span><span class="hl sng">&quot;</span> <span class="hl opt">&gt;</span> <span class="hl kwd">${IN}</span>.gp
+        <span class="hl kwb">echo</span> <span class="hl sng">&quot;out_file=</span><span class="hl esc">\&quot;</span><span class="hl sng">./</span><span class="hl ipl">${CACHE}</span><span class="hl sng">/</span><span class="hl ipl">${OUT}</span><span class="hl sng">.svg</span><span class="hl esc">\&quot;</span><span class="hl sng">&quot;</span> <span class="hl opt">&gt;&gt;</span> <span class="hl kwd">${IN}</span>.gp
+        <span class="hl kwc">head</span> <span class="hl opt">-</span><span class="hl kwd">$((LINENUM - 1)</span><span class="hl opt">)</span> <span class="hl kwd">${IN}</span> <span class="hl opt">&gt;&gt;</span> <span class="hl kwd">${IN}</span>.gp
+        <span class="hl kwc">tail</span> <span class="hl opt">-</span><span class="hl kwd">$((LINECNT - LINENUM)</span><span class="hl opt">)</span> <span class="hl kwd">$IN</span> <span class="hl opt">&gt;</span> <span class="hl kwd">${IN}</span>.dat
+        <span class="hl kwd">$APP ${IN}</span>.gp
+        <span class="hl kwc">rm</span> <span class="hl kwd">${IN}</span>.gp
+        <span class="hl kwc">rm</span> <span class="hl kwd">${IN}</span>.dat
+    <span class="hl kwa">fi</span>
+<span class="hl kwa">fi</span>
 
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./${OUT}
-cat ./${CACHE}/${OUT}.svg   &gt;&gt; ./${OUT}
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./${OUT}
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
 </pre>
+
 </details>
 <h3><a name='62CICfavwWM'></a>8.9 画像ファイルを HTML 内に取り込む方法</h3>
 <details>
 <summary>※ version 0.839 で<a href='#jj2RDRZoMS1'>画像埋込みがサポート</a>されたため、この項目は不要となりました。折り畳んで遺しておきます。</summary>
 <p>　<a href='#8qCsTwp3HZT'>前節</a>ではテキストで作図をする方法をいくつか紹介しましたが、ここでは png 形式などの画像ファイルを出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> ファイル内に埋め込む方法を紹介します<sup><a name='footnote_ref23' href='#footnote23'>23</a></sup>。</p>
 <p>　<a href='#8qCsTwp3HZT'>前節</a>と同じように、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>を定義します（内容については後述）。</p>
-<pre>
+<pre class='hl'>
 &lt;!​-- filter:embed_image = bash ./embed_image.sh %in %out --&gt;
 </pre>
+
 <p>　この<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は以下のように使用します。つまり、埋め込みたいファイル名を指定します。</p>
-<pre>
-```embed_image
-./tmp.png
-```
+<pre class='hl'>
+<span class="hl sng">```embed_image</span>
+<span class="hl sng">./tmp.png</span>
+<span class="hl sng">```</span>
 </pre>
+
 <p>　これによって、以下のような内容が埋め込まれます。</p>
-<pre>
-&lt;div align='center'&gt;
-  &lt;img src='data:image/png;base64,iVBORw0K...(omit)...K5CYII=' /&gt;
-&lt;/div&gt;
+<pre class='hl'>
+<span class="hl kwa">&lt;div</span> align=&#39;center&#39;<span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;img</span> src=&#39;data:image/png;base64,iVBORw0K...(omit)...K5CYII=&#39; <span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
 </pre>
+
 <p>　　</p>
 <p>　最後に、スクリプトの内容を以下に示します。このスクリプトについては、以下の点に注意してください。</p>
 <ul>
 <li>MIME タイプの <code>image/</code> に後続する部分はファイルの拡張子から取っています。</li>
 <li>base64 を使うため、元の画像ファイルの 4/3 倍のサイズのテキストを埋め込むことになります。</li>
 </ul>
-<pre class='code'>
-<span class='comment'>#!/bin/bash</span>
+<pre class='hl'>
+<span class="hl slc">#!/bin/bash</span>
 
-IN=$1
-OUT=$2
-CACHE=.cache
+IN<span class="hl opt">=</span><span class="hl kwd">$1</span>
+OUT<span class="hl opt">=</span><span class="hl kwd">$2</span>
+CACHE<span class="hl opt">=</span>.cache
 
-<span class='keyword1'>if</span> [ ! -e ./${CACHE} ]; <span class='keyword1'>then</span>
-    mkdir ${CACHE}
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+<span class="hl kwa">fi</span>
 
-<span class='keyword1'>if</span> [ -e ./${CACHE}/${OUT}.dat ]; <span class='keyword1'>then</span>
-    touch ./${CACHE}/${OUT}.dat
-<span class='keyword1'>else</span>
-    FILE=`cat <span class='literal'>"${IN}"</span>`
-    TYPE=`<span class='keyword3'>echo</span> ${FILE} | perl -pe <span class='literal'>"s/^.+\.(.+)$/\1/"</span>`
-    <span class='keyword3'>echo</span> -n <span class='literal'>"&lt;img src='data:image/${TYPE};base64,"</span> &gt; ./${CACHE}/${OUT}.dat
-    base64 ${FILE} &gt;&gt; ./${CACHE}/${OUT}.dat
-    <span class='keyword3'>echo</span> <span class='literal'>"' /&gt;"</span>  &gt;&gt; ./${CACHE}/${OUT}.dat
-<span class='keyword1'>fi</span>
+<span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat <span class="hl opt">];</span> <span class="hl kwa">then</span>
+    <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
+<span class="hl kwa">else</span>
+    FILE<span class="hl opt">=</span><span class="hl sng">`cat &quot;</span><span class="hl ipl">${IN}</span><span class="hl sng">&quot;`</span>
+    TYPE<span class="hl opt">=</span><span class="hl sng">`echo</span> <span class="hl ipl">${FILE}</span> <span class="hl sng">| perl -pe &quot;s/^.+\.(.+)$/\1/&quot;`</span>
+    <span class="hl kwb">echo -n</span> <span class="hl sng">&quot;&lt;img src=&#39;data:image/</span><span class="hl ipl">${TYPE}</span><span class="hl sng">;base64,&quot;</span> <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
+    base64 <span class="hl kwd">${FILE}</span> <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
+    <span class="hl kwb">echo</span> <span class="hl sng">&quot;&#39; /&gt;&quot;</span>  <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
+<span class="hl kwa">fi</span>
 
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;div align='center'&gt;"</span>  &gt; ./${OUT}
-cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
-<span class='keyword3'>echo</span> <span class='literal'>"&lt;/div&gt;"</span>               &gt;&gt; ./${OUT}
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
 </pre>
+
 </details>
 <h3><a name='6cOilIw9D0i'></a>8.10 自動リンクと文字装飾の優先順位について</h3>
 <p>　基本的なルールは次の通りです。</p>
@@ -2096,13 +2219,14 @@ cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
 <details>
 <summary>アライメント指定行を任意の位置に複数記述可能とすることでユーザーデータでの対処を可能にする修正を行ないました。詳細は<a class='autolink' href='#g6xjP526KX7'>テーブル</a>の説明を参照してください。</summary>
 <p>　<a class='autolink' href='#g6xjP526KX7'>テーブル</a>において列毎のアライメント指定と横／縦方向のセル結合を併用すると意図したようにアライメントが設定されない問題があります。これは、セルの処理においてセル結合の情報を考慮に入れていないために発生します。たとえば、以下の例では水平方向の結合によってそれよりも右側のセルで問題が生じています。</p>
-<pre>
+<pre class='hl'>
 | column A | column B | column C |
 |:---------|:--------:|---------:|
 |left      |center    |right     |
-|2&gt; left              |right?    |
+|<span class="hl num">2</span>&gt; left              |right?    |
 |left      |center    |right     |
 </pre>
+
 <table align='center'>
 <tr><th>column A</th><th>column B</th><th>column C</th></tr>
 <tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
@@ -2110,13 +2234,14 @@ cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
 <tr><td align='left'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
 </table>
 <p>　上記のような例では、問題は行に閉じているため対処は簡単だと思うかもしれません。しかし、縦方向の結合では先行する行の影響を受けることがわかります。</p>
-<pre>
+<pre class='hl'>
 | column A | column B | column C |
 |:---------|:--------:|---------:|
-|2^ left   |center    |right     |
+|<span class="hl num">2</span>^ left   |center    |right     |
            |center?   |right?    |
 |left      |center    |right     |
 </pre>
+
 <table align='center'>
 <tr><th>column A</th><th>column B</th><th>column C</th></tr>
 <tr><td align='left' rowspan='2'>left</td><td align='center'>center</td><td align='right'>right</td></tr>
@@ -2140,27 +2265,28 @@ cat ./${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}
 <details>
 <summary>　この問題は version 0.808 で修正されました。</summary>
 <p>　<a href='#f71ZNSHqufB'>C/C++ のコードハイライト</a>に問題があり、 <code>#if</code> や <code>#else</code> が正しく処理されません。先に <code>if</code> や <code>else</code> が正しく処理されてしまうバグがあり、以下のようになってしまいます。</p>
-<pre class='code'>
-<span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
-#<span class='keyword1'>if</span> 0
-    foo();
-#<span class='keyword1'>else</span>
-    bar();
-<span class='keyword3'>#endif</span>
-    <span class='keyword1'>return</span> 0;
-}
+<pre class='hl'>
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span> <span class="hl kwb">int</span> argc<span class="hl opt">,</span> <span class="hl kwb">char</span><span class="hl opt">*</span> argv<span class="hl opt">[] ) {</span>
+#<span class="hl kwa">if 0</span>
+    <span class="hl kwd">foo</span><span class="hl opt">();</span>
+#<span class="hl kwa">else</span>
+    <span class="hl kwd">bar</span><span class="hl opt">();</span>
+#<span class="hl kwa">endif</span>
+    <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
 </pre>
 <p>　この問題を解決するために、キーワードの処理順序を変更しました。以下のように正しくハイライトされるように修正済みです。</p>
-<pre class='code'>
-<span class='keyword2'>int</span> main( <span class='keyword2'>int</span> argc, <span class='keyword2'>char</span>* argv[] ) {
-<span class='keyword3'>#if</span> 0
-    foo();
-<span class='keyword3'>#else</span>
-    bar();
-<span class='keyword3'>#endif</span>
-    <span class='keyword1'>return</span> 0;
-}
+<pre class='hl'>
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span> <span class="hl kwb">int</span> argc<span class="hl opt">,</span> <span class="hl kwb">char</span><span class="hl opt">*</span> argv<span class="hl opt">[] ) {</span>
+<span class="hl ppc">#if 0</span>
+    <span class="hl kwd">foo</span><span class="hl opt">();</span>
+<span class="hl ppc">#else</span>
+    <span class="hl kwd">bar</span><span class="hl opt">();</span>
+<span class="hl ppc">#endif</span>
+    <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
 </pre>
+
 </details>
 <h3><a name='dguaQPYtqQN'></a>9.5 【解決済】リストの仕様が一般的な markdown と異なる</h3>
 <details>
