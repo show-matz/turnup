@@ -33,6 +33,7 @@ namespace turnup {
     static bool IsExpandVarPush( const TextSpan* pLine, bool& bEnable );
     static bool IsExpandVarPop( const TextSpan* pLine );
     static bool IsDefineLine( const TextSpan* pLine, TextSpan& name, TextSpan& value );
+    static bool IsUndefLine( const TextSpan* pLine, TextSpan& name );
     static TextSpan GetLinkTarget( const TextSpan& value );
     static bool IsConditionTop( const TextSpan* pLine, TextSpan& expression );
     static bool IsNextCondition( const TextSpan* pLine, TextSpan* pExprssion = nullptr );
@@ -95,6 +96,7 @@ namespace turnup {
         virtual bool Execute( TextSpan* pLineTop, TextSpan* pLineEnd ) override;
         virtual bool RegisterVariable( const TextSpan& name, const TextSpan& value ) override;
     private:
+        bool UnregisterVariable( const TextSpan& name );
         TextSpan FindVariable( const TextSpan& posRef ) const;
         TextSpan ExpandMacro( const TextSpan& posRef ) const;
         bool FindVariableImpl( TextSpan name, TextSpan& value ) const;
@@ -177,6 +179,14 @@ namespace turnup {
                 }
                 continue;
             }
+            //undef 行の場合、変数を削除
+            if( IsUndefLine( pLine, name ) ) {
+                if( this->UnregisterVariable( name ) == false ) {
+                    std::cerr << "ERROR : variable '" << name << "' is not found." << std::endl;
+                    return false;
+                }
+                continue;
+            }
             //条件分岐の場合
             TextSpan expr[4];
             uint32_t length = 0;
@@ -229,6 +239,20 @@ namespace turnup {
             itr->second = value;
         else
             m_variables.insert( itr, tmp );
+        return true;
+    }
+
+    bool PreProcessorImpl::UnregisterVariable( const TextSpan& name ) {
+        //check name
+        if( std::all_of( name.Top(), name.End(), IsVarNameChar ) == false )
+            return false;
+        Variable tmp{ name, TextSpan{} };
+        auto itr = std::lower_bound( m_variables.begin(),
+                                     m_variables.end(), tmp, CompareVariable );
+        if( itr == m_variables.end() || itr->first.IsEqual( name ) == false )
+            return false;
+        else
+            m_variables.erase( itr );
         return true;
     }
 
@@ -511,6 +535,17 @@ namespace turnup {
         if( tmp2.IsMatch( "[](", tmp1, ")" ) )
             tmp2 = GetLinkTarget( tmp1 );
         value = tmp2;
+        return true;
+    }
+
+    // <!-- undef: VAR_NAME --> 形式の行かを判定する
+    static bool IsUndefLine( const TextSpan* pLine, TextSpan& name ) {
+        TextSpan line = pLine->Trim();
+        TextSpan tmp;
+        if( line.IsMatch( "<!-- undef:", tmp, " -->" ) == false )
+            return false;
+        tmp = tmp.Trim();
+        name = tmp;
         return true;
     }
 

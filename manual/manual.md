@@ -1355,6 +1355,13 @@ turnup -I../headers -I~/turnup/headers  DATA.md > OUTPUT.htm
 
 <!-- expand-variable:pop -->
 
+　version 0.844 より、定義済みの変数を以下の要領で削除できるようになりました。
+
+~~~markdown
+<!-- undef: VAR -->
+~~~
+
+
 #### 起動オプションでの変数設定
 <!-- autolink: [-D オプション](#起動オプションでの変数設定) -->
 
@@ -2684,6 +2691,8 @@ ${BLANK_PARAGRAPH}
 * __2026/03/18 - version 0.843__
     * BUGFIX : version 0.842 でカバーしきれないレアケースに対処
     * ENHANCE : デフォルトフィルタ機能を追加
+* __2026/05/17 - version 0.844__
+    * ENHANCE : 変数を削除する undef を追加
 
 
 ${BLANK_PARAGRAPH}

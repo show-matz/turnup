@@ -90,10 +90,10 @@ code { color: #000;
 
 /* normal pre block */
 pre {
-    background:     #eee;
+    background:     #e0eaee;
     color:          #000;
-    font-size:      12px;
-    border:         1px solid #ccc;
+    font-size:      14px;
+    border:         1px solid #aaa;
     border-radius:  8px;
     margin-left:    2em;
     margin-right:   2em;
@@ -135,42 +135,42 @@ td { vertical-align: top; padding: 3px; border: 1px solid black;}
 
 /* for filters */
 pre.diff {
-    background:     #334;
-    color:          #fff;
+    background:     #e0eaee;
+    color:          #000000;
     font-size:      12px;
-    border:         1px solid #000;
+    border:         1px solid #aaa;
     border-radius:  8px;
     margin-left:    2em;
     margin-right:   2em;
     padding:       .5em;
 }
-span.diff_head { color: #FF88FF; background: #550055; font-weight: bold; }
-span.diff_line { color: #CCCCFF; background: #000077; font-weight: bold; }
-span.diff_add  { color: #DCFBDC; background: #004400; font-weight: bold; }
-span.diff_del  { color: #FBDCDC; background: #550000; font-weight: bold; }
+span.diff_head { color: #FFAAFF; background: #550055; font-weight: bold; }
+span.diff_line { color: #DDDDFF; background: #000077; font-weight: bold; }
+span.diff_add  { color: #006600; background: #DCFBDC; font-weight: bold; }
+span.diff_del  { color: #660000; background: #FBDCDC; font-weight: bold; }
 
 pre.code {
-    background:     #334;
-    color:          #fff;
-    font-size:      12px;
-    border:         1px solid #000;
+    background:     #e0eaee;
+    color:          #000000;
+    font-size:      14px;
+    border:         1px solid #aaa;
     border-radius:  8px;
     margin-left:    2em;
     margin-right:   2em;
     padding:       .5em;
 }
-span.comment  { color: darkorange; }
-span.keyword1 { color: cyan; }
-span.keyword2 { color: lime; }
-span.keyword3 { color: slateblue; }
-span.keyword4 { color: yellow; }
-span.keyword5 { color: skyblue; }
-span.keyword6 { color: lightgray; }
-span.literal  { color: pink; }
+span.comment  { color: brown; }
+span.keyword1 { color: blue; }
+span.keyword2 { color: green; }
+span.keyword3 { color: darkslateblue; }
+span.keyword4 { color: #b07e00; }
+span.keyword5 { color: purple; }
+span.keyword6 { color: gray; }
+span.literal  { color: #bf0303; }
 
 
 /* for highlight */
-pre.hl	{ color:#000000; background-color:#e0eaee; font-size:11pt; font-family:'Courier New',monospace; white-space: pre-wrap; }
+pre.hl  { color:#000000; background-color:#e0eaee; font-size:11pt; font-family:'Courier New',monospace; white-space: pre-wrap; }
 .hl.num { color:#b07e00; }
 .hl.esc { color:#ff00ff; }
 .hl.sng { color:#bf0303; }
@@ -1353,6 +1353,11 @@ turnup <span class="hl kwb">-I</span>..<span class="hl opt">/</span>headers <spa
 <p>　変数名に使用できる文字は英大小文字、数字、およびアンダースコアのみです。また、アンダースコアで始まる名前はシステム用に予約されています。アンダースコアで始まる名前を使用してもエラーにはなりませんが、結果は未定義です。</p>
 <p>　設定した変数を参照（展開）するには <code>${FOO}</code> 、 <code>$(FOO)</code> 、 <code>$[FOO]</code> または <code>$&lt;FOO&gt;</code> という要領で指定します。この変数展開は<a href='#9IN7afRR0hr'>プリプロセス段階</a>で実行されるため、バッククォートで括られた<a href='#2TegSYAerqJ'>コード</a>の内部でも展開されます。</p>
 <p>　version 0.828 より、 <code>${FOO}$</code> のような記述も単体の変数展開とみなすようになりました。これは、一部の markdown エディタにおいて $ から $ までを特定の書法として認識するため、 <code>${FOO}</code> のような変数展開によって表示が崩れる問題を回避するものです。ただし、 <code>${FOO}$(BAR)</code> のように変数展開が連続する場合は <code>${FOO}$</code> 部分を単独の変数展開とはみなしません。</p>
+<p>　version 0.844 より、定義済みの変数を以下の要領で削除できるようになりました。</p>
+<pre class='hl'>
+&lt;!-- undef: VAR --&gt;
+</pre>
+
 <h4><a name='kW5fA3S8XIj'></a>6.23.2 起動オプションでの変数設定</h4>
 <p>　変数は起動オプションでも定義することができます。以下のように <code>-DNAME=VALUE</code> の形式で指定してください。</p>
 <pre class='hl'>
@@ -2658,6 +2663,11 @@ CACHE<span class="hl opt">=</span>.cache
 <ul>
 <li>BUGFIX : version 0.842 でカバーしきれないレアケースに対処</li>
 <li>ENHANCE : <a class='autolink' href='#18dTPnzNOgg'>デフォルトフィルタ</a>機能を追加</li>
+</ul>
+</li>
+<li><strong>2026/05/17 - version 0.844</strong>
+<ul>
+<li>ENHANCE : 変数を削除する undef を追加</li>
 </ul>
 </li>
 </ul>
