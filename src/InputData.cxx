@@ -235,8 +235,9 @@ namespace turnup {
             if( 0 < lv && lv <= 6 && line[lv] == ' ' ) {
                 TextSpan tmp = line.TrimTail();    // 末尾の空白類文字を除去
                 tmp.Chomp( lv + 1, 0 );
-                if( toc.RegisterHeader( lv, tmp ) == false ) {
-                    std::cerr << "ERROR : header '";
+                if( toc.RegisterHeader( lv, tmp ) == false && docInfo.IsNeedWarning() ) {
+                    //重複検出：この時点では（設定次第で）警告を出すだけ
+                    std::cerr << "WARNING : header '";
                     std::cerr.write( tmp.Top(), tmp.ByteLength() );
                     std::cerr << "' is duplicated." << std::endl;
                 }
@@ -246,8 +247,9 @@ namespace turnup {
             if( line.BeginWith( "Table." ) ) {
                 TextSpan tmp = line;
                 tmp = tmp.Chomp( 6, 0 ).Trim();    // Table. を除去してから Trim
-                if( toc.RegisterTable( tmp ) == false ) {
-                    std::cerr << "ERROR : table '";
+                if( toc.RegisterTable( tmp ) == false && docInfo.IsNeedWarning() ) {
+                    //重複検出：この時点では（設定次第で）警告を出すだけ
+                    std::cerr << "WARNING : table '";
                     std::cerr.write( tmp.Top(), tmp.ByteLength() );
                     std::cerr << "' is duplicated." << std::endl;
                 }
@@ -256,8 +258,9 @@ namespace turnup {
             if( line.BeginWith( "Figure." ) ) {
                 TextSpan tmp = line;
                 tmp = tmp.Chomp( 7, 0 ).Trim();    // Figure. を除去してから Trim
-                if( toc.RegisterFigure( tmp ) == false ) {
-                    std::cerr << "ERROR : figure '";
+                if( toc.RegisterFigure( tmp ) == false && docInfo.IsNeedWarning() ) {
+                    //重複検出：この時点では（設定次第で）警告を出すだけ
+                    std::cerr << "WARNING : figure '";
                     std::cerr.write( tmp.Top(), tmp.ByteLength() );
                     std::cerr << "' is duplicated." << std::endl;
                 }
@@ -269,8 +272,9 @@ namespace turnup {
                 const char* pTerm2;
                 if( IsTermDefine( line, pTerm1, pTerm2 ) ) {
                     Utilities::Trim( pTerm1, pTerm2 );
-                    if( glossary.RegisterTerm( pTerm1, pTerm2 ) == false )
-                        std::cerr << "ERROR : link keyword '"
+                    //重複検出：この時点では（設定次第で）警告を出すだけ
+                    if( glossary.RegisterTerm( pTerm1, pTerm2 ) == false && docInfo.IsNeedWarning() )
+                        std::cerr << "WARNING : link keyword '"
                                   << TextSpan{ pTerm1, pTerm2 } << "' is duplicated." << std::endl;
                 }
                 continue;
@@ -308,8 +312,9 @@ namespace turnup {
                 }
                 if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
                     item = item.Trim();
-                    if( toc.RegisterAnchor( item ) == false ) {
-                        std::cerr << "ERROR : anchor '";
+                    if( toc.RegisterAnchor( item ) == false && docInfo.IsNeedWarning() ) {
+                        //重複検出：この時点では（設定次第で）警告を出すだけ
+                        std::cerr << "WARNING : anchor '";
                         std::cerr.write( item.Top(), item.ByteLength() );
                         std::cerr << "' is duplicated." << std::endl;
                     }
@@ -327,9 +332,12 @@ namespace turnup {
                         if( word.IsEmpty() )
                             std::cerr << "ERROR : link keyword is empty." << std::endl;
                         else if( glossary.RegisterAutoLink( word.Top(), word.End(),
-                                                            url.Top(), url.End() ) == false )
-                            std::cerr << "ERROR : link keyword '"
+                                                            url.Top(), url.End() ) == false
+                                                                     && docInfo.IsNeedWarning() ) {
+                            //重複検出：この時点では（設定次第で）警告を出すだけ
+                            std::cerr << "WARNING : link keyword '"
                                       << word << "' is duplicated." << std::endl;
+                        }
                     }
                     line.Clear();
                     continue;
@@ -353,7 +361,7 @@ namespace turnup {
                     if( item.IsQuoted() )
                         item.Chomp( 1, 1 );
                     bool ret = toc.RegisterLinkButton( bTop, item );
-                    if( !ret )
+                    if( !ret && docInfo.IsNeedWarning() )
                         std::cerr << "WARNING : toc-link directive duplicated." << std::endl;
                     line.Clear();
                     continue;
@@ -437,8 +445,9 @@ namespace turnup {
                         continue;
                     }
                     TextSpan name{ i1 + 3, i2 };
-                    if( toc.RegisterAnchor( name ) == false ) {
-                        std::cerr << "ERROR : anchor '";
+                    if( toc.RegisterAnchor( name ) == false && docInfo.IsNeedWarning() ) {
+                        //重複検出：この時点では（設定次第で）警告を出すだけ
+                        std::cerr << "WARNING : anchor '";
                         std::cerr.write( name.Top(), name.ByteLength() );
                         std::cerr << "' is duplicated." << std::endl;
                     }

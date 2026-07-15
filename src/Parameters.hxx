@@ -32,6 +32,7 @@ namespace turnup {
         const TextSpan* IncludePathTop() const;
         const TextSpan* IncludePathEnd() const;
         const char* GetCrcSalt() const;
+        bool NeedWarning() const;
     private:
         class Impl;
         Impl* m_pImpl;

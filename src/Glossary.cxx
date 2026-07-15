@@ -34,17 +34,21 @@ namespace turnup {
     public:
         inline uint32_t GetLength() const { return m_length; }
         inline const char* GetTerm() const { return m_pTerm; }
+        inline bool IsDuplicated() const { return m_bDuplicated; }
+        inline void SetDuplicated() { m_bDuplicated = true; }
         inline void Rebind( const char* pTop, const char* pEnd ) {
             m_pTerm  = pTop;
             m_length = pEnd - pTop;
         }
     private:
-        const char* m_pTerm;    // 用語文字列のポインタ
-        uint32_t    m_length;   // 用語文字列の長さ（バイト数）
+        const char* m_pTerm;        // 用語文字列のポインタ
+        uint32_t    m_length;       // 用語文字列の長さ（バイト数）
+        bool        m_bDuplicated;  // 重複検出フラグ
     };
 
     EntryBase::EntryBase( const char* pTop, const char* pEnd ) : m_pTerm( pTop ),
-                                                                 m_length( pEnd - pTop ) {
+                                                                 m_length( pEnd - pTop ),
+                                                                 m_bDuplicated( false ) {
     }
     EntryBase::~EntryBase() {
     }
@@ -199,8 +203,8 @@ namespace turnup {
         bool RegisterTerm( const char* pTop, const char* pEnd );
         bool RegisterAutoLink( const char* pTop, const char* pEnd,
                                const char* pTargetTop, const char* pTargetEnd );
-        const char* GetAnchorTag( const char* pTerm,
-                                  const char* pTermEnd ) const;
+        const char* GetAnchorTag( bool& bDuplicated,
+                                  const char* pTerm, const char* pTermEnd ) const;
         void SortIfNeed();
         void WriteWithTermLink( std::ostream& os,
                                 const char* pTop, const char* pEnd,
@@ -236,9 +240,9 @@ namespace turnup {
                                      const char* pUrlTop, const char* pUrlEnd ) {
         return m_pImpl->RegisterAutoLink( pTop, pEnd, pUrlTop, pUrlEnd );
     }
-    const char* Glossary::GetAnchorTag( const char* pTerm,
-                                        const char* pTermEnd ) const {
-        return m_pImpl->GetAnchorTag( pTerm, pTermEnd );
+    const char* Glossary::GetAnchorTag( bool& bDuplicated,
+                                        const char* pTerm, const char* pTermEnd ) const {
+        return m_pImpl->GetAnchorTag( bDuplicated, pTerm, pTermEnd );
     }
     void Glossary::WriteWithTermLink( std::ostream& os,
                                       const char* pTop,
@@ -297,12 +301,14 @@ namespace turnup {
         return true;
     }
 
-    const char* Glossary::Impl::GetAnchorTag( const char* pTerm,
-                                              const char* pTermEnd ) const {
+    const char* Glossary::Impl::GetAnchorTag( bool& bDuplicated,
+                                              const char* pTerm, const char* pTermEnd ) const {
         uint64_t hash = CRC64::Calc( 'G', pTerm, pTermEnd ); // 'G' means glossary.
         for( uint32_t i = 0; i < m_entries.size(); ++i ) {
-            if( m_entries[i]->GetHash() == hash )
+            if( m_entries[i]->GetHash() == hash ) {
+                bDuplicated = m_entries[i]->IsDuplicated();
                 return m_entries[i]->GetAnchorTag();
+            }
         }
         return nullptr;
     }
@@ -332,6 +338,12 @@ namespace turnup {
                     break;
                 if( pTop < p )
                     this->WriteWithTermLink( os, pTop, p, idx + 1, pWriteFunc );
+                if( pEntry->IsDuplicated() ) {
+                    //重複キーワードを参照した場合はエラーを出力
+                    std::cerr << "ERROR : Duplicated link target '";
+                    std::cerr.write( pTerm1, length );
+                    std::cerr << "' is reffered." << std::endl;
+                }
                 pEntry->Write( os, pWriteFunc );
                 pTop = p + length;
             }
@@ -348,6 +360,12 @@ namespace turnup {
         char mark = 0;
         styles.WriteOpenTag( os, "ul" ) << std::endl;
         for( const auto& entry : tmpEntries ) {
+            if( entry.second->IsDuplicated() ) {
+                //重複キーワードを参照した場合はエラーを出力
+                std::cerr << "ERROR : Duplicated link keyword '";
+                entry.second->Write( std::cerr, TextSpan::WriteWithEscape );
+                std::cerr << "' is reffered." << std::endl;
+            }
             if( entry.first != mark ) {
                 if( !!mark )
                     os << "</ul>" << std::endl << "</li>" << std::endl;
@@ -382,6 +400,12 @@ namespace turnup {
         SetupIndexEntries( tmpEntries );
         char mark = 0;
         for( const auto& entry : tmpEntries ) {
+            if( entry.second->IsDuplicated() ) {
+                //重複キーワードを参照した場合はエラーを出力
+                std::cerr << "ERROR : Duplicated link keyword '";
+                entry.second->Write( std::cerr, TextSpan::WriteWithEscape );
+                std::cerr << "' is reffered." << std::endl;
+            }
             if( entry.first != mark ) {
                 if( !!mark )
                     os << "</blockquote>" << std::endl << "</details>" << std::endl;
@@ -410,8 +434,10 @@ namespace turnup {
         for( uint32_t idx = 0; idx < m_entries.size(); ++idx ) {
             EntryBase* pEntry = m_entries[idx];
             if( len == pEntry->GetLength() &&
-                        !::strncmp( pTop, pEntry->GetTerm(), len ) )
+                        !::strncmp( pTop, pEntry->GetTerm(), len ) ) {
+                pEntry->SetDuplicated();
                 return false;
+            }
         }
         return true;
     }

@@ -32,6 +32,7 @@ namespace turnup {
         const TextSpan* IncludePathTop() const;
         const TextSpan* IncludePathEnd() const;
         const char* GetCrcSalt() const;
+        bool NeedWarning() const;
     private:
         typedef std::vector<TextSpan> Definitions;
         typedef std::vector<TextSpan> IncludePaths;
@@ -39,6 +40,7 @@ namespace turnup {
         TextSpan     m_inputFile;
         bool         m_versionMode;
         bool         m_safeMode;
+        bool         m_bNeedWarning;
         Definitions  m_definitions;
         IncludePaths m_includePaths;
         const char*  m_pCrcSalt;
@@ -81,6 +83,9 @@ namespace turnup {
     const char* Parameters::GetCrcSalt() const {
         return m_pImpl->GetCrcSalt();
     }
+    bool Parameters::NeedWarning() const {
+        return m_pImpl->NeedWarning();
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -90,6 +95,7 @@ namespace turnup {
     Parameters::Impl::Impl() : m_inputFile(),
                                m_versionMode( false ),
                                m_safeMode( false ),
+                               m_bNeedWarning( false ),
                                m_definitions(),
                                m_includePaths(),
                                m_pCrcSalt( 0 ) {
@@ -108,6 +114,8 @@ namespace turnup {
                 m_versionMode = true;
             } else if( !::strcmp( p, "--safe" ) ) {
                 m_safeMode = true;
+            } else if( !::strcmp( p, "--warning" ) ) {
+                m_bNeedWarning = true;
             } else if( !::strncmp( p, "-D", 2 ) ) {
                 m_definitions.emplace_back( p, p + ::strlen( p ) );
             } else if( !::strncmp( p, "-I", 2 ) ) {
@@ -167,6 +175,9 @@ namespace turnup {
     }
     const char* Parameters::Impl::GetCrcSalt() const {
         return m_pCrcSalt;
+    }
+    bool Parameters::Impl::NeedWarning() const {
+        return m_bNeedWarning;
     }
 
 } // namespace turnup

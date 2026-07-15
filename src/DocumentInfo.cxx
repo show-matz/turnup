@@ -41,8 +41,10 @@ namespace turnup {
     // implementation of class DocumentInfo
     //
     //--------------------------------------------------------------------------
-    DocumentInfo::DocumentInfo( bool bSafeMode ) : m_pImpl( new Impl{} ),
-                                                   m_bSafeMode( bSafeMode ) {
+    DocumentInfo::DocumentInfo( bool bSafeMode,
+                                bool bNeedWarning ) : m_pImpl( new Impl{} ),
+                                                      m_bSafeMode( bSafeMode ),
+                                                      m_bNeedWarning( bNeedWarning ) {
         m_pImpl->m_pHeaderTag = nullptr;
     }
 

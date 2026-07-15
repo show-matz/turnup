@@ -766,7 +766,8 @@ namespace turnup {
                                   const char* pURL1, const char* pURL2, DocumentInfo& docInfo ) {
         bool bEmptyLabel = (pLbl1 == pLbl2);
         auto& toc = docInfo.Get<ToC>();
-        const char* pAnchor = toc.GetAnchorTag( type, pURL1, pURL2 );
+        bool  bDuplicated = false;
+        const char* pAnchor = toc.GetAnchorTag( type, bDuplicated, pURL1, pURL2 );
         if( !pAnchor ) {
             std::cerr << "ERROR : invalid link anchor '";
             std::cerr.write( pURL1, pURL2 - pURL1 );
@@ -775,6 +776,12 @@ namespace turnup {
             os.write( pURL1, pURL2 - pURL1 );
             os << "'.</font>";
             return;
+        }
+        if( bDuplicated ) {
+            //重複している見出しや図表タイトル、アンカーを参照した場合はエラーを出力
+            std::cerr << "ERROR : Duplicated link target '";
+            std::cerr.write( pURL1, pURL2 - pURL1 );
+            std::cerr << "' is reffered." << std::endl;
         }
         os << "<a href='#" << pAnchor << "'>";
         auto& cfg = docInfo.Get<Config>();
@@ -1130,7 +1137,9 @@ namespace turnup {
         assert( pTop[0] == '#' && (pTop[1] == '{' || pTop[1] == '(') && pTop[1] == pTop[2] );
         assert( (pEnd[-1] == '}' || pEnd[-1] == ')') && pEnd[-1] == pEnd[-2] );
         auto& toc    = docInfo.Get<ToC>();
-        const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, pTop + 3, pEnd - 2 );
+        bool  bDuplicated = false;
+        const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, bDuplicated, pTop + 3, pEnd - 2 );
+        //Duplicated なアンカーでも、ここではリンク先を生成するだけなのでエラーにはしない
         if( pTag )
             os << "<a name='" << pTag << "'></a>";
         else {

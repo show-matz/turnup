@@ -82,6 +82,8 @@ namespace turnup {
         inline const char* GetAnchorTag() const { return m_anchorTag; }
         inline const TextSpan& GetTitle() const { return m_title; }
         inline const ChapterNumber& GetChapterNumber() const { return m_chapterNum; }
+        inline bool IsDuplicated() const { return m_bDuplicated; }
+        inline void SetDuplicated() { m_bDuplicated = true; }
     public:
         const char* GetChapterPrefix( const Config& cfg, char* pBuf ) const;
     private:
@@ -91,12 +93,14 @@ namespace turnup {
         char           m_anchorTag[12];    // ハッシュ値の文字列表現（null 終端を含む）
         TextSpan       m_title;            // タイトル文字列を指す TextSpan
         ChapterNumber  m_chapterNum;       //
+        bool           m_bDuplicated;      // 重複検出フラグ
     };
 
     TocEntry::TocEntry() : m_type( ToC::EntryT::HEADER ),
                            m_hash( 0 ),
                            m_level( 0 ),
-                           m_title( {} ) {
+                           m_title( {} ),
+                           m_bDuplicated( false ) {
         m_anchorTag[0] = 0;
     }
 
@@ -106,7 +110,8 @@ namespace turnup {
                                                             m_hash( 0 ),
                                                             m_level( lv ),
                                                             m_title( title ),
-                                                            m_chapterNum( chapterNum ) {
+                                                            m_chapterNum( chapterNum ),
+                                                            m_bDuplicated( false ) {
         m_hash = CRC64::Calc( GetCrcType( type ),
                               title.Top(), title.End(), m_anchorTag );
     }
@@ -115,7 +120,8 @@ namespace turnup {
                                                   m_hash( entry.m_hash ),
                                                   m_level( entry.m_level ),
                                                   m_title( entry.m_title ),
-                                                  m_chapterNum( entry.m_chapterNum ) {
+                                                  m_chapterNum( entry.m_chapterNum ),
+                                                  m_bDuplicated( entry.m_bDuplicated ) {
         ::strcpy( this->m_anchorTag, entry.m_anchorTag );
     }
 
@@ -154,7 +160,7 @@ namespace turnup {
     public:
         bool RegisterImpl( ToC::EntryT type, uint32_t level, const TextSpan& title );
         bool RegisterLinkButton( bool bTop, const TextSpan& title );
-        const char* GetAnchorTag( ToC::EntryT type,
+        const char* GetAnchorTag( ToC::EntryT type, bool& bDuplicated,
                                   const char* pTitle, const char* pTitleEnd ) const;
         bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
                              const char* pTitle, const char* pTitleEnd ) const;
@@ -172,7 +178,8 @@ namespace turnup {
                                    ToC::EntryT type, DocumentInfo& docInfo ) const;
     private:
         const TocEntry* FindEntry( ToC::EntryT type,
-                                   const char* pTitle, const char* pTitleEnd ) const;
+                                   const char* pTitle,
+                                   const char* pTitleEnd, bool& bDuplicated ) const;
         void GetFigureAndTablePrefix( char* pBuf, 
                                       const TocEntry* pEntry, const Config& cfg ) const;
     private:
@@ -206,10 +213,9 @@ namespace turnup {
     bool ToC::RegisterLinkButton( bool bTop, const TextSpan& title ) {
         return m_pImpl->RegisterLinkButton( bTop, title );
     }
-    const char* ToC::GetAnchorTag( EntryT type,
-                                   const char* pTitle,
-                                   const char* pTitleEnd ) const {
-        return m_pImpl->GetAnchorTag( type, pTitle, pTitleEnd );
+    const char* ToC::GetAnchorTag( EntryT type, bool& bDuplicated ,
+                                   const char* pTitle, const char* pTitleEnd ) const {
+        return m_pImpl->GetAnchorTag( type, bDuplicated, pTitle, pTitleEnd );
     }
     bool ToC::GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
                               const char* pTitle, const char* pTitleEnd ) const {
@@ -322,8 +328,10 @@ namespace turnup {
         auto itr1 = m_entries.begin();
         auto itr2 = m_entries.end();
         for( ; itr1 != itr2; ++itr1 ) {
-            if( itr1->GetType() == type && title.IsEqual( itr1->GetTitle() ) )
-                bDuplicated = true; 
+            if( itr1->GetType() == type && title.IsEqual( itr1->GetTitle() ) ) {
+                bDuplicated = true;
+                itr1->SetDuplicated();
+            }
             if( itr1->GetType() == ToC::EntryT::HEADER )
                 chapterNum.Increment( itr1->GetLevel() );
         }
@@ -342,16 +350,16 @@ namespace turnup {
         return ret;
     }
 
-    const char* ToC::Impl::GetAnchorTag( ToC::EntryT type,
-                                         const char* pTitle,
-                                         const char* pTitleEnd ) const {
-        auto pEntry = FindEntry( type, pTitle, pTitleEnd );
+    const char* ToC::Impl::GetAnchorTag( ToC::EntryT type, bool& bDuplicated,
+                                         const char* pTitle, const char* pTitleEnd ) const {
+        auto pEntry = FindEntry( type, pTitle, pTitleEnd, bDuplicated );
         return !pEntry ? nullptr : pEntry->GetAnchorTag();
     }
 
     bool ToC::Impl::GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
                                     const char* pTitle, const char* pTitleEnd ) const {
-        auto pEntry = FindEntry( type, pTitle, pTitleEnd );
+        bool bDuplicated = false;
+        auto pEntry = FindEntry( type, pTitle, pTitleEnd, bDuplicated );
         if( !pEntry )
             return false;
         switch( type ) {
@@ -419,7 +427,13 @@ namespace turnup {
             uint32_t lv = entry.GetLevel();
             if( lv < minLevel || maxLevel < lv )
                 continue;
-        for( ; curLevel < lv; ++curLevel )
+            if( entry.IsDuplicated() ) {
+                //重複する見出し名を参照した場合はエラーを出力
+                std::cerr << "ERROR : Duplicated header name '";
+                std::cerr << entry.GetTitle();
+                std::cerr << "' is reffered." << std::endl;
+            }
+            for( ; curLevel < lv; ++curLevel )
                 styles.WriteOpenTag( os, "ul" ) << std::endl;
             for( ; lv < curLevel; --curLevel )
                 os << "</ul>" << std::endl;
@@ -448,8 +462,15 @@ namespace turnup {
             const TocEntry& e = m_entries[i];
             if( e.GetType() == ToC::EntryT::HEADER ) {
                 uint32_t lv = e.GetLevel();
-                if( minLevel <= lv && lv <= maxLevel )
+                if( minLevel <= lv && lv <= maxLevel ) {
+                    if( e.IsDuplicated() ) {
+                        //重複する見出し名を参照した場合はエラーを出力
+                        std::cerr << "ERROR : Duplicated header name '";
+                        e.GetTitle().WriteTo( std::cerr, docInfo, false );
+                        std::cerr << "' is reffered." << std::endl;
+                    }
                     entries.push_back( &e );
+                }
             }
         }
         //MEMO : 妥当かどうかわからないが、上記回収結果のシーケンスは必ず minLevel の
@@ -496,6 +517,12 @@ namespace turnup {
                 const TocEntry& entry = *itr1;
                 if( entry.GetLevel() != lv + 1 )
                     continue;
+                if( entry.IsDuplicated() ) {
+                    //重複する見出し名を参照した場合はエラーを出力
+                    std::cerr << "ERROR : Duplicated header name '";
+                    std::cerr << entry.GetTitle();
+                    std::cerr << "' is reffered." << std::endl;
+                }
                 if( ++cnt == 1 )
                     styles.WriteOpenTag( os, "ul" ) << std::endl;
                 styles.WriteOpenTag( os, "li" )
@@ -523,6 +550,12 @@ namespace turnup {
             const TocEntry& entry = m_entries[i];
             if( entry.GetType() != type )
                 continue;
+            if( entry.IsDuplicated() ) {
+                //重複する見出し名を参照した場合はエラーを出力
+                std::cerr << "ERROR : Duplicated header name '";
+                std::cerr << entry.GetTitle();
+                std::cerr << "' is reffered." << std::endl;
+            }
             styles.WriteOpenTag( os, "li" )
                             << "<a href='#" << entry.GetAnchorTag() << "'>";
             char prefix[64];
@@ -535,12 +568,15 @@ namespace turnup {
     }
 
     const TocEntry* ToC::Impl::FindEntry( ToC::EntryT type,
-                                          const char* pTitle, const char* pTitleEnd ) const {
+                                          const char* pTitle,
+                                          const char* pTitleEnd, bool& bDuplicated ) const {
         uint64_t hash = CRC64::Calc( GetCrcType( type ), pTitle, pTitleEnd );
         for( uint32_t i = 0; i < m_entries.size(); ++i ) {
             const auto& entry = m_entries[i];
-            if( entry.GetType() == type && entry.GetHash() == hash )
+            if( entry.GetType() == type && entry.GetHash() == hash ) {
+                bDuplicated = entry.IsDuplicated();
                 return &entry;
+            }
         }
         return nullptr;
     }

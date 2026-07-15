@@ -25,7 +25,10 @@ namespace turnup {
 
         title = title.Trim();
         auto& toc    = docInfo.Get<ToC>();
-        const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR, title.Top(), title.End() );
+        bool  pDuplicated = false;
+        const char* pTag = toc.GetAnchorTag( ToC::EntryT::ANCHOR,
+                                             pDuplicated, title.Top(), title.End() );
+        //Duplicated なアンカーでも、ここではリンク先を生成するだけなのでエラーにはしない
         if( pTag )
             std::cout << "<a name='" << pTag << "'></a>" << std::endl;
         else {

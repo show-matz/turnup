@@ -25,13 +25,14 @@ namespace turnup {
     //--------------------------------------------------------------------------
     class DocumentInfo {
     public:
-        DocumentInfo( bool bSafeMode );
+        DocumentInfo( bool bSafeMode, bool bNeedWarning );
         ~DocumentInfo();
     public:
         void SetCurrentHeader( const char* pTag );
         const char* GetCurrentHeader() const;
     public:
         inline bool IsSafeMode() const { return m_bSafeMode; }
+        inline bool IsNeedWarning() const { return m_bNeedWarning; }
     public:
         template <typename T> T& Get();
         template <typename T> const T& Get() const;
@@ -39,6 +40,7 @@ namespace turnup {
         class Impl;
         Impl* m_pImpl;
         bool  m_bSafeMode;
+        bool  m_bNeedWarning;
     };
 
 } // namespace turnup

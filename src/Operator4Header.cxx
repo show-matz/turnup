@@ -25,7 +25,10 @@ namespace turnup {
         if( !level || 6 < level || (*pTop)[level] != ' ' )
             return pTop;
         TextSpan tmp = TextSpan{ pTop->Top() + level, pTop->End() }.Trim();
-        const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER, tmp.Top(), tmp.End() );
+        bool     bDuplicated = false;
+        const char* pTag = toc.GetAnchorTag( ToC::EntryT::HEADER,
+                                             bDuplicated, tmp.Top(), tmp.End() );
+        //Duplicated な見出しでも、ここではリンク先を生成するだけなのでエラーにはしない
         char tag[3] = { 'h', (char)('0'+level), 0 };
         styles.WriteOpenTag( std::cout, tag );
         if( pTag ) {

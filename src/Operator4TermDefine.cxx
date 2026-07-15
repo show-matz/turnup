@@ -44,7 +44,9 @@ namespace turnup {
             const char* pTermEnd = p2;
             Utilities::Trim( pTermTop, pTermEnd );
             auto& glossary = docInfo.Get<Glossary>();
-            const char* pAnchor = glossary.GetAnchorTag( pTermTop, pTermEnd );
+            bool bDuplicated = false;
+            const char* pAnchor = glossary.GetAnchorTag( bDuplicated, pTermTop, pTermEnd );
+            //Duplicated な用語定義でも、ここではリンク先を生成するだけなのでエラーにはしない
             styles.WriteOpenTag( std::cout, "dl" ) << std::endl;
             styles.WriteOpenTag( std::cout, "dt" );
             std::cout << "<a name='" << pAnchor <<  "'></a>";

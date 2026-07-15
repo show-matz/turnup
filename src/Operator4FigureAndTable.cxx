@@ -35,7 +35,9 @@ namespace turnup {
 
         auto& toc    = docInfo.Get<ToC>();
         auto& styles = docInfo.Get<StyleStack>();
-        const char* pTag = toc.GetAnchorTag( type, title.Top(), title.End() );
+        bool  pDuplicated = false;
+        const char* pTag = toc.GetAnchorTag( type, pDuplicated, title.Top(), title.End() );
+        //Duplicated な図表タイトルでも、ここではリンク先を生成するだけなのでエラーにはしない
 
         styles.WriteOpenTag( std::cout, "p", classes[(uint32_t)type] );
         if( pTag )

@@ -104,7 +104,7 @@ int main( int argc, char* argv[] ) {
         }
     }
 
-    DocumentInfo    docInfo{ params.SafeMode() };
+    DocumentInfo    docInfo{ params.SafeMode(), params.NeedWarning() };
     pInData->PreScan( docInfo );
 
     //ToDo : check config... config.entityNumberingDepth.

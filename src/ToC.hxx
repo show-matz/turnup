@@ -37,9 +37,8 @@ namespace turnup {
         bool RegisterFigure( const TextSpan& title );
         bool RegisterAnchor( const TextSpan& title );
         bool RegisterLinkButton( bool bTop, const TextSpan& title );
-        const char* GetAnchorTag( EntryT type,
-                                  const char* pTitle,
-                                  const char* pTitleEnd = nullptr ) const;
+        const char* GetAnchorTag( EntryT type, bool& bDuplicated,
+                                  const char* pTitle, const char* pTitleEnd = nullptr ) const;
         bool GetEntryNumber( char* pBuf, EntryT type, const Config& cfg,
                              const char* pTitle, const char* pTitleEnd = nullptr ) const;
     public:

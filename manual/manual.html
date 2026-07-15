@@ -436,6 +436,7 @@ body{font-size:16px;}
 </details>
 <li class='tocx'><a href='#62CICfavwWM'>8.9 画像ファイルを HTML 内に取り込む方法</a></li>
 <li class='tocx'><a href='#6cOilIw9D0i'>8.10 自動リンクと文字装飾の優先順位について</a></li>
+<li class='tocx'><a href='#5jvoo6Lvylm'>8.11 リンクターゲット名の重複に関するチェック仕様</a></li>
 </blockquote>
 </details>
 <details class='tocx' open>
@@ -1166,21 +1167,20 @@ Table. title of table
 <p>　<code>embed:index</code> のかわりに <code>embed:index-x</code> を使うことで、折り畳み可能な索引を生成できます。このマニュアルの<a href='#1ewHzjI62xn'>末尾にある索引</a>も <code>index-x</code> を使用して生成されています。</p>
 <h3><a name='f71ZNSHqufB'></a>6.17 フィルタ機能</h3>
 <p>　<a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>を開始する行に言語などの名前をつけることでコードハイライトをすることができます。これは turnup では <strong><a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a></strong> と呼ばれ、コードハイライトに限らずブロックの中身に様々な変換をかける仕組みとして位置付けられています。たとえば、diff の出力に色付けをしたければ以下のように記述します。</p>
-<pre class='hl'>
+<pre>
 ~~~diff
 diff --git a/main.cxx b/main.cxx
 index 16fc9f4..8387187 100644
 --- a/main.cxx
 +++ b/main.cxx
-&#64;&#64; -3,5 +3,5 &#64;&#64; int main( void ) {
+@@ -3,5 +3,5 @@ int main( void ) {
  
--    printf( &quot;hello world.\n&quot; );
-+    std::cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; std::endl;
+-    printf( "hello world.\n" );
++    std::cout &lt;&lt; "hello world." &lt;&lt; std::endl;
 
     return 0;
 ~~~
 </pre>
-
 <p>　これは以下のように表示されます。</p>
 <pre class='diff'>
 diff --git a/main.cxx b/main.cxx
@@ -2212,6 +2212,18 @@ CACHE<span class="hl opt">=</span>.cache
 <li><a href='#8mg4uLSAXaz'>自動リンク</a> は文字装飾がすべて処理された後に適用される</li>
 </ul>
 <p>　この仕様は、 <strong>「文書内の別の場所での自動リンク対象文字列の増減によって文字装飾の結果が変わってはならない」</strong>という原則からきています。このことは、<a class='autolink' href='#9PbJaRizVB7'>定義リスト</a>や <a class='autolink' href='#8mg4uLSAXaz'>autolink</a> のタイトルに文字装飾と判定されるような記述はできないことを意味しますので注意してください。</p>
+<h3><a name='5jvoo6Lvylm'></a>8.11 リンクターゲット名の重複に関するチェック仕様</h3>
+<p>　version 0.845 において、リンクターゲット名の重複チェックに関する仕様が緩和されました。ここでリンクターゲット名とは、名前でリンクを作成できる以下のものを指します。</p>
+<ul>
+<li><a href='#7HkxqP1TWY5'>見出し</a></li>
+<li><a href='#gg7i7uPfLlo'>図と表のタイトル</a></li>
+<li><a href='#4e8Wf4oSDqx'>アンカー</a></li>
+<li><a href='#9PbJaRizVB7'>定義リスト</a></li>
+<li><a href='#8mg4uLSAXaz'>キーワードへの自動リンク</a></li>
+</ul>
+<p>　以前は、名前の重複が発見された時点で全てエラーとする仕様でしたが、version 0.845 での変更により、「名前が重複していても実際にリンク先として参照されない限りエラーとしない」という仕様になりました。</p>
+<p>　同時に、起動オプションとして <code>--warning</code> が追加されました。これを指定すると、リンクターゲット名の重複に対して（それがリンク先として参照されていなくても）警告を出すようになります。</p>
+<p>　ただし、<a href='#7maM1Z8DaEp'>目次</a>や<a href='#iVFblGs7lu7'>図表一覧</a>、<a href='#2C50p0Hw1s1'>索引</a>の生成を利用する場合、これらもリンク先の参照をするため注意が必要です。</p>
 <h2><a name='8tTIqHSNoTg'></a>9 既知の問題点</h2>
 <h3><a name='95miNJcW6DM'></a>9.1 【解決済】リンクテキストの末尾に文字装飾があると正しく処理されない</h3>
 <details>
@@ -2668,6 +2680,12 @@ CACHE<span class="hl opt">=</span>.cache
 <li><strong>2026/05/17 - version 0.844</strong>
 <ul>
 <li>ENHANCE : 変数を削除する undef を追加</li>
+</ul>
+</li>
+<li><strong>2026/07/15 - version 0.845</strong>
+<ul>
+<li>ENHANCE : リンクターゲット名の重複チェックに関する<a href='#5jvoo6Lvylm'>仕様変更</a></li>
+<li>ENHANCE : <code>--warning</code> 起動オプションを<a href='#5jvoo6Lvylm'>追加</a></li>
 </ul>
 </li>
 </ul>
