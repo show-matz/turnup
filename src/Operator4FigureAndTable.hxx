@@ -11,8 +11,10 @@ namespace turnup {
     class TextSpan;
     class DocumentInfo;
 
-    const TextSpan* Operator4FigureAndTable( const TextSpan* pTop,
-                                             const TextSpan* pEnd, DocumentInfo& docInfo );
+    const TextSpan* Operator4FigureAndTable1( const TextSpan* pTop,
+                                              const TextSpan* pEnd, DocumentInfo& docInfo );
+    const TextSpan* Operator4FigureAndTable2( const TextSpan* pTop,
+                                              const TextSpan* pEnd, DocumentInfo& docInfo );
 
 } // namespace turnup
 

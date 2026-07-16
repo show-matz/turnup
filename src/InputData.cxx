@@ -310,6 +310,30 @@ namespace turnup {
                     line.Clear();
                     continue;
                 }
+                if( tmp.IsMatch( "<!-- table:", item, " -->" ) ) {
+                    item = item.Trim();
+                    if( item.IsEqual( "end" ) == false ) {
+                        if( toc.RegisterTable( item ) == false && docInfo.IsNeedWarning() ) {
+                            //重複検出：この時点では（設定次第で）警告を出すだけ
+                            std::cerr << "WARNING : table '";
+                            std::cerr.write( item.Top(), item.ByteLength() );
+                            std::cerr << "' is duplicated." << std::endl;
+                        }
+                        continue;
+                    }
+                }
+                if( tmp.IsMatch( "<!-- figure:", item, " -->" ) ) {
+                    item = item.Trim();
+                    if( item.IsEqual( "end" ) == false ) {
+                        if( toc.RegisterFigure( item ) == false && docInfo.IsNeedWarning() ) {
+                            //重複検出：この時点では（設定次第で）警告を出すだけ
+                            std::cerr << "WARNING : figure '";
+                            std::cerr.write( item.Top(), item.ByteLength() );
+                            std::cerr << "' is duplicated." << std::endl;
+                        }
+                        continue;
+                    }
+                }
                 if( tmp.IsMatch( "<!-- anchor:", item, " -->" ) ) {
                     item = item.Trim();
                     if( toc.RegisterAnchor( item ) == false && docInfo.IsNeedWarning() ) {
