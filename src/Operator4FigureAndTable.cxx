@@ -92,12 +92,10 @@ namespace turnup {
                 }
             }
         } else {
+            s_lastType  = type;
+            s_lastTitle = param2;
             if( s_titleTop[(uint32_t)type] == true ) 
                 WriteTitle( type, param2, docInfo );
-            else {
-                s_lastType  = type;
-                s_lastTitle = param2;
-            }
             auto& toc         = docInfo.Get<ToC>();
             bool  pDuplicated = false;
             const char* pTag = toc.GetAnchorTag( type, pDuplicated, param2.Top(), param2.End() );
