@@ -34,16 +34,16 @@ namespace turnup {
         // 内側に空白類文字があれば該当しないと判断
         if( IsSpaceForward( p2 ) )
             return false;
-        // 先頭であるか、または手前に空白類文字があれば該当
-        return ( p1 == whole.Top() || IsSpaceBackward( p1 - 1 ) );
+        // 先頭であるか、または手前に空白類文字、特定文字があれば該当
+        return ( p1 == whole.Top() || IsSpaceBackward( p1 - 1 ) || IsSpecificBackward( p1 - 1 ) );
     }
     inline bool IsEndOfSpaceRequiredOperator( const char* p1,
                                               const char* p2, const TextSpan& whole ) {
         // 内側に空白類文字があれば該当しないと判断
         if( IsSpaceBackward( p1 - 1 ) )
             return false;
-        // 末尾であるか、または直後に空白類文字があれば該当
-        return ( p2 == whole.End() || IsSpaceForward( p2 ) );
+        // 末尾であるか、または直後に空白類文字、特定文字があれば該当
+        return ( p2 == whole.End() || IsSpaceForward( p2 ) || IsSpecificForward( p2 ) );
     }
 
 

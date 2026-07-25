@@ -543,20 +543,20 @@ blah blah blah blah blah
     <span class="hl kwd">&gt;</span> blah blah blah 
 <span class="hl kwd">-</span> list item with code
     <span class="hl kwd">-</span> c code
-        <span class="hl sng">```C</span>
-<span class="hl sng">          int main( void ) {</span>
-<span class="hl sng">              return 0;</span>
-<span class="hl sng">          }</span>
-<span class="hl sng">        ```</span>
+        <span class="hl str">```C</span>
+<span class="hl str">          int main( void ) {</span>
+<span class="hl str">              return 0;</span>
+<span class="hl str">          }</span>
+<span class="hl str">        ```</span>
     <span class="hl kwd">-</span> lisp code
-        <span class="hl sng">```lisp</span>
-<span class="hl sng">          (defun factorial (n)</span>
-<span class="hl sng">            (labels ((impl (x acc)</span>
-<span class="hl sng">                       (if (&lt;= x 1)</span>
-<span class="hl sng">                           acc</span>
-<span class="hl sng">                           (impl (1- x) (* acc x)))))</span>
-<span class="hl sng">              (impl n 1)))</span>
-<span class="hl sng">        ```</span>
+        <span class="hl str">```lisp</span>
+<span class="hl str">          (defun factorial (n)</span>
+<span class="hl str">            (labels ((impl (x acc)</span>
+<span class="hl str">                       (if (&lt;= x 1)</span>
+<span class="hl str">                           acc</span>
+<span class="hl str">                           (impl (1- x) (* acc x)))))</span>
+<span class="hl str">              (impl n 1)))</span>
+<span class="hl str">        ```</span>
 </pre>
 
 <p>　上記は、以下のように出力されます。</p>
@@ -773,12 +773,12 @@ int main( void ) {
 <span class="hl kwd">&gt;</span>
 <span class="hl kwd">&gt;</span> block-quoted code
 <span class="hl kwd">&gt;</span>
-<span class="hl kwd">&gt;</span> <span class="hl sng">```C++</span>
-<span class="hl sng">&gt;   int main( void ){</span>
-<span class="hl sng">&gt;       std::cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; std::endl;</span>
-<span class="hl sng">&gt;       return 0;</span>
-<span class="hl sng">&gt;   }</span>
-<span class="hl sng">&gt; ```</span>
+<span class="hl kwd">&gt;</span> <span class="hl str">```C++</span>
+<span class="hl str">&gt;   int main( void ){</span>
+<span class="hl str">&gt;       std::cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; std::endl;</span>
+<span class="hl str">&gt;       return 0;</span>
+<span class="hl str">&gt;   }</span>
+<span class="hl str">&gt; ```</span>
 <span class="hl kwd">&gt;</span>
 </pre>
 
@@ -799,7 +799,7 @@ int main( void ) {
 <p>block-quoted code</p>
 <pre class='hl'>
   <span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span> <span class="hl kwb">void</span> <span class="hl opt">){</span>
-      <span class="hl kwe">std</span><span class="hl opt">::</span>cout <span class="hl opt">&lt;&lt;</span> <span class="hl sng">&quot;hello world.&quot;</span> <span class="hl opt">&lt;&lt;</span> <span class="hl kwe">std</span><span class="hl opt">::</span>endl<span class="hl opt">;</span>
+      <span class="hl kwc">std</span><span class="hl opt">::</span>cout <span class="hl opt">&lt;&lt;</span> <span class="hl str">&quot;hello world.&quot;</span> <span class="hl opt">&lt;&lt;</span> <span class="hl kwc">std</span><span class="hl opt">::</span>endl<span class="hl opt">;</span>
       <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
   <span class="hl opt">}</span>
 </pre>
@@ -861,7 +861,7 @@ int main( void ) {
 <h3><a name='2TegSYAerqJ'></a>5.14 コード</h3>
 <p>　文章中では、以下のようにバッククォートで括ることで、囲まれた部分をコードとして表示させられます。この内部にある文字列は、<a href='#8mg4uLSAXaz'>自動リンク</a>やその他の文字装飾は実行されません。</p>
 <pre class='hl'>
-  <span class="hl sng">`code`</span>
+  <span class="hl str">`code`</span>
 </pre>
 
 <p>　この書法が適用されるルールには、少し細かい規則があります。<a href='#6lxsyJvfG4q'>8.4  一部の文字装飾における制約</a>を参照してください。</p>
@@ -875,7 +875,7 @@ int main( void ) {
 
 <p>　上記は、以下のように展開されます。なお、代替テキストは省略できます。</p>
 <pre class='hl'>
-  <span class="hl kwa">&lt;img</span> src=&#39;画像URL&#39; alt=&#39;代替テキスト&#39; <span class="hl kwa">/&gt;</span>
+  <span class="hl kwa">&lt;img</span> src=&apos;画像URL&apos; alt=&apos;代替テキスト&apos; <span class="hl kwa">/&gt;</span>
 </pre>
 
 <p>　　</p>
@@ -919,7 +919,7 @@ int main( void ) {
 ​## Table of contents
 
 &lt;​!-- embed:toc-x <span class="hl num">2 4</span> --&gt;
-&lt;​!-- toc-link: top &#39;Table of contents&#39; --&gt;
+&lt;​!-- toc-link: top &apos;Table of contents&apos; --&gt;
 </pre>
 
 <p>　以下のように <code>toc-link:</code> に続けて <code>top</code> でなく <code>bottom</code> と記述すると、イメージの表示される位置が画面の右上でなく右下になります。</p>
@@ -935,7 +935,7 @@ int main( void ) {
 ~~~
 
 &lt;​!-- embed:toc-x <span class="hl num">2 4</span> --&gt;
-&lt;​!-- toc-link: top &#39;A#toc-link-target&#39; --&gt;
+&lt;​!-- toc-link: top &apos;A#toc-link-target&apos; --&gt;
 </pre>
 
 <h3><a name='gg7i7uPfLlo'></a>6.3 図と表のタイトル</h3>
@@ -1104,10 +1104,10 @@ Table. title of table
 <h3><a name='izIXv5I5ark'></a>6.11 生の HTML ブロックの出力</h3>
 <p>　以下のように記述することで、生の <a class='term' href='#ahN3t8jbawv'>HTML</a> ブロックをそのまま出力することができます。</p>
 <pre class='hl'>
-<span class="hl sng">```raw</span>
-<span class="hl sng">    :</span>
-<span class="hl sng">    :</span>
-<span class="hl sng">```</span>
+<span class="hl str">```raw</span>
+<span class="hl str">    :</span>
+<span class="hl str">    :</span>
+<span class="hl str">```</span>
 </pre>
 
 <p>　これは、後述する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>を利用しています。以前のバージョンでは以下のように <code>&lt;raw_html&gt;</code> タグで囲むことになっていましたが、これは非推奨となりました。まだ使用することはできますが、警告が表示されます。</p>
@@ -1358,7 +1358,7 @@ turnup <span class="hl kwb">-I</span>..<span class="hl opt">/</span>headers <spa
 
 <p>　<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を（特に値の前後端に）含む値を変数に設定したい場合、以下のように値にシングルクォートまたはダブルクォートで括ることができます（この場合クォート文字は値に含まれません）。</p>
 <pre class='hl'>
-&lt;!-- define: VAR = &#39; a b c &#39; --&gt;
+&lt;!-- define: VAR = &apos; a b c &apos; --&gt;
 </pre>
 
 <p>　version 0.822 より、以下のような記述で「<a href='#cjJv49XsD9d'>ページ内へのリンク</a>」に使用する<a class='autolink' href='#4e8Wf4oSDqx'>アンカー</a>文字列を取得することができるようになりました。これは、<a href='#izIXv5I5ark'>rawフィルタ</a>や外部フィルタ内でページ内リンクを使用したい場合に使うことが想定されています。</p>
@@ -1382,7 +1382,7 @@ turnup <span class="hl kwb">-DFOO</span><span class="hl opt">=</span><span class
 
 <p>　この場合、<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>を含めたい場合は以下のようにします。</p>
 <pre class='hl'>
-turnup <span class="hl sng">&#39;-DVAR= a b c &#39;</span>  DATA.md <span class="hl opt">&gt;</span> OUTPUT.htm
+turnup <span class="hl str">&apos;-DVAR= a b c &apos;</span>  DATA.md <span class="hl opt">&gt;</span> OUTPUT.htm
 </pre>
 
 <h4><a name='9Z7pya1EZOR'></a>6.23.3 システム変数</h4>
@@ -1459,7 +1459,7 @@ turnup <span class="hl sng">&#39;-DVAR= a b c &#39;</span>  DATA.md <span class=
 <p>　<a href='#4eSrElLWBcH'>変数定義</a>機能の拡張として、マクロ関数を利用することができます。これは変数定義において %1 〜 %9 のプレースホルダを埋め込んでおき、変数展開時にパラメータを与えることでこのプレースホルダを置き換えるというものです。</p>
 <p>　例として、文字列の色と背景色を反転させてみましょう。マクロ <code>INVERT</code> の定義は以下のようになります。</p>
 <pre class='hl'>
- &lt;!-- define: INVERT = &#39;&#64;((background:darkgray;color:white;)(%<span class="hl num">1</span>))&#39; --&gt;
+ &lt;!-- define: INVERT = &apos;&#64;((background:darkgray;color:white;)(%<span class="hl num">1</span>))&apos; --&gt;
 </pre>
 
 <p>　マクロにパラメータを与えて展開するには、括弧を余分に使います。変数展開では $ に続いて変数名を括弧で括るだけでしたが、マクロ関数展開では以下のように記述します。</p>
@@ -1510,7 +1510,7 @@ turnup <span class="hl sng">&#39;-DVAR= a b c &#39;</span>  DATA.md <span class=
 
 <p>　さらに、<a href='#anSuBAd7F3R'>マクロ関数</a>と同様に %1 〜 %9 のプレースホルダをパラメータで置き換えることができます。これを利用して、expand のたびに異なる出力を生成することができます。パラメータは、スニペット名に続けてスペース（またはタブ）で区切って並べてください。スペースやタブを含むパラメータを指定する場合、シングルクォートまたはダブルクォートで括ります。これらのパラメータは、左から順に %1 %2 %3... と置き換えられます。</p>
 <pre class='hl'>
-&lt;​!-- expand: NAME  param1  &#39;param include space&#39;  --&gt;
+&lt;​!-- expand: NAME  param1  &apos;param include space&apos;  --&gt;
 </pre>
 
 <p>　　</p>
@@ -1538,12 +1538,12 @@ turnup <span class="hl sng">&#39;-DVAR= a b c &#39;</span>  DATA.md <span class=
 <p>　特殊なマクロ関数 <code>_RUBY</code> を使用することで、<a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a>をつけることができます。たとえば、<ruby>漢字<rt>かんじ</rt></ruby> としたい場合には <code>${{_RUBY}{漢字}{かんじ}}</code> と書きます。</p>
 <p>　このマクロ関数はデフォルトで用意されているものですが、必要に応じて上書きすることができます。たとえば以下のようにすることで、先ほどの例は 漢字（かんじ） に変換されます。</p>
 <pre class='hl'>
- &lt;!-- define: _RUBY = &#39;%<span class="hl num">1</span>（%<span class="hl num">2</span>）&#39; --&gt;
+ &lt;!-- define: _RUBY = &apos;%<span class="hl num">1</span>（%<span class="hl num">2</span>）&apos; --&gt;
 </pre>
 
 <p>　以下のようにすれば、文章を投稿する Web サービス向けの<a class='autolink' href='#fr8UKwZ0LzR'>ルビ</a>書式になるでしょう。つまり、[[rb:漢字 &gt; かんじ]] に変換されます。</p>
 <pre class='hl'>
- &lt;!-- define: _RUBY = &#39;[[rb:%<span class="hl num">1</span> &gt; %<span class="hl num">2</span>]]&#39; --&gt;
+ &lt;!-- define: _RUBY = &apos;[[rb:%<span class="hl num">1</span> &gt; %<span class="hl num">2</span>]]&apos; --&gt;
 </pre>
 
 <h3><a name='ln9al6BVnoP'></a>6.30 数式の生成</h3>
@@ -1786,15 +1786,15 @@ quux.png
 <pre class='hl'>
 <span class="hl kwa">&lt;html&gt;</span>
 <span class="hl kwa">&lt;header&gt;</span>
-    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl sng">&quot;Content-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl sng">&quot;text/html; charset=utf-8&quot;</span><span class="hl kwa">&gt;</span>
-    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl sng">&quot;Content-Style-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl sng">&quot;text/css&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl str">&quot;Content-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl str">&quot;text/html; charset=utf-8&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl str">&quot;Content-Style-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl str">&quot;text/css&quot;</span><span class="hl kwa">&gt;</span>
     <span class="hl kwa">&lt;title&gt;</span>document title<span class="hl kwa">&lt;/title&gt;</span>
   <span class="hl kwa">&lt;style&gt;</span>
-  <span class="hl opt">&lt;!--</span>
-    <span class="hl opt">:</span>
-    <span class="hl opt">:</span> （この部分に CSS が埋め込まれる）
-    <span class="hl opt">:</span>
-  <span class="hl opt">--&gt;</span>
+  <span class="hl com">&lt;!--</span>
+<span class="hl com">    :</span>
+<span class="hl com">    : （この部分に CSS が埋め込まれる）</span>
+<span class="hl com">    :</span>
+<span class="hl com">  --&gt;</span>
   <span class="hl kwa">&lt;/style&gt;</span>
 <span class="hl kwa">&lt;/header&gt;</span>
 </pre>
@@ -1815,7 +1815,7 @@ quux.png
 <h3><a name='5xO3F2FIOq7'></a>7.7 脚注のプレフィクス設定</h3>
 <p>　<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>で使用されるリンクは通常 1 から始まる連番で表示されますが、<a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定を使用することによってリンクに任意のプレフィクスを表示させることができます。たとえば以下のようにすることで、</p>
 <pre class='hl'>
-  &lt;!-- config:footnote-prefix  JP  &#39;訳注 &#39; --&gt;
+  &lt;!-- config:footnote-prefix  JP  &apos;訳注 &apos; --&gt;
 </pre>
 
 <p>タグ <code>JP</code> を使う<a class='autolink' href='#9Dfk88hOKmk'>脚注</a>（つまり <code>{{fn(JP):...}}</code> という形式）で表示されるリンクが <code>訳注 1</code> といった文字列になります。この <a class='autolink' href='#5xO3F2FIOq7'>footnote-prefix</a> 設定は複数のタグに対して指定することができます。</p>
@@ -1838,24 +1838,25 @@ quux.png
 <h3><a name='fSSOiFwQpEj'></a>8.1 入力ファイルのエンコーディングと改行スタイル</h3>
 <p>　入力となる <a class='term' href='#b3GXdVHw3CE'>Markdown</a> ファイルのエンコーディングは utf-8 のみですが、改行コードは Lf のみでも CrLf でも動作します。ただし、Lf の方がほんの少し高速になります（誤差程度でしょうけど）。</p>
 <h3><a name='9s47bTtYstx'></a>8.2 文字装飾やリンクの制約と継続行</h3>
-<p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。</p>
+<p>　リスト要素や文章中に記述できる各種の装飾、リンクなどは、行を跨ぐことはできないので注意してください。単一の行に記述しなければならない記法を複数行に跨がらせたい場合、行末にスペース、バックスラッシュを順に記述することにより行の継続をさせることができます。この継続行の扱いは <a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>の内部では行なわれません。</p>
 <h3><a name='9IN7afRR0hr'></a>8.3 内部的な処理順序</h3>
 <p>　turnup に様々な機能が追加された結果、当初は 1-pass だった内部処理も複雑になっていきました。現在では、以下の内部ステップを実行しています。</p>
 <table align='center'>
 <tr><th>step</th><th>action</th><th>description</th></tr>
-<tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一や継続行の処理を済ませてしまいます。</td></tr>
-<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>の処理もこの時点で実施します。</td></tr>
+<tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一を済ませてしまいます。</td></tr>
+<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>の処理もこの時点で実施し、最後に継続行の連結処理をします。</td></tr>
 <tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトル、用語定義などを解析して各種の<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の利用に備えます。</td></tr>
 <tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
 </table>
 <h3><a name='6lxsyJvfG4q'></a>8.4 一部の文字装飾における制約</h3>
-<p>　以下の文字装飾において対象範囲を括る（**などの文字列の）ペアのすぐ外側には、 <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でない文字があってはいけません」</strong> 。また、ペアのすぐ内側には <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があってはいけません」</strong> 。</p>
+<p>　以下の文字装飾において対象範囲を括る（**などの文字列の）ペアのすぐ外側には、<strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でない文字があってはいけません」</strong>。また、ペアのすぐ内側には <strong>「<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>があってはいけません」</strong>。</p>
 <ul>
 <li><a href='#d2FXT7Fqg21'>強調</a></li>
 <li><a href='#hBdBkqlaJVW'>取消し線</a></li>
 <li><a href='#9k1sm8QrDHi'>マーカー</a></li>
 <li><a href='#2TegSYAerqJ'>コード</a></li>
 </ul>
+<p>　version 0.849 の変更において、<strong>「ペアの外側は<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でなく括弧類または句読点でも良い」</strong> とされました。</p>
 <h3><a name='l3wNcsiymoY'></a>8.5 フィルタ機能について</h3>
 <p>　turnup が標準で提供する<a class='autolink' href='#f71ZNSHqufB'>フィルタ機能</a>は簡易的なもので、せいぜい<a class='autolink' href='#cPmXTXvPhJd'>コメント</a>と文字列リテラルなどを優先して処理し、あとはキーワードをハイライトする程度です。構文解析などを伴うリッチなコードハイライトが必要な場合、<a href='#18dTPnzNOgg'>外部フィルタの利用</a>を検討してください。</p>
 <h3><a name='8pNcG5W73uy'></a>8.6 領域の折り畳みについて</h3>
@@ -1873,12 +1874,12 @@ quux.png
 
 <p>　これで、<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a> <code>plantuml</code> が使えるようになります。<a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> 公式サイトの例を借りるなら、以下のように記述すれば、</p>
 <pre class='hl'>
-<span class="hl sng">```plantuml</span>
-<span class="hl sng">&#64;startuml</span>
-<span class="hl sng">Bob -&gt; Alice : Request</span>
-<span class="hl sng">Alice -&gt; Bob : Response</span>
-<span class="hl sng">&#64;enduml</span>
-<span class="hl sng">```</span>
+<span class="hl str">```plantuml</span>
+<span class="hl str">&#64;startuml</span>
+<span class="hl str">Bob -&gt; Alice : Request</span>
+<span class="hl str">Alice -&gt; Bob : Response</span>
+<span class="hl str">&#64;enduml</span>
+<span class="hl str">```</span>
 </pre>
 
 <p>　以下のように埋め込みが行なわれます。図中のテキストも選択・コピーなどが可能であることにご注目。</p>
@@ -1907,21 +1908,21 @@ IN<span class="hl opt">=</span><span class="hl kwd">$1</span>
 OUT<span class="hl opt">=</span><span class="hl kwd">$2</span>
 CACHE<span class="hl opt">=</span>.cache
 JAR<span class="hl opt">=</span>.<span class="hl opt">/</span>plantuml.jar
-OPT<span class="hl opt">=</span><span class="hl kwb">-Dfile</span>.encoding<span class="hl opt">=</span>UTF<span class="hl kwb">-8</span>
+OPT<span class="hl opt">=</span><span class="hl kwb">-Dfile</span>.encoding<span class="hl opt">=</span>UTF-8
 
 <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
-    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+    mkdir <span class="hl kwd">${CACHE}</span>
 <span class="hl kwa">fi</span>
 
 <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg <span class="hl opt">];</span> <span class="hl kwa">then</span>
     <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
 <span class="hl kwa">else</span>
-    <span class="hl kwc">cat</span> <span class="hl kwd">${IN}</span> <span class="hl opt">|</span> java <span class="hl kwd">${OPT}</span> <span class="hl kwb">-jar</span> <span class="hl kwd">${JAR}</span> <span class="hl kwb">-pipe -tsvg</span> <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
+    <span class="hl kwc">cat</span> <span class="hl kwd">${IN} | java ${OPT} -jar ${JAR} -pipe -tsvg &gt;&gt; ./${CACHE}/${OUT}</span>.svg
 <span class="hl kwa">fi</span>
 
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwb">echo</span> <span class="hl str">&quot;&lt;div align=&apos;center&apos;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}/${OUT}.svg   &gt;&gt; ./${OUT}</span>
+<span class="hl kwb">echo</span> <span class="hl str">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
 </pre>
 
 <p><a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>の定義で使うようにします。これで、.cache というディレクトリに <a class='autolink' href='#bCCDfsVD85P'>PlantUML</a> の出力ファイルがキャッシュされるようになり、turnup の実行時間が改善されます。</p>
@@ -1938,21 +1939,21 @@ OPT<span class="hl opt">=</span><span class="hl kwb">-Dfile</span>.encoding<span
 
 <p>　このスクリプトの内容は後回しにするとして、<a class='autolink' href='#8aJF91OqXMS'>gnuplot</a> はコマンドファイルとデータを個別に用意する必要があるので、以下のようにハイフンだけの行をセパレータにして両方記述するようにします。前半のコマンド部分では入出力ファイルを <code>in_file, out_file</code> としていますが、これはスクリプトでどうにかします。</p>
 <pre class='hl'>
-<span class="hl sng">```gnuplot</span>
-<span class="hl sng">set datafile separator &quot;,&quot;</span>
-<span class="hl sng">set terminal svg size 500,300 fixed</span>
-<span class="hl sng">set output out_file</span>
-<span class="hl sng">plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle</span>
-<span class="hl sng">------------------------------------------------------------------------</span>
-<span class="hl sng">0,0,0</span>
-<span class="hl sng">1,32,1</span>
-<span class="hl sng">2,64,4</span>
-<span class="hl sng">   :</span>
-<span class="hl sng">   :</span>
-<span class="hl sng">38,1216,1444</span>
-<span class="hl sng">39,1248,1521</span>
-<span class="hl sng">40,1280,1600</span>
-<span class="hl sng">```</span>
+<span class="hl str">```gnuplot</span>
+<span class="hl str">set datafile separator &quot;,&quot;</span>
+<span class="hl str">set terminal svg size 500,300 fixed</span>
+<span class="hl str">set output out_file</span>
+<span class="hl str">plot in_file using 1:2 with lines notitle, in_file using 1:3 with lines notitle</span>
+<span class="hl str">------------------------------------------------------------------------</span>
+<span class="hl str">0,0,0</span>
+<span class="hl str">1,32,1</span>
+<span class="hl str">2,64,4</span>
+<span class="hl str">   :</span>
+<span class="hl str">   :</span>
+<span class="hl str">38,1216,1444</span>
+<span class="hl str">39,1248,1521</span>
+<span class="hl str">40,1280,1600</span>
+<span class="hl str">```</span>
 </pre>
 
 <p>　これで、以下のような SVG 画像が埋め込まれます。</p>
@@ -2141,28 +2142,28 @@ CACHE<span class="hl opt">=</span>.cache
 APP<span class="hl opt">=</span>gnuplot
 
 <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
-    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+    mkdir <span class="hl kwd">${CACHE}</span>
 <span class="hl kwa">fi</span>
 
 <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg <span class="hl opt">];</span> <span class="hl kwa">then</span>
     <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg
 <span class="hl kwa">else</span>
-    LINENUM<span class="hl opt">=</span><span class="hl sng">`grep -n &#39;^-\+$&#39;</span> <span class="hl ipl">${IN}</span> <span class="hl sng">| perl -pe &#39;s/^(\d):-+$/\1/&#39;`</span>
-    LINECNT<span class="hl opt">=</span><span class="hl sng">`cat</span> <span class="hl ipl">${IN}</span> <span class="hl sng">| wc -l`</span>
-    <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-z</span> <span class="hl sng">&quot;</span><span class="hl ipl">${LINENUM}</span><span class="hl sng">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
-        <span class="hl kwb">echo</span> <span class="hl sng">&quot;in_file=</span><span class="hl esc">\&quot;</span><span class="hl sng"></span><span class="hl ipl">${IN}</span><span class="hl sng">.dat</span><span class="hl esc">\&quot;</span><span class="hl sng">&quot;</span> <span class="hl opt">&gt;</span> <span class="hl kwd">${IN}</span>.gp
-        <span class="hl kwb">echo</span> <span class="hl sng">&quot;out_file=</span><span class="hl esc">\&quot;</span><span class="hl sng">./</span><span class="hl ipl">${CACHE}</span><span class="hl sng">/</span><span class="hl ipl">${OUT}</span><span class="hl sng">.svg</span><span class="hl esc">\&quot;</span><span class="hl sng">&quot;</span> <span class="hl opt">&gt;&gt;</span> <span class="hl kwd">${IN}</span>.gp
-        <span class="hl kwc">head</span> <span class="hl opt">-</span><span class="hl kwd">$((LINENUM - 1)</span><span class="hl opt">)</span> <span class="hl kwd">${IN}</span> <span class="hl opt">&gt;&gt;</span> <span class="hl kwd">${IN}</span>.gp
-        <span class="hl kwc">tail</span> <span class="hl opt">-</span><span class="hl kwd">$((LINECNT - LINENUM)</span><span class="hl opt">)</span> <span class="hl kwd">$IN</span> <span class="hl opt">&gt;</span> <span class="hl kwd">${IN}</span>.dat
-        <span class="hl kwd">$APP ${IN}</span>.gp
-        <span class="hl kwc">rm</span> <span class="hl kwd">${IN}</span>.gp
-        <span class="hl kwc">rm</span> <span class="hl kwd">${IN}</span>.dat
-    <span class="hl kwa">fi</span>
-<span class="hl kwa">fi</span>
-
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.svg   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+    LINENUM<span class="hl opt">=</span><span class="hl str">`grep -n &apos;^-\+$&apos;</span> <span class="hl ipl">${IN}</span> <span class="hl str">| perl -pe &apos;s/^(\d):-+$/\1/&apos;`</span>
+    LINECNT<span class="hl opt">=</span><span class="hl str">`cat</span> <span class="hl ipl">${IN}</span> <span class="hl str">| wc -l`</span>
+    <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-z</span> <span class="hl str">&quot;</span><span class="hl ipl">${LINENUM}</span><span class="hl str">&quot;</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
+        <span class="hl kwb">echo</span> <span class="hl str">&quot;in_file=</span><span class="hl esc">\&quot;</span><span class="hl str"></span><span class="hl ipl">${IN}</span><span class="hl str">.dat</span><span class="hl esc">\&quot;</span><span class="hl str">&quot;</span> <span class="hl opt">&gt;</span> <span class="hl kwd">${IN}</span>.gp
+        <span class="hl kwb">echo</span> <span class="hl str">&quot;out_file=</span><span class="hl esc">\&quot;</span><span class="hl str">./</span><span class="hl ipl">${CACHE}/${OUT}.svg\&quot;&quot; &gt;&gt; ${IN}</span><span class="hl str">.gp</span>
+<span class="hl str">        head -$((LINENUM - 1))</span> <span class="hl ipl">${IN}</span> <span class="hl str">&gt;&gt;</span> <span class="hl ipl">${IN}</span><span class="hl str">.gp</span>
+<span class="hl str">        tail -$((LINECNT - LINENUM))</span> <span class="hl ipl">$IN</span> <span class="hl str">&gt;</span> <span class="hl ipl">${IN}</span><span class="hl str">.dat</span>
+<span class="hl str"></span>        <span class="hl ipl">$APP</span> <span class="hl str"></span><span class="hl ipl">${IN}</span><span class="hl str">.gp</span>
+<span class="hl str">        rm</span> <span class="hl ipl">${IN}</span><span class="hl str">.gp</span>
+<span class="hl str">        rm</span> <span class="hl ipl">${IN}</span><span class="hl str">.dat</span>
+<span class="hl str">    fi</span>
+<span class="hl str">fi</span>
+<span class="hl str"></span>
+<span class="hl str">echo &quot;</span><span class="hl opt">&lt;</span>div align<span class="hl opt">=</span><span class="hl str">&apos;center&apos;</span><span class="hl opt">&gt;</span><span class="hl str">&quot;  &gt; ./</span><span class="hl ipl">${OUT}</span>
+<span class="hl str">cat ./</span><span class="hl ipl">${CACHE}/${OUT}.svg   &gt;&gt; ./${OUT}</span>
+<span class="hl str">echo &quot;</span><span class="hl opt">&lt;/</span>div<span class="hl opt">&gt;</span><span class="hl str">&quot;               &gt;&gt; ./</span><span class="hl ipl">${OUT}</span><span class="hl str"></span>
 </pre>
 
 </details>
@@ -2177,15 +2178,15 @@ APP<span class="hl opt">=</span>gnuplot
 
 <p>　この<a class='autolink' href='#18dTPnzNOgg'>外部フィルタ</a>は以下のように使用します。つまり、埋め込みたいファイル名を指定します。</p>
 <pre class='hl'>
-<span class="hl sng">```embed_image</span>
-<span class="hl sng">./tmp.png</span>
-<span class="hl sng">```</span>
+<span class="hl str">```embed_image</span>
+<span class="hl str">./tmp.png</span>
+<span class="hl str">```</span>
 </pre>
 
 <p>　これによって、以下のような内容が埋め込まれます。</p>
 <pre class='hl'>
-<span class="hl kwa">&lt;div</span> align=&#39;center&#39;<span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;img</span> src=&#39;data:image/png;base64,iVBORw0K...(omit)...K5CYII=&#39; <span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;div</span> align=&apos;center&apos;<span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;img</span> src=&apos;data:image/png;base64,iVBORw0K...(omit)...K5CYII=&apos; <span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/div&gt;</span>
 </pre>
 
@@ -2203,22 +2204,22 @@ OUT<span class="hl opt">=</span><span class="hl kwd">$2</span>
 CACHE<span class="hl opt">=</span>.cache
 
 <span class="hl kwa">if</span> <span class="hl opt">[ !</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span> <span class="hl opt">];</span> <span class="hl kwa">then</span>
-    <span class="hl kwc">mkdir</span> <span class="hl kwd">${CACHE}</span>
+    mkdir <span class="hl kwd">${CACHE}</span>
 <span class="hl kwa">fi</span>
 
 <span class="hl kwa">if</span> <span class="hl opt">[</span> <span class="hl kwb">-e</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat <span class="hl opt">];</span> <span class="hl kwa">then</span>
     <span class="hl kwc">touch</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
 <span class="hl kwa">else</span>
-    FILE<span class="hl opt">=</span><span class="hl sng">`cat &quot;</span><span class="hl ipl">${IN}</span><span class="hl sng">&quot;`</span>
-    TYPE<span class="hl opt">=</span><span class="hl sng">`echo</span> <span class="hl ipl">${FILE}</span> <span class="hl sng">| perl -pe &quot;s/^.+\.(.+)$/\1/&quot;`</span>
-    <span class="hl kwb">echo -n</span> <span class="hl sng">&quot;&lt;img src=&#39;data:image/</span><span class="hl ipl">${TYPE}</span><span class="hl sng">;base64,&quot;</span> <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
-    base64 <span class="hl kwd">${FILE}</span> <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
-    <span class="hl kwb">echo</span> <span class="hl sng">&quot;&#39; /&gt;&quot;</span>  <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat
-<span class="hl kwa">fi</span>
-
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;div align=&#39;center&#39;&gt;&quot;</span>  <span class="hl opt">&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwc">cat</span> .<span class="hl opt">/</span><span class="hl kwd">${CACHE}</span><span class="hl opt">/</span><span class="hl kwd">${OUT}</span>.dat   <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
-<span class="hl kwb">echo</span> <span class="hl sng">&quot;&lt;/div&gt;&quot;</span>               <span class="hl opt">&gt;&gt;</span> .<span class="hl opt">/</span><span class="hl kwd">${OUT}</span>
+    FILE<span class="hl opt">=</span><span class="hl str">`cat &quot;</span><span class="hl ipl">${IN}</span><span class="hl str">&quot;`</span>
+    TYPE<span class="hl opt">=</span><span class="hl str">`echo</span> <span class="hl ipl">${FILE}</span> <span class="hl str">| perl -pe &quot;s/^.+\.(.+)$/\1/&quot;`</span>
+    <span class="hl kwb">echo -n</span> <span class="hl str">&quot;&lt;img src=&apos;data:image/</span><span class="hl ipl">${TYPE};base64,&quot; &gt; ./${CACHE}/${OUT}</span><span class="hl str">.dat</span>
+<span class="hl str">    base64</span> <span class="hl ipl">${FILE} &gt;&gt; ./${CACHE}/${OUT}</span><span class="hl str">.dat</span>
+<span class="hl str">    echo &quot;</span><span class="hl str">&apos; /&gt;&quot;  &gt;&gt; ./</span><span class="hl ipl">${CACHE}</span><span class="hl str">/</span><span class="hl ipl">${OUT}</span><span class="hl str">.dat</span>
+<span class="hl str">fi</span>
+<span class="hl str"></span>
+<span class="hl str">echo &quot;&lt;div align=&apos;</span>center<span class="hl str">&apos;&gt;&quot;  &gt; ./</span><span class="hl ipl">${OUT}</span>
+<span class="hl str">cat ./</span><span class="hl ipl">${CACHE}/${OUT}.dat   &gt;&gt; ./${OUT}</span>
+<span class="hl str">echo &quot;&lt;/div&gt;&quot;               &gt;&gt; ./</span><span class="hl ipl">${OUT}</span><span class="hl str"></span>
 </pre>
 
 </details>
@@ -2704,9 +2705,24 @@ CACHE<span class="hl opt">=</span>.cache
 <li>ENHANCE : <code>--warning</code> 起動オプションを<a href='#5jvoo6Lvylm'>追加</a></li>
 </ul>
 </li>
-<li><strong>2026/07/17 - version 0.846</strong>
+<li><strong>2026/07/17 - version 0.847</strong>
 <ul>
 <li>ENHANCE : <a href='#gg7i7uPfLlo'>図表タイトル</a>に新しい記法を導入</li>
+</ul>
+</li>
+<li><strong>2026/07/25 - version 0.848</strong>
+<ul>
+<li>MINOR INCOMPATIBLE CHANGE : 継続行の処理タイミングと適用スコープを変更
+<ul>
+<li>継続行はプリプロセスの最後で実施するように変更</li>
+<li><a class='autolink' href='#2HUs4TZfCPd'>preブロック</a>内部は継続行処理の対象外に変更</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>2026/07/26 - version 0.849</strong>
+<ul>
+<li>ENHANCE : <a href='#6lxsyJvfG4q'>一部の文字装飾における制約</a>を緩和し、外側は<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でなく括弧類や句読点でも良いとする修正</li>
 </ul>
 </li>
 </ul>

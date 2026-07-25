@@ -35,6 +35,8 @@ namespace turnup {
             return true;
         return false;
     }
+    bool IsSpecificForward( const char* p );
+    bool IsSpecificBackward( const char* p );
 
     //--------------------------------------------------------------------------
     //
