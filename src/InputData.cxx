@@ -69,6 +69,7 @@ namespace turnup {
                                 const TextSpan& fileName, const TextSpan& curFileName );
         void AddErrorLine( std::vector<TextSpan>& lines,
                            const char* msg, const TextSpan& fileName );
+        void MergeContinuousLines();
     private:
         typedef bool MuteBlockEndChecker( const TextSpan& );
         static MuteBlockEndChecker* IsMuteBlockStart( const TextSpan& line );
@@ -200,7 +201,10 @@ namespace turnup {
             return true;
         TextSpan* pTop = &(m_lines[0]);
         TextSpan* pEnd = pTop + m_lines.size();
-        return pPreProsessor->Execute( pTop, pEnd );
+        bool result = pPreProsessor->Execute( pTop, pEnd );
+        if( result == true )
+            this->MergeContinuousLines();
+        return result;
     }
 
     void InputDataImpl::PreScan( DocumentInfo& docInfo ) {
@@ -567,6 +571,57 @@ namespace turnup {
         TextMaker tm;
         tm << "<!-- error: " << msg << fileName << " -->";
         lines.push_back( tm.GetSpan() );
+    }
+
+    void InputDataImpl::MergeContinuousLines() {
+        TextMaker*           pTM        = nullptr;
+        uint32_t             curIndex   = 0;
+        uint32_t             outIndex   = 0;
+        const uint32_t       tailIndex  = m_lines.size();
+        MuteBlockEndChecker* chkMuteEnd = nullptr;
+        while( curIndex < tailIndex ) {
+            TextSpan& line = m_lines[curIndex];
+            // mute 状態（pre ブロックとブロックコメント内部）であれば継続行処理はしない
+            if( !!chkMuteEnd ) {
+                // mute 終了行でも継続行処理はしないが mute 状態は解除
+                if( chkMuteEnd( line ) == true )
+                    chkMuteEnd = nullptr;
+                m_lines[outIndex++] = m_lines[curIndex++];
+                continue;
+            }
+            // mute 開始行の場合も継続行処理はしない
+            if( auto tmp = IsMuteBlockStart( line ) ) {
+                chkMuteEnd = tmp;
+                m_lines[outIndex++] = m_lines[curIndex++];
+                continue;
+            }
+            // 行末に継続行指定があるか判定して分岐
+            if( line.EndWith( " \\" ) == true ) {
+                // 継続行の場合は TextMaker に追加して継続
+                if( !pTM )
+                    pTM = new TextMaker{};
+                *pTM << line.Chomp( 0, 2 );
+                ++curIndex;
+                continue;
+            } else {
+                // 継続行指定がない場合、継続行処理中だったか否かで分岐
+                if( !!pTM ) {
+                    *pTM << line;
+                    m_lines[outIndex++] = pTM->GetSpan();
+                    delete pTM;
+                    ++curIndex;
+                    pTM = nullptr;
+                } else {
+                    m_lines[outIndex++] = m_lines[curIndex++];
+                }
+            }
+        }
+        if( !!pTM ) {
+            m_lines[outIndex++] = pTM->GetSpan();
+            delete pTM;
+            pTM = nullptr;
+        }
+        m_lines.resize( outIndex );
     }
 
     InputDataImpl::MuteBlockEndChecker* InputDataImpl::IsMuteBlockStart( const TextSpan& line ) {

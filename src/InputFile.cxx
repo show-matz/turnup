@@ -30,7 +30,6 @@ namespace turnup {
         virtual const TextSpan* LineEnd() const override;
     private:
         static char* FixLineEnd( char* pTop, char* pEnd );
-        static char* FixLineContinuous( char* pTop, char* pEnd );
     private:
         TextSpan                m_fileName;
         WholeFile*              m_pFileData;
@@ -73,7 +72,6 @@ namespace turnup {
         char* pTop = m_pFileData->GetBuffer<char>();
         char* pEnd = pTop + m_pFileData->Count<char>();
         pEnd = FixLineEnd( pTop, pEnd );
-        pEnd = FixLineContinuous( pTop, pEnd );
         while( pTop < pEnd ) {
             char* pEOL = std::find( pTop, pEnd, 0x0A );
             char* pNext = pEOL + 1;
@@ -121,25 +119,6 @@ namespace turnup {
             p = std::search( pTop, pEnd, target, target + 2 );
             pDest = std::copy( pTop, p, pDest );
             pTop = p + 1;
-        }
-        *pDest = 0;
-        return pDest;
-    }
-
-    char* InputFileImpl::FixLineContinuous( char* pTop, char* pEnd ) {
-        char target[3] = { ' ', '\\', 0x0A };
-        //ひとつめの継続行を検索
-        char* p = std::search( pTop, pEnd, target, target + 3 );
-        if( p == pEnd ) {
-            //みつからなければ何もしないでよし
-            return pEnd;
-        }
-        pTop = p + 3;
-        char* pDest = p;
-        while( pTop < pEnd ) {
-            p = std::search( pTop, pEnd, target, target + 3 );
-            pDest = std::copy( pTop, p, pDest );
-            pTop = p + 3;
         }
         *pDest = 0;
         return pDest;
