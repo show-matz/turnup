@@ -24,6 +24,9 @@ namespace turnup {
             if( pTop->TrimHead().BeginWith( "<!--" ) )
                 break;
             pTop->WriteTo( std::cout, docInfo );
+            //行末に 2 つスペースがある場合は <br> を追加で出力する
+            if( pTop->EndWith( "  " ) )
+                std::cout << "<br>";
         }
         std::cout << "</p>" << std::endl;
         return pTop;

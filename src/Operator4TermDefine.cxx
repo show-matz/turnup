@@ -55,13 +55,19 @@ namespace turnup {
         }
         styles.WriteOpenTag( std::cout, "dd" ); {
             TextSpan line = *pTop;
-            line = line.Chomp( (p2+2) - pTop->Top(), 0 ).Trim();
+            line = line.Chomp( (p2+2) - pTop->Top(), 0 ).TrimHead();
             line.WriteTo( std::cout, docInfo );
+            //行末に 2 つスペースがある場合は <br> を追加で出力する
+            if( line.EndWith( "  " ) )
+                std::cout << "<br>";
             while( ++pTop < pEnd ) {
-                line = pTop->Trim();
+                line = pTop->TrimHead();
                 if( line.IsEmpty() )
                     break;
                 line.WriteTo( std::cout, docInfo );
+                //行末に 2 つスペースがある場合は <br> を追加で出力する
+                if( line.EndWith( "  " ) )
+                    std::cout << "<br>";
             }
         }
         std::cout << "</dd>" << std::endl;

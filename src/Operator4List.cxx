@@ -75,7 +75,7 @@ namespace turnup {
             const TextSpan* pEnd1st = nullptr;
             const TextSpan* pTmp    = GetEndOfCurrentItem( pTop, pEnd, pEnd1st );
 
-            // 単一行（これがほとんどのはず）の場合、シンプルに出力
+            // 単一行（これがほとんどのはず）の場合、シンプルに出力（この場合行末２スペースでの改行挿入はしない）
             if( (pTmp - pTop) == 1 ) {
                 TextSpan line = SkipListHead( pTop );
                 bool checked = false;
@@ -217,9 +217,18 @@ namespace turnup {
         } else {
             //複数行の場合、<p> - </p> で括って出力
             styles.WriteOpenTag( std::cout, "p" );
-            firstLine.WriteTo( std::cout, docInfo ) << std::endl;;
-            for( ++pTop; pTop < pMid; ++pTop )
-                pTop->WriteTo( std::cout, docInfo ) << std::endl;;
+            firstLine.WriteTo( std::cout, docInfo );
+            //行末に 2 つスペースがある場合は <br> を追加で出力する
+            if( firstLine.EndWith( "  " ) )
+                std::cout << "<br>";
+            std::cout << std::endl;
+            for( ++pTop; pTop < pMid; ++pTop ) {
+                pTop->WriteTo( std::cout, docInfo );
+                //行末に 2 つスペースがある場合は <br> を追加で出力する
+                if( pTop->EndWith( "  " ) )
+                    std::cout << "<br>";
+                std::cout << std::endl;
+            }
             std::cout << "</p>" << std::endl;
         }
 

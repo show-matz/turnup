@@ -882,6 +882,7 @@ int main( void ) {
 <p>　version 0.839 以降では、<a class='autolink' href='#jj2RDRZoMS1'>画像モード</a>の指定によって出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> 内に画像を埋め込むことができるようになりました。 詳細は <a href='#jj2RDRZoMS1'>6.8  節</a>を参照してください。</p>
 <h3><a name='akoPHkUM3jR'></a>5.17 改行の挿入</h3>
 <p>　文中で改行させるには、<a class='term' href='#ahN3t8jbawv'>HTML</a> タグ <code>&lt;br&gt;</code> をそのまま書きます。</p>
+<p>　version 0.850 以降では、オリジナルの markdown にある「行末にスペースを2つ置くことで改行」という仕様もサポートされるようになりました。</p>
 <h3><a name='iwCMutWJWjc'></a>5.18 段落</h3>
 <p>　<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>を含め、他の書法と認識されない行はすべて段落の開始とみなされます。段落は空行または<a href='#cPmXTXvPhJd'>コメント</a>行に至るまでのすべての行が連結され、単一の段落として出力されます。</p>
 <p>　　</p>
@@ -2723,6 +2724,11 @@ CACHE<span class="hl opt">=</span>.cache
 <li><strong>2026/07/26 - version 0.849</strong>
 <ul>
 <li>ENHANCE : <a href='#6lxsyJvfG4q'>一部の文字装飾における制約</a>を緩和し、外側は<a class='term' href='#8sf6EgPf8j8'>空白類文字</a>でなく括弧類や句読点でも良いとする修正</li>
+</ul>
+</li>
+<li><strong>2026/07/26 - version 0.850</strong>
+<ul>
+<li>ENHANCE : <a href='#akoPHkUM3jR'>改行の挿入</a>方法として「行末にスペースを2つ置くことで改行」を追加でサポート</li>
 </ul>
 </li>
 </ul>
