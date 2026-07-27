@@ -199,12 +199,10 @@ namespace turnup {
     bool InputDataImpl::PreProcess( PreProcessor* pPreProsessor ) {
         if( m_lines.empty() )
             return true;
+        this->MergeContinuousLines();
         TextSpan* pTop = &(m_lines[0]);
         TextSpan* pEnd = pTop + m_lines.size();
-        bool result = pPreProsessor->Execute( pTop, pEnd );
-        if( result == true )
-            this->MergeContinuousLines();
-        return result;
+        return pPreProsessor->Execute( pTop, pEnd );
     }
 
     void InputDataImpl::PreScan( DocumentInfo& docInfo ) {

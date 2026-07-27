@@ -1845,7 +1845,7 @@ quux.png
 <table align='center'>
 <tr><th>step</th><th>action</th><th>description</th></tr>
 <tr><td align='center'>1</td><td nowrap align='left'>入力データのロード</td><td align='left'>指定された入力ファイルとその中の include 指令を再帰的に処理して単一の行シーケンスを生成し、スニペットの展開も行ないます。また、この時点で改行コードの統一を済ませてしまいます。</td></tr>
-<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>の処理もこの時点で実施し、最後に継続行の連結処理をします。</td></tr>
+<tr><td align='center'>2</td><td nowrap align='left'>プリプロセス</td><td align='left'>最初に継続行の連結処理をします。続いて入力データの行シーケンスを反復し、変数定義の追跡、および変数展開を実施します。また、<a class='autolink' href='#8sNFPrNb9kM'>条件分岐</a>の処理もこの時点で実施します。</td></tr>
 <tr><td align='center'>3</td><td nowrap align='left'>予備スキャン</td><td align='left'>変数展開済みの行シーケンスを反復し、<a class='autolink' href='#7HkxqP1TWY5'>見出し</a>や図表タイトル、用語定義などを解析して各種の<a class='autolink' href='#i9uAZw3xFSK'>拡張機能</a>の利用に備えます。</td></tr>
 <tr><td align='center'>4</td><td nowrap align='left'>出力生成</td><td align='left'>行シーケンスを反復し、出力 <a class='term' href='#ahN3t8jbawv'>HTML</a> を生成します。</td></tr>
 </table>
@@ -2729,6 +2729,11 @@ CACHE<span class="hl opt">=</span>.cache
 <li><strong>2026/07/26 - version 0.850</strong>
 <ul>
 <li>ENHANCE : <a href='#akoPHkUM3jR'>改行の挿入</a>方法として「行末にスペースを2つ置くことで改行」を追加でサポート</li>
+</ul>
+</li>
+<li><strong>2026/07/27 - version 0.851</strong>
+<ul>
+<li>BUGFIX : 継続行の処理タイミングを再度（プリプロセスの冒頭に）変更</li>
 </ul>
 </li>
 </ul>
