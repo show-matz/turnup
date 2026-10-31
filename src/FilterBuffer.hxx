@@ -3,8 +3,8 @@
 // FilterBuffer.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef FILTERBUFFER_HXX__
-#define FILTERBUFFER_HXX__
+#ifndef SRC_FILTERBUFFER_HXX_
+#define SRC_FILTERBUFFER_HXX_
 
 #include "TextSpan.hxx"
 
@@ -12,24 +12,26 @@
 
 namespace turnup {
 
-    class TextSpan;
+class TextSpan;
 
-    //--------------------------------------------------------------------------
-    //
-    // class FilterBuffer
-    //
-    //--------------------------------------------------------------------------
-    class FilterBuffer {
-    public:
-        FilterBuffer( const TextSpan* pTop, const TextSpan* pEnd );
-        ~FilterBuffer();
-    public:
-        TextSpan GetBuffer() const;
-    private:
-        uint32_t m_length;
-        char*    m_pBuffer;
-    };
+//--------------------------------------------------------------------------
+//
+// class FilterBuffer
+//
+//--------------------------------------------------------------------------
+class FilterBuffer {
+ public:
+    FilterBuffer(const TextSpan* pTop, const TextSpan* pEnd);
+    ~FilterBuffer();
 
-} // namespace turnup
+ public:
+    TextSpan GetBuffer() const;
 
-#endif // FILTERBUFFER_HXX__
+ private:
+    uint32_t m_length;
+    char*    m_pBuffer;
+};
+
+}  // namespace turnup
+
+#endif  // SRC_FILTERBUFFER_HXX_

@@ -3,17 +3,17 @@
 // Operator4StyleStack.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef OPERATOR_4_STYLESTACK_HXX__
-#define OPERATOR_4_STYLESTACK_HXX__
+#ifndef SRC_OPERATOR4STYLESTACK_HXX_
+#define SRC_OPERATOR4STYLESTACK_HXX_
 
 namespace turnup {
 
-    class TextSpan;
-    class DocumentInfo;
+class TextSpan;
+class DocumentInfo;
 
-    const TextSpan* Operator4StyleStack( const TextSpan* pTop,
-                                         const TextSpan* pEnd, DocumentInfo& docInfo );
+const TextSpan* Operator4StyleStack(const TextSpan* pTop,
+                                    const TextSpan* pEnd, DocumentInfo& docInfo);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // OPERATOR_4_STYLESTACK_HXX__
+#endif  // SRC_OPERATOR4STYLESTACK_HXX_

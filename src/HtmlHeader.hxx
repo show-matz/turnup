@@ -3,8 +3,8 @@
 // HtmlHeader.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef HTMLHEADER_HXX__
-#define HTMLHEADER_HXX__
+#ifndef SRC_HTMLHEADER_HXX_
+#define SRC_HTMLHEADER_HXX_
 
 #include "TextSpan.hxx"
 
@@ -13,28 +13,30 @@
 
 namespace turnup {
 
-    class Config;
+class Config;
 
-    //--------------------------------------------------------------------------
-    //
-    // class HtmlHeader
-    //
-    //--------------------------------------------------------------------------
-    class HtmlHeader {
-    public:
-        HtmlHeader();
-        HtmlHeader( const HtmlHeader& ) = delete;
-        ~HtmlHeader();
-        HtmlHeader& operator=( const HtmlHeader& ) = delete;
-    public:
-        void SetTitle( const TextSpan& title );
-        void SetStyleSheet( const TextSpan& styleSheet );
-        std::ostream& WriteTo( std::ostream& os, const Config& cfg ) const;
-    private:
-        TextSpan m_title;
-        TextSpan m_styleSheet;
-    };
+//--------------------------------------------------------------------------
+//
+// class HtmlHeader
+//
+//--------------------------------------------------------------------------
+class HtmlHeader {
+ public:
+    HtmlHeader();
+    HtmlHeader(const HtmlHeader&) = delete;
+    ~HtmlHeader();
+    HtmlHeader& operator=(const HtmlHeader&) = delete;
 
-} // namespace turnup
+ public:
+    void SetTitle(const TextSpan& title);
+    void SetStyleSheet(const TextSpan& styleSheet);
+    std::ostream& WriteTo(std::ostream& os, const Config& cfg) const;
 
-#endif // HTMLHEADER_HXX__
+ private:
+    TextSpan m_title;
+    TextSpan m_styleSheet;
+};
+
+}  // namespace turnup
+
+#endif  // SRC_HTMLHEADER_HXX_

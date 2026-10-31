@@ -3,16 +3,16 @@
 // InternalFilter4MathJax.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef INTERNALFILTER4MATHJAX_HXX__
-#define INTERNALFILTER4MATHJAX_HXX__
+#ifndef SRC_INTERNALFILTER4MATHJAX_HXX_
+#define SRC_INTERNALFILTER4MATHJAX_HXX_
 
 #include "InternalFilter.hxx"
 
 namespace turnup {
 
-    bool InternalFilter4MathJax( std::ostream& os, DocumentInfo& docInfo,
-                                 const TextSpan* pTop, const TextSpan* pEnd );
+bool InternalFilter4MathJax(std::ostream& os, DocumentInfo& docInfo,
+                            const TextSpan* pTop, const TextSpan* pEnd);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // INTERNALFILTER4MATHJAX_HXX__
+#endif  // SRC_INTERNALFILTER4MATHJAX_HXX_

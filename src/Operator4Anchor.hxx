@@ -3,17 +3,17 @@
 // Operator4Anchor.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef OPERATOR_4_ANCHOR_HXX__
-#define OPERATOR_4_ANCHOR_HXX__
+#ifndef SRC_OPERATOR4ANCHOR_HXX_
+#define SRC_OPERATOR4ANCHOR_HXX_
 
 namespace turnup {
 
-    class TextSpan;
-    class DocumentInfo;
+class TextSpan;
+class DocumentInfo;
 
-    const TextSpan* Operator4Anchor( const TextSpan* pTop,
-                                     const TextSpan* pEnd, DocumentInfo& docInfo );
+const TextSpan* Operator4Anchor(const TextSpan* pTop,
+                                const TextSpan* pEnd, DocumentInfo& docInfo);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // OPERATOR_4_ANCHOR_HXX__
+#endif  // SRC_OPERATOR4ANCHOR_HXX_

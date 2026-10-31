@@ -3,16 +3,16 @@
 // InternalFilter4Table.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef INTERNALFILTER4TABLE_HXX__
-#define INTERNALFILTER4TABLE_HXX__
+#ifndef SRC_INTERNALFILTER4TABLE_HXX_
+#define SRC_INTERNALFILTER4TABLE_HXX_
 
 #include "InternalFilter.hxx"
 
 namespace turnup {
 
-    bool InternalFilter4Table( std::ostream& os, DocumentInfo& docInfo,
-                               const TextSpan* pTop, const TextSpan* pEnd );
+bool InternalFilter4Table(std::ostream& os, DocumentInfo& docInfo,
+                          const TextSpan* pTop, const TextSpan* pEnd);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // INTERNALFILTER4TABLE_HXX__
+#endif  // SRC_INTERNALFILTER4TABLE_HXX_
