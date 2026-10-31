@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <string.h>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 
 namespace turnup {
@@ -188,6 +189,7 @@ namespace turnup {
     static void WriteWithTermLink( std::ostream& os,
                                    const char* pTop, const char* pEnd,
                                    DocumentInfo& docInfo, bool bTermLink );
+	static std::string GenerateFootnoteTips( const TextSpan& note, DocumentInfo& docInfo );
 
 
     typedef const char* Finder( const char* pTop, const char* pEnd, 
@@ -1058,11 +1060,13 @@ namespace turnup {
                                  DocumentInfo& docInfo, bool bTermLink ) {
         (void)whole;
         (void)bTermLink;
-        uint32_t idx = docInfo.Get<Footnotes>().Register( pTop + 5, pEnd - 2 );
+        auto& fn = docInfo.Get<Footnotes>();
+        uint32_t idx = fn.Register( pTop + 5, pEnd - 2 );
         auto& styles = docInfo.Get<StyleStack>();
         styles.WriteOpenTag( os, "sup" )
            << "<a name='footnote_ref" << idx << "' "
-           << "href='#footnote" << idx << "'>"
+           << "href='#footnote" << idx << "' "
+           << "title='" << GenerateFootnoteTips( TextSpan{ pTop + 5, pEnd - 2 }, docInfo ) << "'>"
            << idx
            << "</a></sup>";
     }
@@ -1100,7 +1104,8 @@ namespace turnup {
             auto& styles = docInfo.Get<StyleStack>();
             styles.WriteOpenTag( os, "sup" )
                << "<a name='footnote_ref_" << tag << "_" << idx << "' "
-               << "href='#footnote_" << tag << "_" << idx << "'>"
+               << "href='#footnote_" << tag << "_" << idx << "' "
+               << "title='" << GenerateFootnoteTips( note, docInfo ) << "'>"
                << prefix << idx
                << "</a></sup>";
         }
@@ -1185,6 +1190,28 @@ namespace turnup {
             auto& glossary = docInfo.Get<Glossary>();
             glossary.WriteWithTermLink( os, pTop, pEnd, TextSpan::WriteWithEscape );
         }
+    }
+
+	static std::string GenerateFootnoteTips( const TextSpan& note, DocumentInfo& docInfo ) {
+        std::ostringstream os;
+        note.WriteTo( os, docInfo );
+        std::string title = os.str();
+        bool in_tag = false;
+        auto pred = [&in_tag]( char c ) -> bool {
+            if( in_tag ) {
+                if( c == '>' ) {
+                    in_tag = false;
+                    return true;
+                }
+            } else {
+                if( c == '<' )
+                    in_tag = true;
+            }
+            return in_tag;
+        };
+        auto itr = std::remove_if(title.begin(), title.end(), pred);
+        title.erase(itr, title.end());
+        return title;
     }
 
 } // namespace turnup
