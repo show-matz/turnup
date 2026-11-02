@@ -3,16 +3,16 @@
 // InternalFilter4Attach.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef INTERNALFILTER4ATTACH_HXX__
-#define INTERNALFILTER4ATTACH_HXX__
+#ifndef SRC_INTERNALFILTER4ATTACH_HXX_
+#define SRC_INTERNALFILTER4ATTACH_HXX_
 
 #include "InternalFilter.hxx"
 
 namespace turnup {
 
-    bool InternalFilter4Attach( std::ostream& os, DocumentInfo& docInfo,
-                                const TextSpan* pTop, const TextSpan* pEnd );
+bool InternalFilter4Attach(std::ostream& os, DocumentInfo& docInfo,
+                           const TextSpan* pTop, const TextSpan* pEnd);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // INTERNALFILTER4ATTACH_HXX__
+#endif  // SRC_INTERNALFILTER4ATTACH_HXX_

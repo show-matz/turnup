@@ -3,16 +3,16 @@
 // InternalFilter4Raw.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef INTERNALFILTER4RAW_HXX__
-#define INTERNALFILTER4RAW_HXX__
+#ifndef SRC_INTERNALFILTER4RAW_HXX_
+#define SRC_INTERNALFILTER4RAW_HXX_
 
 #include "InternalFilter.hxx"
 
 namespace turnup {
 
-    bool InternalFilter4Raw( std::ostream& os, DocumentInfo& docInfo,
-                             const TextSpan* pTop, const TextSpan* pEnd );
+bool InternalFilter4Raw(std::ostream& os, DocumentInfo& docInfo,
+                        const TextSpan* pTop, const TextSpan* pEnd);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // INTERNALFILTER4RAW_HXX__
+#endif  // SRC_INTERNALFILTER4RAW_HXX_

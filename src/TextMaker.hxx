@@ -3,36 +3,39 @@
 // TextMaker.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef TEXTMAKER_HXX__
-#define TEXTMAKER_HXX__
+#ifndef SRC_TEXTMAKER_HXX_
+#define SRC_TEXTMAKER_HXX_
 
 namespace turnup {
 
-    class TextSpan;
+class TextSpan;
 
-    //--------------------------------------------------------------------------
-    //
-    // class TextMaker
-    //
-    //--------------------------------------------------------------------------
-    class TextMaker {
-        friend TextMaker& operator<<( TextMaker& tm, const char* p );
-        friend TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
-    public:
-        class Param;
-    public:
-        TextMaker();
-        ~TextMaker();
-    public:
-        TextSpan GetSpan() const;
-    private:
-        Param* m_pLast;
-    };
+//--------------------------------------------------------------------------
+//
+// class TextMaker
+//
+//--------------------------------------------------------------------------
+class TextMaker {
+    friend TextMaker& operator<<(TextMaker& tm, const char* p);
+    friend TextMaker& operator<<(TextMaker& tm, const TextSpan& span);
 
-    TextMaker& operator<<( TextMaker& tm, const char* p );
-    TextMaker& operator<<( TextMaker& tm, const TextSpan& span );
+ public:
+    class Param;
 
+ public:
+    TextMaker();
+    ~TextMaker();
 
-} // namespace turnup
+ public:
+    TextSpan GetSpan() const;
 
-#endif // TEXTMAKER_HXX__
+ private:
+    Param* m_pLast;
+};
+
+TextMaker& operator<<(TextMaker& tm, const char* p);
+TextMaker& operator<<(TextMaker& tm, const TextSpan& span);
+
+}  // namespace turnup
+
+#endif  // SRC_TEXTMAKER_HXX_

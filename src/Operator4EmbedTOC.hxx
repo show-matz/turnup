@@ -3,25 +3,25 @@
 // Operator4EmbedTOC.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef OPERATOR_4_EMBEDTOC_HXX__
-#define OPERATOR_4_EMBEDTOC_HXX__
+#ifndef SRC_OPERATOR4EMBEDTOC_HXX_
+#define SRC_OPERATOR4EMBEDTOC_HXX_
 
 namespace turnup {
 
-    class TextSpan;
-    class DocumentInfo;
+class TextSpan;
+class DocumentInfo;
 
-    const TextSpan* Operator4EmbedTOC( const TextSpan* pTop,
-                                       const TextSpan* pEnd, DocumentInfo& docInfo );
-    const TextSpan* Operator4EmbedTOC_X( const TextSpan* pTop,
-                                         const TextSpan* pEnd, DocumentInfo& docInfo );
-    const TextSpan* Operator4EmbedSubTOC( const TextSpan* pTop,
-                                          const TextSpan* pEnd, DocumentInfo& docInfo );
-    const TextSpan* Operator4EmbedTableList( const TextSpan* pTop,
-                                             const TextSpan* pEnd, DocumentInfo& docInfo );
-    const TextSpan* Operator4EmbedFigureList( const TextSpan* pTop,
-                                              const TextSpan* pEnd, DocumentInfo& docInfo );
+const TextSpan* Operator4EmbedTOC(const TextSpan* pTop,
+                                  const TextSpan* pEnd, DocumentInfo& docInfo);
+const TextSpan* Operator4EmbedTOC_X(const TextSpan* pTop,
+                                    const TextSpan* pEnd, DocumentInfo& docInfo);
+const TextSpan* Operator4EmbedSubTOC(const TextSpan* pTop,
+                                     const TextSpan* pEnd, DocumentInfo& docInfo);
+const TextSpan* Operator4EmbedTableList(const TextSpan* pTop,
+                                        const TextSpan* pEnd, DocumentInfo& docInfo);
+const TextSpan* Operator4EmbedFigureList(const TextSpan* pTop,
+                                         const TextSpan* pEnd, DocumentInfo& docInfo);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // OPERATOR_4_EMBEDTOC_HXX__
+#endif  // SRC_OPERATOR4EMBEDTOC_HXX_

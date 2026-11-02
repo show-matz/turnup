@@ -3,17 +3,17 @@
 // Operator4Quote.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef OPERATOR_4_QUOTE_HXX__
-#define OPERATOR_4_QUOTE_HXX__
+#ifndef SRC_OPERATOR4QUOTE_HXX_
+#define SRC_OPERATOR4QUOTE_HXX_
 
 namespace turnup {
 
-    class TextSpan;
-    class DocumentInfo;
+class TextSpan;
+class DocumentInfo;
 
-    const TextSpan* Operator4Quote( const TextSpan* pTop,
-                                    const TextSpan* pEnd, DocumentInfo& docInfo );
+const TextSpan* Operator4Quote(const TextSpan* pTop,
+                               const TextSpan* pEnd, DocumentInfo& docInfo);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // OPERATOR_4_QUOTE_HXX__
+#endif  // SRC_OPERATOR4QUOTE_HXX_

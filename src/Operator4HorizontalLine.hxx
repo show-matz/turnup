@@ -3,17 +3,17 @@
 // Operator4HorizontalLine.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef OPERATOR_4_HORIZONTAL_LINE_HXX__
-#define OPERATOR_4_HORIZONTAL_LINE_HXX__
+#ifndef SRC_OPERATOR4HORIZONTALLINE_HXX_
+#define SRC_OPERATOR4HORIZONTALLINE_HXX_
 
 namespace turnup {
 
-    class TextSpan;
-    class DocumentInfo;
+class TextSpan;
+class DocumentInfo;
 
-    const TextSpan* Operator4HorizontalLine( const TextSpan* pTop,
-                                             const TextSpan* pEnd, DocumentInfo& docInfo );
+const TextSpan* Operator4HorizontalLine(const TextSpan* pTop,
+                                        const TextSpan* pEnd, DocumentInfo& docInfo);
 
-} // namespace turnup
+}  // namespace turnup
 
-#endif // OPERATOR_4_HORIZONTAL_LINE_HXX__
+#endif  // SRC_OPERATOR4HORIZONTALLINE_HXX_

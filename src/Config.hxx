@@ -3,34 +3,35 @@
 // Config.hxx
 //
 //------------------------------------------------------------------------------
-#ifndef CONFIG_HXX__
-#define CONFIG_HXX__
+#ifndef SRC_CONFIG_HXX_
+#define SRC_CONFIG_HXX_
 
 #include <stdint.h>
 
 namespace turnup {
 
-    //--------------------------------------------------------------------------
-    //
-    // class Config
-    //
-    //--------------------------------------------------------------------------
-    class Config {
-    public:
-        Config();
-        ~Config();
-    public:
-        bool    bTermLinkInHeader;
-        bool    bEmbedStyleSheet;
-        bool    bWriteComment;
-        bool    bNumberingHeader;
-        bool    bUseMathJax;
-        bool    bEntityNumbering;
-        uint8_t minNumberingLv;
-        uint8_t maxNumberingLv;
-        uint8_t entityNumberingDepth;
-    };
+//--------------------------------------------------------------------------
+//
+// class Config
+//
+//--------------------------------------------------------------------------
+class Config {
+ public:
+    Config();
+    ~Config();
 
-} // namespace turnup
+ public:
+    bool    bTermLinkInHeader;
+    bool    bEmbedStyleSheet;
+    bool    bWriteComment;
+    bool    bNumberingHeader;
+    bool    bUseMathJax;
+    bool    bEntityNumbering;
+    uint8_t minNumberingLv;
+    uint8_t maxNumberingLv;
+    uint8_t entityNumberingDepth;
+};
 
-#endif // CONFIG_HXX__
+}  // namespace turnup
+
+#endif  // SRC_CONFIG_HXX_

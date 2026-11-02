@@ -9,6 +9,7 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include <algorithm>
 
 struct CharMap {
@@ -230,32 +231,32 @@ static StringMap s_otherData[] = {
 };
 
 
-static inline bool operator<( const CharMap& m1, const CharMap& m2 ) {
+static inline bool operator<(const CharMap& m1, const CharMap& m2) {
     return m1.key < m2.key;
 }
 
-static inline bool operator<( const StringMap& m1, const StringMap& m2 ) {
+static inline bool operator<(const StringMap& m1, const StringMap& m2) {
     return m1.top < m2.top;
 }
 
 static void InitializeModule() {
-    auto init1 = []( CharMap& map ) -> void {
-        map.dataLen = ::strlen( map.data );
+    auto init1 = [](CharMap& map) -> void {
+        map.dataLen = ::strlen(map.data);
     };
-    auto init2 = []( StringMap& map ) -> void {
+    auto init2 = [](StringMap& map) -> void {
         map.top     = map.key[0];
-        map.keyLen  = ::strlen( map.key  );
-        map.dataLen = ::strlen( map.data );
+        map.keyLen  = ::strlen(map.key);
+        map.dataLen = ::strlen(map.data);
     };
-    for( auto& e : s_alphabetData )
-        init1( e );
-    for( auto& e : s_supData )
-        init1( e );
-    for( auto& e : s_subData )
-        init1( e );
-    for( auto& e : s_otherData )
-        init2( e );
-    std::sort( s_otherData, s_otherData + turnup::count_of(s_otherData) );
+    for (auto& e : s_alphabetData)
+        init1(e);
+    for (auto& e : s_supData)
+        init1(e);
+    for (auto& e : s_subData)
+        init1(e);
+    for (auto& e : s_otherData)
+        init2(e);
+    std::sort(s_otherData, s_otherData + turnup::count_of(s_otherData));
     s_moduleInitialized = true;
 }
 
@@ -264,74 +265,74 @@ static void InitializeModule() {
 
 namespace turnup {
 
-    //--------------------------------------------------------------------------
-    //
-    // implementation of class SimpleFormula
-    //
-    //--------------------------------------------------------------------------
-    void SimpleFormula::Expand( const char* p1, const char* p2,
-                                CallbackFunc* pCallback, void* dum ) {
-        if( !s_moduleInitialized ) {
-            InitializeModule();
-        }
-        auto opChar = [&pCallback, &dum]( const char* p1, const char* p2,
-                                          const CharMap* pMap1, const CharMap* pMap2 ) -> const char* {
-            if( *p1 != '{' ) {
-                auto itr = std::lower_bound( pMap1, pMap2, CharMap{ *p1, 0, nullptr } );
-                if( itr == pMap2 || itr->key != *p1 )
-                    return p1;
-                pCallback( itr->data, itr->dataLen, dum );
-                return p1 + 1;
-            }
-            auto p = std::find( p1+1, p2, '}' );
-            if( p == p2 )
-                return p1;
-            for( ++p1; p1 < p; ++p1 ) {
-                auto itr = std::lower_bound( pMap1, pMap2, CharMap{ *p1, 0, nullptr } );
-                if( itr != pMap2 && itr->key == *p1 )
-                    pCallback( itr->data, itr->dataLen, dum );
-            }
-            return p + 1;
-        };
-        while( p1 < p2 ) {
-            if( *p1 == '\\' ) {
-                auto pr = std::equal_range( s_otherData,
-                                            s_otherData + turnup::count_of(s_otherData),
-                                            StringMap{ p1[1], nullptr, nullptr, 0, 0 } );
-                const StringMap* pCand = nullptr;
-                for( const StringMap* p = pr.first; p < pr.second; ++p ) {
-                    if( !::strncmp( p1 + 1, p->key, p->keyLen ) ) {
-                        if( !pCand || pCand->keyLen < p->keyLen )
-                            pCand = p;
-                    }
-                }
-                if( !pCand )
-                    pCallback( p1++, 1, dum );
-                else {
-                    pCallback( pCand->data, pCand->dataLen, dum );
-                    p1 += pCand->keyLen + 1;
-                }
-                continue;
-            }
-            if( ('a' <= *p1 && *p1 <= 'z') || ('A' <= *p1 && *p1 <= 'Z') ) {
-                p1 = opChar( p1, p2, s_alphabetData,
-                                     s_alphabetData + count_of(s_alphabetData) );
-                continue;
-            }
-            if( *p1 == '^' && 1 < (p2 - p1) ) {
-                p1 = opChar( p1+1, p2, s_supData, s_supData + count_of(s_supData) );
-                continue;
-            }
-            if( *p1 == '_' && 1 < (p2 - p1) ) {
-                p1 = opChar( p1+1, p2, s_subData, s_subData + count_of(s_subData) );
-                continue;
-            }
-            pCallback( p1, 1, dum );
-            ++p1;
-        }
+//--------------------------------------------------------------------------
+//
+// implementation of class SimpleFormula
+//
+//--------------------------------------------------------------------------
+void SimpleFormula::Expand(const char* p1, const char* p2,
+                           CallbackFunc* pCallback, void* dum) {
+    if (!s_moduleInitialized) {
+        InitializeModule();
     }
+    auto opChar = [&pCallback, &dum](const char* p1, const char* p2,
+                                     const CharMap* pMap1, const CharMap* pMap2) -> const char* {
+        if (*p1 != '{') {
+            auto itr = std::lower_bound(pMap1, pMap2, CharMap{ *p1, 0, nullptr });
+            if (itr == pMap2 || itr->key != *p1)
+                return p1;
+            pCallback(itr->data, itr->dataLen, dum);
+            return p1 + 1;
+        }
+        auto p = std::find(p1+1, p2, '}');
+        if (p == p2)
+            return p1;
+        for (++p1; p1 < p; ++p1) {
+            auto itr = std::lower_bound(pMap1, pMap2, CharMap{ *p1, 0, nullptr });
+            if (itr != pMap2 && itr->key == *p1)
+                pCallback(itr->data, itr->dataLen, dum);
+        }
+        return p + 1;
+    };
+    while (p1 < p2) {
+        if (*p1 == '\\') {
+            auto pr = std::equal_range(s_otherData,
+                                       s_otherData + turnup::count_of(s_otherData),
+                                       StringMap{ p1[1], nullptr, nullptr, 0, 0 });
+            const StringMap* pCand = nullptr;
+            for (const StringMap* p = pr.first; p < pr.second; ++p) {
+                if (!::strncmp(p1 + 1, p->key, p->keyLen)) {
+                    if (!pCand || pCand->keyLen < p->keyLen)
+                        pCand = p;
+                }
+            }
+            if (!pCand) {
+                pCallback(p1++, 1, dum);
+            } else {
+                pCallback(pCand->data, pCand->dataLen, dum);
+                p1 += pCand->keyLen + 1;
+            }
+            continue;
+        }
+        if (('a' <= *p1 && *p1 <= 'z') || ('A' <= *p1 && *p1 <= 'Z')) {
+            p1 = opChar(p1, p2, s_alphabetData,
+                                s_alphabetData + count_of(s_alphabetData));
+            continue;
+        }
+        if (*p1 == '^' && 1 < (p2 - p1)) {
+            p1 = opChar(p1+1, p2, s_supData, s_supData + count_of(s_supData));
+            continue;
+        }
+        if (*p1 == '_' && 1 < (p2 - p1)) {
+            p1 = opChar(p1+1, p2, s_subData, s_subData + count_of(s_subData));
+            continue;
+        }
+        pCallback(p1, 1, dum);
+        ++p1;
+    }
+}
 
-} // namespace turnup
+}  // namespace turnup
 
 
 
@@ -342,20 +343,19 @@ namespace turnup {
 
     #include <iostream>
 
-    int main( int argc, char* argv[] ) {
-
+    int main(int argc, char* argv[]) {
         (void)argc;
         const char* p = argv[1];
 
-        auto callback = []( const char* p, uint32_t len, void* dum ) -> void {
+        auto callback = [](const char* p, uint32_t len, void* dum) -> void {
             (void)dum;
-            std::cout.write( p, len );
+            std::cout.write(p, len);
         };
 
-        turnup::SimpleFormula::Expand( p, p + ::strlen( p ), callback, nullptr );
+        turnup::SimpleFormula::Expand(p, p + ::strlen(p), callback, nullptr);
         std::cout << std::endl;
 
         return 0;
     }
 
-#endif // SIMPLEFORMULA_TEST
+#endif  // SIMPLEFORMULA_TEST
