@@ -3,37 +3,38 @@
 // main.cxx
 //
 //------------------------------------------------------------------------------
-#include "InputData.hxx"
+#include "CRC64.hxx"
 #include "DocumentInfo.hxx"
 #include "HtmlHeader.hxx"
+#include "InputData.hxx"
 #include "Operators.hxx"
-#include "PreProcessor.hxx"
 #include "Parameters.hxx"
+#include "PreProcessor.hxx"
 #include "ToC.hxx"
-#include "CRC64.hxx"
 
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <time.h>
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
+#include <time.h>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
 
 #ifndef TURNUP_MAJOR_VERSION
     #define TURNUP_MAJOR_VERSION 0
-#endif //TURNUP_MAJOR_VERSION
+#endif  // TURNUP_MAJOR_VERSION
 
 #ifndef TURNUP_MINOR_VERSION
     #define TURNUP_MINOR_VERSION 0
-#endif //TURNUP_MINOR_VERSION
+#endif  // TURNUP_MINOR_VERSION
 
 #ifndef TURNUP_DRAFT_VERSION
     #define TURNUP_DRAFT_VERSION 1
-#endif //TURNUP_DRAFT_VERSION
+#endif  // TURNUP_DRAFT_VERSION
 
 
-using namespace turnup;
+using namespace turnup;  // NOLINT
 
 
 struct SysVars {
@@ -46,89 +47,89 @@ struct SysVars {
 
 
 static void ShowVersion();
-static TextSpan RemovePath( const char* pTop, const char* pEnd = nullptr );
-static void SetupSystemVariables( SysVars& sysVars, const char* pAppName );
-static void InjectSystemVariables( PreProcessor& pp, const SysVars& sysVars );
-static bool InjectParamVariables( PreProcessor& pp, const Parameters& params );
+static TextSpan RemovePath(const char* pTop, const char* pEnd = nullptr);
+static void SetupSystemVariables(SysVars& sysVars, const char* pAppName);
+static void InjectSystemVariables(PreProcessor& pp, const SysVars& sysVars);
+static bool InjectParamVariables(PreProcessor& pp, const Parameters& params);
 
 //------------------------------------------------------------------------------
 //
 // Application entry point - function main.
 //
 //------------------------------------------------------------------------------
-int main( int argc, char* argv[] ) {
-
+int main(int argc, char* argv[]) {
     Parameters params;
-    if( params.Analyze( argc, argv ) == false ) {
+    if (params.Analyze(argc, argv) == false) {
         std::cerr << "ERROR : Invalid parameters." << std::endl;
         return 1;
     }
-    if( params.VersionMode() ) {
+    if (params.VersionMode()) {
         ShowVersion();
         return 0;
     }
-    if( params.GetCrcSalt() != 0 )
-        CRC64::RegisterSalt( params.GetCrcSalt() );
+    if (params.GetCrcSalt() != 0)
+        CRC64::RegisterSalt(params.GetCrcSalt());
 
     SysVars sysVars;
 
     InputData* pInData = nullptr; {
         TextSpan fileName;
-        if( params.GetTargetFile( fileName ) == false ) {
+        if (params.GetTargetFile(fileName) == false) {
             std::cerr << "ERROR : Input file not specified." << std::endl;
             return 1;
         }
-        pInData = InputData::Create( fileName,
-                                     params.IncludePathTop(),
-                                     params.IncludePathEnd() );
-        assert( pInData != nullptr );    // 失敗しない（ロードエラーは error ディレクティブで遅延される）
+        pInData = InputData::Create(fileName,
+                                    params.IncludePathTop(),
+                                    params.IncludePathEnd());
+        // 上記は失敗しない（ロードエラーは error ディレクティブで遅延される）
+        assert(pInData != nullptr);
 
-        sysVars.fileName = RemovePath( fileName.Top(), fileName.End() );
+        sysVars.fileName = RemovePath(fileName.Top(), fileName.End());
     }
 
-    SetupSystemVariables( sysVars, argv[0] );
+    SetupSystemVariables(sysVars, argv[0]);
 
     {
         PreProcessor* pPP = PreProcessor::Create();
-        InjectSystemVariables( *pPP, sysVars );
-        if( InjectParamVariables( *pPP, params ) == false ) {
+        InjectSystemVariables(*pPP, sysVars);
+        if (InjectParamVariables(*pPP, params) == false) {
             std::cerr << "aborted." << std::endl;
             return 1;
         }
-        bool ret = pInData->PreProcess( pPP );
-        PreProcessor::Release( pPP );
-        if( !ret ) {
+        bool ret = pInData->PreProcess(pPP);
+        PreProcessor::Release(pPP);
+        if (!ret) {
             std::cerr << "aborted." << std::endl;
-            InputData::Release( pInData ); 
+            InputData::Release(pInData);
             return 1;
         }
     }
 
     DocumentInfo    docInfo{ params.SafeMode(), params.NeedWarning() };
-    pInData->PreScan( docInfo );
+    pInData->PreScan(docInfo);
 
-    //ToDo : check config... config.entityNumberingDepth.
+    // ToDo : check config... config.entityNumberingDepth.
 
     std::cout << "<html>" << std::endl;
-    docInfo.Get<HtmlHeader>().WriteTo( std::cout, docInfo.Get<Config>() );
+    docInfo.Get<HtmlHeader>().WriteTo(std::cout, docInfo.Get<Config>());
     std::cout << "<body>" << std::endl;
-    docInfo.Get<ToC>().WriteTocLinkIfNeed( std::cout );
+    docInfo.Get<ToC>().WriteTocLinkIfNeed(std::cout);
 
     Operators operators;
     const TextSpan* pTop = pInData->Begin();
     const TextSpan* pEnd = pInData->End();
-    while( pTop < pEnd ) {
-        pTop = operators.OperateLines( pTop, pEnd, docInfo );
-        if( !pTop ) {
+    while (pTop < pEnd) {
+        pTop = operators.OperateLines(pTop, pEnd, docInfo);
+        if (!pTop) {
             std::cerr << "aborted." << std::endl;
             break;
         }
     }
-    if( !!pTop )
+    if (!!pTop)
         std::cout << "</body>" << std::endl
                   << "</html>" << std::endl;
 
-    InputData::Release( pInData ); 
+    InputData::Release(pInData);
     return 0;
 }
 
@@ -144,53 +145,52 @@ static void ShowVersion() {
               << std::setw(3) << std::setfill('0') << std::right << TURNUP_MINOR_VERSION;
 #if 0 < TURNUP_DRAFT_VERSION
     std::cout << " draft - " << TURNUP_DRAFT_VERSION;
-#endif //TURNUP_DRAFT_VERSION
+#endif  // TURNUP_DRAFT_VERSION
     std::cout << std::endl;
-
 }
 
-static TextSpan RemovePath( const char* pTop, const char* pEnd ) {
-    if( !pEnd )
-        pEnd = pTop + ::strlen( pTop );
-    while( true ) {
-        auto p = std::find( pTop, pEnd, '/' );
-        if( p == pEnd )
+static TextSpan RemovePath(const char* pTop, const char* pEnd) {
+    if (!pEnd)
+        pEnd = pTop + ::strlen(pTop);
+    while (true) {
+        auto p = std::find(pTop, pEnd, '/');
+        if (p == pEnd)
             break;
         pTop = p + 1;
     }
     return TextSpan{ pTop, pEnd };
 }
 
-static void SetupSystemVariables( SysVars& sysVars, const char* pAppName ) {
-    sysVars.appName = RemovePath( pAppName );
-    sprintf( sysVars.appVer, "%d.%03d", TURNUP_MAJOR_VERSION, TURNUP_MINOR_VERSION );
+static void SetupSystemVariables(SysVars& sysVars, const char* pAppName) {
+    sysVars.appName = RemovePath(pAppName);
+    sprintf(sysVars.appVer, "%d.%03d", TURNUP_MAJOR_VERSION, TURNUP_MINOR_VERSION);
     time_t now;
-    time( &now );
-    struct tm* pTM = localtime( &now );
-    sprintf( sysVars.date, "%04d/%02d/%02d", pTM->tm_year+1900, pTM->tm_mon+1, pTM->tm_mday );
-    sprintf( sysVars.time, "%02d:%02d:%02d", pTM->tm_hour, pTM->tm_min, pTM->tm_sec );
+    time(&now);
+    struct tm* pTM = localtime(&now);
+    sprintf(sysVars.date, "%04d/%02d/%02d", pTM->tm_year+1900, pTM->tm_mon+1, pTM->tm_mday);
+    sprintf(sysVars.time, "%02d:%02d:%02d", pTM->tm_hour, pTM->tm_min, pTM->tm_sec);
 }
 
-static void InjectSystemVariables( PreProcessor& pp, const SysVars& sysVars ) {
-    pp.RegisterVariable( TextSpan{ "__APP_NAME"    }, sysVars.appName            );
-    pp.RegisterVariable( TextSpan{ "__APP_VERSION" }, TextSpan{ sysVars.appVer } );
-    pp.RegisterVariable( TextSpan{ "__FILE"        }, sysVars.fileName           );
-    pp.RegisterVariable( TextSpan{ "__DATE"        }, TextSpan{ sysVars.date }   );
-    pp.RegisterVariable( TextSpan{ "__TIME"        }, TextSpan{ sysVars.time }   );
+static void InjectSystemVariables(PreProcessor& pp, const SysVars& sysVars) {
+    pp.RegisterVariable(TextSpan{ "__APP_NAME"    }, sysVars.appName);
+    pp.RegisterVariable(TextSpan{ "__APP_VERSION" }, TextSpan{ sysVars.appVer });
+    pp.RegisterVariable(TextSpan{ "__FILE"        }, sysVars.fileName);
+    pp.RegisterVariable(TextSpan{ "__DATE"        }, TextSpan{ sysVars.date });
+    pp.RegisterVariable(TextSpan{ "__TIME"        }, TextSpan{ sysVars.time });
 }
 
-static bool InjectParamVariables( PreProcessor& pp, const Parameters& params ) {
+static bool InjectParamVariables(PreProcessor& pp, const Parameters& params) {
     bool result = true;
     const uint32_t cnt = params.DefinitionCount();
-    for( uint32_t i = 0; i < cnt; ++i ) {
+    for (uint32_t i = 0; i < cnt; ++i) {
         TextSpan ref;
-        params.Definition( i, ref );    // ref := '-DSYMBOL(=VALUE)?'
+        params.Definition(i, ref);    // ref := '-DSYMBOL(=VALUE)?'
         const char* pTop = ref.Top();
         const char* pEnd = ref.End();
-        const char* pDelim = std::find( pTop, pEnd, '=' );
+        const char* pDelim = std::find(pTop, pEnd, '=');
         TextSpan name{ pTop + 2, pDelim };
         TextSpan value{ pDelim == pEnd ? pEnd : pDelim + 1, pEnd };
-        if( pp.RegisterVariable( name, value ) == false ) {
+        if (pp.RegisterVariable(name, value) == false) {
             std::cerr << "ERROR : invalid variable name in '" << ref << "'." << std::endl;
             result = false;
         }

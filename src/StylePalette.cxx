@@ -9,68 +9,70 @@
 
 namespace turnup {
 
-    //--------------------------------------------------------------------------
-    //
-    // class StylePalette::Impl
-    //
-    //--------------------------------------------------------------------------
-    class StylePalette::Impl {
-    public:
-        Impl();
-        ~Impl();
-    public:
-        void RegisterStyle( uint32_t index, const TextSpan& style );
-        const TextSpan* GetStyle( uint32_t index ) const;
-    private:
-        TextSpan m_styles[10];
-    };
+//--------------------------------------------------------------------------
+//
+// class StylePalette::Impl
+//
+//--------------------------------------------------------------------------
+class StylePalette::Impl {
+ public:
+    Impl();
+    ~Impl();
 
-    //--------------------------------------------------------------------------
-    //
-    // implementation of class StylePalette
-    //
-    //--------------------------------------------------------------------------
-    StylePalette::StylePalette() : m_pImpl( nullptr ) {
-    }
+ public:
+    void RegisterStyle(uint32_t index, const TextSpan& style);
+    const TextSpan* GetStyle(uint32_t index) const;
 
-    StylePalette::~StylePalette() {
-        delete m_pImpl;
-    }
+ private:
+    TextSpan m_styles[10];
+};
 
-    void StylePalette::RegisterStyle( uint32_t index, const TextSpan& style ) {
-        if( !m_pImpl )
-            m_pImpl = new Impl{};
-        m_pImpl->RegisterStyle( index, style );
-    }
+//--------------------------------------------------------------------------
+//
+// implementation of class StylePalette
+//
+//--------------------------------------------------------------------------
+StylePalette::StylePalette() : m_pImpl(nullptr) {
+}
 
-    const TextSpan* StylePalette::GetStyle( uint32_t index ) const {
-        if( !m_pImpl )
-            return nullptr;
-        return m_pImpl->GetStyle( index );
-    }
+StylePalette::~StylePalette() {
+    delete m_pImpl;
+}
 
-    //--------------------------------------------------------------------------
-    //
-    // implementation of class StylePalette::Impl
-    //
-    //--------------------------------------------------------------------------
-    StylePalette::Impl::Impl() {
-    }
+void StylePalette::RegisterStyle(uint32_t index, const TextSpan& style) {
+    if (!m_pImpl)
+        m_pImpl = new Impl{};
+    m_pImpl->RegisterStyle(index, style);
+}
 
-    StylePalette::Impl::~Impl() {
-    }
-
-    void StylePalette::Impl::RegisterStyle( uint32_t index, const TextSpan& style ) {
-        if( index < 10 )
-            m_styles[index] = style;
-    }
-
-    const TextSpan* StylePalette::Impl::GetStyle( uint32_t index ) const {
-        if( index < 10 )
-            return m_styles + index;
+const TextSpan* StylePalette::GetStyle(uint32_t index) const {
+    if (!m_pImpl)
         return nullptr;
-    }
+    return m_pImpl->GetStyle(index);
+}
+
+//--------------------------------------------------------------------------
+//
+// implementation of class StylePalette::Impl
+//
+//--------------------------------------------------------------------------
+StylePalette::Impl::Impl() {
+}
+
+StylePalette::Impl::~Impl() {
+}
+
+void StylePalette::Impl::RegisterStyle(uint32_t index, const TextSpan& style) {
+    if (index < 10)
+        m_styles[index] = style;
+}
+
+const TextSpan* StylePalette::Impl::GetStyle(uint32_t index) const {
+    if (index < 10)
+        return m_styles + index;
+    return nullptr;
+}
 
 
-} // namespace turnup
+}  // namespace turnup
 
