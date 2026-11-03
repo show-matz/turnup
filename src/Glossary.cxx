@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -35,7 +36,7 @@ class EntryBase {
     virtual const char* GetAnchorTag() const = 0;
     virtual void Write(std::ostream& os,
                        WriteFunction* pWriteFunc) const = 0;
-    virtual void RegisterTips(std::string tips);
+    virtual void FixupTips(DocumentInfo& docInfo);
 
  public:
     inline uint32_t GetLength() const { return m_length; }
@@ -59,8 +60,8 @@ EntryBase::EntryBase(const char* pTop, const char* pEnd) : m_pTerm(pTop),
 }
 EntryBase::~EntryBase() {
 }
-void EntryBase::RegisterTips(std::string tips) {
-    (void)tips;
+void EntryBase::FixupTips(DocumentInfo& docInfo) {
+    (void)docInfo;
 }
 
 //--------------------------------------------------------------------------
@@ -70,14 +71,14 @@ void EntryBase::RegisterTips(std::string tips) {
 //--------------------------------------------------------------------------
 class GlossaryEntry : public EntryBase {
  public:
-    GlossaryEntry(const char* pTop, const char* pEnd);
+    GlossaryEntry(const char* pTop, const char* pEnd, std::string tips);
     virtual ~GlossaryEntry();
 
  public:
     uint64_t GetHash() const override;
     const char* GetAnchorTag() const override;
     void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
-    void RegisterTips(std::string tips) override;
+    void FixupTips(DocumentInfo& docInfo) override;
 
  private:
     uint64_t    m_hash;            // 用語文字列から生成されたハッシュ値
@@ -86,9 +87,10 @@ class GlossaryEntry : public EntryBase {
 };
 
 GlossaryEntry::GlossaryEntry(const char* pTop,
-                             const char* pEnd) : EntryBase(pTop, pEnd),
+                             const char* pEnd,
+                             std::string tips) : EntryBase(pTop, pEnd),
                                                  m_hash(0),
-                                                 m_tips({}) {
+                                                 m_tips(tips) {
     m_hash = CRC64::Calc('G', pTop, pEnd, m_anchorTag);  // 'G' means glossary.
 }
 GlossaryEntry::~GlossaryEntry() {
@@ -109,7 +111,28 @@ void GlossaryEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
     pWriteFunc(os, p, p + this->GetLength());
     os << "</a>";
 }
-void GlossaryEntry::RegisterTips(std::string tips) {
+void GlossaryEntry::FixupTips(DocumentInfo& docInfo) {
+    std::ostringstream os;
+    TextSpan tmp{ &(m_tips[0]), &(m_tips[0]) + m_tips.size() };
+    tmp.WriteTo(os, docInfo);
+    std::string tips = os.str();
+    {  // Common with TextSpan.cxx::GenerateFootnoteTips()
+        bool in_tag = false;
+        auto pred = [&in_tag](char c) -> bool {
+            if (in_tag) {
+                if (c == '>') {
+                    in_tag = false;
+                    return true;
+                }
+            } else {
+                if (c == '<')
+                    in_tag = true;
+            }
+            return in_tag;
+        };
+        auto itr = std::remove_if(tips.begin(), tips.end(), pred);
+        tips.erase(itr, tips.end());
+    }
     this->m_tips = tips;
 }
 
@@ -225,8 +248,8 @@ public:
     Impl();
     ~Impl();
 public:
-    bool RegisterTerm(const char* pTop, const char* pEnd);
-    void RegisterTermTips(const char* pAnchor, const std::string& tips);
+    bool RegisterTerm(const char* pTop, const char* pEnd, std::string tips);
+    void FixUpTermTips(DocumentInfo& docInfo);
     bool RegisterAutoLink(const char* pTop, const char* pEnd,
                           const char* pTargetTop, const char* pTargetEnd);
     const char* GetAnchorTag(bool& bDuplicated,
@@ -259,11 +282,11 @@ Glossary::Glossary() : m_pImpl( new Impl{} ) {
 Glossary::~Glossary() {
     delete m_pImpl;
 }
-bool Glossary::RegisterTerm(const char* pTop, const char* pEnd) {
-    return m_pImpl->RegisterTerm(pTop, pEnd);
+bool Glossary::RegisterTerm(const char* pTop, const char* pEnd, std::string tips) {
+    return m_pImpl->RegisterTerm(pTop, pEnd, tips);
 }
-void Glossary::RegisterTermTips(const char* pAnchor, const std::string& tips) {
-    return m_pImpl->RegisterTermTips(pAnchor, tips);
+void Glossary::FixUpTermTips(DocumentInfo& docInfo) {
+    return m_pImpl->FixUpTermTips(docInfo);
 }
 bool Glossary::RegisterAutoLink(const char* pTop, const char* pEnd,
                                 const char* pUrlTop, const char* pUrlEnd) {
@@ -306,22 +329,19 @@ Glossary::Impl::~Impl() {
     m_entries.clear();
 }
 
-bool Glossary::Impl::RegisterTerm(const char* pTop, const char* pEnd) {
-    if (CheckUniqueness( pTop, pEnd) == false )
+bool Glossary::Impl::RegisterTerm(const char* pTop, const char* pEnd, std::string tips) {
+    if (CheckUniqueness(pTop, pEnd) == false)
         return false;
-    auto pEntry = new GlossaryEntry(pTop, pEnd);
+    auto pEntry = new GlossaryEntry(pTop, pEnd, tips);
     m_entries.push_back(pEntry);
     m_sorted = false;
     return true;
 }
 
-void Glossary::Impl::RegisterTermTips(const char* pAnchor, const std::string& tips) {
+void Glossary::Impl::FixUpTermTips(DocumentInfo& docInfo) {
     for (uint32_t i = 0; i < m_entries.size(); ++i) {
         EntryBase* const pEntry = m_entries[i];
-        if (!::strcmp(pAnchor, pEntry->GetAnchorTag())) {
-            pEntry->RegisterTips(tips);
-            return;
-        }
+        pEntry->FixupTips(docInfo);
     }
 }
 

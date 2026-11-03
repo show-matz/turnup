@@ -26,8 +26,8 @@ class Glossary {
     ~Glossary();
 
  public:
-    bool RegisterTerm(const char* pTop, const char* pEnd);
-    void RegisterTermTips(const char* pAnchor, const std::string& tips);
+    bool RegisterTerm(const char* pTop, const char* pEnd, std::string tips);
+    void FixUpTermTips(DocumentInfo& docInfo);
     bool RegisterAutoLink(const char* pTop, const char* pEnd,
                           const char* pUrlTop, const char* pUrlEnd);
     const char* GetAnchorTag(bool& bDuplicated,
