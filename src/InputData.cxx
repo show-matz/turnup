@@ -20,14 +20,27 @@
 #include "ToC.hxx"
 #include "Utilities.hxx"
 
-#include <vector>
 #include <algorithm>
-#include <utility>
 #include <iostream>
+#include <sstream>
+#include <utility>
+#include <vector>
+
 #include <string.h>
 #include <assert.h>
 
 namespace turnup {
+
+template <typename ITR>
+inline ITR GetEndOfTermDefine(ITR itr1, ITR itr2, std::ostream& os) {
+    for (; itr1 != itr2; ++itr1) {
+        TextSpan line = itr1->Trim();
+        if (line.IsEmpty())
+            break;
+        os.write(line.Top(), line.End() - line.Top());
+    }
+    return itr1;
+}
 
 //--------------------------------------------------------------------------
 //
@@ -280,8 +293,13 @@ void InputDataImpl::PreScan(DocumentInfo& docInfo) {
             const char* pTerm2;
             if ( IsTermDefine(line, pTerm1, pTerm2) ) {
                 Utilities::Trim(pTerm1, pTerm2);
+                // 用語定義の本文部分を（markdown書法のまま）仮登録
+                std::ostringstream os;
+                os.write(pTerm2 + 2, line.End() - (pTerm2 + 2));
+                itr1 = GetEndOfTermDefine(++itr1, itr2, os);
                 // 重複検出：この時点では（設定次第で）警告を出すだけ
-                if ( glossary.RegisterTerm(pTerm1, pTerm2) == false && docInfo.IsNeedWarning() )
+                bool result = glossary.RegisterTerm(pTerm1, pTerm2, os.str());
+                if (result == false && docInfo.IsNeedWarning())
                     std::cerr << "WARNING : link keyword '"
                               << TextSpan{ pTerm1, pTerm2 } << "' is duplicated." << std::endl;
             }
@@ -487,6 +505,9 @@ void InputDataImpl::PreScan(DocumentInfo& docInfo) {
                 top = i2 + 2;
             }
         }
+        // ここで用語定義本文の（マウスホバー表示用）文字列を確定する
+        glossary.FixUpTermTips(docInfo);
+
         // 最後に $..$ 形式の MathJax 利用をチェックする
         do {
             auto top = tmp.Top();

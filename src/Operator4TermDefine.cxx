@@ -11,8 +11,8 @@
 #include "TextSpan.hxx"
 #include "Utilities.hxx"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 namespace turnup {
 
