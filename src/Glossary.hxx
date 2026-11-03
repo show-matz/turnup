@@ -7,6 +7,7 @@
 #define SRC_GLOSSARY_HXX_
 
 #include <iosfwd>
+#include <string>
 
 namespace turnup {
 
@@ -26,6 +27,7 @@ class Glossary {
 
  public:
     bool RegisterTerm(const char* pTop, const char* pEnd);
+    void RegisterTermTips(const char* pAnchor, const std::string& tips);
     bool RegisterAutoLink(const char* pTop, const char* pEnd,
                           const char* pUrlTop, const char* pUrlEnd);
     const char* GetAnchorTag(bool& bDuplicated,

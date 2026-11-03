@@ -10,9 +10,11 @@
 #include "StyleStack.hxx"
 #include "TextSpan.hxx"
 
+#include <string.h>
+
 #include <algorithm>
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -33,6 +35,7 @@ class EntryBase {
     virtual const char* GetAnchorTag() const = 0;
     virtual void Write(std::ostream& os,
                        WriteFunction* pWriteFunc) const = 0;
+    virtual void RegisterTips(std::string tips);
 
  public:
     inline uint32_t GetLength() const { return m_length; }
@@ -56,6 +59,9 @@ EntryBase::EntryBase(const char* pTop, const char* pEnd) : m_pTerm(pTop),
 }
 EntryBase::~EntryBase() {
 }
+void EntryBase::RegisterTips(std::string tips) {
+    (void)tips;
+}
 
 //--------------------------------------------------------------------------
 //
@@ -68,18 +74,21 @@ class GlossaryEntry : public EntryBase {
     virtual ~GlossaryEntry();
 
  public:
-    virtual uint64_t GetHash() const;
-    virtual const char* GetAnchorTag() const;
-    virtual void Write(std::ostream& os, WriteFunction* pWriteFunc) const;
+    uint64_t GetHash() const override;
+    const char* GetAnchorTag() const override;
+    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+    void RegisterTips(std::string tips) override;
 
  private:
-    uint64_t  m_hash;            // 用語文字列から生成されたハッシュ値
-    char      m_anchorTag[12];   // ハッシュ値の文字列表現（null 終端を含む）
+    uint64_t    m_hash;            // 用語文字列から生成されたハッシュ値
+    char        m_anchorTag[12];   // ハッシュ値の文字列表現（null 終端を含む）
+    std::string m_tips;            // マウスホバーで表示するための tips 文字列
 };
 
 GlossaryEntry::GlossaryEntry(const char* pTop,
                              const char* pEnd) : EntryBase(pTop, pEnd),
-                                                 m_hash(0) {
+                                                 m_hash(0),
+                                                 m_tips({}) {
     m_hash = CRC64::Calc('G', pTop, pEnd, m_anchorTag);  // 'G' means glossary.
 }
 GlossaryEntry::~GlossaryEntry() {
@@ -92,10 +101,16 @@ const char* GlossaryEntry::GetAnchorTag() const {
     return m_anchorTag;
 }
 void GlossaryEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
-    os << "<a class='term' href='#" << this->GetAnchorTag()  << "'>";
+    os << "<a class='term' href='#" << this->GetAnchorTag()  << "'";
+    if (this->m_tips.empty() == false)
+        os << " title='" << m_tips << "'";
+    os << ">";
     const char* p = this->GetTerm();
     pWriteFunc(os, p, p + this->GetLength());
     os << "</a>";
+}
+void GlossaryEntry::RegisterTips(std::string tips) {
+    this->m_tips = tips;
 }
 
 //--------------------------------------------------------------------------
@@ -104,15 +119,17 @@ void GlossaryEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
 //
 //--------------------------------------------------------------------------
 class InternalAutoLinkEntry : public EntryBase {
-public:
+ public:
     InternalAutoLinkEntry(const char* pTop, const char* pEnd,
                           const char* pTargetTop, const char* pTargetEnd);
     virtual ~InternalAutoLinkEntry();
-public:
-    virtual uint64_t GetHash() const;
-    virtual const char* GetAnchorTag() const;
-    virtual void Write(std::ostream& os, WriteFunction* pWriteFunc) const;
-private:
+
+ public:
+    uint64_t GetHash() const override;
+    const char* GetAnchorTag() const override;
+    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+
+ private:
     uint64_t  m_hash;             // 生成されたハッシュ値
     char      m_anchorTag[12];    // ハッシュ値の文字列表現（null 終端を含む）
 };
@@ -156,15 +173,17 @@ void InternalAutoLinkEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) c
 //
 //--------------------------------------------------------------------------
 class ExternalAutoLinkEntry : public EntryBase {
-public:
+ public:
     ExternalAutoLinkEntry(const char* pTop, const char* pEnd,
                           const char* pUrlTop, const char* pUrlEnd);
     virtual ~ExternalAutoLinkEntry();
-public:
-    virtual uint64_t GetHash() const;
-    virtual const char* GetAnchorTag() const;
-    virtual void Write(std::ostream& os, WriteFunction* pWriteFunc) const;
-private:
+
+ public:
+    uint64_t GetHash() const override;
+    const char* GetAnchorTag() const override;
+    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+
+ private:
     const char* m_pUrlTop;
     const char* m_pUrlEnd;
 };
@@ -207,6 +226,7 @@ public:
     ~Impl();
 public:
     bool RegisterTerm(const char* pTop, const char* pEnd);
+    void RegisterTermTips(const char* pAnchor, const std::string& tips);
     bool RegisterAutoLink(const char* pTop, const char* pEnd,
                           const char* pTargetTop, const char* pTargetEnd);
     const char* GetAnchorTag(bool& bDuplicated,
@@ -241,6 +261,9 @@ Glossary::~Glossary() {
 }
 bool Glossary::RegisterTerm(const char* pTop, const char* pEnd) {
     return m_pImpl->RegisterTerm(pTop, pEnd);
+}
+void Glossary::RegisterTermTips(const char* pAnchor, const std::string& tips) {
+    return m_pImpl->RegisterTermTips(pAnchor, tips);
 }
 bool Glossary::RegisterAutoLink(const char* pTop, const char* pEnd,
                                 const char* pUrlTop, const char* pUrlEnd) {
@@ -290,6 +313,16 @@ bool Glossary::Impl::RegisterTerm(const char* pTop, const char* pEnd) {
     m_entries.push_back(pEntry);
     m_sorted = false;
     return true;
+}
+
+void Glossary::Impl::RegisterTermTips(const char* pAnchor, const std::string& tips) {
+    for (uint32_t i = 0; i < m_entries.size(); ++i) {
+        EntryBase* const pEntry = m_entries[i];
+        if (!::strcmp(pAnchor, pEntry->GetAnchorTag())) {
+            pEntry->RegisterTips(tips);
+            return;
+        }
+    }
 }
 
 bool Glossary::Impl::RegisterAutoLink(const char* pTop, const char* pEnd,
