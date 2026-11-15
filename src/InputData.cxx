@@ -505,8 +505,6 @@ void InputDataImpl::PreScan(DocumentInfo& docInfo) {
                 top = i2 + 2;
             }
         }
-        // ここで用語定義本文の（マウスホバー表示用）文字列を確定する
-        glossary.FixUpTermTips(docInfo);
 
         // 最後に $..$ 形式の MathJax 利用をチェックする
         do {
@@ -521,6 +519,9 @@ void InputDataImpl::PreScan(DocumentInfo& docInfo) {
             cfg.bUseMathJax = true;
         } while (false);
     }
+
+    // 用語定義本文の（マウスホバー表示用）文字列を確定
+    glossary.FixUpTermTips(docInfo);
 }
 
 InputFile* InputDataImpl::LoadFileIfNeed(const TextSpan& fileName,
