@@ -19,6 +19,7 @@
 #include "Operator4HorizontalLine.hxx"
 #include "Operator4Image.hxx"
 #include "Operator4ImageModeStack.hxx"
+#include "Operator4Lane.hxx"
 #include "Operator4List.hxx"
 #include "Operator4MathJaxLine.hxx"
 #include "Operator4Paragraph.hxx"
@@ -44,6 +45,7 @@ static OperatorType* const s_operators[] = {
     Operator4EmptyLine,
     Operator4Header,
     Operator4RawHTML,
+    Operator4Lane,
     Operator4List,
     Operator4PreBlock,
     Operator4Table,

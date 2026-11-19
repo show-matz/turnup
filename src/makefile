@@ -1,4 +1,4 @@
-# make MAJOR_VER=0 MINOR_VER=854 DRAFT_LV=0 clean release-build
+# make MAJOR_VER=0 MINOR_VER=855 DRAFT_LV=0 clean release-build
 
 DEFINES = 
 
@@ -99,6 +99,7 @@ OBJS +=	$(TARGETDIR)/CRC64.o					\
 		$(TARGETDIR)/Operator4Header.o			\
 		$(TARGETDIR)/Operator4HorizontalLine.o	\
 		$(TARGETDIR)/Operator4Image.o			\
+		$(TARGETDIR)/Operator4Lane.o			\
 		$(TARGETDIR)/Operator4List.o			\
 		$(TARGETDIR)/Operator4MathJaxLine.o		\
 		$(TARGETDIR)/Operator4Paragraph.o		\
