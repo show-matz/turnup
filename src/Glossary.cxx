@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 #include "Glossary.hxx"
 
+#include "Config.hxx"
 #include "CRC64.hxx"
 #include "DocumentInfo.hxx"
 #include "StyleStack.hxx"
@@ -35,7 +36,7 @@ class EntryBase {
     virtual uint64_t GetHash() const = 0;
     virtual const char* GetAnchorTag() const = 0;
     virtual void Write(std::ostream& os,
-                       WriteFunction* pWriteFunc) const = 0;
+                       bool bTips, WriteFunction* pWriteFunc) const = 0;
     virtual void FixupTips(DocumentInfo& docInfo);
 
  public:
@@ -77,7 +78,8 @@ class GlossaryEntry : public EntryBase {
  public:
     uint64_t GetHash() const override;
     const char* GetAnchorTag() const override;
-    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+    void Write(std::ostream& os,
+               bool bTips, WriteFunction* pWriteFunc) const override;
     void FixupTips(DocumentInfo& docInfo) override;
 
  private:
@@ -102,9 +104,10 @@ uint64_t GlossaryEntry::GetHash() const {
 const char* GlossaryEntry::GetAnchorTag() const {
     return m_anchorTag;
 }
-void GlossaryEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
+void GlossaryEntry::Write(std::ostream& os,
+                          bool bTips, WriteFunction* pWriteFunc) const {
     os << "<a class='term' href='#" << this->GetAnchorTag()  << "'";
-    if (this->m_tips.empty() == false)
+    if (bTips && this->m_tips.empty() == false)
         os << " title='" << m_tips << "'";
     os << ">";
     const char* p = this->GetTerm();
@@ -150,7 +153,8 @@ class InternalAutoLinkEntry : public EntryBase {
  public:
     uint64_t GetHash() const override;
     const char* GetAnchorTag() const override;
-    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+    void Write(std::ostream& os,
+               bool bTips, WriteFunction* pWriteFunc) const override;
 
  private:
     uint64_t  m_hash;             // 生成されたハッシュ値
@@ -183,7 +187,9 @@ uint64_t InternalAutoLinkEntry::GetHash() const {
 const char* InternalAutoLinkEntry::GetAnchorTag() const {
     return m_anchorTag;
 }
-void InternalAutoLinkEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
+void InternalAutoLinkEntry::Write(std::ostream& os,
+                                  bool bTips, WriteFunction* pWriteFunc) const {
+    (void)bTips;
     os << "<a class='autolink' href='#" << this->GetAnchorTag()  << "'>";
     const char* p = this->GetTerm();
     pWriteFunc(os, p, p + this->GetLength());
@@ -204,7 +210,8 @@ class ExternalAutoLinkEntry : public EntryBase {
  public:
     uint64_t GetHash() const override;
     const char* GetAnchorTag() const override;
-    void Write(std::ostream& os, WriteFunction* pWriteFunc) const override;
+    void Write(std::ostream& os,
+               bool bTips, WriteFunction* pWriteFunc) const override;
 
  private:
     const char* m_pUrlTop;
@@ -227,7 +234,9 @@ uint64_t ExternalAutoLinkEntry::GetHash() const {
 const char* ExternalAutoLinkEntry::GetAnchorTag() const {
     return nullptr;
 }
-void ExternalAutoLinkEntry::Write(std::ostream& os, WriteFunction* pWriteFunc) const {
+void ExternalAutoLinkEntry::Write(std::ostream& os,
+                                  bool bTips, WriteFunction* pWriteFunc) const {
+    (void)bTips;
     os << "<a class='autolink' href='";
     os.write(m_pUrlTop, m_pUrlEnd - m_pUrlTop);
     os << "'>";
@@ -255,7 +264,7 @@ public:
     const char* GetAnchorTag(bool& bDuplicated,
                              const char* pTerm, const char* pTermEnd) const;
     void SortIfNeed();
-    void WriteWithTermLink(std::ostream& os,
+    void WriteWithTermLink(std::ostream& os, bool bTips,
                            const char* pTop, const char* pEnd,
                            uint32_t idx, WriteFunction* pWriteFunc) const;
     void WriteIndex(std::ostream& os, DocumentInfo& docInfo) const;
@@ -296,12 +305,11 @@ const char* Glossary::GetAnchorTag(bool& bDuplicated,
                                    const char* pTerm, const char* pTermEnd) const {
     return m_pImpl->GetAnchorTag(bDuplicated, pTerm, pTermEnd);
 }
-void Glossary::WriteWithTermLink(std::ostream& os,
-                                 const char* pTop,
-                                 const char* pEnd,
-                                 WriteFunction* pWriteFunc) const {
+void Glossary::WriteWithTermLink(std::ostream& os, bool bTips,
+                                 const char* pTop, const char* pEnd,
+                                                 WriteFunction* pWriteFunc) const {
     m_pImpl->SortIfNeed();
-    m_pImpl->WriteWithTermLink(os, pTop, pEnd, 0, pWriteFunc);
+    m_pImpl->WriteWithTermLink(os, bTips, pTop, pEnd, 0, pWriteFunc);
 }
 void Glossary::WriteIndex(std::ostream& os,
                           DocumentInfo& docInfo, bool bFoldable) const {
@@ -384,7 +392,7 @@ void Glossary::Impl::SortIfNeed() {
     }
 }
 
-void Glossary::Impl::WriteWithTermLink(std::ostream& os,
+void Glossary::Impl::WriteWithTermLink(std::ostream& os, bool bTips,
                                        const char* pTop, const char* pEnd,
                                        uint32_t idx, WriteFunction* pWriteFunc) const {
     for ( ; idx < m_entries.size(); ++idx ) {
@@ -396,14 +404,14 @@ void Glossary::Impl::WriteWithTermLink(std::ostream& os,
             if (p == pEnd)
                 break;
             if (pTop < p)
-                this->WriteWithTermLink(os, pTop, p, idx + 1, pWriteFunc);
+                this->WriteWithTermLink(os, bTips, pTop, p, idx + 1, pWriteFunc);
             if (pEntry->IsDuplicated()) {
                 // 重複キーワードを参照した場合はエラーを出力
                 std::cerr << "ERROR : Duplicated link target '";
                 std::cerr.write(pTerm1, length);
                 std::cerr << "' is reffered." << std::endl;
             }
-            pEntry->Write(os, pWriteFunc);
+            pEntry->Write(os, bTips, pWriteFunc);
             pTop = p + length;
         }
     }
@@ -415,13 +423,14 @@ void Glossary::Impl::WriteIndex(std::ostream& os, DocumentInfo& docInfo) const {
     SetupIndexEntries(tmpEntries);
 
     auto& styles = docInfo.Get<StyleStack>();
+    const auto& cfg = docInfo.Get<Config>();
     char mark = 0;
     styles.WriteOpenTag(os, "ul") << std::endl;
     for (const auto& entry : tmpEntries) {
         if (entry.second->IsDuplicated()) {
             // 重複キーワードを参照した場合はエラーを出力
             std::cerr << "ERROR : Duplicated link keyword '";
-            entry.second->Write(std::cerr, TextSpan::WriteWithEscape);
+            entry.second->Write(std::cerr, false, TextSpan::WriteWithEscape);
             std::cerr << "' is reffered." << std::endl;
         }
         if (entry.first != mark) {
@@ -432,7 +441,7 @@ void Glossary::Impl::WriteIndex(std::ostream& os, DocumentInfo& docInfo) const {
             mark = entry.first;
         }
         styles.WriteOpenTag(os, "li");
-        entry.second->Write(os, TextSpan::WriteWithEscape);
+        entry.second->Write(os, cfg.bTermdefHover, TextSpan::WriteWithEscape);
         os << "</li>" << std::endl;
     }
     if (!!mark)
@@ -443,6 +452,7 @@ void Glossary::Impl::WriteIndex(std::ostream& os, DocumentInfo& docInfo) const {
 
 void Glossary::Impl::WriteIndex_X(std::ostream& os, DocumentInfo& docInfo) const {
     auto& styles = docInfo.Get<StyleStack>();
+    const auto& cfg = docInfo.Get<Config>();
     TextSpan listitm{ "li" };
     TextSpan details{ "details" };
     TextSpan summary{ "summary" };
@@ -460,7 +470,7 @@ void Glossary::Impl::WriteIndex_X(std::ostream& os, DocumentInfo& docInfo) const
         if ( entry.second->IsDuplicated() ) {
             // 重複キーワードを参照した場合はエラーを出力
             std::cerr << "ERROR : Duplicated link keyword '";
-            entry.second->Write(std::cerr, TextSpan::WriteWithEscape);
+            entry.second->Write(std::cerr, false, TextSpan::WriteWithEscape);
             std::cerr << "' is reffered." << std::endl;
         }
         if (entry.first != mark) {
@@ -473,7 +483,7 @@ void Glossary::Impl::WriteIndex_X(std::ostream& os, DocumentInfo& docInfo) const
             mark = entry.first;
         }
         styles.WriteOpenTag(os, "li");
-        entry.second->Write(os, TextSpan::WriteWithEscape);
+        entry.second->Write(os, cfg.bTermdefHover, TextSpan::WriteWithEscape);
         os << "</li>" << std::endl;
     }
     if (!!mark)

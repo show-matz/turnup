@@ -102,6 +102,27 @@
 　この設定を有効にしてスタイルシートの埋め込みを行なう場合、turnup の実行時点で
 指定されたスタイルシートのファイルが存在していなければなりません（当たり前ですが）。
 
+### マウスホバーによるテキスト表示の抑止
+<!-- autolink: [config:suppress-footnote-hover](#マウスホバーによるテキスト表示の抑止) -->
+<!-- autolink: [config:suppress-termdef-hover](#マウスホバーによるテキスト表示の抑止) -->
+<!-- autolink: [write-suppress-footnote-hover](#マウスホバーによるテキスト表示の抑止) -->
+<!-- autolink: [write-suppress-termdef-hover](#マウスホバーによるテキスト表示の抑止) -->
+
+　デフォルトでは、定義リストと脚注はそのリンクにマウスポインタをホバーすることで
+本体テキストが表示されるようになっています。この挙動は以下の設定で抑止することが
+できます。
+
+```markdown
+  <!-- config:suppress-footnote-hover -->
+  <!-- config:suppress-termdef-hover -->
+```
+
+　前者が定義リストに対して、後者が脚注に対して機能します。特に定義リストについて
+は、その用語が文書中に頻繁に登場する（そしてその本体テキストが長い）場合には文書
+全体のサイズに影響します。そのような理由からこの機能を抑止したい場合には上記の設
+定を使用してください。
+
+
 ### コメントの出力
 <!-- autolink: [config:write-comment](#コメントの出力) -->
 <!-- autolink: [write-comment](#コメントの出力) -->

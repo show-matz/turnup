@@ -27,6 +27,8 @@ class Config {
     bool    bNumberingHeader;
     bool    bUseMathJax;
     bool    bEntityNumbering;
+    bool    bFootnoteHover;
+    bool    bTermdefHover;
     uint8_t minNumberingLv;
     uint8_t maxNumberingLv;
     uint8_t entityNumberingDepth;

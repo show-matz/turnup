@@ -18,6 +18,8 @@ Config::Config() : bTermLinkInHeader(false),
                    bNumberingHeader(false),
                    bUseMathJax(false),
                    bEntityNumbering(true),
+                   bFootnoteHover(true),
+                   bTermdefHover(true),
                    minNumberingLv(1),
                    maxNumberingLv(6),
                    entityNumberingDepth(0) {

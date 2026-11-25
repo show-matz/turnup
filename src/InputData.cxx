@@ -425,6 +425,10 @@ void InputDataImpl::PreScan(DocumentInfo& docInfo) {
                     cfg.bWriteComment = true;
                 } else if ( item.IsEqual("use-mathjax") ) {
                     cfg.bUseMathJax = true;
+                } else if ( item.IsEqual("suppress-footnote-hover") ) {
+                    cfg.bFootnoteHover = false;
+                } else if ( item.IsEqual("suppress-termdef-hover") ) {
+                    cfg.bTermdefHover = false;
                 } else if ( item.BeginWith("entity-numbering-depth") ) {
                     item = item.Chomp(22, 0).Trim();
                     if ( item.IsEqual("off") ) {

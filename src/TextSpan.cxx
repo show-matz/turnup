@@ -1063,12 +1063,15 @@ static void OperateFootnote(std::ostream& os, const TextSpan& whole,
     auto& fn = docInfo.Get<Footnotes>();
     uint32_t idx = fn.Register(pTop + 5, pEnd - 2);
     auto& styles = docInfo.Get<StyleStack>();
+    const auto& cfg = docInfo.Get<Config>();
     styles.WriteOpenTag(os, "sup")
        << "<a name='footnote_ref" << idx << "' "
-       << "href='#footnote" << idx << "' "
-       << "title='" << GenerateFootnoteTips(TextSpan{ pTop + 5, pEnd - 2 }, docInfo) << "'>"
-       << idx
-       << "</a></sup>";
+       << "href='#footnote" << idx << "'";
+    if (cfg.bFootnoteHover) {
+        os << " title='"
+           << GenerateFootnoteTips(TextSpan{ pTop + 5, pEnd - 2 }, docInfo) << "'";
+    }
+    os << ">" << idx << "</a></sup>";
 }
 
 // {{fn(TAG):string}} 形式の脚注を処理する
@@ -1102,12 +1105,14 @@ static void OperateFootnote2(std::ostream& os, const TextSpan& whole,
         fn.GetPrefix(tag, prefix);
         uint32_t idx = fn.Register(tag, note);
         auto& styles = docInfo.Get<StyleStack>();
+        const auto& cfg = docInfo.Get<Config>();
         styles.WriteOpenTag(os, "sup")
            << "<a name='footnote_ref_" << tag << "_" << idx << "' "
-           << "href='#footnote_" << tag << "_" << idx << "' "
-           << "title='" << GenerateFootnoteTips(note, docInfo) << "'>"
-           << prefix << idx
-           << "</a></sup>";
+           << "href='#footnote_" << tag << "_" << idx << "'";
+        if (cfg.bFootnoteHover) {
+            os << " title='" << GenerateFootnoteTips(note, docInfo) << "'";
+        }
+        os << ">" << prefix << idx << "</a></sup>";
     }
 }
 
@@ -1188,7 +1193,9 @@ static void WriteWithTermLink(std::ostream& os,
         TextSpan::WriteWithEscape(os, pTop, pEnd);
     } else {
         auto& glossary = docInfo.Get<Glossary>();
-        glossary.WriteWithTermLink(os, pTop, pEnd, TextSpan::WriteWithEscape);
+        const auto& cfg = docInfo.Get<Config>();
+        glossary.WriteWithTermLink(os, cfg.bTermdefHover,
+                                   pTop, pEnd, TextSpan::WriteWithEscape);
     }
 }
 

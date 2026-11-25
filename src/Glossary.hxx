@@ -32,7 +32,8 @@ class Glossary {
                           const char* pUrlTop, const char* pUrlEnd);
     const char* GetAnchorTag(bool& bDuplicated,
                              const char* pTerm, const char* pTermEnd = nullptr) const;
-    void WriteWithTermLink(std::ostream& os, const char* pTop,
+    void WriteWithTermLink(std::ostream& os,
+                           bool bTips, const char* pTop,
                            const char* pEnd, WriteFunction* pWriteFunc) const;
     void WriteIndex(std::ostream& os,
                     DocumentInfo& docInfo, bool bFoldable) const;
